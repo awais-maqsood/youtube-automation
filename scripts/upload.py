@@ -53,7 +53,9 @@ def upload_video(access_token, video_path, title, description, scheduled_utc=Non
         },
         "status": {
             "privacyStatus": status,
-        }
+            # COPPA / Studio "Made for Kids" — must be set or uploads can block publishing.
+            "selfDeclaredMadeForKids": False,
+        },
     }
     if publish_at:
         metadata["status"]["publishAt"] = publish_at
@@ -145,8 +147,16 @@ def main():
     token = get_access_token()
 
     scheduled = None if args.no_schedule else kit.get("scheduled_time_utc")
-    vid_id = upload_video(token, kit["video"], kit["title"],
-                          kit["description"], scheduled_utc=scheduled)
+    # Without a schedule, go public immediately (CI auto-publish). Scheduled uploads stay private until publishAt.
+    privacy = "public" if args.no_schedule else "private"
+    vid_id = upload_video(
+        token,
+        kit["video"],
+        kit["title"],
+        kit["description"],
+        scheduled_utc=scheduled,
+        privacy=privacy,
+    )
 
     if vid_id and os.path.exists(kit.get("thumbnail","")):
         upload_thumbnail(token, vid_id, kit["thumbnail"])
