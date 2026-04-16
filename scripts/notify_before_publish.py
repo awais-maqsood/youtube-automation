@@ -103,7 +103,7 @@ def main() -> int:
     default_wait = int(raw_wait) if raw_wait.isdigit() else 300
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("--kit", default="scripts/output/kit.json", help="Path to kit.json")
+    parser.add_argument("--kit", default="output/kit.json", help="Path to kit.json")
     parser.add_argument(
         "--wait-seconds",
         type=int,

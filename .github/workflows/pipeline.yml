@@ -76,7 +76,7 @@ jobs:
           GITHUB_SERVER_URL: ${{ github.server_url }}
           PRE_PUBLISH_WAIT_SECONDS: ${{ vars.PRE_PUBLISH_WAIT_SECONDS }}
         run: |
-          python scripts/notify_before_publish.py --kit scripts/output/kit.json
+          python scripts/notify_before_publish.py --kit output/kit.json
 
       - name: Optional pre-publish review window
         env:
@@ -92,7 +92,7 @@ jobs:
           YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
           YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
         run: |
-          python scripts/upload.py --kit scripts/output/kit.json --no-schedule
+          python scripts/upload.py --kit output/kit.json --no-schedule
 
       - name: Upload artifacts
         if: always()
@@ -100,5 +100,5 @@ jobs:
         with:
           name: generated-video-and-kit
           path: |
-            scripts/output/video.mp4
-            scripts/output/kit.json
+            output/video.mp4
+            output/kit.json
