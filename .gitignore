@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# Local secrets
+.env
+
+# Output
+output/
+/scripts/output/
+*.mp4
+*.mov
+/tmp/
+
+# REMNANT — local state file (persisted via GitHub repo variable in CI)
+scripts/remnant_state.json

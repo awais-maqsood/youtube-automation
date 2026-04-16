@@ -1,0 +1,30 @@
+name: Reject Video
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: "Pipeline run ID"
+        required: true
+      sig:
+        description: "HMAC signature"
+        required: true
+
+jobs:
+  reject:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Confirm rejection
+        env:
+          GMAIL_ADDRESS:     ${{ secrets.GMAIL_ADDRESS }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          NOTIFY_EMAIL:      ${{ secrets.NOTIFY_EMAIL }}
+          PIPELINE_SECRET:   ${{ secrets.PIPELINE_SECRET }}
+          GH_PAT:            ${{ secrets.GH_PAT }}
+          GH_REPO:           ${{ github.repository }}
+          RUN_ID:            ${{ github.event.inputs.run_id }}
+          SIG:               ${{ github.event.inputs.sig }}
+        run: python3 scripts/delete.py

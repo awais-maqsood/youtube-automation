@@ -1,0 +1,84 @@
+name: Auto Generate And Upload
+
+on:
+  schedule:
+    - cron: "5 12 * * *"
+    - cron: "5 17 * * *"
+    - cron: "5 22 * * *"
+  workflow_dispatch:
+    inputs:
+      slot:
+        description: "morning, afternoon, or evening"
+        default: "morning"
+
+permissions:
+  contents: read
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install deps
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y ffmpeg fonts-dejavu-core
+          python -m pip install --upgrade pip
+          pip install Pillow numpy --quiet
+
+      - name: Detect slot
+        id: slot
+        run: |
+          if [ -n "${{ github.event.inputs.slot }}" ]; then
+            echo "slot=${{ github.event.inputs.slot }}" >> $GITHUB_OUTPUT
+          else
+            HOUR=$(date -u +%H)
+            if [ "$HOUR" = "12" ]; then
+              echo "slot=morning" >> $GITHUB_OUTPUT
+            elif [ "$HOUR" = "17" ]; then
+              echo "slot=afternoon" >> $GITHUB_OUTPUT
+            else
+              echo "slot=evening" >> $GITHUB_OUTPUT
+            fi
+          fi
+
+      - name: Generate video
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          FREEPIK_API_KEY: ${{ secrets.FREEPIK_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          TREND_GEO: ${{ vars.TREND_GEO }}
+          STOCK_BACKGROUND_PROVIDER: gemini
+          GEMINI_IMAGE_COUNT: 5
+          GEMINI_IMAGE_MODEL: gemini-3.1-flash-image-preview
+          GEMINI_IMAGE_SIZE: 1K
+          GEMINI_IMAGE_ASPECT_RATIO: 9:16
+          FREEPIK_IMAGE_COUNT: 12
+          FREEPIK_CROSSFADE: 0.12
+        run: |
+          python scripts/run_pipeline.py --slot ${{ steps.slot.outputs.slot }}
+
+      - name: Upload to YouTube
+        env:
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+        run: |
+          python scripts/upload.py --kit scripts/output/kit.json --no-schedule
+
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: generated-video-and-kit
+          path: |
+            scripts/output/video.mp4
+            scripts/output/kit.json

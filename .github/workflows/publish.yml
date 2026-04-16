@@ -1,0 +1,33 @@
+name: Publish Video
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: "Pipeline run ID"
+        required: true
+      sig:
+        description: "HMAC signature"
+        required: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Upload to YouTube
+        env:
+          YOUTUBE_CLIENT_ID:     ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+          GMAIL_ADDRESS:         ${{ secrets.GMAIL_ADDRESS }}
+          GMAIL_APP_PASSWORD:    ${{ secrets.GMAIL_APP_PASSWORD }}
+          NOTIFY_EMAIL:          ${{ secrets.NOTIFY_EMAIL }}
+          GH_PAT:                ${{ secrets.GH_PAT }}
+          GH_REPO:               ${{ github.repository }}
+          PIPELINE_SECRET:       ${{ secrets.PIPELINE_SECRET }}
+          RUN_ID:                ${{ github.event.inputs.run_id }}
+          SIG:                   ${{ github.event.inputs.sig }}
+        run: pip install Pillow numpy --quiet && python3 scripts/publish.py
