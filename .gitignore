@@ -11,6 +11,7 @@ venv/
 # Output
 output/
 /scripts/output/
+scripts/output_verify_tts/
 *.mp4
 *.mov
 /tmp/

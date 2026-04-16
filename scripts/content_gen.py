@@ -383,6 +383,36 @@ def validate(content: dict) -> dict:
     if not content.get("search_query"):
         content["search_query"] = str(content.get("search_query") or content.get("title", "")).strip() or "smartphone app ai technology"
 
+    return _normalize_display_text(content)
+
+
+def _compact_ws(s: str) -> str:
+    return " ".join(s.split()).strip()
+
+
+def _normalize_display_text(content: dict) -> dict:
+    """
+    Reduce ugly duplicates between title/hook and accidental doubled clauses,
+    which also blow up on-screen line length in Shorts.
+    """
+    title = _compact_ws(str(content.get("title", "")))
+    hook = _compact_ws(str(content.get("hook", "")))
+
+    if title and hook:
+        tl, hl = title.lower(), hook.lower()
+        if tl == hl or tl in hl or hl in tl:
+            if len(hook) <= len(title):
+                content["hook"] = "Quick breakdown + safety check."
+            else:
+                content["title"] = hook
+                content["hook"] = "Yeh trend abhi viral hai — detail dekho."
+
+    title = _compact_ws(str(content.get("title", "")))
+    low = title.lower()
+    half = max(8, len(low) // 2)
+    if len(low) >= 24 and low[:half] == low[half : half * 2]:
+        content["title"] = _compact_ws(title[: len(title) // 2])
+
     return content
 
 
@@ -472,6 +502,7 @@ def generate_topic(epilogue_extra: str | None = None) -> dict:
                         first[0] = latest_topic[:42]
                         captions[0] = first
                         content["captions"] = captions
+            content = _normalize_display_text(content)
             content["trend_topic"] = latest_topic
             if selected_search_query:
                 content["search_query"] = selected_search_query
@@ -485,7 +516,12 @@ def generate_topic(epilogue_extra: str | None = None) -> dict:
                 time.sleep(5)
     print("  All models failed. Using fallback content.")
     content = fallback()
-    content["title"] = f"{latest_topic}: {content['title']}"
+    base_title = str(content.get("title", "")).strip()
+    lt = str(latest_topic).strip()
+    if lt.lower() in base_title.lower():
+        content["title"] = base_title
+    else:
+        content["title"] = f"{lt}: {base_title}".strip(": ")
     content["hook"] = latest_topic
     content["context_lines"][0] = latest_topic
     content["trend_topic"] = latest_topic

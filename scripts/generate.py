@@ -124,6 +124,104 @@ def truncate_to_width(text, font, max_w):
     return (out.rstrip() + suffix) if out else text
 
 
+def wrap_words_to_lines(text, font, max_w, max_lines):
+    """Greedy word wrap to <= max_lines; last line may still exceed max_w (caller should shrink font)."""
+    words = " ".join(str(text).split()).split(" ")
+    lines = []
+    cur = ""
+    for w in words:
+        if not w:
+            continue
+        trial = w if not cur else f"{cur} {w}"
+        if font.getlength(trial) <= max_w:
+            cur = trial
+            continue
+        if cur:
+            lines.append(cur)
+            cur = w
+        else:
+            lines.append(truncate_to_width(w, font, max_w))
+            cur = ""
+        if len(lines) >= max_lines:
+            break
+    if len(lines) < max_lines and cur:
+        lines.append(cur)
+    return lines[:max_lines]
+
+
+def fit_font_wrapped(path, text, max_w, start_size, min_size=44, *, max_lines=3):
+    """Pick largest font where wrapped lines all fit within max_w and line count <= max_lines."""
+    size = start_size
+    source = _resolve_font_source(path)
+    while size >= min_size:
+        try:
+            f = ImageFont.truetype(source, size)
+        except Exception:
+            return ImageFont.load_default(), min_size, wrap_words_to_lines(text, ImageFont.load_default(), max_w, max_lines)
+        lines = wrap_words_to_lines(text, f, max_w, max_lines)
+        if not lines:
+            return f, size, []
+        if len(lines) > max_lines:
+            size -= 4
+            continue
+        if any(f.getlength(line) > max_w for line in lines):
+            size -= 4
+            continue
+        return f, size, lines
+    try:
+        f = ImageFont.truetype(source, min_size)
+    except Exception:
+        f = ImageFont.load_default()
+    return f, min_size, wrap_words_to_lines(text, f, max_w, max_lines)
+
+
+def draw_outlined_lines(draw, lines, top_y, f, color, line_gap=None):
+    """Draw a centered block of outlined lines; returns bottom y (exclusive)."""
+    if line_gap is None:
+        line_gap = int(max(8, getattr(f, "size", 48) * 1.05))
+    y = top_y
+    PAD = 60
+    for line in lines:
+        tw = f.getlength(line)
+        x = max(PAD, (W - tw) / 2)
+        stroke = max(4, int(getattr(f, "size", 48) * 0.08))
+        for ox, oy in [
+            (-stroke, 0),
+            (stroke, 0),
+            (0, -stroke),
+            (0, stroke),
+            (-stroke + 1, -stroke + 1),
+            (stroke - 1, -stroke + 1),
+            (-stroke + 1, stroke - 1),
+            (stroke - 1, stroke - 1),
+        ]:
+            draw.text((x + ox, y + oy), line, font=f, fill=(0, 0, 0))
+        draw.text((x, y), line, font=f, fill=color)
+        y += line_gap
+    return y
+
+
+def draw_text_panel_block(lines, top_y, font, *, pad_x=28, pad_y=16, panel_alpha=165, line_gap=None):
+    if line_gap is None:
+        line_gap = int(max(8, getattr(font, "size", 48) * 1.05))
+    max_tw = max((font.getlength(line) for line in lines), default=0.0)
+    block_h = max(1, len(lines)) * line_gap + int(font.size * 0.25)
+    x = max(60, (W - max_tw) / 2)
+    panel = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    pd = ImageDraw.Draw(panel)
+    pd.rounded_rectangle(
+        [
+            int(x - pad_x),
+            int(top_y - pad_y),
+            int(x + max_tw + pad_x),
+            int(top_y + block_h + pad_y),
+        ],
+        radius=22,
+        fill=(0, 0, 0, panel_alpha),
+    )
+    return panel
+
+
 def hsv_s1_to_rgb_array(h_arr, v=0.5):
     """
     Vectorised HSV→RGB with S=1 fixed.
@@ -523,6 +621,172 @@ def blend_stock_frame(frame, stock_bgs, idx, total_frames):
 # ── Audio ─────────────────────────────────────────────────────────────────────
 
 
+def _ffmpeg_available() -> bool:
+    try:
+        r = subprocess.run(["ffmpeg", "-version"], capture_output=True, text=True)
+        return r.returncode == 0
+    except Exception:
+        return False
+
+
+def _read_wav_f32_mono(path: str) -> np.ndarray:
+    with wave.open(path, "r") as w:
+        ch = w.getnchannels()
+        sw = w.getsampwidth()
+        fr = w.getframerate()
+        nframes = w.getnframes()
+        raw = w.readframes(nframes)
+    if sw != 2:
+        raise RuntimeError(f"Expected 16-bit WAV from ffmpeg, got sampwidth={sw}")
+    pcm = np.frombuffer(raw, dtype="<i2").astype(np.float32) / 32768.0
+    if ch == 1:
+        return pcm
+    if ch == 2:
+        pcm = pcm.reshape(-1, 2).mean(axis=1)
+        return pcm
+    raise RuntimeError(f"Unsupported channel count: {ch}")
+
+
+def _linear_resample(sig: np.ndarray, out_len: int) -> np.ndarray:
+    if out_len <= 1 or sig.size <= 1:
+        return np.zeros(out_len, dtype=np.float32)
+    x_old = np.linspace(0.0, 1.0, num=sig.size, dtype=np.float32)
+    x_new = np.linspace(0.0, 1.0, num=out_len, dtype=np.float32)
+    return np.interp(x_new, x_old, sig.astype(np.float32)).astype(np.float32)
+
+
+def _openai_tts_to_wav(text: str, wav_out: str) -> bool:
+    key = (env_value("OPENAI_API_KEY", "") or "").strip()
+    if not key or not _ffmpeg_available():
+        return False
+    model = (env_value("OPENAI_TTS_MODEL", "gpt-4o-mini-tts") or "gpt-4o-mini-tts").strip()
+    voice = (env_value("OPENAI_TTS_VOICE", "alloy") or "alloy").strip()
+    fmt = (env_value("OPENAI_TTS_FORMAT", "mp3") or "mp3").strip()
+    speed = float(env_value("OPENAI_TTS_SPEED", "1.05") or "1.05")
+    instr = (
+        env_value(
+            "OPENAI_TTS_INSTRUCTIONS",
+            "Speak like a crisp YouTube Shorts tech explainer. Energetic but clear. "
+            "Match any Hinglish wording naturally.",
+        )
+        or ""
+    ).strip()
+    url = "https://api.openai.com/v1/audio/speech"
+    body = {
+        "model": model,
+        "voice": voice,
+        "input": text,
+        "format": fmt,
+        "speed": speed,
+    }
+    if instr:
+        body["instructions"] = instr
+    req = urllib.request.Request(
+        url,
+        data=json.dumps(body).encode("utf-8"),
+        headers={
+            "Authorization": f"Bearer {key}",
+            "Content-Type": "application/json",
+        },
+        method="POST",
+    )
+    raw_audio = Path(wav_out).with_suffix(f".raw_{fmt}")
+    try:
+        with urllib.request.urlopen(req, timeout=120) as r:
+            raw_audio.write_bytes(r.read())
+    except Exception as e:
+        print(f"  OpenAI TTS failed: {e}")
+        try:
+            raw_audio.unlink(missing_ok=True)
+        except Exception:
+            pass
+        return False
+
+    r = subprocess.run(
+        [
+            "ffmpeg",
+            "-y",
+            "-i",
+            str(raw_audio),
+            "-ac",
+            "1",
+            "-ar",
+            str(RATE),
+            "-sample_fmt",
+            "s16",
+            wav_out,
+        ],
+        capture_output=True,
+        text=True,
+    )
+    try:
+        raw_audio.unlink(missing_ok=True)
+    except Exception:
+        pass
+    if r.returncode != 0:
+        print(f"  ffmpeg (tts decode) error: {r.stderr[-800:]}")
+        return False
+    return True
+
+
+def _build_narration_script(topic: dict) -> str:
+    parts = []
+    seen = set()
+
+    def add(s: str):
+        t = " ".join(str(s).split()).strip()
+        if not t:
+            return
+        k = t.lower()
+        if k in seen:
+            return
+        seen.add(k)
+        parts.append(t)
+
+    add(topic.get("title"))
+    add(topic.get("hook"))
+    for line in topic.get("context_lines", []) or []:
+        add(line)
+    for line in topic.get("why_lines", []) or []:
+        add(line)
+    add(topic.get("question"))
+    for cap in topic.get("captions", []) or []:
+        if isinstance(cap, list) and cap:
+            add(cap[0])
+    for line in topic.get("close_lines", []) or []:
+        add(line)
+    script = ". ".join(parts)
+    max_chars = int(env_value("OPENAI_TTS_MAX_CHARS", "3800") or "3800")
+    if len(script) > max_chars:
+        script = script[: max_chars - 1].rsplit(". ", 1)[0] + "."
+    return script
+
+
+def mix_voiceover(bed: np.ndarray, topic: dict, work_dir: str) -> np.ndarray:
+    """When OPENAI_API_KEY is set, narrate the script and duck the procedural bed."""
+    script = _build_narration_script(topic)
+    if not script.strip():
+        return bed
+    vo_path = os.path.join(work_dir, "voiceover.wav")
+    if not _openai_tts_to_wav(script, vo_path):
+        return bed
+    try:
+        vo = _read_wav_f32_mono(vo_path)
+    except Exception as e:
+        print(f"  Voiceover load failed: {e}")
+        return bed
+
+    target = bed.shape[0]
+    if vo.shape[0] != target:
+        vo = _linear_resample(vo, target)
+
+    v_gain = float(env_value("OPENAI_TTS_MIX_VOICE", "0.62") or "0.62")
+    b_gain = float(env_value("OPENAI_TTS_MIX_BED", "0.22") or "0.22")
+    mixed = bed.astype(np.float32) * b_gain + vo.astype(np.float32) * v_gain
+    print(f"  Narration: OpenAI TTS mixed under bed ({target / RATE:.1f}s)")
+    return mixed
+
+
 def write_wav(path, samples):
     data = (np.clip(np.tanh(samples * 1.1) * 0.7, -1, 1) * 32767).astype(np.int16)
     with wave.open(path, "w") as f:
@@ -616,23 +880,42 @@ def act_boot(topic):
     p1 = tuple(topic["palette"][1])
     frames = []
 
+    hook_font, _, hook_lines = fit_font_wrapped(
+        FONT_S, hook, W - 160, 112, min_size=56, max_lines=3
+    )
+    hook_gap = int(max(10, hook_font.size * 1.08))
+    hook_block_h = max(1, len(hook_lines)) * hook_gap + int(hook_font.size * 0.2)
+    hook_center_y = 640
+    hook_top = int(hook_center_y - hook_block_h / 2)
+
+    title_font, _, title_lines = fit_font_wrapped(
+        FONT_M, title, W - 200, 52, min_size=28, max_lines=2
+    )
+    title_gap = int(max(9, title_font.size * 1.12))
+    title_block_h = max(1, len(title_lines)) * title_gap + int(title_font.size * 0.35)
+    title_top = H - 120 - title_block_h
+
     for i in range(n):
         img = simple_gradient_bg((12, 14, 18), (max(18, p1[0] // 5), max(18, p1[1] // 5), max(18, p1[2] // 5)))
         d = ImageDraw.Draw(img)
         if i < 30:
             trend_font, _ = fit_font(FONT_M, trend.upper(), W - 160, 48, min_size=34)
             d.text((70, 80), trend.upper(), font=trend_font, fill=(220, 220, 220))
-        hook_font, _ = fit_font(FONT_S, hook, W - 140, 118, min_size=72)
-        panel_hook, _ = draw_text_panel(d, hook, 620, hook_font, pad_x=42, pad_y=26, panel_alpha=190)
+        panel_hook = draw_text_panel_block(
+            hook_lines, hook_top, hook_font, pad_x=42, pad_y=26, panel_alpha=190, line_gap=hook_gap
+        )
         img = Image.alpha_composite(img.convert("RGBA"), panel_hook).convert("RGB")
         d = ImageDraw.Draw(img)
-        draw_outlined(d, hook, 620, hook_font, (255, 255, 255))
+        draw_outlined_lines(d, hook_lines, hook_top, hook_font, (255, 255, 255), line_gap=hook_gap)
 
-        title_font, _ = fit_font(FONT_M, title, W - 180, 54, min_size=34)
-        title_text = truncate_to_width(title, title_font, W - 180)
-        tw = title_font.getlength(title_text)
-        d.rounded_rectangle([70, 960, 110 + tw, 1035], radius=18, fill=(0, 0, 0))
-        d.text((90, 980), title_text, font=title_font, fill=(235, 235, 235))
+        max_tw = max((title_font.getlength(line) for line in title_lines), default=0.0)
+        pad_x, pad_y = 22, 14
+        x0 = max(56, (W - max_tw) / 2 - pad_x)
+        y0 = title_top - pad_y
+        x1 = min(W - 56, (W + max_tw) / 2 + pad_x)
+        y1 = title_top + title_block_h + pad_y
+        d.rounded_rectangle([int(x0), int(y0), int(x1), int(y1)], radius=18, fill=(0, 0, 0))
+        draw_outlined_lines(d, title_lines, title_top, title_font, (235, 235, 235), line_gap=title_gap)
 
         progress = min(1.0, i / 30.0)
         if progress < 1:
@@ -846,7 +1129,9 @@ def generate(topic_id, slot, out_dir, *,
         frm.save(f"{frames_dir}/f{idx:05d}.jpg", "JPEG", quality=95)
 
     wav = os.path.join(out_dir, "audio.wav")
-    write_wav(wav, np.concatenate(all_audio))
+    bed = np.concatenate(all_audio)
+    bed = mix_voiceover(bed, topic, out_dir)
+    write_wav(wav, bed)
 
     video = os.path.join(out_dir, "video.mp4")
     r = subprocess.run(
