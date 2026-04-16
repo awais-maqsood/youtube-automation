@@ -66,6 +66,26 @@ jobs:
         run: |
           python scripts/run_pipeline.py --slot ${{ steps.slot.outputs.slot }}
 
+      - name: Email review notice (before publish)
+        env:
+          GMAIL_ADDRESS: ${{ secrets.GMAIL_ADDRESS }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          NOTIFY_EMAIL: ${{ secrets.NOTIFY_EMAIL }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
+          GITHUB_SERVER_URL: ${{ github.server_url }}
+          PRE_PUBLISH_WAIT_SECONDS: ${{ vars.PRE_PUBLISH_WAIT_SECONDS }}
+        run: |
+          python scripts/notify_before_publish.py --kit scripts/output/kit.json
+
+      - name: Optional pre-publish review window
+        env:
+          PRE_PUBLISH_WAIT_SECONDS: ${{ vars.PRE_PUBLISH_WAIT_SECONDS }}
+        run: |
+          WAIT="${PRE_PUBLISH_WAIT_SECONDS:-300}"
+          echo "Waiting ${WAIT}s before auto-publish..."
+          sleep "$WAIT"
+
       - name: Upload to YouTube
         env:
           YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
