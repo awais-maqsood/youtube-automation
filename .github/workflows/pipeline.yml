@@ -2,13 +2,14 @@ name: Auto Generate And Upload
 
 on:
   schedule:
+    - cron: "5 3 * * *"
     - cron: "5 12 * * *"
     - cron: "5 17 * * *"
     - cron: "5 22 * * *"
   workflow_dispatch:
     inputs:
       slot:
-        description: "morning, afternoon, or evening"
+        description: "morning, afternoon, evening, or night"
         default: "morning"
 
 permissions:
@@ -40,7 +41,9 @@ jobs:
             echo "slot=${{ github.event.inputs.slot }}" >> $GITHUB_OUTPUT
           else
             HOUR=$(date -u +%H)
-            if [ "$HOUR" = "12" ]; then
+            if [ "$HOUR" = "03" ]; then
+              echo "slot=night" >> $GITHUB_OUTPUT
+            elif [ "$HOUR" = "12" ]; then
               echo "slot=morning" >> $GITHUB_OUTPUT
             elif [ "$HOUR" = "17" ]; then
               echo "slot=afternoon" >> $GITHUB_OUTPUT
