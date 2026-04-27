@@ -9,6 +9,7 @@ Required env var: OPENROUTER_API_KEY
 
 import os, json, random, time, re, urllib.request, urllib.error, xml.etree.ElementTree as ET
 from pathlib import Path
+from datetime import datetime, timezone
 
 API_URL = "https://openrouter.ai/api/v1/chat/completions"
 OPENAI_API_URL = "https://api.openai.com/v1/chat/completions"
@@ -29,6 +30,7 @@ def load_env_file(env_path: Path) -> dict[str, str]:
 
 
 ENV_FILE_VALUES = load_env_file(Path(__file__).resolve().parent.parent / ".env")
+FALLBACK_LOG_PATH = Path(__file__).resolve().parent.parent / "output" / "fallback_stats.json"
 
 
 def env_value(name: str, default: str = "") -> str:
@@ -416,6 +418,99 @@ def _normalize_display_text(content: dict) -> dict:
     return content
 
 
+def _fallback_title_from_topic(latest_topic: str) -> str:
+    topic = _compact_ws(latest_topic or "").strip(" -:")
+    if not topic:
+        return "Trending Topic - Hype Ya Reality?"
+    topic_l = topic.lower()
+    if "vs" in topic_l or " vs " in topic_l:
+        return f"{topic} - Who Wins?"
+    if "price" in topic_l or "stock" in topic_l:
+        return f"{topic} - What Just Happened?"
+    if "feature" in topic_l or "update" in topic_l:
+        return f"{topic} - Worth It?"
+    if "app" in topic_l:
+        return f"{topic} - Is It Safe?"
+    return f"{topic} - Hype Ya Reality?"
+
+
+def fallback_for_topic(latest_topic: str) -> dict:
+    """
+    Build a topic-anchored fallback so failed model runs do not keep reusing
+    an unrelated static title like "Movie Box App".
+    """
+    lt = _compact_ws(latest_topic or "").strip()
+    base = random.choice(_FALLBACK_POOL).copy()
+    focus = lt or "this trend"
+    base["title"] = _fallback_title_from_topic(lt)
+    base["hook"] = f"{focus}... kya scene hai?"
+    base["context_lines"] = [
+        focus,
+        "Feeds pe yeh topic viral hai.",
+        "Log details samajhna chahte hain.",
+    ]
+    base["why_lines"] = [
+        "Opinions online split ho rahe hain.",
+        "Search interest fast grow kar raha hai.",
+        "Har koi quick verdict chahta hai.",
+    ]
+    base["question"] = "Real story kya hai?"
+    base["captions"] = [
+        [focus[:42], [255, 255, 255]],
+        ["TREND ALERT", [255, 220, 120]],
+        ["HYPE YA REAL?", [255, 150, 150]],
+        ["QUICK BREAKDOWN", [255, 255, 255]],
+        ["FACTS CHECK", [255, 220, 120]],
+        ["FINAL VERDICT?", [255, 150, 150]],
+    ]
+    base["close_lines"] = [
+        "Trend tez hai, details check zaroor karo.",
+        "Aapke hisaab se hype ya reality?",
+    ]
+    if lt:
+        base["search_query"] = lt
+    base["trend_topic"] = lt
+    return base
+
+
+def _track_fallback_usage(latest_topic: str, reason: str) -> None:
+    """
+    Persist fallback usage stats locally so recurring model failures are visible.
+    Best-effort only; should never break generation flow.
+    """
+    try:
+        FALLBACK_LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
+        if FALLBACK_LOG_PATH.exists():
+            stats = json.loads(FALLBACK_LOG_PATH.read_text(encoding="utf-8"))
+            if not isinstance(stats, dict):
+                stats = {}
+        else:
+            stats = {}
+        now = datetime.now(timezone.utc).isoformat()
+        stats["count"] = int(stats.get("count", 0)) + 1
+        stats["last_used_utc"] = now
+        stats["last_topic"] = _compact_ws(latest_topic or "") or "unknown"
+        stats["last_reason"] = _compact_ws(reason or "") or "all_models_failed"
+        history = stats.get("history", [])
+        if not isinstance(history, list):
+            history = []
+        history.append(
+            {
+                "used_at_utc": now,
+                "topic": stats["last_topic"],
+                "reason": stats["last_reason"],
+            }
+        )
+        stats["history"] = history[-25:]
+        FALLBACK_LOG_PATH.write_text(json.dumps(stats, indent=2), encoding="utf-8")
+        print(
+            f"  [WARN] Fallback usage count: {stats['count']} "
+            f"(stats: {FALLBACK_LOG_PATH.as_posix()})"
+        )
+    except Exception as e:
+        print(f"  [WARN] Could not persist fallback stats: {e}")
+
+
 def fallback() -> dict:
     """Return one of several pre-written topics so repeated LLM failures don't produce identical videos."""
     return random.choice(_FALLBACK_POOL)
@@ -515,16 +610,8 @@ def generate_topic(epilogue_extra: str | None = None) -> dict:
                 print("  Waiting 5s before trying next model...")
                 time.sleep(5)
     print("  All models failed. Using fallback content.")
-    content = fallback()
-    base_title = str(content.get("title", "")).strip()
-    lt = str(latest_topic).strip()
-    if lt.lower() in base_title.lower():
-        content["title"] = base_title
-    else:
-        content["title"] = f"{lt}: {base_title}".strip(": ")
-    content["hook"] = latest_topic
-    content["context_lines"][0] = latest_topic
-    content["trend_topic"] = latest_topic
+    _track_fallback_usage(latest_topic, "all_models_failed")
+    content = fallback_for_topic(latest_topic)
     if selected_search_query:
         content["search_query"] = selected_search_query
     return validate(content)
