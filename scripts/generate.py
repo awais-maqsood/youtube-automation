@@ -29,7 +29,7 @@ FONT_S = "serif-bold"
 HASHTAGS = "#Shorts #Trending #News #Explainer #Viral #Update #WhatHappened #WhyItsTrending"
 # Hour (UTC) each slot targets. Minute is randomised at runtime so videos
 # don't always surface at the same second — looks organic, not bot-scheduled.
-SLOT_HOURS = {"morning": 12, "afternoon": 17, "evening": 22}
+SLOT_HOURS = {"morning": 12, "afternoon": 17, "evening": 22, "night": 3}
 
 
 def load_env_file(env_path: Path) -> dict:
@@ -173,6 +173,83 @@ def fit_font_wrapped(path, text, max_w, start_size, min_size=44, *, max_lines=3)
     except Exception:
         f = ImageFont.load_default()
     return f, min_size, wrap_words_to_lines(text, f, max_w, max_lines)
+
+
+def _kit_one_line(s: str) -> str:
+    return " ".join(str(s).split()).strip()
+
+
+def build_youtube_description(topic: dict) -> str:
+    """Richer than a single trend line + hashtags — helps CTR and comments."""
+    trend = _kit_one_line(topic.get("trend_topic") or topic.get("title") or "")
+    hook = _kit_one_line(topic.get("hook") or "")
+    q = _kit_one_line(topic.get("question") or "")
+    blocks: list[str] = []
+    if hook:
+        blocks.append(hook)
+    if trend:
+        blocks.append(f"Breaking down: {trend}")
+    if q:
+        blocks.append(f"Your take — {q}")
+    blocks.append(HASHTAGS)
+    return "\n\n".join(blocks)
+
+
+def write_promo_thumbnail(topic: dict, video_path: str, thumb_path: str) -> bool:
+    """
+    Custom Shorts thumbnail (title on a bright frame) — auto-picked frames are often dark.
+    """
+    import tempfile
+
+    title_text = _kit_one_line(topic.get("title") or topic.get("hook") or "Watch")
+    tmp = tempfile.NamedTemporaryFile(suffix=".jpg", delete=False)
+    tmp.close()
+    try:
+        r = subprocess.run(
+            [
+                "ffmpeg",
+                "-y",
+                "-ss",
+                "5",
+                "-i",
+                video_path,
+                "-frames:v",
+                "1",
+                "-q:v",
+                "2",
+                tmp.name,
+            ],
+            capture_output=True,
+            text=True,
+            timeout=90,
+        )
+        if r.returncode != 0:
+            print(f"  Thumbnail frame extract failed: {r.stderr[-500:]}")
+            return False
+        img = Image.open(tmp.name).convert("RGBA")
+        if img.size != (W, H):
+            img = img.resize((W, H), Image.Resampling.LANCZOS)
+        overlay = Image.new("RGBA", img.size, (0, 0, 0, 0))
+        od = ImageDraw.Draw(overlay)
+        od.rectangle([0, int(H * 0.52), W, H], fill=(0, 0, 0, 175))
+        img = Image.alpha_composite(img, overlay).convert("RGB")
+        d = ImageDraw.Draw(img)
+        font_src = _resolve_font_source(FONT_S)
+        f, _, lines = fit_font_wrapped(font_src, title_text, W - 100, 92, min_size=40, max_lines=2)
+        line_gap = int(max(10, f.size * 1.12))
+        y0 = H - 120 - len(lines) * line_gap
+        draw_outlined_lines(d, lines, max(420, y0), f, (255, 245, 100), line_gap=line_gap)
+        img.save(thumb_path, "JPEG", quality=92, optimize=True)
+        print(f"  Thumbnail -> {thumb_path}")
+        return True
+    except Exception as e:
+        print(f"  Thumbnail generation failed: {e}")
+        return False
+    finally:
+        try:
+            Path(tmp.name).unlink(missing_ok=True)
+        except Exception:
+            pass
 
 
 def draw_outlined_lines(draw, lines, top_y, f, color, line_gap=None):
@@ -1176,13 +1253,16 @@ def generate(topic_id, slot, out_dir, *,
     # Schedule for tomorrow so the timestamp is never in the past by the time the
     # user approves and publish.py runs (which can be 30-120 min after generation).
     tomorrow = (datetime.now(timezone.utc) + timedelta(days=1)).strftime("%Y-%m-%d")
+    thumb_file = os.path.join(out_dir, "thumbnail.jpg")
+    thumb_ok = write_promo_thumbnail(topic, video, thumb_file)
     kit = {
         "title": topic["title"],
-        "description": f"{topic.get('trend_topic', topic['title'])}\n\n{HASHTAGS}",
+        "description": build_youtube_description(topic),
         "topic": topic.get("topic_id", "generated"),
         "slot": slot,
         "scheduled_time_utc": f"{tomorrow}T{SLOT_HOURS.get(slot, SLOT_HOURS['morning']):02d}:{random.randint(0, 54):02d}:00Z",
         "video": video,
+        "thumbnail": thumb_file if thumb_ok else "",
     }
     kit_path = os.path.join(out_dir, "kit.json")
     with open(kit_path, "w") as f:

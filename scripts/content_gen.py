@@ -31,6 +31,7 @@ def load_env_file(env_path: Path) -> dict[str, str]:
 
 ENV_FILE_VALUES = load_env_file(Path(__file__).resolve().parent.parent / ".env")
 FALLBACK_LOG_PATH = Path(__file__).resolve().parent.parent / "output" / "fallback_stats.json"
+SEED_HISTORY_PATH = Path(__file__).resolve().parent.parent / "output" / "topic_seed_history.json"
 
 
 def env_value(name: str, default: str = "") -> str:
@@ -60,13 +61,23 @@ CHANNEL_FIT_KEYWORDS = [
     "launch", "chip", "processor", "battery", "macbook", "windows", "galaxy",
 ]
 
+# Used when Trends RSS has no channel-fit row. Rotated (see pick_rotated_channel_fit_fallback)
+# so the same seed is not picked run after run. Avoid niche piracy-app names that read as spam.
 CHANNEL_FIT_FALLBACKS = [
-    "movie box app",
     "pixel camera",
     "iphone ai features",
     "oneplus review",
     "chatgpt update",
     "whatsapp new feature",
+    "samsung galaxy ai update",
+    "google gemini android features",
+    "macbook air m4 battery life",
+    "windows 11 new ai feature",
+    "playstation plus price change",
+    "netflix password sharing rules",
+    "spotify hi-fi audio update",
+    "meta quest 3 games",
+    "tiktok algorithm change rumor",
 ]
 
 OPENAI_TOPIC_SELECTOR_SYSTEM = """You select the best YouTube Shorts topic for a channel like BlinkViral.
@@ -263,6 +274,31 @@ def select_topic_with_openai(topics: list[str]) -> tuple[str | None, str | None]
     return None, None
 
 
+def pick_rotated_channel_fit_fallback() -> str:
+    """Pick a synthetic seed while avoiding the last few picks (reduces duplicate titles)."""
+    try:
+        SEED_HISTORY_PATH.parent.mkdir(parents=True, exist_ok=True)
+        recent: list[str] = []
+        if SEED_HISTORY_PATH.exists():
+            data = json.loads(SEED_HISTORY_PATH.read_text(encoding="utf-8"))
+            if isinstance(data, dict):
+                recent = [str(x) for x in data.get("recent_seeds", []) if str(x).strip()]
+        avoid = set(s.lower() for s in recent[-4:])
+        pool = [s for s in CHANNEL_FIT_FALLBACKS if s.lower() not in avoid]
+        if not pool:
+            pool = list(CHANNEL_FIT_FALLBACKS)
+        choice = random.choice(pool)
+        recent.append(choice)
+        SEED_HISTORY_PATH.write_text(
+            json.dumps({"recent_seeds": recent[-32:]}, indent=2),
+            encoding="utf-8",
+        )
+        return choice
+    except Exception as e:
+        print(f"  [WARN] Seed rotation unavailable: {e}")
+        return random.choice(CHANNEL_FIT_FALLBACKS)
+
+
 def pick_latest_topic() -> tuple[str, str | None]:
     """Pick a topic from RSS, preferring OpenAI-ranked channel-fit topics when available."""
     try:
@@ -282,7 +318,7 @@ def pick_latest_topic() -> tuple[str, str | None]:
         print("  Trending topic feed empty; using synthetic angle seed.")
     except Exception as e:
         print(f"  Trending topic fetch failed: {e}")
-    fallback_topic = random.choice(CHANNEL_FIT_FALLBACKS)
+    fallback_topic = pick_rotated_channel_fit_fallback()
     print(f"  Trending topic seed: {fallback_topic} (channel-fit fallback)")
     return fallback_topic, None
 
@@ -418,6 +454,16 @@ def _normalize_display_text(content: dict) -> dict:
     return content
 
 
+_APP_TITLE_SUFFIXES = [
+    "Is It Safe?",
+    "Scam Ya Real?",
+    "Install Karein?",
+    "The Honest Truth",
+    "Kya Scene Hai?",
+    "Hype Ya Reality?",
+]
+
+
 def _fallback_title_from_topic(latest_topic: str) -> str:
     topic = _compact_ws(latest_topic or "").strip(" -:")
     if not topic:
@@ -429,8 +475,9 @@ def _fallback_title_from_topic(latest_topic: str) -> str:
         return f"{topic} - What Just Happened?"
     if "feature" in topic_l or "update" in topic_l:
         return f"{topic} - Worth It?"
-    if "app" in topic_l:
-        return f"{topic} - Is It Safe?"
+    if "app" in topic_l or "apk" in topic_l:
+        suf = random.choice(_APP_TITLE_SUFFIXES)
+        return f"{topic} - {suf}"
     return f"{topic} - Hype Ya Reality?"
 
 
@@ -518,23 +565,23 @@ def fallback() -> dict:
 
 _FALLBACK_POOL = [
     {
-        "title": "Movie Box App - Is It Safe?",
+        "title": "Third-Party APKs - What To Know",
         "topic_id": "trend_everywhere",
         "palette": [[255, 235, 120], [255, 120, 120], [255, 255, 255]],
-        "hook": "Movie Box App... safe hai?",
-        "context_lines": ["Users keep downloading this app.", "People want free movie access.", "But safety concerns are rising."],
-        "why_lines": ["Too many shady app clones.", "Permissions look suspicious.", "Users still want the shortcut."],
-        "question": "Use karein... ya avoid?",
+        "hook": "Random APKs... safe?",
+        "context_lines": ["People sideload apps for free features.", "Permissions can be aggressive.", "Security teams keep flagging clones."],
+        "why_lines": ["One bad install can leak data.", "Clones mimic popular brands.", "Shortcuts feel tempting anyway."],
+        "question": "Install karein... ya skip?",
         "captions": [
-            ["IS IT SAFE?", [255, 255, 255]],
-            ["FREE... BUT RISKY?", [255, 220, 120]],
-            ["APK CHECK KARO", [255, 150, 150]],
-            ["DATA SAFE HAI?", [255, 255, 255]],
-            ["TOO MANY RED FLAGS", [255, 220, 120]],
-            ["THE TRUTH", [255, 150, 150]],
+            ["CHECK SOURCE", [255, 255, 255]],
+            ["PERMISSIONS MATTER", [255, 220, 120]],
+            ["APK RISKS", [255, 150, 150]],
+            ["DATA SAFE?", [255, 255, 255]],
+            ["RED FLAGS", [255, 220, 120]],
+            ["STAY CAREFUL", [255, 150, 150]],
         ],
-        "close_lines": ["Free cheez tempting hoti hai.", "Lekin safety pehle check karo."],
-        "search_query": "movie streaming app smartphone security",
+        "close_lines": ["Free cheez tempting hoti hai.", "Lekin verify pehle, install baad mein."],
+        "search_query": "smartphone security apk warning",
     },
     {
         "title": "Pixel vs iPhone - Camera King?",
