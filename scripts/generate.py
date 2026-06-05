@@ -12,6 +12,7 @@ Every run: Groq invents a fresh topic + content + visual style choices.
 
 import os, sys, math, random, wave, subprocess, json, argparse, colorsys, base64
 import io
+import re
 import urllib.parse
 import urllib.request
 from pathlib import Path
@@ -26,7 +27,10 @@ RATE = 44100
 FONT_M = "mono"
 FONT_S = "serif-bold"
 
-HASHTAGS = "#Shorts #Trending #News #Explainer #Viral #Update #WhatHappened #WhyItsTrending"
+# Keep tags minimal and relevant. Over-stuffing generic tags (#Trending #Viral
+# #WhatHappened ...) reads as spam to YouTube and viewers. #Shorts + a couple of
+# topical tags performs better. A topic-specific tag is appended at build time.
+BASE_HASHTAGS = ["#Shorts", "#Tech"]
 # Hour (UTC) each slot targets. Minute is randomised at runtime so videos
 # don't always surface at the same second — looks organic, not bot-scheduled.
 SLOT_HOURS = {"morning": 12, "afternoon": 17, "evening": 22, "night": 3}
@@ -179,6 +183,14 @@ def _kit_one_line(s: str) -> str:
     return " ".join(str(s).split()).strip()
 
 
+def _topic_hashtag(trend: str) -> str:
+    """Build one camel-case topic hashtag from the trend phrase (e.g. #PixelCamera)."""
+    words = re.findall(r"[A-Za-z0-9]+", trend or "")[:3]
+    if not words:
+        return ""
+    return "#" + "".join(w.capitalize() for w in words)
+
+
 def build_youtube_description(topic: dict) -> str:
     """Richer than a single trend line + hashtags — helps CTR and comments."""
     trend = _kit_one_line(topic.get("trend_topic") or topic.get("title") or "")
@@ -191,7 +203,11 @@ def build_youtube_description(topic: dict) -> str:
         blocks.append(f"Breaking down: {trend}")
     if q:
         blocks.append(f"Your take — {q}")
-    blocks.append(HASHTAGS)
+    tags = list(BASE_HASHTAGS)
+    topic_tag = _topic_hashtag(trend)
+    if topic_tag and topic_tag not in tags:
+        tags.append(topic_tag)
+    blocks.append(" ".join(tags))
     return "\n\n".join(blocks)
 
 
@@ -691,8 +707,11 @@ def blend_stock_frame(frame, stock_bgs, idx, total_frames):
     else:
         stock_view = current_bg
 
-    # Keep stock visible but avoid drowning out text/UI overlays.
-    return Image.blend(frame.convert("RGB"), stock_view, 0.16)
+    # The subject image is the main visual — text panels keep it readable.
+    # A small amount of the procedural frame is retained only to harmonise color.
+    blend_strength = float(env_value("STOCK_BLEND_STRENGTH", "0.85") or "0.85")
+    blend_strength = min(1.0, max(0.0, blend_strength))
+    return Image.blend(frame.convert("RGB"), stock_view, blend_strength)
 
 
 # ── Audio ─────────────────────────────────────────────────────────────────────
@@ -807,6 +826,14 @@ def _openai_tts_to_wav(text: str, wav_out: str) -> bool:
 
 
 def _build_narration_script(topic: dict) -> str:
+    """
+    Build a clean SPOKEN script — full sentences only.
+
+    Crucially this does NOT read the on-screen caption labels
+    ("TREND ALERT", "HYPE YA REAL?", "QUICK BREAKDOWN", ...). Reading those
+    aloud made the voiceover sound like spam. Captions are visual punctuation,
+    not narration.
+    """
     parts = []
     seen = set()
 
@@ -820,20 +847,19 @@ def _build_narration_script(topic: dict) -> str:
         seen.add(k)
         parts.append(t)
 
-    add(topic.get("title"))
+    # Hook leads (it is the spoken opener); title is on-screen only so we don't
+    # double it up in the audio.
     add(topic.get("hook"))
     for line in topic.get("context_lines", []) or []:
         add(line)
     for line in topic.get("why_lines", []) or []:
         add(line)
     add(topic.get("question"))
-    for cap in topic.get("captions", []) or []:
-        if isinstance(cap, list) and cap:
-            add(cap[0])
     for line in topic.get("close_lines", []) or []:
         add(line)
-    script = ". ".join(parts)
-    max_chars = int(env_value("OPENAI_TTS_MAX_CHARS", "3800") or "3800")
+
+    script = " ".join(p.rstrip(".!?") + "." for p in parts)
+    max_chars = int(env_value("OPENAI_TTS_MAX_CHARS", "900") or "900")
     if len(script) > max_chars:
         script = script[: max_chars - 1].rsplit(". ", 1)[0] + "."
     return script
@@ -853,14 +879,19 @@ def mix_voiceover(bed: np.ndarray, topic: dict, work_dir: str) -> np.ndarray:
         print(f"  Voiceover load failed: {e}")
         return bed
 
+    # Fit the voice to the video length by padding/trimming — NOT resampling.
+    # Resampling changed the pitch/speed (chipmunk or slow-mo voice), which read
+    # as low-effort. Pad with silence if short; trim cleanly if long.
     target = bed.shape[0]
-    if vo.shape[0] != target:
-        vo = _linear_resample(vo, target)
+    if vo.shape[0] < target:
+        vo = np.concatenate([vo, np.zeros(target - vo.shape[0], dtype=np.float32)])
+    elif vo.shape[0] > target:
+        vo = vo[:target]
 
-    v_gain = float(env_value("OPENAI_TTS_MIX_VOICE", "0.62") or "0.62")
-    b_gain = float(env_value("OPENAI_TTS_MIX_BED", "0.22") or "0.22")
+    v_gain = float(env_value("OPENAI_TTS_MIX_VOICE", "0.78") or "0.78")
+    b_gain = float(env_value("OPENAI_TTS_MIX_BED", "0.14") or "0.14")
     mixed = bed.astype(np.float32) * b_gain + vo.astype(np.float32) * v_gain
-    print(f"  Narration: OpenAI TTS mixed under bed ({target / RATE:.1f}s)")
+    print(f"  Narration: OpenAI TTS mixed under bed ({target / RATE:.1f}s, voice-forward)")
     return mixed
 
 
@@ -949,7 +980,7 @@ CUT_SPEED = {"slow": 6, "medium": 4, "fast": 2}
 
 
 def act_boot(topic):
-    n = 150
+    n = 75  # ~2.5s — hook must land fast, no slow intro
     hook = topic["hook"]
     title = topic["title"]
     trend = topic.get("trend_topic", title)
@@ -994,15 +1025,14 @@ def act_boot(topic):
         d.rounded_rectangle([int(x0), int(y0), int(x1), int(y1)], radius=18, fill=(0, 0, 0))
         draw_outlined_lines(d, title_lines, title_top, title_font, (235, 235, 235), line_gap=title_gap)
 
-        progress = min(1.0, i / 30.0)
-        if progress < 1:
-            img = Image.fromarray((np.array(img) * progress).astype(np.uint8))
-        frames.append(add_noise(img, 2))
+        # No fade-in: the hook is on screen at full strength from frame 0 so the
+        # first second delivers the payoff (critical for Shorts retention).
+        frames.append(img)
     return frames, eerie_pad(n / FPS, vol=0.08)
 
 
 def act_data_flood(topic):
-    n = 150
+    n = 105  # ~3.5s
     lines = topic["context_lines"]
     frames = []
     palette = topic["palette"]
@@ -1026,7 +1056,7 @@ def act_data_flood(topic):
 
 
 def act_question(topic):
-    n = 180
+    n = 120  # ~4s
     frames = []
     q = topic["question"]
     why_lines = topic["why_lines"]
@@ -1056,7 +1086,7 @@ def act_question(topic):
 
 
 def act_climax(topic):
-    n = 240
+    n = 150  # ~5s
     frames = []
     captions = topic["captions"]
     palette = topic["palette"]
@@ -1088,7 +1118,7 @@ def act_climax(topic):
 
 
 def act_epilogue(topic):
-    n = 180
+    n = 75  # ~2.5s
     frames = []
     parts = topic["close_lines"]
     ecolor = tuple(topic["palette"][2])
@@ -1235,7 +1265,9 @@ def generate(topic_id, slot, out_dir, *,
             "yuv420p",
             "-shortest",
             "-vf",
-            "curves=preset=cross_process,noise=alls=2:allf=t+u,vignette=PI/6",
+            # Clean, crisp look: light saturation/contrast lift + gentle sharpen.
+            # No glitch/noise/cross-process — that degradation was tanking retention.
+            "eq=saturation=1.12:contrast=1.05,unsharp=5:5:0.6:5:5:0.0",
             video,
         ],
         capture_output=True,

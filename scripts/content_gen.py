@@ -87,10 +87,11 @@ Channel style:
 - safety checks, hype vs reality, review hooks, comparisons
 - light Hinglish/Urdu phrasing is acceptable
 - prefer topics that can become titles like:
-  - "X - Is It Safe? The TRUTH"
-  - "X ... hype ya reality?"
-  - "X Review: Worth It?"
-  - "X vs Y: The NEW King?"
+  - a bold specific claim ("X just quietly changed everything")
+  - a curiosity gap ("Nobody is talking about this X update")
+  - a contrarian take ("Stop trusting X for this")
+  - a number/stakes hook ("3 things X hides from you")
+Avoid repetitive "Worth It?" / "Hype Ya Reality?" endings.
 
 Return ONLY valid JSON:
 {
@@ -119,12 +120,15 @@ Style rules:
 - Focus on apps, phones, AI, gadgets, reviews, safety, comparisons, hype, and internet products.
 - Be punchy, simple, broad, and readable on screen.
 - Avoid unverifiable specifics unless the topic itself is widely understood from the trend phrase.
-- Prefer title patterns like:
-  - "X - Is It Safe? The TRUTH"
-  - "X vs Y: The NEW King?"
-  - "X ... hype ya reality?"
-  - "X real hai... ya AI illusion?"
-  - "X Review: Worth It?"
+- TITLE RULES (important — titles must NOT look templated):
+  - Do NOT default to "Hype Ya Reality?" or "Worth It?" — those are overused.
+  - Vary the structure every time. Mix these shapes and invent your own:
+    - a bold specific claim ("Pixel just quietly killed the iPhone camera")
+    - a curiosity gap ("Nobody is talking about this ChatGPT update")
+    - a number/stakes ("3 things the new OnePlus hides from you")
+    - a direct question that is NOT "worth it/hype ya reality" ("Did Google just leak the next Gemini?")
+    - a contrarian take ("Stop buying the iPhone for the camera")
+  - Front-load the most interesting word. No generic "- Worth It?" suffix.
 - Hook: 4-10 words.
 - Context lines: 3 short lines, max 8 words each.
 - Why lines: 3 short lines, max 8 words each.
@@ -454,31 +458,51 @@ def _normalize_display_text(content: dict) -> dict:
     return content
 
 
-_APP_TITLE_SUFFIXES = [
-    "Is It Safe?",
-    "Scam Ya Real?",
-    "Install Karein?",
-    "The Honest Truth",
-    "Kya Scene Hai?",
-    "Hype Ya Reality?",
+# Varied, non-repetitive title shapes. {t} is the topic phrase (title-cased).
+_TITLE_TEMPLATES_GENERIC = [
+    "Nobody is talking about {t}",
+    "What just happened with {t}?",
+    "The truth about {t}",
+    "{t} is a bigger deal than you think",
+    "Everyone got {t} wrong",
+    "Wait... {t}?",
+]
+_TITLE_TEMPLATES_VS = [
+    "{t}: who actually wins?",
+    "{t} — the gap is bigger than expected",
+]
+_TITLE_TEMPLATES_PRICE = [
+    "{t}: what just changed",
+    "Why {t} caught everyone off guard",
+]
+_TITLE_TEMPLATES_FEATURE = [
+    "{t}: the part nobody mentions",
+    "What {t} actually changes",
+    "{t} is quietly a big upgrade",
+]
+_TITLE_TEMPLATES_APP = [
+    "Before you install {t}, read this",
+    "Is {t} actually safe?",
+    "{t}: what they don't tell you",
 ]
 
 
 def _fallback_title_from_topic(latest_topic: str) -> str:
     topic = _compact_ws(latest_topic or "").strip(" -:")
     if not topic:
-        return "Trending Topic - Hype Ya Reality?"
+        return random.choice(_TITLE_TEMPLATES_GENERIC).format(t="this trend")
     topic_l = topic.lower()
-    if "vs" in topic_l or " vs " in topic_l:
-        return f"{topic} - Who Wins?"
-    if "price" in topic_l or "stock" in topic_l:
-        return f"{topic} - What Just Happened?"
-    if "feature" in topic_l or "update" in topic_l:
-        return f"{topic} - Worth It?"
-    if "app" in topic_l or "apk" in topic_l:
-        suf = random.choice(_APP_TITLE_SUFFIXES)
-        return f"{topic} - {suf}"
-    return f"{topic} - Hype Ya Reality?"
+    if " vs " in f" {topic_l} ":
+        pool = _TITLE_TEMPLATES_VS
+    elif "price" in topic_l or "stock" in topic_l:
+        pool = _TITLE_TEMPLATES_PRICE
+    elif "feature" in topic_l or "update" in topic_l:
+        pool = _TITLE_TEMPLATES_FEATURE
+    elif "app" in topic_l or "apk" in topic_l:
+        pool = _TITLE_TEMPLATES_APP
+    else:
+        pool = _TITLE_TEMPLATES_GENERIC
+    return random.choice(pool).format(t=topic)
 
 
 def fallback_for_topic(latest_topic: str) -> dict:
