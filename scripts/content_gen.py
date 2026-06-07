@@ -38,11 +38,15 @@ def env_value(name: str, default: str = "") -> str:
     return os.environ.get(name) or ENV_FILE_VALUES.get(name, default)
 
 # Models tried in order — first available wins. All are free-tier on OpenRouter.
-# Using multiple providers so a single upstream outage doesn't block every run.
+# Multiple providers so a single 429/outage doesn't force the generic fallback.
+# Verified live against the OpenRouter /models endpoint (the previous slugs had
+# been delisted and 404'd every run, which is why every video used canned text).
 MODELS = [
-    "arcee-ai/trinity-large-preview:free",      # 400B instruction model — most reliable lately
-    "stepfun/step-3.5-flash:free",              # 196B MoE — fast; inline <think> blocks stripped by re.sub
-    "nvidia/nemotron-3-super-120b-a12b:free",  # 120B hybrid MoE — last resort
+    "openai/gpt-oss-120b:free",                 # clean JSON, strong instruction following
+    "meta-llama/llama-3.3-70b-instruct:free",   # excellent when not rate-limited
+    "qwen/qwen3-next-80b-a3b-instruct:free",    # solid instruct fallback
+    "z-ai/glm-4.5-air:free",                     # returns fenced JSON (fences stripped below)
+    "google/gemma-4-31b-it:free",               # last-resort, still capable
 ]
 
 ANGLES = [

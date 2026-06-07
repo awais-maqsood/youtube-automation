@@ -679,39 +679,54 @@ def generate_gemini_stock_backgrounds(topic, target_count=5):
     return images
 
 
-def blend_stock_frame(frame, stock_bgs, idx, total_frames):
-    if not stock_bgs:
-        return frame
+# Stock backgrounds are set once per render by generate() so the act functions
+# can draw text ON TOP of them (not blended over the finished frame, which was
+# ghosting the text out).
+_STOCK_BGS: list = []
 
-    # Rotate across the full timeline with soft crossfades.
-    segment = max(1.0, total_frames / len(stock_bgs))
-    slot = int(idx / segment) % len(stock_bgs)
-    next_slot = (slot + 1) % len(stock_bgs)
-    in_segment = idx - (slot * segment)
+
+def _stock_moving_view(bg, idx: int):
+    zoomed = _cover_resize(bg, int(W * 1.08), int(H * 1.08))
+    ox = int((zoomed.width - W) * (0.5 + 0.35 * math.sin(idx * 0.012)))
+    oy = int((zoomed.height - H) * (0.5 + 0.35 * math.cos(idx * 0.010)))
+    return zoomed.crop((ox, oy, ox + W, oy + H))
+
+
+def act_base_image(i: int, n: int, c1, c2):
+    """
+    Build the background for a single frame: the subject image (darkened for text
+    contrast) when stock art is available, otherwise the procedural gradient.
+
+    Text/panels are drawn AFTER this by the act, so they stay fully opaque.
+    """
+    if not _STOCK_BGS:
+        return simple_gradient_bg(c1, c2)
+
+    bgs = _STOCK_BGS
+    segment = max(1.0, n / len(bgs))
+    slot = int(i / segment) % len(bgs)
+    next_slot = (slot + 1) % len(bgs)
+    in_segment = i - (slot * segment)
     progress = in_segment / segment
-    fade_window = float(env_value("FREEPIK_CROSSFADE", "0.12"))
+    fade_window = float(env_value("FREEPIK_CROSSFADE", "0.12") or "0.12")
     mix_next = 0.0
     if progress > 1.0 - fade_window:
         mix_next = (progress - (1.0 - fade_window)) / fade_window
 
-    def moving_view(bg, seed_offset):
-        zoomed = _cover_resize(bg, int(W * 1.08), int(H * 1.08))
-        ox = int((zoomed.width - W) * (0.5 + 0.35 * math.sin((idx + seed_offset) * 0.012)))
-        oy = int((zoomed.height - H) * (0.5 + 0.35 * math.cos((idx + seed_offset) * 0.010)))
-        return zoomed.crop((ox, oy, ox + W, oy + H))
-
-    current_bg = moving_view(stock_bgs[slot], 0)
+    current_bg = _stock_moving_view(bgs[slot], i)
     if mix_next > 0:
-        next_bg = moving_view(stock_bgs[next_slot], 137)
-        stock_view = Image.blend(current_bg, next_bg, min(1.0, max(0.0, mix_next)))
+        next_bg = _stock_moving_view(bgs[next_slot], i + 137)
+        view = Image.blend(current_bg, next_bg, min(1.0, max(0.0, mix_next)))
     else:
-        stock_view = current_bg
+        view = current_bg
 
-    # The subject image is the main visual — text panels keep it readable.
-    # A small amount of the procedural frame is retained only to harmonise color.
-    blend_strength = float(env_value("STOCK_BLEND_STRENGTH", "0.85") or "0.85")
-    blend_strength = min(1.0, max(0.0, blend_strength))
-    return Image.blend(frame.convert("RGB"), stock_view, blend_strength)
+    # Darken so white captions read clearly over busy/bright imagery (bokeh etc.).
+    scrim = float(env_value("STOCK_SCRIM", "0.45") or "0.45")
+    scrim = min(0.9, max(0.0, scrim))
+    if scrim > 0:
+        black = Image.new("RGB", view.size, (0, 0, 0))
+        view = Image.blend(view, black, scrim)
+    return view
 
 
 # ── Audio ─────────────────────────────────────────────────────────────────────
@@ -790,8 +805,23 @@ def _openai_tts_to_wav(text: str, wav_out: str) -> bool:
     try:
         with urllib.request.urlopen(req, timeout=120) as r:
             raw_audio.write_bytes(r.read())
+    except urllib.error.HTTPError as e:
+        try:
+            body = e.read().decode("utf-8", errors="replace")
+        except Exception:
+            body = "<unreadable>"
+        if e.code == 401:
+            print("  [VOICE] OpenAI TTS 401 — OPENAI_API_KEY is invalid/expired. "
+                  "Replace it to enable narration.")
+        else:
+            print(f"  [VOICE] OpenAI TTS failed HTTP {e.code}: {body[:300]}")
+        try:
+            raw_audio.unlink(missing_ok=True)
+        except Exception:
+            pass
+        return False
     except Exception as e:
-        print(f"  OpenAI TTS failed: {e}")
+        print(f"  [VOICE] OpenAI TTS failed: {e}")
         try:
             raw_audio.unlink(missing_ok=True)
         except Exception:
@@ -870,8 +900,12 @@ def mix_voiceover(bed: np.ndarray, topic: dict, work_dir: str) -> np.ndarray:
     script = _build_narration_script(topic)
     if not script.strip():
         return bed
+    if not (env_value("OPENAI_API_KEY", "") or "").strip():
+        print("  [VOICE] No OPENAI_API_KEY set — video will have NO narration (ambience only).")
+        return bed
     vo_path = os.path.join(work_dir, "voiceover.wav")
     if not _openai_tts_to_wav(script, vo_path):
+        print("  [VOICE] Narration unavailable — shipping with ambience only.")
         return bed
     try:
         vo = _read_wav_f32_mono(vo_path)
@@ -1004,7 +1038,7 @@ def act_boot(topic):
     title_top = H - 120 - title_block_h
 
     for i in range(n):
-        img = simple_gradient_bg((12, 14, 18), (max(18, p1[0] // 5), max(18, p1[1] // 5), max(18, p1[2] // 5)))
+        img = act_base_image(i, n, (12, 14, 18), (max(18, p1[0] // 5), max(18, p1[1] // 5), max(18, p1[2] // 5)))
         d = ImageDraw.Draw(img)
         if i < 30:
             trend_font, _ = fit_font(FONT_M, trend.upper(), W - 160, 48, min_size=34)
@@ -1040,7 +1074,7 @@ def act_data_flood(topic):
     p0 = tuple(palette[0])
 
     for i in range(n):
-        img = simple_gradient_bg((max(10, p0[0] // 7), max(10, p0[1] // 7), max(10, p0[2] // 7)), (max(10, p1[0] // 7), max(10, p1[1] // 7), max(10, p1[2] // 7)))
+        img = act_base_image(i, n, (max(10, p0[0] // 7), max(10, p0[1] // 7), max(10, p0[2] // 7)), (max(10, p1[0] // 7), max(10, p1[1] // 7), max(10, p1[2] // 7)))
         d = ImageDraw.Draw(img)
         d.text((70, 120), "WHAT HAPPENED", font=fnt(FONT_M, 42), fill=(235, 235, 235))
         visible = min(3, i // 36 + 1)
@@ -1065,7 +1099,7 @@ def act_question(topic):
     p1 = tuple(topic["palette"][1])
 
     for i in range(n):
-        img = simple_gradient_bg((max(12, p1[0] // 6), max(12, p1[1] // 6), max(12, p1[2] // 6)), (max(12, p0[0] // 6), max(12, p0[1] // 6), max(12, p0[2] // 6)))
+        img = act_base_image(i, n, (max(12, p1[0] // 6), max(12, p1[1] // 6), max(12, p1[2] // 6)), (max(12, p0[0] // 6), max(12, p0[1] // 6), max(12, p0[2] // 6)))
         d = ImageDraw.Draw(img)
         d.text((70, 120), "WHY PEOPLE CARE", font=fnt(FONT_M, 42), fill=(235, 235, 235))
         visible = min(3, i // 42 + 1)
@@ -1099,7 +1133,7 @@ def act_climax(topic):
         cap_color = (
             tuple(cap_entry[1]) if isinstance(cap_entry[1], list) else cap_entry[1]
         )
-        img = simple_gradient_bg((max(14, p2[0] // 6), max(14, p2[1] // 6), max(14, p2[2] // 6)), (max(14, p1[0] // 7), max(14, p1[1] // 7), max(14, p1[2] // 7)))
+        img = act_base_image(i, n, (max(14, p2[0] // 6), max(14, p2[1] // 6), max(14, p2[2] // 6)), (max(14, p1[0] // 7), max(14, p1[1] // 7), max(14, p1[2] // 7)))
         d = ImageDraw.Draw(img)
         d.text((70, 120), "WHY IT'S TRENDING", font=fnt(FONT_M, 42), fill=(235, 235, 235))
         f_cap, _ = fit_font(FONT_S, cap_text, W - 140, 142, min_size=74)
@@ -1127,7 +1161,7 @@ def act_epilogue(topic):
     p0 = tuple(topic["palette"][0]); p1 = tuple(topic["palette"][1])
 
     for i in range(n):
-        img = simple_gradient_bg((max(12, p1[0] // 8), max(12, p1[1] // 8), max(12, p1[2] // 8)), (max(12, p0[0] // 8), max(12, p0[1] // 8), max(12, p0[2] // 8)))
+        img = act_base_image(i, n, (max(12, p1[0] // 8), max(12, p1[1] // 8), max(12, p1[2] // 8)), (max(12, p0[0] // 8), max(12, p0[1] // 8), max(12, p0[2] // 8)))
         d = ImageDraw.Draw(img)
         cy = H // 2 - len(parts) * 75
         for j, part in enumerate(parts):
@@ -1211,6 +1245,11 @@ def generate(topic_id, slot, out_dir, *,
         else:
             print("  Freepik stock backgrounds: disabled (fallback to procedural visuals)")
 
+    # Expose to the act functions so they draw text ON TOP of the subject image
+    # (drawing over a finished frame ghosted the text out).
+    global _STOCK_BGS
+    _STOCK_BGS = stock_bgs
+
     acts = [
         ("boot", act_boot),
         ("data_flood", act_data_flood),
@@ -1229,9 +1268,6 @@ def generate(topic_id, slot, out_dir, *,
         print(f"{len(frames)}f ({len(frames)/FPS:.1f}s)")
 
     print(f"  Total: {len(all_frames)} frames = {len(all_frames)/FPS:.1f}s")
-    if stock_bgs:
-        total_frames = len(all_frames)
-        all_frames = [blend_stock_frame(frm, stock_bgs, i, total_frames) for i, frm in enumerate(all_frames)]
     for idx, frm in enumerate(all_frames):
         frm.save(f"{frames_dir}/f{idx:05d}.jpg", "JPEG", quality=95)
 
