@@ -12,7 +12,7 @@ from generate import generate
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--slot", default="morning", choices=["morning", "afternoon", "evening"])
+    ap.add_argument("--slot", default="morning", choices=["morning", "afternoon", "evening", "night"])
     ap.add_argument("--out", default="output")
     args = ap.parse_args()
 
