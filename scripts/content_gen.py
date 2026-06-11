@@ -50,66 +50,71 @@ MODELS = [
 ]
 
 ANGLES = [
-    "app safety verdict",
-    "phone hype vs reality",
-    "AI feature truth check",
-    "tech comparison short",
-    "viral gadget quick review",
+    "match result breakdown",
+    "group stage stakes",
+    "star player spotlight",
+    "upset prediction short",
+    "VAR controversy explainer",
 ]
 
 CHANNEL_FIT_KEYWORDS = [
-    "app", "apps", "iphone", "pixel", "oneplus", "samsung", "android", "ios",
-    "ai", "camera", "review", "pro", "max", "ultra", "smartphone", "phone",
-    "chatgpt", "gemini", "openai", "google", "meta", "whatsapp", "instagram",
-    "tiktok", "youtube", "movie", "netflix", "box", "feature", "update",
-    "launch", "chip", "processor", "battery", "macbook", "windows", "galaxy",
+    "fifa", "world", "cup", "football", "soccer", "goal", "goals", "match",
+    "group", "knockout", "final", "semifinal", "quarterfinal", "penalty",
+    "var", "referee", "stadium", "fan", "fans", "team", "teams", "player",
+    "players", "score", "win", "loss", "draw", "qualify", "qualification",
+    "argentina", "brazil", "france", "germany", "spain", "england", "italy",
+    "portugal", "mexico", "usa", "canada", "mbappe", "messi", "ronaldo",
+    "neymar", "haaland", "bellingham", "modric", "kane", "salah", "yamal",
+    "coach", "tactics", "lineup", "injury", "transfer", "golden", "boot",
 ]
 
 # Used when Trends RSS has no channel-fit row. Rotated (see pick_rotated_channel_fit_fallback)
-# so the same seed is not picked run after run. Avoid niche piracy-app names that read as spam.
+# so the same seed is not picked run after run.
 CHANNEL_FIT_FALLBACKS = [
-    "pixel camera",
-    "iphone ai features",
-    "oneplus review",
-    "chatgpt update",
-    "whatsapp new feature",
-    "samsung galaxy ai update",
-    "google gemini android features",
-    "macbook air m4 battery life",
-    "windows 11 new ai feature",
-    "playstation plus price change",
-    "netflix password sharing rules",
-    "spotify hi-fi audio update",
-    "meta quest 3 games",
-    "tiktok algorithm change rumor",
+    "fifa world cup 2026 group stage",
+    "world cup opening match",
+    "argentina world cup defense",
+    "brazil world cup squad",
+    "france vs england world cup",
+    "usa world cup host nation",
+    "mexico world cup stadium",
+    "world cup var controversy",
+    "world cup penalty shootout",
+    "world cup golden boot race",
+    "world cup knockout bracket",
+    "world cup fan atmosphere",
+    "spain world cup tactics",
+    "germany world cup comeback",
+    "portugal world cup lineup",
 ]
 
-OPENAI_TOPIC_SELECTOR_SYSTEM = """You select the best YouTube Shorts topic for a channel like BlinkViral.
+OPENAI_TOPIC_SELECTOR_SYSTEM = """You select the best YouTube Shorts topic for a FIFA World Cup football channel.
 
 Channel style:
-- apps, phones, AI, gadgets, internet tools
-- safety checks, hype vs reality, review hooks, comparisons
+- FIFA World Cup 2026, international football, matches, players, teams
+- match breakdowns, group stage drama, knockout stakes, fan reactions
 - light Hinglish/Urdu phrasing is acceptable
 - prefer topics that can become titles like:
-  - a bold specific claim ("X just quietly changed everything")
-  - a curiosity gap ("Nobody is talking about this X update")
-  - a contrarian take ("Stop trusting X for this")
-  - a number/stakes hook ("3 things X hides from you")
-Avoid repetitive "Worth It?" / "Hype Ya Reality?" endings.
+  - a bold match claim ("Brazil just sent a message to everyone")
+  - a curiosity gap ("Nobody is talking about this World Cup upset")
+  - a stakes hook ("One goal changes the entire group")
+  - a player spotlight ("This striker is carrying his nation")
+Avoid repetitive "Who Wins?" / "Overrated?" endings.
 
 Return ONLY valid JSON:
 {
   "selected_topic": "string",
   "reason": "short reason",
-  "search_query": "specific image/topic search query"
+  "search_query": "specific image/topic search query for football stadium fans pitch"
 }
 """
 
-SYSTEM_PROMPT = """You write 30-second vertical YouTube Shorts for a channel like BlinkViral.
+SYSTEM_PROMPT = """You write 30-second vertical YouTube Shorts for a FIFA World Cup football channel.
 
 The short should feel topical, fast, bold, and highly clickable.
 Do NOT write fiction, horror, haunted internet stories, creepypasta, or made-up events.
-Base everything on the supplied trending topic and keep the wording broad enough to avoid invented facts.
+Base everything on the supplied trending topic and keep the wording broad enough to avoid invented match scores or fake results.
+Stick to widely understood football/World Cup framing — do not invent specific final scores or confirmed lineups.
 
 The video has 5 acts:
 1. HOOK — a strong first-line headline about the topic
@@ -119,20 +124,20 @@ The video has 5 acts:
 5. CLOSE — 2 or 3 short lines wrapping up with a verdict/question vibe
 
 Style rules:
-- Write like a viral tech/app/product explainer short, not a documentary.
+- Write like a viral football/World Cup explainer short, not a documentary.
 - Use a mix of simple English with light Hinglish/Urdu phrasing where natural.
-- Focus on apps, phones, AI, gadgets, reviews, safety, comparisons, hype, and internet products.
+- Focus on matches, teams, players, group stages, knockouts, VAR, fan drama, and tournament stakes.
 - Be punchy, simple, broad, and readable on screen.
 - Avoid unverifiable specifics unless the topic itself is widely understood from the trend phrase.
 - TITLE RULES (important — titles must NOT look templated):
-  - Do NOT default to "Hype Ya Reality?" or "Worth It?" — those are overused.
+  - Do NOT default to "Who Wins?" or "Overrated?" — those are overused.
   - Vary the structure every time. Mix these shapes and invent your own:
-    - a bold specific claim ("Pixel just quietly killed the iPhone camera")
-    - a curiosity gap ("Nobody is talking about this ChatGPT update")
-    - a number/stakes ("3 things the new OnePlus hides from you")
-    - a direct question that is NOT "worth it/hype ya reality" ("Did Google just leak the next Gemini?")
-    - a contrarian take ("Stop buying the iPhone for the camera")
-  - Front-load the most interesting word. No generic "- Worth It?" suffix.
+    - a bold specific claim ("Argentina just changed the entire bracket")
+    - a curiosity gap ("Nobody is talking about this World Cup upset")
+    - a number/stakes ("One goal decides the whole group")
+    - a direct question ("Can Brazil survive this knockout run?")
+    - a contrarian take ("Stop sleeping on this World Cup dark horse")
+  - Front-load the most interesting word. No generic "- Who Wins?" suffix.
 - Hook: 4-10 words.
 - Context lines: 3 short lines, max 8 words each.
 - Why lines: 3 short lines, max 8 words each.
@@ -141,7 +146,7 @@ Style rules:
 - Close lines: 2 or 3 short lines, reflective or curiosity-driven.
 - Title: clickable, topic-first, channel-style, max 12 words.
 
-Palette: pick 3 RGB colors that match a modern topical Shorts aesthetic.
+Palette: pick 3 RGB colors that match a World Cup football Shorts aesthetic (pitch green, stadium lights, national team energy).
 Use strong contrast and readability.
 
 Respond ONLY with valid JSON. No markdown fences. No explanation."""
@@ -149,22 +154,22 @@ Respond ONLY with valid JSON. No markdown fences. No explanation."""
 
 def make_prompt(latest_topic: str, epilogue_extra: str | None = None) -> str:
     angle = random.choice(ANGLES)
-    base = f"""Create a 30-second BlinkViral-style YouTube Short package.
+    base = f"""Create a 30-second FIFA World Cup football YouTube Short package.
 
 Current trending topic: {latest_topic}
 Content angle: {angle}
 
 The output must be directly about this exact trend phrase.
-If the trend is not obviously tech/app/product related, reinterpret it through the internet/app/AI/device angle only if that still feels natural.
-Prefer app safety, phone comparison, AI feature, camera, review, or hype/reality framing.
+If the trend is not obviously football/World Cup related, reinterpret it through football/match/tournament/fan angle only if that still feels natural.
+Prefer match breakdown, group stage stakes, player spotlight, upset prediction, or VAR controversy framing.
 Do not turn it into fiction.
-Do not invent a spooky backstory.
-Do not convert it into a haunted-tech metaphor.
+Do not invent fake match scores or confirmed lineups.
+Do not convert it into a haunted or horror metaphor.
 Use the exact trend phrase "{latest_topic}" inside the title OR hook OR one context line.
 
 Return this exact JSON:
 {{
-  "title": "BlinkViral-style clickable title with Hinglish/tech-review vibe",
+  "title": "World Cup-style clickable title with Hinglish/football vibe",
   "topic_id": "snake_case_identifier",
   "palette": [[r,g,b], [r,g,b], [r,g,b]],
   "hook": "4-10 word opening headline",
@@ -173,7 +178,7 @@ Return this exact JSON:
   "question": "4-10 word open loop question",
   "captions": [["CAPTION", [r,g,b]], "... 6 to 8 total"],
   "close_lines": ["2 or 3 short closing lines"],
-  "search_query": "specific stock-image search phrase for Freepik"
+  "search_query": "specific stock-image search phrase for football stadium fans world cup"
 }}"""
     if epilogue_extra:
         base += f"\n\nEpilogue instruction: {epilogue_extra}"
@@ -231,8 +236,8 @@ def _is_channel_fit_topic(topic: str) -> bool:
         return False
     token_set = set(tokens)
     multiword_matches = [
-        "stock price", "new feature", "movie box", "chatgpt update",
-        "pixel camera", "iphone ai", "phone camera",
+        "world cup", "fifa world", "group stage", "knockout stage",
+        "penalty shootout", "golden boot", "var decision",
     ]
     if any(phrase in t for phrase in multiword_matches):
         return True
@@ -253,7 +258,7 @@ def select_topic_with_openai(topics: list[str]) -> tuple[str | None, str | None]
                 {"role": "system", "content": OPENAI_TOPIC_SELECTOR_SYSTEM},
                 {
                     "role": "user",
-                    "content": "Choose the best topic from this live list for BlinkViral style:\n"
+                    "content": "Choose the best topic from this live list for FIFA World Cup football Shorts:\n"
                     + json.dumps(topics, ensure_ascii=False),
                 },
             ],
@@ -380,7 +385,7 @@ def call_llm(prompt: str, model: str) -> dict:
 def validate(content: dict) -> dict:
     """Ensure all required fields exist and have correct types."""
     if not content.get("title"):
-        content["title"] = "This App - Is It Safe?"
+        content["title"] = "World Cup - What Just Happened?"
 
     if not content.get("topic_id"):
         content["topic_id"] = "unknown"
@@ -404,7 +409,7 @@ def validate(content: dict) -> dict:
     content["why_lines"] = why_lines[:3]
 
     if not content.get("question"):
-        content["question"] = "Worth it... ya skip?"
+        content["question"] = "Who takes it... ya draw?"
 
     caps = content.get("captions", [])
     fixed = []
@@ -427,7 +432,7 @@ def validate(content: dict) -> dict:
     content["close_lines"] = close_lines[:3]
 
     if not content.get("search_query"):
-        content["search_query"] = str(content.get("search_query") or content.get("title", "")).strip() or "smartphone app ai technology"
+        content["search_query"] = str(content.get("search_query") or content.get("title", "")).strip() or "fifa world cup football stadium fans"
 
     return _normalize_display_text(content)
 
@@ -448,7 +453,7 @@ def _normalize_display_text(content: dict) -> dict:
         tl, hl = title.lower(), hook.lower()
         if tl == hl or tl in hl or hl in tl:
             if len(hook) <= len(title):
-                content["hook"] = "Quick breakdown + safety check."
+                content["hook"] = "Quick match breakdown + stakes."
             else:
                 content["title"] = hook
                 content["hook"] = "Yeh trend abhi viral hai — detail dekho."
@@ -484,10 +489,10 @@ _TITLE_TEMPLATES_FEATURE = [
     "What {t} actually changes",
     "{t} is quietly a big upgrade",
 ]
-_TITLE_TEMPLATES_APP = [
-    "Before you install {t}, read this",
-    "Is {t} actually safe?",
-    "{t}: what they don't tell you",
+_TITLE_TEMPLATES_MATCH = [
+    "Can {t} survive the group?",
+    "{t}: the stakes are insane",
+    "Before {t}, know this",
 ]
 
 
@@ -502,8 +507,8 @@ def _fallback_title_from_topic(latest_topic: str) -> str:
         pool = _TITLE_TEMPLATES_PRICE
     elif "feature" in topic_l or "update" in topic_l:
         pool = _TITLE_TEMPLATES_FEATURE
-    elif "app" in topic_l or "apk" in topic_l:
-        pool = _TITLE_TEMPLATES_APP
+    elif any(w in topic_l for w in ("match", "cup", "fifa", "goal", "group", "final")):
+        pool = _TITLE_TEMPLATES_MATCH
     else:
         pool = _TITLE_TEMPLATES_GENERIC
     return random.choice(pool).format(t=topic)
@@ -532,15 +537,15 @@ def fallback_for_topic(latest_topic: str) -> dict:
     base["question"] = "Real story kya hai?"
     base["captions"] = [
         [focus[:42], [255, 255, 255]],
-        ["TREND ALERT", [255, 220, 120]],
-        ["HYPE YA REAL?", [255, 150, 150]],
+        ["MATCH ALERT", [255, 220, 120]],
+        ["FULL TIME?", [255, 150, 150]],
         ["QUICK BREAKDOWN", [255, 255, 255]],
-        ["FACTS CHECK", [255, 220, 120]],
-        ["FINAL VERDICT?", [255, 150, 150]],
+        ["GROUP STAKES", [255, 220, 120]],
+        ["WHO ADVANCES?", [255, 150, 150]],
     ]
     base["close_lines"] = [
-        "Trend tez hai, details check zaroor karo.",
-        "Aapke hisaab se hype ya reality?",
+        "Tournament tez chal raha hai, details check zaroor karo.",
+        "Aapke hisaab se kaun aage badhega?",
     ]
     if lt:
         base["search_query"] = lt
@@ -593,42 +598,42 @@ def fallback() -> dict:
 
 _FALLBACK_POOL = [
     {
-        "title": "Third-Party APKs - What To Know",
-        "topic_id": "trend_everywhere",
-        "palette": [[255, 235, 120], [255, 120, 120], [255, 255, 255]],
-        "hook": "Random APKs... safe?",
-        "context_lines": ["People sideload apps for free features.", "Permissions can be aggressive.", "Security teams keep flagging clones."],
-        "why_lines": ["One bad install can leak data.", "Clones mimic popular brands.", "Shortcuts feel tempting anyway."],
-        "question": "Install karein... ya skip?",
+        "title": "World Cup Group Stage - What To Watch",
+        "topic_id": "world_cup_groups",
+        "palette": [[34, 139, 34], [255, 215, 0], [255, 255, 255]],
+        "hook": "Group stage... kya scene hai?",
+        "context_lines": ["Every match reshapes the bracket.", "Three points change everything.", "One slip can end a run."],
+        "why_lines": ["Fans track every goal live.", "Social feeds explode after upsets.", "Knockout spots stay wide open."],
+        "question": "Kaun group se nikal jayega?",
         "captions": [
-            ["CHECK SOURCE", [255, 255, 255]],
-            ["PERMISSIONS MATTER", [255, 220, 120]],
-            ["APK RISKS", [255, 150, 150]],
-            ["DATA SAFE?", [255, 255, 255]],
-            ["RED FLAGS", [255, 220, 120]],
-            ["STAY CAREFUL", [255, 150, 150]],
+            ["GROUP STAKES", [255, 255, 255]],
+            ["MUST WIN?", [255, 220, 120]],
+            ["GOAL DIFF", [255, 150, 150]],
+            ["UPSET ALERT", [255, 255, 255]],
+            ["KNOCKOUT RACE", [255, 220, 120]],
+            ["WHO ADVANCES?", [255, 150, 150]],
         ],
-        "close_lines": ["Free cheez tempting hoti hai.", "Lekin verify pehle, install baad mein."],
-        "search_query": "smartphone security apk warning",
+        "close_lines": ["Har match bracket badal sakta hai.", "Aapka pick kaun hai group se?"],
+        "search_query": "fifa world cup group stage stadium fans",
     },
     {
-        "title": "Pixel vs iPhone - Camera King?",
-        "topic_id": "everyone_talking_about",
-        "palette": [[120, 220, 255], [255, 180, 120], [255, 255, 255]],
-        "hook": "Pixel ya iPhone... camera king?",
-        "context_lines": ["Both phones look premium.", "Camera battle is getting serious.", "AI edits change everything."],
-        "why_lines": ["People want better photos.", "Social media loves camera tests.", "AI is changing the game."],
-        "question": "Real winner kaun hai?",
+        "title": "Brazil vs Argentina - Rivalry Heat",
+        "topic_id": "world_cup_rivalry",
+        "palette": [[255, 220, 0], [0, 155, 58], [255, 255, 255]],
+        "hook": "Brazil ya Argentina... kaun dominate?",
+        "context_lines": ["Two giants, one tournament.", "History fuels every clash.", "Fans expect fireworks."],
+        "why_lines": ["Rivalry trends every World Cup.", "Star players carry huge pressure.", "One moment defines legacy."],
+        "question": "Is rivalry match mein kaun aage?",
         "captions": [
-            ["PIXEL VS IPHONE", [255, 255, 255]],
-            ["CAMERA TEST TIME", [120, 220, 255]],
-            ["AI BHI FACTOR HAI", [255, 180, 120]],
-            ["DETAILS MATTER", [255, 255, 255]],
-            ["NIGHT SHOTS COUNT", [120, 220, 255]],
-            ["NEW CAMERA KING?", [255, 180, 120]],
+            ["BRAZIL VS ARG", [255, 255, 255]],
+            ["RIVALRY TIME", [255, 220, 120]],
+            ["STAR POWER", [255, 180, 120]],
+            ["FAN FEVER", [255, 255, 255]],
+            ["LEGACY ON LINE", [255, 220, 120]],
+            ["WHO TAKES IT?", [255, 180, 120]],
         ],
-        "close_lines": ["Specs alag cheez hain.", "Real winner camera test batata hai."],
-        "search_query": "smartphone camera comparison pixel iphone",
+        "close_lines": ["Form alag cheez hai.", "Real test match day pe hota hai."],
+        "search_query": "brazil argentina world cup football stadium",
     },
 ]
 

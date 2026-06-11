@@ -41,7 +41,7 @@ def build_shorts_video(
     )
     overlays = []
 
-    hook_text = f"TECH TRUTH: {topic.upper()}"
+    hook_text = f"WORLD CUP: {topic.upper()}"
     hook = _create_title_card(
         text=hook_text,
         duration=min(config.hook_duration, duration),
@@ -63,7 +63,7 @@ def build_shorts_video(
     )
 
     cta = _create_title_card(
-        text="FOLLOW FOR MORE TECH TRUTH",
+        text="FOLLOW FOR MORE WORLD CUP",
         duration=duration - cta_start,
         config=config,
         mode="cta",

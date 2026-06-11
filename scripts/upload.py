@@ -49,7 +49,7 @@ def upload_video(access_token, video_path, title, description, scheduled_utc=Non
         "snippet": {
             "title":       title,
             "description": description,
-            "categoryId":  "28",   # Science & Technology
+            "categoryId":  "17",   # Sports
         },
         "status": {
             "privacyStatus": status,

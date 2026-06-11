@@ -95,7 +95,7 @@ def run() -> None:
 
 def _parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Generate cinematic faceless YouTube Shorts for tech truth topics."
+        description="Generate cinematic faceless YouTube Shorts for FIFA World Cup football topics."
     )
     parser.add_argument("--topic", type=str, help="Video topic/title.")
     parser.add_argument("--script", type=str, help="Narration script text.")
@@ -192,4 +192,4 @@ def _apply_style(config: RenderConfig, style: str) -> RenderConfig:
 
 
 def _default_stock_query(topic: str) -> str:
-    return f"technology ai smartphone app cyber {topic}".strip()
+    return f"football soccer world cup stadium fans fifa {topic}".strip()

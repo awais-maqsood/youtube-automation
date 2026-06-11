@@ -30,7 +30,7 @@ FONT_S = "serif-bold"
 # Keep tags minimal and relevant. Over-stuffing generic tags (#Trending #Viral
 # #WhatHappened ...) reads as spam to YouTube and viewers. #Shorts + a couple of
 # topical tags performs better. A topic-specific tag is appended at build time.
-BASE_HASHTAGS = ["#Shorts", "#Tech"]
+BASE_HASHTAGS = ["#Shorts", "#WorldCup", "#Football"]
 # Hour (UTC) each slot targets. Minute is randomised at runtime so videos
 # don't always surface at the same second — looks organic, not bot-scheduled.
 SLOT_HOURS = {"morning": 12, "afternoon": 17, "evening": 22, "night": 3}
@@ -527,13 +527,14 @@ def generate_openai_stock_backgrounds(topic, target_count=5):
 
     model = env_value("OPENAI_IMAGE_MODEL", "gpt-image-1").strip() or "gpt-image-1"
     size = env_value("OPENAI_IMAGE_SIZE", "1024x1536").strip() or "1024x1536"
-    query = topic.get("search_query") or topic.get("title") or topic.get("topic_id", "tech short")
+    query = topic.get("search_query") or topic.get("title") or topic.get("topic_id", "world cup football")
     p0, p1, p2 = topic["palette"][0], topic["palette"][1], topic["palette"][2]
 
     prompt = (
         "Create cinematic background images for a vertical YouTube Short.\n"
         "Topic: " + str(query) + "\n"
-        "Style: modern tech / abstract / photorealistic bokeh, clean composition, shallow depth of field.\n"
+        "Style: FIFA World Cup football — stadium atmosphere, pitch green, fan crowds, floodlights, "
+        "photorealistic bokeh, clean composition, shallow depth of field.\n"
         "No text, no logos, no watermarks.\n"
         "Use a color palette inspired by rgb("
         + f"{p0[0]},{p0[1]},{p0[2]}"
@@ -599,14 +600,15 @@ def generate_gemini_stock_backgrounds(topic, target_count=5):
     size = env_value("GEMINI_IMAGE_SIZE", "1K").strip() or "1K"
     aspect_ratio = env_value("GEMINI_IMAGE_ASPECT_RATIO", "9:16").strip() or "9:16"
 
-    query = topic.get("search_query") or topic.get("title") or topic.get("question") or topic.get("topic_id", "tech short")
+    query = topic.get("search_query") or topic.get("title") or topic.get("question") or topic.get("topic_id", "world cup football")
     p0, p1, p2 = topic["palette"][0], topic["palette"][1], topic["palette"][2]
 
     def one_prompt(variant_idx: int) -> str:
         return (
             "Create cinematic photorealistic background images for a vertical YouTube Short.\n"
             f"Topic: {query}\n"
-            "Style: modern tech / abstract / photorealistic bokeh, clean composition, shallow depth of field.\n"
+            "Style: FIFA World Cup football — stadium atmosphere, pitch green, fan crowds, floodlights, "
+            "photorealistic bokeh, clean composition, shallow depth of field.\n"
             "No text, no logos, no watermarks.\n"
             "Different camera angle and composition each variation.\n"
             f"Variation: {variant_idx}\n"
@@ -777,8 +779,8 @@ def _openai_tts_to_wav(text: str, wav_out: str) -> bool:
     instr = (
         env_value(
             "OPENAI_TTS_INSTRUCTIONS",
-            "Speak like a crisp YouTube Shorts tech explainer. Energetic but clear. "
-            "Match any Hinglish wording naturally.",
+            "Speak like an energetic YouTube Shorts football commentator covering the FIFA World Cup. "
+            "Passionate but clear. Match any Hinglish wording naturally.",
         )
         or ""
     ).strip()
@@ -1076,7 +1078,7 @@ def act_data_flood(topic):
     for i in range(n):
         img = act_base_image(i, n, (max(10, p0[0] // 7), max(10, p0[1] // 7), max(10, p0[2] // 7)), (max(10, p1[0] // 7), max(10, p1[1] // 7), max(10, p1[2] // 7)))
         d = ImageDraw.Draw(img)
-        d.text((70, 120), "WHAT HAPPENED", font=fnt(FONT_M, 42), fill=(235, 235, 235))
+        d.text((70, 120), "MATCH UPDATE", font=fnt(FONT_M, 42), fill=(235, 235, 235))
         visible = min(3, i // 36 + 1)
         for idx, line in enumerate(lines[:visible]):
             f_line, _ = fit_font(FONT_S, line, W - 160, 94, min_size=54)
@@ -1101,7 +1103,7 @@ def act_question(topic):
     for i in range(n):
         img = act_base_image(i, n, (max(12, p1[0] // 6), max(12, p1[1] // 6), max(12, p1[2] // 6)), (max(12, p0[0] // 6), max(12, p0[1] // 6), max(12, p0[2] // 6)))
         d = ImageDraw.Draw(img)
-        d.text((70, 120), "WHY PEOPLE CARE", font=fnt(FONT_M, 42), fill=(235, 235, 235))
+        d.text((70, 120), "TOURNAMENT STAKES", font=fnt(FONT_M, 42), fill=(235, 235, 235))
         visible = min(3, i // 42 + 1)
         for idx, line in enumerate(why_lines[:visible]):
             f_line, _ = fit_font(FONT_S, line, W - 180, 84, min_size=52)
@@ -1135,7 +1137,7 @@ def act_climax(topic):
         )
         img = act_base_image(i, n, (max(14, p2[0] // 6), max(14, p2[1] // 6), max(14, p2[2] // 6)), (max(14, p1[0] // 7), max(14, p1[1] // 7), max(14, p1[2] // 7)))
         d = ImageDraw.Draw(img)
-        d.text((70, 120), "WHY IT'S TRENDING", font=fnt(FONT_M, 42), fill=(235, 235, 235))
+        d.text((70, 120), "FANS ARE WATCHING", font=fnt(FONT_M, 42), fill=(235, 235, 235))
         f_cap, _ = fit_font(FONT_S, cap_text, W - 140, 142, min_size=74)
         y_cap = 760
         panel_cap, _ = draw_text_panel(d, cap_text, y_cap, f_cap, pad_x=36, pad_y=20, panel_alpha=185)
