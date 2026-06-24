@@ -33,7 +33,7 @@ def get_access_token():
         raise RuntimeError(f"YouTube token refresh failed HTTP {e.code}: {body}") from e
 
 
-def upload_video(access_token, video_path, title, description, scheduled_utc=None, privacy="private"):
+def upload_video(access_token, video_path, title, description, tags=None, scheduled_utc=None, privacy="private"):
     """Resumable upload. Returns video_id.
     privacy: "private" | "public" | "unlisted"
     scheduled_utc: ISO 8601 string — if set, video stays private until that time.
@@ -45,12 +45,16 @@ def upload_video(access_token, video_path, title, description, scheduled_utc=Non
         status = "private"          # must be private to schedule
         publish_at = scheduled_utc  # ISO 8601 e.g. "2025-12-15T15:30:00Z"
 
+    snippet = {
+        "title":       title,
+        "description": description,
+        "categoryId":  "17",   # Sports
+    }
+    if tags:
+        snippet["tags"] = [str(t).strip() for t in tags if str(t).strip()][:15]
+
     metadata = {
-        "snippet": {
-            "title":       title,
-            "description": description,
-            "categoryId":  "17",   # Sports
-        },
+        "snippet": snippet,
         "status": {
             "privacyStatus": status,
             # COPPA / Studio "Made for Kids" — must be set or uploads can block publishing.
@@ -154,6 +158,7 @@ def main():
         kit["video"],
         kit["title"],
         kit["description"],
+        tags=kit.get("tags"),
         scheduled_utc=scheduled,
         privacy=privacy,
     )

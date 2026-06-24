@@ -71,21 +71,21 @@ CHANNEL_FIT_KEYWORDS = [
 # Used when Trends RSS has no channel-fit row. Rotated (see pick_rotated_channel_fit_fallback)
 # so the same seed is not picked run after run.
 CHANNEL_FIT_FALLBACKS = [
-    "fifa world cup 2026 group stage",
-    "world cup opening match",
-    "argentina world cup defense",
-    "brazil world cup squad",
-    "france vs england world cup",
+    "world cup 2026 standings",
+    "fifa world cup schedule today",
+    "messi world cup 2026",
+    "ronaldo world cup",
+    "world cup golden boot race",
+    "world cup var controversy",
     "usa world cup host nation",
     "mexico world cup stadium",
-    "world cup var controversy",
+    "argentina world cup defense",
+    "brazil world cup squad",
+    "england world cup knockout",
+    "france world cup lineup",
     "world cup penalty shootout",
-    "world cup golden boot race",
-    "world cup knockout bracket",
     "world cup fan atmosphere",
-    "spain world cup tactics",
-    "germany world cup comeback",
-    "portugal world cup lineup",
+    "world cup group of death",
 ]
 
 OPENAI_TOPIC_SELECTOR_SYSTEM = """You select the best YouTube Shorts topic for a FIFA World Cup football channel.
@@ -116,12 +116,20 @@ Do NOT write fiction, horror, haunted internet stories, creepypasta, or made-up 
 Base everything on the supplied trending topic and keep the wording broad enough to avoid invented match scores or fake results.
 Stick to widely understood football/World Cup framing — do not invent specific final scores or confirmed lineups.
 
+CRITICAL — SEARCH & TRUST RULES:
+- NEVER invent "Team A vs Team B" matchups unless BOTH team names literally appear in the trending topic phrase.
+- Do NOT fabricate fixtures (e.g. Panama vs Croatia) — viewers search real games; fake matchups get zero views.
+- Title MUST include the exact trending topic phrase or a recognizable team/player name from it.
+- Title max 55 characters (mobile feed truncates longer titles).
+- BANNED title clichés (never use): "Shock Awaits", "Nobody Saw Coming", "Shocking Turnaround", "Flip the Group", "Schedule Secrets", "The Truth", "Worth It", "Hype Ya Reality".
+- Write titles people actually search: player names, real teams, "World Cup 2026", standings, VAR, golden boot, knockout.
+
 The video has 5 acts:
-1. HOOK — a strong first-line headline about the topic
+1. HOOK — a strong first-line headline about the topic (must grab attention in 2 seconds)
 2. CONTEXT — 3 short lines that explain what it is
 3. WHY — 3 short lines explaining why people care
 4. QUESTION — one open-loop question plus 6 to 8 rapid short captions
-5. CLOSE — 2 or 3 short lines wrapping up with a verdict/question vibe
+5. CLOSE — 2 or 3 short lines; LAST line must ask viewers to comment their prediction
 
 Style rules:
 - Write like a viral football/World Cup explainer short, not a documentary.
@@ -130,24 +138,21 @@ Style rules:
 - Be punchy, simple, broad, and readable on screen.
 - Avoid unverifiable specifics unless the topic itself is widely understood from the trend phrase.
 - TITLE RULES (important — titles must NOT look templated):
-  - Do NOT default to "Who Wins?" or "Overrated?" — those are overused.
-  - Vary the structure every time. Mix these shapes and invent your own:
-    - a bold specific claim ("Argentina just changed the entire bracket")
-    - a curiosity gap ("Nobody is talking about this World Cup upset")
-    - a number/stakes ("One goal decides the whole group")
-    - a direct question ("Can Brazil survive this knockout run?")
-    - a contrarian take ("Stop sleeping on this World Cup dark horse")
-  - Front-load the most interesting word. No generic "- Who Wins?" suffix.
-- Hook: 4-10 words.
+  - Vary structure every time. Good examples:
+    - "Messi just did WHAT at the World Cup?"
+    - "World Cup 2026 standings changed overnight"
+    - "This VAR call broke the internet"
+    - "Brazil's group just got scary"
+  - Front-load the searchable keyword (team, player, or World Cup).
+- Hook: 4-8 words, punchy, different wording from title.
 - Context lines: 3 short lines, max 8 words each.
 - Why lines: 3 short lines, max 8 words each.
-- Question: 4-10 words.
+- Question: 4-10 words, must invite comments.
 - Captions: 6 to 8 items, max 5 words each, energetic but factual.
-- Close lines: 2 or 3 short lines, reflective or curiosity-driven.
-- Title: clickable, topic-first, channel-style, max 12 words.
+- Close lines: 2 or 3 short lines; final line = comment CTA ("Comment your pick 👇" style, no emoji in JSON).
+- youtube_tags: 8-12 search tags (team names, "FIFA World Cup 2026", "football shorts", etc.)
 
-Palette: pick 3 RGB colors that match a World Cup football Shorts aesthetic (pitch green, stadium lights, national team energy).
-Use strong contrast and readability.
+Palette: pick 3 RGB colors — pitch green, stadium gold, high contrast for mobile screens.
 
 Respond ONLY with valid JSON. No markdown fences. No explanation."""
 
@@ -160,25 +165,28 @@ Current trending topic: {latest_topic}
 Content angle: {angle}
 
 The output must be directly about this exact trend phrase.
+NEVER invent a "Team A vs Team B" matchup unless both teams are in "{latest_topic}".
 If the trend is not obviously football/World Cup related, reinterpret it through football/match/tournament/fan angle only if that still feels natural.
 Prefer match breakdown, group stage stakes, player spotlight, upset prediction, or VAR controversy framing.
 Do not turn it into fiction.
-Do not invent fake match scores or confirmed lineups.
+Do not invent fake match scores, fake fixtures, or confirmed lineups.
 Do not convert it into a haunted or horror metaphor.
-Use the exact trend phrase "{latest_topic}" inside the title OR hook OR one context line.
+The title MUST contain words from "{latest_topic}" and stay under 55 characters.
+The hook must use different wording than the title.
 
 Return this exact JSON:
 {{
-  "title": "World Cup-style clickable title with Hinglish/football vibe",
+  "title": "short searchable title under 55 chars using trend keywords",
   "topic_id": "snake_case_identifier",
   "palette": [[r,g,b], [r,g,b], [r,g,b]],
-  "hook": "4-10 word opening headline",
+  "hook": "4-8 word punchy opener (not same as title)",
   "context_lines": ["3 short lines", "max 8 words each", "directly about the trend"],
   "why_lines": ["3 short lines", "why people care", "max 8 words each"],
-  "question": "4-10 word open loop question",
+  "question": "4-10 word question that invites comments",
   "captions": [["CAPTION", [r,g,b]], "... 6 to 8 total"],
-  "close_lines": ["2 or 3 short closing lines"],
-  "search_query": "specific stock-image search phrase for football stadium fans world cup"
+  "close_lines": ["2 lines wrap-up", "Comment your pick below"],
+  "search_query": "specific stock-image search phrase for football stadium fans world cup",
+  "youtube_tags": ["FIFA World Cup 2026", "football", "... 8-12 search tags"]
 }}"""
     if epilogue_extra:
         base += f"\n\nEpilogue instruction: {epilogue_extra}"
@@ -382,10 +390,49 @@ def call_llm(prompt: str, model: str) -> dict:
     return json.loads(raw)
 
 
-def validate(content: dict) -> dict:
+TITLE_BANNED_PHRASES = [
+    "shock awaits", "nobody saw coming", "shocking turnaround", "flip the group",
+    "schedule secrets", "group stage shock", "the truth", "worth it",
+    "hype ya reality", "is it safe", "secrets:", "nobody is talking",
+]
+
+TITLE_MAX_CHARS = 55
+
+
+def _sanitize_title(title: str, trend: str = "") -> str:
+    """Strip spammy clichés and enforce mobile-friendly length."""
+    t = _compact_ws(title)
+    low = t.lower()
+    if any(phrase in low for phrase in TITLE_BANNED_PHRASES):
+        t = _fallback_title_from_topic(trend) if trend else "World Cup 2026 update"
+    if len(t) > TITLE_MAX_CHARS:
+        cut = t[: TITLE_MAX_CHARS - 3].rsplit(" ", 1)[0]
+        t = (cut or t[: TITLE_MAX_CHARS - 3]) + "..."
+    return t
+
+
+def _default_youtube_tags(trend: str = "") -> list[str]:
+    tags = [
+        "FIFA World Cup 2026", "World Cup", "football", "soccer",
+        "World Cup shorts", "football shorts", "FIFA", "soccer shorts",
+    ]
+    for word in re.findall(r"[A-Za-z0-9]+", trend or ""):
+        if len(word) >= 4 and word.lower() not in {
+            "world", "cup", "fifa", "2026", "match", "group", "stage", "today",
+        }:
+            tag = word.title()
+            if tag not in tags:
+                tags.append(tag)
+        if len(", ".join(tags)) > 420:
+            break
+    return tags[:12]
+
+
+def validate(content: dict, trend: str = "") -> dict:
     """Ensure all required fields exist and have correct types."""
     if not content.get("title"):
         content["title"] = "World Cup - What Just Happened?"
+    content["title"] = _sanitize_title(str(content["title"]), trend)
 
     if not content.get("topic_id"):
         content["topic_id"] = "unknown"
@@ -429,7 +476,17 @@ def validate(content: dict) -> dict:
     close_lines = [str(x) for x in content.get("close_lines", []) if str(x).strip()]
     while len(close_lines) < 2:
         close_lines.append("This trend is moving fast.")
+    if not any("comment" in line.lower() for line in close_lines):
+        close_lines.append("Comment your pick below.")
     content["close_lines"] = close_lines[:3]
+
+    tags = content.get("youtube_tags", [])
+    if not isinstance(tags, list):
+        tags = []
+    tags = [str(t).strip() for t in tags if str(t).strip()]
+    if len(tags) < 4:
+        tags = _default_youtube_tags(trend or content.get("title", ""))
+    content["youtube_tags"] = tags[:12]
 
     if not content.get("search_query"):
         content["search_query"] = str(content.get("search_query") or content.get("title", "")).strip() or "fifa world cup football stadium fans"
@@ -469,12 +526,10 @@ def _normalize_display_text(content: dict) -> dict:
 
 # Varied, non-repetitive title shapes. {t} is the topic phrase (title-cased).
 _TITLE_TEMPLATES_GENERIC = [
-    "Nobody is talking about {t}",
-    "What just happened with {t}?",
-    "The truth about {t}",
-    "{t} is a bigger deal than you think",
-    "Everyone got {t} wrong",
-    "Wait... {t}?",
+    "{t} — what changed?",
+    "World Cup: {t}",
+    "{t} explained in 30 sec",
+    "Everyone's talking about {t}",
 ]
 _TITLE_TEMPLATES_VS = [
     "{t}: who actually wins?",
@@ -545,7 +600,7 @@ def fallback_for_topic(latest_topic: str) -> dict:
     ]
     base["close_lines"] = [
         "Tournament tez chal raha hai, details check zaroor karo.",
-        "Aapke hisaab se kaun aage badhega?",
+        "Comment your pick below.",
     ]
     if lt:
         base["search_query"] = lt
@@ -598,10 +653,10 @@ def fallback() -> dict:
 
 _FALLBACK_POOL = [
     {
-        "title": "World Cup Group Stage - What To Watch",
-        "topic_id": "world_cup_groups",
+        "title": "World Cup 2026 standings update",
+        "topic_id": "world_cup_standings",
         "palette": [[34, 139, 34], [255, 215, 0], [255, 255, 255]],
-        "hook": "Group stage... kya scene hai?",
+        "hook": "Standings just shifted!",
         "context_lines": ["Every match reshapes the bracket.", "Three points change everything.", "One slip can end a run."],
         "why_lines": ["Fans track every goal live.", "Social feeds explode after upsets.", "Knockout spots stay wide open."],
         "question": "Kaun group se nikal jayega?",
@@ -613,27 +668,29 @@ _FALLBACK_POOL = [
             ["KNOCKOUT RACE", [255, 220, 120]],
             ["WHO ADVANCES?", [255, 150, 150]],
         ],
-        "close_lines": ["Har match bracket badal sakta hai.", "Aapka pick kaun hai group se?"],
+        "close_lines": ["Har match bracket badal sakta hai.", "Comment your pick below."],
         "search_query": "fifa world cup group stage stadium fans",
+        "youtube_tags": ["FIFA World Cup 2026", "World Cup standings", "football", "soccer shorts"],
     },
     {
-        "title": "Brazil vs Argentina - Rivalry Heat",
-        "topic_id": "world_cup_rivalry",
-        "palette": [[255, 220, 0], [0, 155, 58], [255, 255, 255]],
-        "hook": "Brazil ya Argentina... kaun dominate?",
-        "context_lines": ["Two giants, one tournament.", "History fuels every clash.", "Fans expect fireworks."],
-        "why_lines": ["Rivalry trends every World Cup.", "Star players carry huge pressure.", "One moment defines legacy."],
-        "question": "Is rivalry match mein kaun aage?",
+        "title": "Messi at World Cup 2026",
+        "topic_id": "messi_world_cup",
+        "palette": [[120, 200, 255], [255, 220, 0], [255, 255, 255]],
+        "hook": "Messi ka World Cup moment!",
+        "context_lines": ["All eyes on the legend.", "Every touch gets analyzed.", "Legacy still on the line."],
+        "why_lines": ["Global fanbase is massive.", "Highlights trend instantly.", "Debate never stops online."],
+        "question": "Messi ka best moment kaunsa?",
         "captions": [
-            ["BRAZIL VS ARG", [255, 255, 255]],
-            ["RIVALRY TIME", [255, 220, 120]],
-            ["STAR POWER", [255, 180, 120]],
+            ["MESSI WATCH", [255, 255, 255]],
+            ["LEGEND MODE", [255, 220, 120]],
+            ["WORLD CUP", [255, 180, 120]],
             ["FAN FEVER", [255, 255, 255]],
-            ["LEGACY ON LINE", [255, 220, 120]],
-            ["WHO TAKES IT?", [255, 180, 120]],
+            ["GOAL ALERT", [255, 220, 120]],
+            ["YOUR PICK?", [255, 180, 120]],
         ],
-        "close_lines": ["Form alag cheez hai.", "Real test match day pe hota hai."],
-        "search_query": "brazil argentina world cup football stadium",
+        "close_lines": ["Form match day pe dikhta hai.", "Comment your pick below."],
+        "search_query": "messi world cup football stadium celebration",
+        "youtube_tags": ["Messi", "FIFA World Cup 2026", "Argentina", "football shorts"],
     },
 ]
 
@@ -648,7 +705,7 @@ def generate_topic(epilogue_extra: str | None = None) -> dict:
         try:
             print(f"  Generating topic (model: {model})...")
             content = call_llm(prompt, model)
-            content = validate(content)
+            content = validate(content, latest_topic)
             if selected_search_query and not content.get("search_query"):
                 content["search_query"] = selected_search_query
             # Hard anchor: keep output clearly attached to the real trend.
@@ -694,7 +751,7 @@ def generate_topic(epilogue_extra: str | None = None) -> dict:
     content = fallback_for_topic(latest_topic)
     if selected_search_query:
         content["search_query"] = selected_search_query
-    return validate(content)
+    return validate(content, latest_topic)
 
 
 if __name__ == "__main__":

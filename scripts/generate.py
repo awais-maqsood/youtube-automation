@@ -30,7 +30,7 @@ FONT_S = "serif-bold"
 # Keep tags minimal and relevant. Over-stuffing generic tags (#Trending #Viral
 # #WhatHappened ...) reads as spam to YouTube and viewers. #Shorts + a couple of
 # topical tags performs better. A topic-specific tag is appended at build time.
-BASE_HASHTAGS = ["#Shorts", "#WorldCup", "#Football"]
+BASE_HASHTAGS = ["#Shorts", "#WorldCup", "#Football", "#FIFA2026", "#Soccer"]
 # Hour (UTC) each slot targets. Minute is randomised at runtime so videos
 # don't always surface at the same second — looks organic, not bot-scheduled.
 SLOT_HOURS = {"morning": 12, "afternoon": 17, "evening": 22, "night": 3}
@@ -192,7 +192,7 @@ def _topic_hashtag(trend: str) -> str:
 
 
 def build_youtube_description(topic: dict) -> str:
-    """Richer than a single trend line + hashtags — helps CTR and comments."""
+    """SEO-rich description with comment CTA — helps discovery and engagement."""
     trend = _kit_one_line(topic.get("trend_topic") or topic.get("title") or "")
     hook = _kit_one_line(topic.get("hook") or "")
     q = _kit_one_line(topic.get("question") or "")
@@ -200,44 +200,55 @@ def build_youtube_description(topic: dict) -> str:
     if hook:
         blocks.append(hook)
     if trend:
-        blocks.append(f"Breaking down: {trend}")
+        blocks.append(f"World Cup 2026: {trend}")
+    blocks.append("")
+    blocks.append("What's YOUR prediction? Drop it in the comments.")
     if q:
-        blocks.append(f"Your take — {q}")
+        blocks.append(q)
+    blocks.append("")
+    blocks.append("Follow for daily World Cup Shorts.")
     tags = list(BASE_HASHTAGS)
     topic_tag = _topic_hashtag(trend)
     if topic_tag and topic_tag not in tags:
         tags.append(topic_tag)
+    extra = ["#WorldCup2026", "#FootballShorts", "#FIFA"]
+    for t in extra:
+        if t not in tags:
+            tags.append(t)
     blocks.append(" ".join(tags))
-    return "\n\n".join(blocks)
+    return "\n".join(blocks)
+
+
+def build_youtube_tags(topic: dict) -> list[str]:
+    """YouTube search tags from LLM output or sensible defaults."""
+    raw = topic.get("youtube_tags", [])
+    if isinstance(raw, list) and len(raw) >= 4:
+        return [str(t).strip() for t in raw if str(t).strip()][:12]
+    from content_gen import _default_youtube_tags
+    trend = topic.get("trend_topic") or topic.get("title") or ""
+    return _default_youtube_tags(trend)
 
 
 def write_promo_thumbnail(topic: dict, video_path: str, thumb_path: str) -> bool:
     """
-    Custom Shorts thumbnail (title on a bright frame) — auto-picked frames are often dark.
+    High-CTR Shorts thumbnail: bold hook text, bright banner, early hook frame.
     """
     import tempfile
 
-    title_text = _kit_one_line(topic.get("title") or topic.get("hook") or "Watch")
+    hook_text = _kit_one_line(topic.get("hook") or topic.get("title") or "World Cup")
+    p0 = topic.get("palette", [[34, 139, 34]])[0]
+    accent = (clamp(p0[0]), clamp(p0[1]), clamp(p0[2]))
     tmp = tempfile.NamedTemporaryFile(suffix=".jpg", delete=False)
     tmp.close()
     try:
         r = subprocess.run(
             [
-                "ffmpeg",
-                "-y",
-                "-ss",
-                "5",
-                "-i",
-                video_path,
-                "-frames:v",
-                "1",
-                "-q:v",
-                "2",
+                "ffmpeg", "-y", "-ss", "1",
+                "-i", video_path,
+                "-frames:v", "1", "-q:v", "2",
                 tmp.name,
             ],
-            capture_output=True,
-            text=True,
-            timeout=90,
+            capture_output=True, text=True, timeout=90,
         )
         if r.returncode != 0:
             print(f"  Thumbnail frame extract failed: {r.stderr[-500:]}")
@@ -245,17 +256,35 @@ def write_promo_thumbnail(topic: dict, video_path: str, thumb_path: str) -> bool
         img = Image.open(tmp.name).convert("RGBA")
         if img.size != (W, H):
             img = img.resize((W, H), Image.Resampling.LANCZOS)
-        overlay = Image.new("RGBA", img.size, (0, 0, 0, 0))
-        od = ImageDraw.Draw(overlay)
-        od.rectangle([0, int(H * 0.52), W, H], fill=(0, 0, 0, 175))
-        img = Image.alpha_composite(img, overlay).convert("RGB")
+
+        # Bright top banner for readability on mobile feeds
+        banner_h = int(H * 0.42)
+        banner = Image.new("RGBA", (W, banner_h), (0, 0, 0, 0))
+        bd = ImageDraw.Draw(banner)
+        for y in range(banner_h):
+            alpha = int(210 - (y / banner_h) * 60)
+            bd.line([(0, y), (W, y)], fill=(10, 80, 30, alpha))
+        img = Image.alpha_composite(img, banner)
+
+        # Accent stripe
+        stripe = Image.new("RGBA", img.size, (0, 0, 0, 0))
+        sd = ImageDraw.Draw(stripe)
+        sd.rectangle([0, banner_h - 8, W, banner_h + 4], fill=(*accent, 255))
+        img = Image.alpha_composite(img, stripe).convert("RGB")
         d = ImageDraw.Draw(img)
+
+        # "WORLD CUP" label
+        label_font = fnt(FONT_M, 52)
+        d.text((60, 80), "WORLD CUP 2026", font=label_font, fill=(255, 220, 60))
+
+        # Large hook text — main CTR driver
         font_src = _resolve_font_source(FONT_S)
-        f, _, lines = fit_font_wrapped(font_src, title_text, W - 100, 92, min_size=40, max_lines=2)
-        line_gap = int(max(10, f.size * 1.12))
-        y0 = H - 120 - len(lines) * line_gap
-        draw_outlined_lines(d, lines, max(420, y0), f, (255, 245, 100), line_gap=line_gap)
-        img.save(thumb_path, "JPEG", quality=92, optimize=True)
+        f, _, lines = fit_font_wrapped(font_src, hook_text.upper(), W - 120, 118, min_size=64, max_lines=3)
+        line_gap = int(max(12, f.size * 1.1))
+        y0 = 200
+        draw_outlined_lines(d, lines, y0, f, (255, 255, 255), line_gap=line_gap)
+
+        img.save(thumb_path, "JPEG", quality=94, optimize=True)
         print(f"  Thumbnail -> {thumb_path}")
         return True
     except Exception as e:
@@ -1016,7 +1045,7 @@ CUT_SPEED = {"slow": 6, "medium": 4, "fast": 2}
 
 
 def act_boot(topic):
-    n = 75  # ~2.5s — hook must land fast, no slow intro
+    n = 105  # ~3.5s — hook must land fast
     hook = topic["hook"]
     title = topic["title"]
     trend = topic.get("trend_topic", title)
@@ -1068,7 +1097,7 @@ def act_boot(topic):
 
 
 def act_data_flood(topic):
-    n = 105  # ~3.5s
+    n = 150  # ~5s
     lines = topic["context_lines"]
     frames = []
     palette = topic["palette"]
@@ -1092,7 +1121,7 @@ def act_data_flood(topic):
 
 
 def act_question(topic):
-    n = 120  # ~4s
+    n = 180  # ~6s
     frames = []
     q = topic["question"]
     why_lines = topic["why_lines"]
@@ -1122,7 +1151,7 @@ def act_question(topic):
 
 
 def act_climax(topic):
-    n = 150  # ~5s
+    n = 330  # ~11s — captions need time to land
     frames = []
     captions = topic["captions"]
     palette = topic["palette"]
@@ -1154,7 +1183,7 @@ def act_climax(topic):
 
 
 def act_epilogue(topic):
-    n = 75  # ~2.5s
+    n = 135  # ~4.5s
     frames = []
     parts = topic["close_lines"]
     ecolor = tuple(topic["palette"][2])
@@ -1187,6 +1216,10 @@ def act_epilogue(topic):
             d.text(
                 (W // 2 - 20, cy + len(parts) * 150 + 30), "█", font=f_cur, fill=ecolor
             )
+        if i >= appear[-1] + 10:
+            cta_font, _ = fit_font(FONT_M, "COMMENT YOUR PICK", W - 120, 44, min_size=36)
+            d.text((W // 2 - cta_font.getlength("COMMENT YOUR PICK") / 2, H - 200),
+                   "COMMENT YOUR PICK", font=cta_font, fill=(255, 220, 60))
         if i < 20:
             img = Image.fromarray((np.array(img) * (i / 20)).astype(np.uint8))
         frames.append(add_noise(img, 2))
@@ -1328,6 +1361,7 @@ def generate(topic_id, slot, out_dir, *,
     kit = {
         "title": topic["title"],
         "description": build_youtube_description(topic),
+        "tags": build_youtube_tags(topic),
         "topic": topic.get("topic_id", "generated"),
         "slot": slot,
         "scheduled_time_utc": f"{tomorrow}T{SLOT_HOURS.get(slot, SLOT_HOURS['morning']):02d}:{random.randint(0, 54):02d}:00Z",
