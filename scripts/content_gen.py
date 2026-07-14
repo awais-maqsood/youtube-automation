@@ -149,6 +149,11 @@ Style rules:
 - Why lines: 3 short lines, max 8 words each.
 - Question: 4-10 words, must invite comments.
 - Captions: 6 to 8 items, max 5 words each, energetic but factual.
+- CAPTION UNIQUENESS (critical for Shorts thumbnails — YouTube auto-picks climax frames):
+  - Every caption MUST include a concrete word from the trending topic (team, player, or event).
+  - No two videos should share the same caption set. Invent fresh phrasing every time.
+  - BANNED caption fillers (never use): "FULL TIME?", "MATCH ALERT", "TRENDING NOW",
+    "GOAL ALERT", "QUICK BREAKDOWN", "GROUP STAKES", "WHO ADVANCES?", "MUST WIN?".
 - Close lines: 2 or 3 short lines; final line = comment CTA ("Comment your pick 👇" style, no emoji in JSON).
 - youtube_tags: 8-12 search tags (team names, "FIFA World Cup 2026", "football shorts", etc.)
 
@@ -183,7 +188,7 @@ Return this exact JSON:
   "context_lines": ["3 short lines", "max 8 words each", "directly about the trend"],
   "why_lines": ["3 short lines", "why people care", "max 8 words each"],
   "question": "4-10 word question that invites comments",
-  "captions": [["CAPTION", [r,g,b]], "... 6 to 8 total"],
+  "captions": [["TOPIC-SPECIFIC CAPTION", [r,g,b]], "... 6 to 8 unique, each uses a word from the trend"],
   "close_lines": ["2 lines wrap-up", "Comment your pick below"],
   "search_query": "specific stock-image search phrase for football stadium fans world cup",
   "youtube_tags": ["FIFA World Cup 2026", "football", "... 8-12 search tags"]
@@ -460,17 +465,32 @@ def validate(content: dict, trend: str = "") -> dict:
 
     caps = content.get("captions", [])
     fixed = []
+    seen_texts: set[str] = set()
     for cap in caps:
         if isinstance(cap, list) and len(cap) == 2:
-            text = str(cap[0])
+            text = _compact_ws(str(cap[0]))
+            if not text:
+                continue
+            key = text.upper()
+            if key in CAPTION_BANNED or key in seen_texts:
+                continue
+            seen_texts.add(key)
             color = (
                 cap[1]
                 if isinstance(cap[1], list) and len(cap[1]) == 3
                 else [255, 255, 255]
             )
             fixed.append([text, [max(0, min(255, int(v))) for v in color]])
-    while len(fixed) < 6:
-        fixed.append(["TRENDING NOW", [255, 255, 255]])
+    # Pad with topic-unique captions — never recycle banned fillers like "FULL TIME?"
+    if len(fixed) < 6:
+        for text, color in _unique_fallback_captions(trend or content.get("title") or "World Cup"):
+            key = text.upper()
+            if key in seen_texts:
+                continue
+            seen_texts.add(key)
+            fixed.append([text, color])
+            if len(fixed) >= 6:
+                break
     content["captions"] = fixed[:8]
 
     close_lines = [str(x) for x in content.get("close_lines", []) if str(x).strip()]
@@ -551,6 +571,94 @@ _TITLE_TEMPLATES_MATCH = [
 ]
 
 
+CAPTION_BANNED = {
+    "FULL TIME?",
+    "MATCH ALERT",
+    "TRENDING NOW",
+    "GOAL ALERT",
+    "QUICK BREAKDOWN",
+    "GROUP STAKES",
+    "WHO ADVANCES?",
+    "MUST WIN?",
+    "UPSET ALERT",
+    "GOAL DIFF",
+    "KNOCKOUT RACE",
+}
+
+# Rotating banks so fallback captions never collapse to the same Shorts cover frame.
+_CAPTION_BANKS = [
+    ["PRESSURE ON", "ONE CHANCE", "DO OR DIE", "LOCK IN", "NO MERCY", "FINAL PUSH"],
+    ["TABLE TILTS", "POINT HUNT", "EDGE CASE", "LAST SHOT", "CALL IT", "NET EMPTY?"],
+    ["VAR CHECK", "REF STORM", "DECISION TIME", "REPLAY IT", "FOUL OR DIVE?", "CARD OUT"],
+    ["FORM DIP", "HOT STREAK", "CLINICAL FINISH", "ICE VEINS", "BOX CHAOS", "TAP IN"],
+    ["FAN FURY", "STADIUM ROAR", "AWAY END", "HOME PRESSURE", "PURE NOISE", "CHAOS MODE"],
+    ["SQUAD SHUFFLE", "BENCH BOMB", "TACTIC FLIP", "HIGH LINE", "LOW BLOCK", "SET PIECE"],
+    ["GOLDEN BOOT", "ASSIST KING", "CLEAN SHEET", "HAT TRICK?", "OWN GOAL", "STOPPAGE TIME"],
+    ["BRACKET SHAKE", "PATH OPENS", "GROUP EXIT?", "ROUND OF 16", "NIGHTMARE DRAW", "EASY RUN?"],
+]
+
+_CAPTION_COLORS = [
+    [255, 255, 255],
+    [255, 220, 120],
+    [255, 150, 150],
+    [120, 220, 255],
+    [180, 255, 160],
+    [255, 180, 80],
+]
+
+
+def _unique_fallback_captions(focus: str) -> list:
+    """
+    Build 6 topic-anchored captions that differ each call.
+    Prevents every failed LLM run from showing the same 'FULL TIME?' Shorts cover.
+    """
+    focus = _compact_ws(focus or "").strip() or "World Cup"
+    words = re.findall(r"[A-Za-z0-9']+", focus)
+    # Fresh randomness every run (not seeded by topic alone — same topic can rerun).
+    rng = random.Random()
+    caps: list[list] = []
+    seen: set[str] = set()
+
+    def _add(text: str) -> None:
+        t = _compact_ws(text).upper()[:32]
+        if not t or t in seen or t in CAPTION_BANNED:
+            return
+        seen.add(t)
+        caps.append([t, list(rng.choice(_CAPTION_COLORS))])
+
+    if words:
+        _add(" ".join(words[:3]))
+        lead = words[0]
+        suffixes = ["WATCH", "MOMENT", "STAKES", "DRAMA", "PULSE", "SPARK"]
+        _add(f"{lead} {rng.choice(suffixes)}")
+        if len(words) >= 2:
+            _add(f"{words[1]} {rng.choice(['FIRE', 'RISING', 'CHECK', 'SURGE'])}")
+
+    bank = list(rng.choice(_CAPTION_BANKS))
+    rng.shuffle(bank)
+    for phrase in bank:
+        _add(phrase)
+        if len(caps) >= 6:
+            break
+
+    extras = [
+        f"{rng.choice(['WHY', 'HOW', 'WHEN'])} NOW?",
+        f"{(words[0] if words else 'CUP')} FIRST",
+        "SAY IT AGAIN",
+        "BELIEVE IT?",
+        "NO DEBATE",
+        "THAT CHANGED IT",
+    ]
+    for phrase in extras:
+        if len(caps) >= 6:
+            break
+        _add(phrase)
+
+    while len(caps) < 6:
+        _add(f"TAKE {len(caps) + 1}")
+    return caps[:6]
+
+
 def _fallback_title_from_topic(latest_topic: str) -> str:
     topic = _compact_ws(latest_topic or "").strip(" -:")
     if not topic:
@@ -590,14 +698,7 @@ def fallback_for_topic(latest_topic: str) -> dict:
         "Har koi quick verdict chahta hai.",
     ]
     base["question"] = "Real story kya hai?"
-    base["captions"] = [
-        [focus[:42], [255, 255, 255]],
-        ["MATCH ALERT", [255, 220, 120]],
-        ["FULL TIME?", [255, 150, 150]],
-        ["QUICK BREAKDOWN", [255, 255, 255]],
-        ["GROUP STAKES", [255, 220, 120]],
-        ["WHO ADVANCES?", [255, 150, 150]],
-    ]
+    base["captions"] = _unique_fallback_captions(focus)
     base["close_lines"] = [
         "Tournament tez chal raha hai, details check zaroor karo.",
         "Comment your pick below.",
@@ -661,12 +762,12 @@ _FALLBACK_POOL = [
         "why_lines": ["Fans track every goal live.", "Social feeds explode after upsets.", "Knockout spots stay wide open."],
         "question": "Kaun group se nikal jayega?",
         "captions": [
-            ["GROUP STAKES", [255, 255, 255]],
-            ["MUST WIN?", [255, 220, 120]],
-            ["GOAL DIFF", [255, 150, 150]],
-            ["UPSET ALERT", [255, 255, 255]],
-            ["KNOCKOUT RACE", [255, 220, 120]],
-            ["WHO ADVANCES?", [255, 150, 150]],
+            ["BRACKET SHIFT", [255, 255, 255]],
+            ["THREE POINTS", [255, 220, 120]],
+            ["FORM CHECK", [255, 150, 150]],
+            ["NET PRESSURE", [255, 255, 255]],
+            ["PATH WIDENS", [255, 220, 120]],
+            ["PICK YOUR SIDE", [255, 150, 150]],
         ],
         "close_lines": ["Har match bracket badal sakta hai.", "Comment your pick below."],
         "search_query": "fifa world cup group stage stadium fans",
@@ -683,9 +784,9 @@ _FALLBACK_POOL = [
         "captions": [
             ["MESSI WATCH", [255, 255, 255]],
             ["LEGEND MODE", [255, 220, 120]],
-            ["WORLD CUP", [255, 180, 120]],
+            ["CUP STAGE", [255, 180, 120]],
             ["FAN FEVER", [255, 255, 255]],
-            ["GOAL ALERT", [255, 220, 120]],
+            ["MAGIC TOUCH", [255, 220, 120]],
             ["YOUR PICK?", [255, 180, 120]],
         ],
         "close_lines": ["Form match day pe dikhta hai.", "Comment your pick below."],

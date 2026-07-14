@@ -229,21 +229,47 @@ def build_youtube_tags(topic: dict) -> list[str]:
     return _default_youtube_tags(trend)
 
 
+def _topic_style_index(topic: dict, n: int) -> int:
+    seed = str(topic.get("topic_id") or topic.get("title") or topic.get("hook") or "x")
+    return sum(ord(c) for c in seed) % max(1, n)
+
+
 def write_promo_thumbnail(topic: dict, video_path: str, thumb_path: str) -> bool:
     """
-    High-CTR Shorts thumbnail: bold hook text, bright banner, early hook frame.
+    High-CTR Shorts thumbnail: bold hook/caption text, topic-tinted banner.
+    Layout varies by topic so the channel grid does not look copy-pasted.
     """
     import tempfile
 
     hook_text = _kit_one_line(topic.get("hook") or topic.get("title") or "World Cup")
-    p0 = topic.get("palette", [[34, 139, 34]])[0]
+    # Prefer first caption when present — Shorts feeds often surface climax text,
+    # so aligning the custom thumb with a unique caption reduces "same-y" covers.
+    caps = topic.get("captions") or []
+    if isinstance(caps, list) and caps and isinstance(caps[0], list) and caps[0]:
+        cap0 = _kit_one_line(str(caps[0][0]))
+        if cap0 and len(cap0) >= 4:
+            hook_text = cap0
+    palette = topic.get("palette") or [[34, 139, 34], [255, 215, 0], [255, 255, 255]]
+    p0 = palette[0]
+    p1 = palette[1] if len(palette) > 1 else [255, 215, 0]
     accent = (clamp(p0[0]), clamp(p0[1]), clamp(p0[2]))
+    accent2 = (clamp(p1[0]), clamp(p1[1]), clamp(p1[2]))
+    style = _topic_style_index(topic, 4)
+    # Pull a frame from different moments so backgrounds diversify across uploads.
+    seek_ss = {0: "0.5", 1: "1.2", 2: "3.5", 3: "8.0"}.get(style, "1.0")
+    labels = [
+        "WORLD CUP 2026",
+        "FIFA SHORTS",
+        str(topic.get("trend_topic") or "MATCH DAY")[:22].upper(),
+        "LIVE TAKE",
+    ]
+    label = labels[style]
     tmp = tempfile.NamedTemporaryFile(suffix=".jpg", delete=False)
     tmp.close()
     try:
         r = subprocess.run(
             [
-                "ffmpeg", "-y", "-ss", "1",
+                "ffmpeg", "-y", "-ss", seek_ss,
                 "-i", video_path,
                 "-frames:v", "1", "-q:v", "2",
                 tmp.name,
@@ -257,35 +283,35 @@ def write_promo_thumbnail(topic: dict, video_path: str, thumb_path: str) -> bool
         if img.size != (W, H):
             img = img.resize((W, H), Image.Resampling.LANCZOS)
 
-        # Bright top banner for readability on mobile feeds
-        banner_h = int(H * 0.42)
+        banner_h = int(H * (0.38 + 0.04 * (style % 3)))
         banner = Image.new("RGBA", (W, banner_h), (0, 0, 0, 0))
         bd = ImageDraw.Draw(banner)
+        # Topic palette drives the banner so thumbs aren't all the same green.
+        br, bg_, bb = accent[0] // 4, accent[1] // 4, max(20, accent[2] // 5)
         for y in range(banner_h):
-            alpha = int(210 - (y / banner_h) * 60)
-            bd.line([(0, y), (W, y)], fill=(10, 80, 30, alpha))
+            alpha = int(220 - (y / banner_h) * 70)
+            bd.line([(0, y), (W, y)], fill=(br, bg_, bb, alpha))
         img = Image.alpha_composite(img, banner)
 
-        # Accent stripe
         stripe = Image.new("RGBA", img.size, (0, 0, 0, 0))
         sd = ImageDraw.Draw(stripe)
-        sd.rectangle([0, banner_h - 8, W, banner_h + 4], fill=(*accent, 255))
+        sd.rectangle([0, banner_h - 8, W, banner_h + 4], fill=(*accent2, 255))
+        if style % 2 == 1:
+            sd.rectangle([0, 0, 28, H], fill=(*accent, 230))
         img = Image.alpha_composite(img, stripe).convert("RGB")
         d = ImageDraw.Draw(img)
 
-        # "WORLD CUP" label
-        label_font = fnt(FONT_M, 52)
-        d.text((60, 80), "WORLD CUP 2026", font=label_font, fill=(255, 220, 60))
+        label_font = fnt(FONT_M, 48)
+        d.text((60 if style % 2 == 0 else 90, 72), label, font=label_font, fill=accent2)
 
-        # Large hook text — main CTR driver
         font_src = _resolve_font_source(FONT_S)
         f, _, lines = fit_font_wrapped(font_src, hook_text.upper(), W - 120, 118, min_size=64, max_lines=3)
         line_gap = int(max(12, f.size * 1.1))
-        y0 = 200
+        y0 = 180 + style * 36
         draw_outlined_lines(d, lines, y0, f, (255, 255, 255), line_gap=line_gap)
 
         img.save(thumb_path, "JPEG", quality=94, optimize=True)
-        print(f"  Thumbnail -> {thumb_path}")
+        print(f"  Thumbnail -> {thumb_path} (style={style}, seek={seek_ss}s)")
         return True
     except Exception as e:
         print(f"  Thumbnail generation failed: {e}")
@@ -1103,11 +1129,13 @@ def act_data_flood(topic):
     palette = topic["palette"]
     p1 = tuple(palette[1])
     p0 = tuple(palette[0])
+    labels = ["MATCH UPDATE", "QUICK CONTEXT", "WHAT'S GOING ON", "THE SETUP"]
+    chrome = labels[_topic_style_index(topic, len(labels))]
 
     for i in range(n):
         img = act_base_image(i, n, (max(10, p0[0] // 7), max(10, p0[1] // 7), max(10, p0[2] // 7)), (max(10, p1[0] // 7), max(10, p1[1] // 7), max(10, p1[2] // 7)))
         d = ImageDraw.Draw(img)
-        d.text((70, 120), "MATCH UPDATE", font=fnt(FONT_M, 42), fill=(235, 235, 235))
+        d.text((70, 120), chrome, font=fnt(FONT_M, 42), fill=(235, 235, 235))
         visible = min(3, i // 36 + 1)
         for idx, line in enumerate(lines[:visible]):
             f_line, _ = fit_font(FONT_S, line, W - 160, 94, min_size=54)
@@ -1128,11 +1156,13 @@ def act_question(topic):
     color = tuple(topic["palette"][2])
     p0 = tuple(topic["palette"][0])
     p1 = tuple(topic["palette"][1])
+    labels = ["TOURNAMENT STAKES", "WHY IT MATTERS", "THE PRESSURE", "FAN DEBATE"]
+    chrome = labels[_topic_style_index(topic, len(labels))]
 
     for i in range(n):
         img = act_base_image(i, n, (max(12, p1[0] // 6), max(12, p1[1] // 6), max(12, p1[2] // 6)), (max(12, p0[0] // 6), max(12, p0[1] // 6), max(12, p0[2] // 6)))
         d = ImageDraw.Draw(img)
-        d.text((70, 120), "TOURNAMENT STAKES", font=fnt(FONT_M, 42), fill=(235, 235, 235))
+        d.text((70, 120), chrome, font=fnt(FONT_M, 42), fill=(235, 235, 235))
         visible = min(3, i // 42 + 1)
         for idx, line in enumerate(why_lines[:visible]):
             f_line, _ = fit_font(FONT_S, line, W - 180, 84, min_size=52)
@@ -1156,6 +1186,17 @@ def act_climax(topic):
     captions = topic["captions"]
     palette = topic["palette"]
     p0 = tuple(palette[0]); p1 = tuple(palette[1]); p2 = tuple(palette[2])
+    # YouTube Shorts often auto-picks a climax frame as the cover — vary layout
+    # per topic so the channel grid doesn't look like one repeated meme slide.
+    styles = [
+        {"label": "FANS ARE WATCHING", "y": 760, "side": False, "counter_y": 1180},
+        {"label": "LIVE REACTION", "y": 520, "side": True, "counter_y": 1280},
+        {"label": "MATCH PULSE", "y": 900, "side": False, "counter_y": 1220},
+        {"label": "WHAT JUST HAPPENED", "y": 640, "side": True, "counter_y": 1300},
+        {"label": "FAN ZONE", "y": 480, "side": False, "counter_y": 1160},
+        {"label": "LOCKER TALK", "y": 1000, "side": True, "counter_y": 1340},
+    ]
+    st = styles[_topic_style_index(topic, len(styles))]
 
     for i in range(n):
         cap_idx = min(len(captions) - 1, int(i / max(1, n / len(captions))))
@@ -1166,14 +1207,20 @@ def act_climax(topic):
         )
         img = act_base_image(i, n, (max(14, p2[0] // 6), max(14, p2[1] // 6), max(14, p2[2] // 6)), (max(14, p1[0] // 7), max(14, p1[1] // 7), max(14, p1[2] // 7)))
         d = ImageDraw.Draw(img)
-        d.text((70, 120), "FANS ARE WATCHING", font=fnt(FONT_M, 42), fill=(235, 235, 235))
+        d.text((70, 120), st["label"], font=fnt(FONT_M, 42), fill=(235, 235, 235))
+        if st["side"]:
+            bar = Image.new("RGBA", img.size, (0, 0, 0, 0))
+            bd = ImageDraw.Draw(bar)
+            bd.rectangle([0, 0, 36, H], fill=(*p0, 220))
+            img = Image.alpha_composite(img.convert("RGBA"), bar).convert("RGB")
+            d = ImageDraw.Draw(img)
         f_cap, _ = fit_font(FONT_S, cap_text, W - 140, 142, min_size=74)
-        y_cap = 760
+        y_cap = st["y"]
         panel_cap, _ = draw_text_panel(d, cap_text, y_cap, f_cap, pad_x=36, pad_y=20, panel_alpha=185)
         img = Image.alpha_composite(img.convert("RGBA"), panel_cap).convert("RGB")
         d = ImageDraw.Draw(img)
         draw_outlined(d, cap_text, y_cap, f_cap, cap_color)
-        d.text((90, 1180), f"{cap_idx + 1}/{len(captions)}", font=fnt(FONT_M, 40), fill=(235, 235, 235))
+        d.text((90, st["counter_y"]), f"{cap_idx + 1}/{len(captions)}", font=fnt(FONT_M, 40), fill=(235, 235, 235))
         img = add_noise(img, 2)
         if i > n - 20:
             fade = (i - (n - 20)) / 20
