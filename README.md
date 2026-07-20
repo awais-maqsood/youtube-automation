@@ -6,10 +6,10 @@ Automation workflow for generating and uploading YouTube Shorts.
 
 The GitHub Actions workflow `.github/workflows/pipeline.yml` runs automatically **4 times per day** (UTC):
 
-- `03:05` UTC -> `night`
-- `12:05` UTC -> `morning`
-- `17:05` UTC -> `afternoon`
-- `22:05` UTC -> `evening`
+- `03:05` UTC -> `night` (viral trends)
+- `12:05` UTC -> `morning` (**high-CPM**: AI tools / finance / SaaS)
+- `17:05` UTC -> `afternoon` (**high-CPM**: AI tools / finance / SaaS)
+- `22:05` UTC -> `evening` (viral trends)
 
 Manual runs are also supported with `workflow_dispatch`, where you can choose a `slot` value.
 

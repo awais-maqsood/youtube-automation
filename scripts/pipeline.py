@@ -388,7 +388,7 @@ def run(slot: str, topic_id: str | None = None):
 if __name__ == "__main__":
     import argparse
     ap = argparse.ArgumentParser()
-    ap.add_argument("--slot",  default="morning", choices=["morning", "afternoon", "evening"])
+    ap.add_argument("--slot",  default="morning", choices=["morning", "afternoon", "evening", "night"])
     ap.add_argument("--topic", default=None)
     args = ap.parse_args()
     run(args.slot, args.topic)

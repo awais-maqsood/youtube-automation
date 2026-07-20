@@ -30,7 +30,7 @@ FONT_S = "serif-bold"
 # Keep tags minimal and relevant. Over-stuffing generic tags (#Trending #Viral
 # #WhatHappened ...) reads as spam to YouTube and viewers. #Shorts + a couple of
 # topical tags performs better. A topic-specific tag is appended at build time.
-BASE_HASHTAGS = ["#Shorts", "#WorldCup", "#Football", "#FIFA2026", "#Soccer"]
+BASE_HASHTAGS = ["#Shorts", "#Trending", "#Viral", "#Explainer", "#News"]
 # Hour (UTC) each slot targets. Minute is randomised at runtime so videos
 # don't always surface at the same second — looks organic, not bot-scheduled.
 SLOT_HOURS = {"morning": 12, "afternoon": 17, "evening": 22, "night": 3}
@@ -196,22 +196,29 @@ def build_youtube_description(topic: dict) -> str:
     trend = _kit_one_line(topic.get("trend_topic") or topic.get("title") or "")
     hook = _kit_one_line(topic.get("hook") or "")
     q = _kit_one_line(topic.get("question") or "")
+    niche = (topic.get("niche") or "viral").lower()
     blocks: list[str] = []
     if hook:
         blocks.append(hook)
     if trend:
-        blocks.append(f"World Cup 2026: {trend}")
+        prefix = "Money tip:" if niche == "high_cpm" else "Trending now:"
+        blocks.append(f"{prefix} {trend}")
     blocks.append("")
-    blocks.append("What's YOUR prediction? Drop it in the comments.")
+    blocks.append("What's YOUR take? Drop it in the comments.")
     if q:
         blocks.append(q)
     blocks.append("")
-    blocks.append("Follow for daily World Cup Shorts.")
-    tags = list(BASE_HASHTAGS)
+    if niche == "high_cpm":
+        blocks.append("Follow for daily AI tools + money Shorts.")
+        tags = ["#Shorts", "#AITools", "#PersonalFinance", "#Investing", "#BusinessTips"]
+        extra = ["#MoneyTips", "#SaaS", "#Productivity"]
+    else:
+        blocks.append("Follow for daily trending Shorts.")
+        tags = list(BASE_HASHTAGS)
+        extra = ["#TrendingNow", "#LatestUpdate", "#InternetCulture"]
     topic_tag = _topic_hashtag(trend)
     if topic_tag and topic_tag not in tags:
         tags.append(topic_tag)
-    extra = ["#WorldCup2026", "#FootballShorts", "#FIFA"]
     for t in extra:
         if t not in tags:
             tags.append(t)
@@ -226,7 +233,8 @@ def build_youtube_tags(topic: dict) -> list[str]:
         return [str(t).strip() for t in raw if str(t).strip()][:12]
     from content_gen import _default_youtube_tags
     trend = topic.get("trend_topic") or topic.get("title") or ""
-    return _default_youtube_tags(trend)
+    niche = topic.get("niche") or "viral"
+    return _default_youtube_tags(trend, niche=niche)
 
 
 def _topic_style_index(topic: dict, n: int) -> int:
@@ -241,7 +249,7 @@ def write_promo_thumbnail(topic: dict, video_path: str, thumb_path: str) -> bool
     """
     import tempfile
 
-    hook_text = _kit_one_line(topic.get("hook") or topic.get("title") or "World Cup")
+    hook_text = _kit_one_line(topic.get("hook") or topic.get("title") or "Trending Update")
     # Prefer first caption when present — Shorts feeds often surface climax text,
     # so aligning the custom thumb with a unique caption reduces "same-y" covers.
     caps = topic.get("captions") or []
@@ -258,11 +266,18 @@ def write_promo_thumbnail(topic: dict, video_path: str, thumb_path: str) -> bool
     # Pull a frame from different moments so backgrounds diversify across uploads.
     seek_ss = {0: "0.5", 1: "1.2", 2: "3.5", 3: "8.0"}.get(style, "1.0")
     labels = [
-        "WORLD CUP 2026",
-        "FIFA SHORTS",
-        str(topic.get("trend_topic") or "MATCH DAY")[:22].upper(),
+        "TRENDING NOW",
+        "VIRAL SHORTS",
+        str(topic.get("trend_topic") or "LIVE TOPIC")[:22].upper(),
         "LIVE TAKE",
     ]
+    if (topic.get("niche") or "") == "high_cpm":
+        labels = [
+            "MONEY TIP",
+            "AI TOOLS",
+            str(topic.get("trend_topic") or "FINANCE")[:22].upper(),
+            "SMART TAKE",
+        ]
     label = labels[style]
     tmp = tempfile.NamedTemporaryFile(suffix=".jpg", delete=False)
     tmp.close()
@@ -582,14 +597,14 @@ def generate_openai_stock_backgrounds(topic, target_count=5):
 
     model = env_value("OPENAI_IMAGE_MODEL", "gpt-image-1").strip() or "gpt-image-1"
     size = env_value("OPENAI_IMAGE_SIZE", "1024x1536").strip() or "1024x1536"
-    query = topic.get("search_query") or topic.get("title") or topic.get("topic_id", "world cup football")
+    query = topic.get("search_query") or topic.get("title") or topic.get("topic_id", "trending topic")
     p0, p1, p2 = topic["palette"][0], topic["palette"][1], topic["palette"][2]
 
     prompt = (
         "Create cinematic background images for a vertical YouTube Short.\n"
         "Topic: " + str(query) + "\n"
-        "Style: FIFA World Cup football — stadium atmosphere, pitch green, fan crowds, floodlights, "
-        "photorealistic bokeh, clean composition, shallow depth of field.\n"
+        "Style: trend-focused real-world visual storytelling with cinematic lighting, "
+        "clean composition, photorealistic look, shallow depth of field.\n"
         "No text, no logos, no watermarks.\n"
         "Use a color palette inspired by rgb("
         + f"{p0[0]},{p0[1]},{p0[2]}"
@@ -655,14 +670,14 @@ def generate_gemini_stock_backgrounds(topic, target_count=5):
     size = env_value("GEMINI_IMAGE_SIZE", "1K").strip() or "1K"
     aspect_ratio = env_value("GEMINI_IMAGE_ASPECT_RATIO", "9:16").strip() or "9:16"
 
-    query = topic.get("search_query") or topic.get("title") or topic.get("question") or topic.get("topic_id", "world cup football")
+    query = topic.get("search_query") or topic.get("title") or topic.get("question") or topic.get("topic_id", "trending topic")
     p0, p1, p2 = topic["palette"][0], topic["palette"][1], topic["palette"][2]
 
     def one_prompt(variant_idx: int) -> str:
         return (
             "Create cinematic photorealistic background images for a vertical YouTube Short.\n"
             f"Topic: {query}\n"
-            "Style: FIFA World Cup football — stadium atmosphere, pitch green, fan crowds, floodlights, "
+            "Style: trend-focused real-world visual storytelling, cinematic lighting, "
             "photorealistic bokeh, clean composition, shallow depth of field.\n"
             "No text, no logos, no watermarks.\n"
             "Different camera angle and composition each variation.\n"
@@ -823,7 +838,7 @@ def _linear_resample(sig: np.ndarray, out_len: int) -> np.ndarray:
     return np.interp(x_new, x_old, sig.astype(np.float32)).astype(np.float32)
 
 
-def _openai_tts_to_wav(text: str, wav_out: str) -> bool:
+def _openai_tts_to_wav(text: str, wav_out: str, niche: str = "viral") -> bool:
     key = (env_value("OPENAI_API_KEY", "") or "").strip()
     if not key or not _ffmpeg_available():
         return False
@@ -831,14 +846,15 @@ def _openai_tts_to_wav(text: str, wav_out: str) -> bool:
     voice = (env_value("OPENAI_TTS_VOICE", "alloy") or "alloy").strip()
     fmt = (env_value("OPENAI_TTS_FORMAT", "mp3") or "mp3").strip()
     speed = float(env_value("OPENAI_TTS_SPEED", "1.05") or "1.05")
-    instr = (
-        env_value(
-            "OPENAI_TTS_INSTRUCTIONS",
-            "Speak like an energetic YouTube Shorts football commentator covering the FIFA World Cup. "
-            "Passionate but clear. Match any Hinglish wording naturally.",
-        )
-        or ""
-    ).strip()
+    default_instr = (
+        "Speak like a clear, trusted YouTube Shorts money and AI-tools explainer. "
+        "Practical and confident, never hype salesy. Match any Hinglish wording naturally."
+        if (niche or "").lower() == "high_cpm"
+        else
+        "Speak like an energetic YouTube Shorts explainer narrator. "
+        "Passionate but clear. Match any Hinglish wording naturally."
+    )
+    instr = (env_value("OPENAI_TTS_INSTRUCTIONS", default_instr) or "").strip()
     url = "https://api.openai.com/v1/audio/speech"
     body = {
         "model": model,
@@ -961,7 +977,8 @@ def mix_voiceover(bed: np.ndarray, topic: dict, work_dir: str) -> np.ndarray:
         print("  [VOICE] No OPENAI_API_KEY set — video will have NO narration (ambience only).")
         return bed
     vo_path = os.path.join(work_dir, "voiceover.wav")
-    if not _openai_tts_to_wav(script, vo_path):
+    niche = (topic.get("niche") or "viral")
+    if not _openai_tts_to_wav(script, vo_path, niche=niche):
         print("  [VOICE] Narration unavailable — shipping with ambience only.")
         return bed
     try:
@@ -1130,6 +1147,8 @@ def act_data_flood(topic):
     p1 = tuple(palette[1])
     p0 = tuple(palette[0])
     labels = ["MATCH UPDATE", "QUICK CONTEXT", "WHAT'S GOING ON", "THE SETUP"]
+    if (topic.get("niche") or "") == "high_cpm":
+        labels = ["MONEY ANGLE", "TOOL BREAKDOWN", "COST CHECK", "QUICK CONTEXT"]
     chrome = labels[_topic_style_index(topic, len(labels))]
 
     for i in range(n):
@@ -1157,6 +1176,8 @@ def act_question(topic):
     p0 = tuple(topic["palette"][0])
     p1 = tuple(topic["palette"][1])
     labels = ["TOURNAMENT STAKES", "WHY IT MATTERS", "THE PRESSURE", "FAN DEBATE"]
+    if (topic.get("niche") or "") == "high_cpm":
+        labels = ["WHY IT MATTERS", "COST IMPACT", "RISK CHECK", "SMART MOVE"]
     chrome = labels[_topic_style_index(topic, len(labels))]
 
     for i in range(n):
@@ -1196,6 +1217,15 @@ def act_climax(topic):
         {"label": "FAN ZONE", "y": 480, "side": False, "counter_y": 1160},
         {"label": "LOCKER TALK", "y": 1000, "side": True, "counter_y": 1340},
     ]
+    if (topic.get("niche") or "") == "high_cpm":
+        styles = [
+            {"label": "MONEY CHECK", "y": 760, "side": False, "counter_y": 1180},
+            {"label": "TOOL TIP", "y": 520, "side": True, "counter_y": 1280},
+            {"label": "COST ALERT", "y": 900, "side": False, "counter_y": 1220},
+            {"label": "SMART MOVE", "y": 640, "side": True, "counter_y": 1300},
+            {"label": "ROI PULSE", "y": 480, "side": False, "counter_y": 1160},
+            {"label": "FINANCE TAKE", "y": 1000, "side": True, "counter_y": 1340},
+        ]
     st = styles[_topic_style_index(topic, len(styles))]
 
     for i in range(n):
@@ -1283,7 +1313,7 @@ def generate(topic_id, slot, out_dir, *,
     os.makedirs(frames_dir, exist_ok=True)
 
     # LLM invents everything; epilogue_extra injected on REMNANT runs
-    topic = generate_topic(epilogue_extra=epilogue_extra)
+    topic = generate_topic(epilogue_extra=epilogue_extra, slot=slot)
 
     # REMNANT layer — inject boot line, advance narrative state
     if run_type in ("REMNANT", "DORMANT") and remnant_state is not None:
@@ -1296,6 +1326,7 @@ def generate(topic_id, slot, out_dir, *,
     print(f"Title: {topic['title']}")
     print(
         f"Trend: {topic.get('trend_topic', topic.get('topic_id', 'unknown'))} | "
+        f"Niche: {topic.get('niche', 'viral')} | "
         f"Search: {topic.get('search_query', topic['title'])}"
     )
 
@@ -1410,6 +1441,7 @@ def generate(topic_id, slot, out_dir, *,
         "description": build_youtube_description(topic),
         "tags": build_youtube_tags(topic),
         "topic": topic.get("topic_id", "generated"),
+        "niche": topic.get("niche", "viral"),
         "slot": slot,
         "scheduled_time_utc": f"{tomorrow}T{SLOT_HOURS.get(slot, SLOT_HOURS['morning']):02d}:{random.randint(0, 54):02d}:00Z",
         "video": video,
@@ -1423,7 +1455,7 @@ def generate(topic_id, slot, out_dir, *,
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
-    ap.add_argument("--slot", default="morning", choices=["morning", "afternoon", "evening"])
+    ap.add_argument("--slot", default="morning", choices=["morning", "afternoon", "evening", "night"])
     ap.add_argument("--out", default="output")
     args = ap.parse_args()
     k = generate(None, args.slot, args.out)

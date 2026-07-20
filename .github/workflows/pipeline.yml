@@ -2,12 +2,15 @@ name: Auto Generate And Upload
 
 on:
   schedule:
+    # 4 videos/day (UTC): morning+afternoon = high-CPM, evening+night = viral
+    - cron: "5 3 * * *"
     - cron: "5 12 * * *"
+    - cron: "5 17 * * *"
     - cron: "5 22 * * *"
   workflow_dispatch:
     inputs:
       slot:
-        description: "morning, afternoon, evening, or night"
+        description: "morning/afternoon=high-CPM; evening/night=viral"
         default: "morning"
 
 permissions:

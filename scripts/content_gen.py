@@ -49,132 +49,216 @@ MODELS = [
     "google/gemma-4-31b-it:free",               # last-resort, still capable
 ]
 
-ANGLES = [
-    "match result breakdown",
-    "group stage stakes",
-    "star player spotlight",
-    "upset prediction short",
-    "VAR controversy explainer",
+# 4 videos/day: morning + afternoon = high-CPM niches; evening + night = viral trends.
+HIGH_CPM_SLOTS = {"morning", "afternoon"}
+
+VIRAL_ANGLES = [
+    "breaking update explainer",
+    "what changed and why",
+    "quick fact-check breakdown",
+    "viral moment context",
+    "controversy timeline",
 ]
 
-CHANNEL_FIT_KEYWORDS = [
-    "fifa", "world", "cup", "football", "soccer", "goal", "goals", "match",
-    "group", "knockout", "final", "semifinal", "quarterfinal", "penalty",
-    "var", "referee", "stadium", "fan", "fans", "team", "teams", "player",
-    "players", "score", "win", "loss", "draw", "qualify", "qualification",
-    "argentina", "brazil", "france", "germany", "spain", "england", "italy",
-    "portugal", "mexico", "usa", "canada", "mbappe", "messi", "ronaldo",
-    "neymar", "haaland", "bellingham", "modric", "kane", "salah", "yamal",
-    "coach", "tactics", "lineup", "injury", "transfer", "golden", "boot",
+HIGH_CPM_ANGLES = [
+    "money impact explainer",
+    "tool vs alternative comparison",
+    "hidden cost / fee breakdown",
+    "beginner mistake warning",
+    "ROI / productivity payoff",
 ]
 
-# Used when Trends RSS has no channel-fit row. Rotated (see pick_rotated_channel_fit_fallback)
-# so the same seed is not picked run after run.
-CHANNEL_FIT_FALLBACKS = [
-    "world cup 2026 standings",
-    "fifa world cup schedule today",
-    "messi world cup 2026",
-    "ronaldo world cup",
-    "world cup golden boot race",
-    "world cup var controversy",
-    "usa world cup host nation",
-    "mexico world cup stadium",
-    "argentina world cup defense",
-    "brazil world cup squad",
-    "england world cup knockout",
-    "france world cup lineup",
-    "world cup penalty shootout",
-    "world cup fan atmosphere",
-    "world cup group of death",
+VIRAL_KEYWORDS = [
+    "viral", "trending", "breaking", "update", "controversy", "reaction",
+    "review", "launch", "release", "policy", "election", "celebrity",
+    "netflix", "movie", "series", "music", "youtube", "instagram", "tiktok",
+    "interview", "leak", "scam", "warning", "ban", "lawsuit", "game",
+    "gaming", "esports", "iphone", "android", "feature",
 ]
 
-OPENAI_TOPIC_SELECTOR_SYSTEM = """You select the best YouTube Shorts topic for a FIFA World Cup football channel.
+# Advertiser-friendly niches: AI tools, finance, SaaS, business, insurance, credit.
+HIGH_CPM_KEYWORDS = [
+    "ai", "chatgpt", "openai", "claude", "gemini", "copilot", "saas",
+    "software", "startup", "business", "finance", "investing", "investment",
+    "stock", "stocks", "market", "economy", "inflation", "interest", "rate",
+    "mortgage", "loan", "credit", "creditcard", "insurance", "tax", "taxes",
+    "crypto", "bitcoin", "ethereum", "banking", "budget", "salary", "income",
+    "sidehustle", "marketing", "productivity", "automation", "pricing",
+    "subscription", "refund", "layoff", "hiring", "remote", "freelancer",
+    "apple", "google", "microsoft", "amazon", "tesla", "nvidia",
+]
 
-Channel style:
-- FIFA World Cup 2026, international football, matches, players, teams
-- match breakdowns, group stage drama, knockout stakes, fan reactions
-- light Hinglish/Urdu phrasing is acceptable
-- prefer topics that can become titles like:
-  - a bold match claim ("Brazil just sent a message to everyone")
-  - a curiosity gap ("Nobody is talking about this World Cup upset")
-  - a stakes hook ("One goal changes the entire group")
-  - a player spotlight ("This striker is carrying his nation")
-Avoid repetitive "Who Wins?" / "Overrated?" endings.
+VIRAL_FALLBACKS = [
+    "celebrity interview controversy",
+    "streaming platform new release",
+    "viral social media challenge",
+    "new smartphone launch reaction",
+    "policy change public reaction",
+    "breaking entertainment headline",
+    "internet debate going viral",
+    "app feature rollout reaction",
+]
+
+HIGH_CPM_FALLBACKS = [
+    "ChatGPT new feature pricing",
+    "best AI tools for freelancers",
+    "credit score mistake to avoid",
+    "high yield savings rate update",
+    "SaaS subscription cost trap",
+    "mortgage rate change explained",
+    "side hustle tax rules beginners",
+    "insurance claim denial reasons",
+    "stock market volatility explained",
+    "AI coding tool ROI for startups",
+    "personal finance budget reset",
+    "business software pricing war",
+]
+
+# Backward-compatible aliases used by older helpers.
+ANGLES = VIRAL_ANGLES
+CHANNEL_FIT_KEYWORDS = VIRAL_KEYWORDS + HIGH_CPM_KEYWORDS
+CHANNEL_FIT_FALLBACKS = VIRAL_FALLBACKS + HIGH_CPM_FALLBACKS
+
+
+def niche_for_slot(slot: str | None) -> str:
+    """morning/afternoon → high_cpm; evening/night → viral."""
+    s = (slot or "").strip().lower()
+    return "high_cpm" if s in HIGH_CPM_SLOTS else "viral"
+
+
+OPENAI_TOPIC_SELECTOR_VIRAL = """You select the best YouTube Shorts topic for a viral trending-news channel.
+
+Prefer high-discovery public topics: entertainment, internet culture, celebrity, product launches, controversies.
+Skip niche finance/AI-only stories unless they are already mainstream viral.
 
 Return ONLY valid JSON:
 {
   "selected_topic": "string",
   "reason": "short reason",
-  "search_query": "specific image/topic search query for football stadium fans pitch"
+  "search_query": "specific image/topic search query based on chosen trend"
 }
 """
 
-SYSTEM_PROMPT = """You write 30-second vertical YouTube Shorts for a FIFA World Cup football channel.
+OPENAI_TOPIC_SELECTOR_HIGH_CPM = """You select the best YouTube Shorts topic for a HIGH-CPM monetization niche.
 
-The short should feel topical, fast, bold, and highly clickable.
+Prefer advertiser-friendly topics in this order:
+1) AI tools / SaaS / productivity software
+2) Personal finance / investing / credit / insurance / taxes
+3) Business / startups / pricing / career money decisions
+
+Reject pure celebrity gossip, sports scores, and meme-only topics unless they have a clear money/tool angle.
+
+Return ONLY valid JSON:
+{
+  "selected_topic": "string",
+  "reason": "short reason",
+  "search_query": "specific image/topic search query based on chosen trend"
+}
+"""
+
+SYSTEM_PROMPT_VIRAL = """You write 30-second vertical YouTube Shorts for a viral trending-topics channel.
+
+The short should feel topical, fast, clear, and highly clickable.
 Do NOT write fiction, horror, haunted internet stories, creepypasta, or made-up events.
-Base everything on the supplied trending topic and keep the wording broad enough to avoid invented match scores or fake results.
-Stick to widely understood football/World Cup framing — do not invent specific final scores or confirmed lineups.
+Base everything on the supplied trending topic and avoid unverifiable fabricated specifics.
 
 CRITICAL — SEARCH & TRUST RULES:
-- NEVER invent "Team A vs Team B" matchups unless BOTH team names literally appear in the trending topic phrase.
-- Do NOT fabricate fixtures (e.g. Panama vs Croatia) — viewers search real games; fake matchups get zero views.
-- Title MUST include the exact trending topic phrase or a recognizable team/player name from it.
+- Do NOT fabricate facts, quotes, numbers, timelines, or outcomes.
+- Title MUST include the exact trending topic phrase or a recognizable keyword from it.
 - Title max 55 characters (mobile feed truncates longer titles).
 - BANNED title clichés (never use): "Shock Awaits", "Nobody Saw Coming", "Shocking Turnaround", "Flip the Group", "Schedule Secrets", "The Truth", "Worth It", "Hype Ya Reality".
-- Write titles people actually search: player names, real teams, "World Cup 2026", standings, VAR, golden boot, knockout.
+- Write titles people actually search: names, products, companies, events, or public keywords from the trend.
 
 The video has 5 acts:
 1. HOOK — a strong first-line headline about the topic (must grab attention in 2 seconds)
 2. CONTEXT — 3 short lines that explain what it is
 3. WHY — 3 short lines explaining why people care
 4. QUESTION — one open-loop question plus 6 to 8 rapid short captions
-5. CLOSE — 2 or 3 short lines; LAST line must ask viewers to comment their prediction
+5. CLOSE — 2 or 3 short lines; LAST line must ask viewers to comment their take
 
 Style rules:
-- Write like a viral football/World Cup explainer short, not a documentary.
+- Write like a viral trending-topic explainer short, not a documentary.
 - Use a mix of simple English with light Hinglish/Urdu phrasing where natural.
-- Focus on matches, teams, players, group stages, knockouts, VAR, fan drama, and tournament stakes.
+- Focus on what happened, why it matters, and what people are debating.
 - Be punchy, simple, broad, and readable on screen.
-- Avoid unverifiable specifics unless the topic itself is widely understood from the trend phrase.
-- TITLE RULES (important — titles must NOT look templated):
-  - Vary structure every time. Good examples:
-    - "Messi just did WHAT at the World Cup?"
-    - "World Cup 2026 standings changed overnight"
-    - "This VAR call broke the internet"
-    - "Brazil's group just got scary"
-  - Front-load the searchable keyword (team, player, or World Cup).
 - Hook: 4-8 words, punchy, different wording from title.
 - Context lines: 3 short lines, max 8 words each.
 - Why lines: 3 short lines, max 8 words each.
 - Question: 4-10 words, must invite comments.
 - Captions: 6 to 8 items, max 5 words each, energetic but factual.
-- CAPTION UNIQUENESS (critical for Shorts thumbnails — YouTube auto-picks climax frames):
-  - Every caption MUST include a concrete word from the trending topic (team, player, or event).
-  - No two videos should share the same caption set. Invent fresh phrasing every time.
-  - BANNED caption fillers (never use): "FULL TIME?", "MATCH ALERT", "TRENDING NOW",
-    "GOAL ALERT", "QUICK BREAKDOWN", "GROUP STAKES", "WHO ADVANCES?", "MUST WIN?".
-- Close lines: 2 or 3 short lines; final line = comment CTA ("Comment your pick 👇" style, no emoji in JSON).
-- youtube_tags: 8-12 search tags (team names, "FIFA World Cup 2026", "football shorts", etc.)
+- CAPTION UNIQUENESS: every caption MUST include a concrete word from the trend; invent fresh phrasing every time.
+- BANNED caption fillers: "FULL TIME?", "MATCH ALERT", "TRENDING NOW", "GOAL ALERT", "QUICK BREAKDOWN".
+- Close lines: 2 or 3 short lines; final line = comment CTA (no emoji in JSON).
+- youtube_tags: 8-12 search tags based on the trend.
 
-Palette: pick 3 RGB colors — pitch green, stadium gold, high contrast for mobile screens.
-
+Palette: pick 3 RGB colors — high contrast for mobile screens.
 Respond ONLY with valid JSON. No markdown fences. No explanation."""
 
+SYSTEM_PROMPT_HIGH_CPM = """You write 30-second vertical YouTube Shorts for HIGH-CPM niches (AI tools, personal finance, SaaS, business money decisions).
 
-def make_prompt(latest_topic: str, epilogue_extra: str | None = None) -> str:
-    angle = random.choice(ANGLES)
-    base = f"""Create a 30-second FIFA World Cup football YouTube Short package.
+Goal: educational, advertiser-safe, searchable explainers that attract high-value viewers.
+Do NOT write fiction, get-rich-quick promises, guaranteed returns, medical advice, or illegal advice.
+Base everything on the supplied topic and keep claims broad/safe (no fabricated fees, rates, or ROI numbers).
+
+CRITICAL — SEARCH & TRUST RULES:
+- Do NOT invent prices, rates, tax rules, or product claims.
+- Title MUST include a keyword from the topic (tool name, finance term, company, or money phrase).
+- Title max 55 characters.
+- BANNED clichés: "Shock Awaits", "Nobody Saw Coming", "The Truth", "Worth It", "Hype Ya Reality", "Get Rich".
+- Prefer titles people search: "ChatGPT pricing", "credit score tip", "AI tool for freelancers", "mortgage rate update".
+
+The video has 5 acts:
+1. HOOK — money/tool impact headline (2-second grab)
+2. CONTEXT — 3 short lines explaining the update/tool/rule
+3. WHY — 3 short lines on cost, risk, or opportunity
+4. QUESTION — open-loop question + 6 to 8 rapid captions
+5. CLOSE — wrap-up; LAST line must ask viewers to comment their take
+
+Style rules:
+- Clear, practical, beginner-friendly explainer tone.
+- Light Hinglish/Urdu is fine where natural.
+- Focus on costs, benefits, mistakes, comparisons, and next steps — not drama.
+- Hook: 4-8 words, different from title.
+- Context/why lines: max 8 words each.
+- Captions: 6-8 unique items, max 5 words, include a topic keyword.
+- BANNED caption fillers: "FULL TIME?", "MATCH ALERT", "TRENDING NOW", "GOAL ALERT".
+- youtube_tags: include niche tags like "AI tools", "personal finance", "investing", "SaaS", "business tips" plus topic keywords.
+
+Palette: pick 3 RGB colors — professional high-contrast for mobile.
+Respond ONLY with valid JSON. No markdown fences. No explanation."""
+
+# Default aliases for older call sites.
+OPENAI_TOPIC_SELECTOR_SYSTEM = OPENAI_TOPIC_SELECTOR_VIRAL
+SYSTEM_PROMPT = SYSTEM_PROMPT_VIRAL
+
+
+def make_prompt(latest_topic: str, epilogue_extra: str | None = None, niche: str = "viral") -> str:
+    angles = HIGH_CPM_ANGLES if niche == "high_cpm" else VIRAL_ANGLES
+    angle = random.choice(angles)
+    if niche == "high_cpm":
+        package_line = "Create a 30-second HIGH-CPM (AI tools / finance / SaaS / business) YouTube Short package."
+        framing = (
+            "Frame this as a practical money/tool explainer when possible "
+            "(cost, risk, productivity, beginner mistake, comparison)."
+        )
+        tags_hint = '["AI tools", "personal finance", "... 8-12 niche + trend tags"]'
+        search_hint = "specific stock-image search phrase for office finance AI productivity"
+    else:
+        package_line = "Create a 30-second viral trending-topic YouTube Short package."
+        framing = "Keep it discovery-friendly and broadly interesting."
+        tags_hint = '["trend keyword 1", "trend keyword 2", "... 8-12 search tags"]'
+        search_hint = "specific stock-image search phrase based on trend"
+
+    base = f"""{package_line}
 
 Current trending topic: {latest_topic}
 Content angle: {angle}
+Niche mode: {niche}
 
 The output must be directly about this exact trend phrase.
-NEVER invent a "Team A vs Team B" matchup unless both teams are in "{latest_topic}".
-If the trend is not obviously football/World Cup related, reinterpret it through football/match/tournament/fan angle only if that still feels natural.
-Prefer match breakdown, group stage stakes, player spotlight, upset prediction, or VAR controversy framing.
+{framing}
 Do not turn it into fiction.
-Do not invent fake match scores, fake fixtures, or confirmed lineups.
+Do not fabricate facts, timelines, prices, or outcomes.
 Do not convert it into a haunted or horror metaphor.
 The title MUST contain words from "{latest_topic}" and stay under 55 characters.
 The hook must use different wording than the title.
@@ -190,8 +274,8 @@ Return this exact JSON:
   "question": "4-10 word question that invites comments",
   "captions": [["TOPIC-SPECIFIC CAPTION", [r,g,b]], "... 6 to 8 unique, each uses a word from the trend"],
   "close_lines": ["2 lines wrap-up", "Comment your pick below"],
-  "search_query": "specific stock-image search phrase for football stadium fans world cup",
-  "youtube_tags": ["FIFA World Cup 2026", "football", "... 8-12 search tags"]
+  "search_query": "{search_hint}",
+  "youtube_tags": {tags_hint}
 }}"""
     if epilogue_extra:
         base += f"\n\nEpilogue instruction: {epilogue_extra}"
@@ -242,25 +326,47 @@ def _is_usable_topic(topic: str) -> bool:
     return True
 
 
-def _is_channel_fit_topic(topic: str) -> bool:
+def _is_channel_fit_topic(topic: str, niche: str = "viral") -> bool:
     t = (topic or "").lower()
     tokens = re.findall(r"[a-z0-9]+", t)
     if not tokens:
         return False
     token_set = set(tokens)
-    multiword_matches = [
-        "world cup", "fifa world", "group stage", "knockout stage",
-        "penalty shootout", "golden boot", "var decision",
-    ]
+    if niche == "high_cpm":
+        keywords = HIGH_CPM_KEYWORDS
+        multiword_matches = [
+            "stock market", "interest rate", "credit score", "personal finance",
+            "ai tool", "chatgpt", "high yield", "mortgage rate", "side hustle",
+            "product pricing", "saas pricing",
+        ]
+    else:
+        keywords = VIRAL_KEYWORDS
+        multiword_matches = [
+            "breaking news", "box office", "social media", "product launch",
+            "policy update", "viral clip",
+        ]
     if any(phrase in t for phrase in multiword_matches):
         return True
-    return any(k in token_set for k in CHANNEL_FIT_KEYWORDS)
+    return any(k in token_set for k in keywords)
 
 
-def select_topic_with_openai(topics: list[str]) -> tuple[str | None, str | None]:
+def select_topic_with_openai(
+    topics: list[str], niche: str = "viral"
+) -> tuple[str | None, str | None]:
     api_key = env_value("OPENAI_API_KEY", "").strip()
     if not api_key or not topics:
         return None, None
+
+    system = (
+        OPENAI_TOPIC_SELECTOR_HIGH_CPM
+        if niche == "high_cpm"
+        else OPENAI_TOPIC_SELECTOR_VIRAL
+    )
+    user_hint = (
+        "Choose the best HIGH-CPM topic (AI tools / finance / SaaS / business money):\n"
+        if niche == "high_cpm"
+        else "Choose the best viral discovery topic from this live list:\n"
+    )
 
     payload = json.dumps(
         {
@@ -268,11 +374,10 @@ def select_topic_with_openai(topics: list[str]) -> tuple[str | None, str | None]
             "temperature": 0.3,
             "response_format": {"type": "json_object"},
             "messages": [
-                {"role": "system", "content": OPENAI_TOPIC_SELECTOR_SYSTEM},
+                {"role": "system", "content": system},
                 {
                     "role": "user",
-                    "content": "Choose the best topic from this live list for FIFA World Cup football Shorts:\n"
-                    + json.dumps(topics, ensure_ascii=False),
+                    "content": user_hint + json.dumps(topics, ensure_ascii=False),
                 },
             ],
         }
@@ -300,8 +405,9 @@ def select_topic_with_openai(topics: list[str]) -> tuple[str | None, str | None]
     return None, None
 
 
-def pick_rotated_channel_fit_fallback() -> str:
+def pick_rotated_channel_fit_fallback(niche: str = "viral") -> str:
     """Pick a synthetic seed while avoiding the last few picks (reduces duplicate titles)."""
+    pool_src = HIGH_CPM_FALLBACKS if niche == "high_cpm" else VIRAL_FALLBACKS
     try:
         SEED_HISTORY_PATH.parent.mkdir(parents=True, exist_ok=True)
         recent: list[str] = []
@@ -310,9 +416,9 @@ def pick_rotated_channel_fit_fallback() -> str:
             if isinstance(data, dict):
                 recent = [str(x) for x in data.get("recent_seeds", []) if str(x).strip()]
         avoid = set(s.lower() for s in recent[-4:])
-        pool = [s for s in CHANNEL_FIT_FALLBACKS if s.lower() not in avoid]
+        pool = [s for s in pool_src if s.lower() not in avoid]
         if not pool:
-            pool = list(CHANNEL_FIT_FALLBACKS)
+            pool = list(pool_src)
         choice = random.choice(pool)
         recent.append(choice)
         SEED_HISTORY_PATH.write_text(
@@ -322,45 +428,58 @@ def pick_rotated_channel_fit_fallback() -> str:
         return choice
     except Exception as e:
         print(f"  [WARN] Seed rotation unavailable: {e}")
-        return random.choice(CHANNEL_FIT_FALLBACKS)
+        return random.choice(pool_src)
 
 
-def pick_latest_topic() -> tuple[str, str | None]:
-    """Pick a topic from RSS, preferring OpenAI-ranked channel-fit topics when available."""
+def pick_latest_topic(niche: str = "viral") -> tuple[str, str | None]:
+    """Pick a topic from RSS, filtered by niche (high_cpm vs viral)."""
+    label = "HIGH-CPM" if niche == "high_cpm" else "viral"
     try:
         topics = fetch_latest_topics()
         if topics:
             preview = ", ".join(topics[:5])
             print(f"  RSS top topics: {preview}")
-            chosen, search_query = select_topic_with_openai(topics[:10])
+            # Prefer niche-matching candidates first for OpenAI ranking.
+            niche_first = [
+                t for t in topics if _is_usable_topic(t) and _is_channel_fit_topic(t, niche)
+            ]
+            rank_pool = (niche_first + [t for t in topics if t not in niche_first])[:10]
+            chosen, search_query = select_topic_with_openai(rank_pool, niche=niche)
             if chosen:
-                print(f"  Trending topic seed: {chosen} (OpenAI-selected)")
+                # If OpenAI picked off-niche for high_cpm, try a niche candidate instead.
+                if niche == "high_cpm" and not _is_channel_fit_topic(chosen, niche) and niche_first:
+                    chosen = niche_first[0]
+                    search_query = None
+                    print(f"  Trending topic seed: {chosen} ({label} override)")
+                    return chosen, search_query
+                print(f"  Trending topic seed: {chosen} (OpenAI-selected, {label})")
                 return chosen, search_query
             for candidate in topics:
-                if _is_usable_topic(candidate) and _is_channel_fit_topic(candidate):
-                    print(f"  Trending topic seed: {candidate} (latest channel-fit)")
+                if _is_usable_topic(candidate) and _is_channel_fit_topic(candidate, niche):
+                    print(f"  Trending topic seed: {candidate} (latest {label})")
                     return candidate, None
-            print("  No channel-fit topic in RSS; using channel-fit fallback.")
-        print("  Trending topic feed empty; using synthetic angle seed.")
+            print(f"  No {label} topic in RSS; using {label} fallback seed.")
+        print(f"  Trending topic feed empty; using synthetic {label} seed.")
     except Exception as e:
         print(f"  Trending topic fetch failed: {e}")
-    fallback_topic = pick_rotated_channel_fit_fallback()
-    print(f"  Trending topic seed: {fallback_topic} (channel-fit fallback)")
+    fallback_topic = pick_rotated_channel_fit_fallback(niche=niche)
+    print(f"  Trending topic seed: {fallback_topic} ({label} fallback)")
     return fallback_topic, None
 
 
-def call_llm(prompt: str, model: str) -> dict:
+def call_llm(prompt: str, model: str, niche: str = "viral") -> dict:
     api_key = env_value("OPENROUTER_API_KEY", "")
     if not api_key:
         raise ValueError("OPENROUTER_API_KEY not set")
 
+    system = SYSTEM_PROMPT_HIGH_CPM if niche == "high_cpm" else SYSTEM_PROMPT_VIRAL
     payload = json.dumps(
         {
             "model": model,
             "temperature": 1.0,
             "max_tokens": 1200,
             "messages": [
-                {"role": "system", "content": SYSTEM_PROMPT},
+                {"role": "system", "content": system},
                 {"role": "user", "content": prompt},
             ],
         }
@@ -409,21 +528,27 @@ def _sanitize_title(title: str, trend: str = "") -> str:
     t = _compact_ws(title)
     low = t.lower()
     if any(phrase in low for phrase in TITLE_BANNED_PHRASES):
-        t = _fallback_title_from_topic(trend) if trend else "World Cup 2026 update"
+        t = _fallback_title_from_topic(trend) if trend else "Trending update explained"
     if len(t) > TITLE_MAX_CHARS:
         cut = t[: TITLE_MAX_CHARS - 3].rsplit(" ", 1)[0]
         t = (cut or t[: TITLE_MAX_CHARS - 3]) + "..."
     return t
 
 
-def _default_youtube_tags(trend: str = "") -> list[str]:
-    tags = [
-        "FIFA World Cup 2026", "World Cup", "football", "soccer",
-        "World Cup shorts", "football shorts", "FIFA", "soccer shorts",
-    ]
+def _default_youtube_tags(trend: str = "", niche: str = "viral") -> list[str]:
+    if niche == "high_cpm":
+        tags = [
+            "AI tools", "Personal Finance", "Investing", "Business Tips",
+            "SaaS", "Money Tips", "Productivity", "Shorts",
+        ]
+    else:
+        tags = [
+            "Trending", "Breaking News", "Explainer", "Viral",
+            "Shorts", "YouTube Shorts", "Latest Update", "Internet Trends",
+        ]
     for word in re.findall(r"[A-Za-z0-9]+", trend or ""):
         if len(word) >= 4 and word.lower() not in {
-            "world", "cup", "fifa", "2026", "match", "group", "stage", "today",
+            "today", "viral", "trend", "trending", "update", "news", "latest",
         }:
             tag = word.title()
             if tag not in tags:
@@ -436,7 +561,7 @@ def _default_youtube_tags(trend: str = "") -> list[str]:
 def validate(content: dict, trend: str = "") -> dict:
     """Ensure all required fields exist and have correct types."""
     if not content.get("title"):
-        content["title"] = "World Cup - What Just Happened?"
+        content["title"] = "Trending Update - What Happened?"
     content["title"] = _sanitize_title(str(content["title"]), trend)
 
     if not content.get("topic_id"):
@@ -461,7 +586,7 @@ def validate(content: dict, trend: str = "") -> dict:
     content["why_lines"] = why_lines[:3]
 
     if not content.get("question"):
-        content["question"] = "Who takes it... ya draw?"
+        content["question"] = "Aapka take kya hai?"
 
     caps = content.get("captions", [])
     fixed = []
@@ -483,7 +608,7 @@ def validate(content: dict, trend: str = "") -> dict:
             fixed.append([text, [max(0, min(255, int(v))) for v in color]])
     # Pad with topic-unique captions — never recycle banned fillers like "FULL TIME?"
     if len(fixed) < 6:
-        for text, color in _unique_fallback_captions(trend or content.get("title") or "World Cup"):
+        for text, color in _unique_fallback_captions(trend or content.get("title") or "Trending Update"):
             key = text.upper()
             if key in seen_texts:
                 continue
@@ -505,11 +630,16 @@ def validate(content: dict, trend: str = "") -> dict:
         tags = []
     tags = [str(t).strip() for t in tags if str(t).strip()]
     if len(tags) < 4:
-        tags = _default_youtube_tags(trend or content.get("title", ""))
+        tags = _default_youtube_tags(trend or content.get("title", ""), niche=content.get("_niche", "viral"))
     content["youtube_tags"] = tags[:12]
 
     if not content.get("search_query"):
-        content["search_query"] = str(content.get("search_query") or content.get("title", "")).strip() or "fifa world cup football stadium fans"
+        default_q = (
+            "ai finance productivity office laptop"
+            if content.get("_niche") == "high_cpm"
+            else "trending topic social media news"
+        )
+        content["search_query"] = str(content.get("search_query") or content.get("title", "")).strip() or default_q
 
     return _normalize_display_text(content)
 
@@ -530,7 +660,7 @@ def _normalize_display_text(content: dict) -> dict:
         tl, hl = title.lower(), hook.lower()
         if tl == hl or tl in hl or hl in tl:
             if len(hook) <= len(title):
-                content["hook"] = "Quick match breakdown + stakes."
+                content["hook"] = "Quick trend breakdown in 30 sec."
             else:
                 content["title"] = hook
                 content["hook"] = "Yeh trend abhi viral hai — detail dekho."
@@ -547,9 +677,9 @@ def _normalize_display_text(content: dict) -> dict:
 # Varied, non-repetitive title shapes. {t} is the topic phrase (title-cased).
 _TITLE_TEMPLATES_GENERIC = [
     "{t} — what changed?",
-    "World Cup: {t}",
     "{t} explained in 30 sec",
     "Everyone's talking about {t}",
+    "Why {t} is trending now",
 ]
 _TITLE_TEMPLATES_VS = [
     "{t}: who actually wins?",
@@ -612,7 +742,7 @@ def _unique_fallback_captions(focus: str) -> list:
     Build 6 topic-anchored captions that differ each call.
     Prevents every failed LLM run from showing the same 'FULL TIME?' Shorts cover.
     """
-    focus = _compact_ws(focus or "").strip() or "World Cup"
+    focus = _compact_ws(focus or "").strip() or "Trending Update"
     words = re.findall(r"[A-Za-z0-9']+", focus)
     # Fresh randomness every run (not seeded by topic alone — same topic can rerun).
     rng = random.Random()
@@ -670,7 +800,7 @@ def _fallback_title_from_topic(latest_topic: str) -> str:
         pool = _TITLE_TEMPLATES_PRICE
     elif "feature" in topic_l or "update" in topic_l:
         pool = _TITLE_TEMPLATES_FEATURE
-    elif any(w in topic_l for w in ("match", "cup", "fifa", "goal", "group", "final")):
+    elif any(w in topic_l for w in ("launch", "update", "release", "debate", "controversy")):
         pool = _TITLE_TEMPLATES_MATCH
     else:
         pool = _TITLE_TEMPLATES_GENERIC
@@ -700,7 +830,7 @@ def fallback_for_topic(latest_topic: str) -> dict:
     base["question"] = "Real story kya hai?"
     base["captions"] = _unique_fallback_captions(focus)
     base["close_lines"] = [
-        "Tournament tez chal raha hai, details check zaroor karo.",
+        "Trend fast move kar raha hai, update check zaroor karo.",
         "Comment your pick below.",
     ]
     if lt:
@@ -754,58 +884,61 @@ def fallback() -> dict:
 
 _FALLBACK_POOL = [
     {
-        "title": "World Cup 2026 standings update",
-        "topic_id": "world_cup_standings",
-        "palette": [[34, 139, 34], [255, 215, 0], [255, 255, 255]],
-        "hook": "Standings just shifted!",
-        "context_lines": ["Every match reshapes the bracket.", "Three points change everything.", "One slip can end a run."],
-        "why_lines": ["Fans track every goal live.", "Social feeds explode after upsets.", "Knockout spots stay wide open."],
-        "question": "Kaun group se nikal jayega?",
+        "title": "AI tool update just dropped",
+        "topic_id": "ai_tool_update",
+        "palette": [[48, 114, 255], [130, 220, 255], [255, 255, 255]],
+        "hook": "Yeh feature game-change hai?",
+        "context_lines": ["Naya update suddenly live ho gaya.", "Users screenshots share kar rahe hain.", "Timeline par strong reactions aa rahi hain."],
+        "why_lines": ["Workflow direct impact ho sakta hai.", "Early adopters fast experiment kar rahe.", "Competitors pe pressure build ho raha."],
+        "question": "Hype ya actually useful?",
         "captions": [
-            ["BRACKET SHIFT", [255, 255, 255]],
-            ["THREE POINTS", [255, 220, 120]],
-            ["FORM CHECK", [255, 150, 150]],
-            ["NET PRESSURE", [255, 255, 255]],
-            ["PATH WIDENS", [255, 220, 120]],
-            ["PICK YOUR SIDE", [255, 150, 150]],
+            ["UPDATE DROP", [255, 255, 255]],
+            ["REAL IMPACT?", [255, 220, 120]],
+            ["EARLY REVIEWS", [255, 150, 150]],
+            ["MASSIVE DEMAND", [255, 255, 255]],
+            ["WORTH SWITCHING?", [255, 220, 120]],
+            ["YOUR TAKE?", [255, 150, 150]],
         ],
-        "close_lines": ["Har match bracket badal sakta hai.", "Comment your pick below."],
-        "search_query": "fifa world cup group stage stadium fans",
-        "youtube_tags": ["FIFA World Cup 2026", "World Cup standings", "football", "soccer shorts"],
+        "close_lines": ["Aaj ka shift kal trend bana deta hai.", "Comment your pick below."],
+        "search_query": "ai product launch user reaction interface",
+        "youtube_tags": ["AI update", "tech news", "trending", "shorts"],
     },
     {
-        "title": "Messi at World Cup 2026",
-        "topic_id": "messi_world_cup",
-        "palette": [[120, 200, 255], [255, 220, 0], [255, 255, 255]],
-        "hook": "Messi ka World Cup moment!",
-        "context_lines": ["All eyes on the legend.", "Every touch gets analyzed.", "Legacy still on the line."],
-        "why_lines": ["Global fanbase is massive.", "Highlights trend instantly.", "Debate never stops online."],
-        "question": "Messi ka best moment kaunsa?",
+        "title": "Celebrity interview sparks debate",
+        "topic_id": "celeb_interview_debate",
+        "palette": [[255, 94, 98], [255, 196, 113], [255, 255, 255]],
+        "hook": "Ek line ne internet hila diya",
+        "context_lines": ["Clip short hai, debate huge hai.", "Different edits alag story bana rahe.", "Comments section full split hai."],
+        "why_lines": ["Fan bases directly clash kar rahe.", "Media coverage fast scale ho rahi.", "Narrative har hour change ho raha."],
+        "question": "Out of context ya fair point?",
         "captions": [
-            ["MESSI WATCH", [255, 255, 255]],
-            ["LEGEND MODE", [255, 220, 120]],
-            ["CUP STAGE", [255, 180, 120]],
-            ["FAN FEVER", [255, 255, 255]],
-            ["MAGIC TOUCH", [255, 220, 120]],
+            ["CLIP VIRAL", [255, 255, 255]],
+            ["CONTEXT CHECK", [255, 220, 120]],
+            ["FANS DIVIDED", [255, 180, 120]],
+            ["FULL STORY?", [255, 255, 255]],
+            ["HOT DEBATE", [255, 220, 120]],
             ["YOUR PICK?", [255, 180, 120]],
         ],
-        "close_lines": ["Form match day pe dikhta hai.", "Comment your pick below."],
-        "search_query": "messi world cup football stadium celebration",
-        "youtube_tags": ["Messi", "FIFA World Cup 2026", "Argentina", "football shorts"],
+        "close_lines": ["Narrative fast turn hota hai online.", "Comment your pick below."],
+        "search_query": "podcast interview studio microphone reaction",
+        "youtube_tags": ["celebrity news", "viral clip", "internet debate", "shorts"],
     },
 ]
 
 
-def generate_topic(epilogue_extra: str | None = None) -> dict:
+def generate_topic(epilogue_extra: str | None = None, slot: str | None = None) -> dict:
     """Generate a completely fresh topic and all content via OpenRouter."""
+    niche = niche_for_slot(slot)
     key = env_value("OPENROUTER_API_KEY", "")
     print(f"  OPENROUTER_API_KEY: {'SET (' + key[:8] + '...)' if key else 'NOT SET'}")
-    latest_topic, selected_search_query = pick_latest_topic()
-    prompt = make_prompt(latest_topic, epilogue_extra)
+    print(f"  Niche mode: {niche} (slot={slot or 'n/a'})")
+    latest_topic, selected_search_query = pick_latest_topic(niche=niche)
+    prompt = make_prompt(latest_topic, epilogue_extra, niche=niche)
     for i, model in enumerate(MODELS):
         try:
             print(f"  Generating topic (model: {model})...")
-            content = call_llm(prompt, model)
+            content = call_llm(prompt, model, niche=niche)
+            content["_niche"] = niche
             content = validate(content, latest_topic)
             if selected_search_query and not content.get("search_query"):
                 content["search_query"] = selected_search_query
@@ -837,6 +970,8 @@ def generate_topic(epilogue_extra: str | None = None) -> dict:
                         content["captions"] = captions
             content = _normalize_display_text(content)
             content["trend_topic"] = latest_topic
+            content["niche"] = niche
+            content.pop("_niche", None)
             if selected_search_query:
                 content["search_query"] = selected_search_query
             print(f"  Topic: '{content['title']}'")
@@ -850,9 +985,14 @@ def generate_topic(epilogue_extra: str | None = None) -> dict:
     print("  All models failed. Using fallback content.")
     _track_fallback_usage(latest_topic, "all_models_failed")
     content = fallback_for_topic(latest_topic)
+    content["_niche"] = niche
+    content["niche"] = niche
     if selected_search_query:
         content["search_query"] = selected_search_query
-    return validate(content, latest_topic)
+    out = validate(content, latest_topic)
+    out["niche"] = niche
+    out.pop("_niche", None)
+    return out
 
 
 if __name__ == "__main__":
