@@ -24,6 +24,8 @@ from topic_validation import (
 API_URL = "https://openrouter.ai/api/v1/chat/completions"
 OPENAI_API_URL = "https://api.openai.com/v1/chat/completions"
 GOOGLE_TRENDS_RSS = "https://trends.google.com/trending/rss?geo={geo}"
+# Namespace for the ht:* demand fields already present in the Trends RSS payload.
+GOOGLE_TRENDS_HT_NS = "https://trends.google.com/trending/rss"
 
 
 def load_env_file(env_path: Path) -> dict[str, str]:
@@ -292,9 +294,31 @@ Return this exact JSON:
     return base
 
 
-def fetch_latest_topics(max_items: int = 20) -> list[str]:
+def _parse_approx_traffic(text: str) -> int:
+    """Convert Trends RSS approx_traffic text to an integer.
+
+    Examples: '20,000+' -> 20000 ; '200+' -> 200 ; '' -> 0.
     """
-    Fetch current Google Trends topics from RSS.
+    m = re.search(r"[\d,]+", text or "")
+    return int(m.group(0).replace(",", "")) if m else 0
+
+
+def demand_score(traffic: int, news_count: int = 0) -> float:
+    """Return a 0..1 demand estimate for a trending topic.
+
+    Traffic (log-scaled from approx_traffic) is the primary signal.
+    News-item count is a small secondary nudge for cross-coverage breadth.
+    """
+    import math
+    traffic_component = min(1.0, math.log10(traffic + 1) / 6.0)  # ~1M+ ≈ 1.0
+    news_component = min(1.0, news_count / 5.0) * 0.15           # up to +0.15
+    return round(min(1.0, traffic_component + news_component), 4)
+
+
+def fetch_trending_entries(max_items: int = 20) -> list[dict]:
+    """Fetch Google Trends topics from RSS, preserving demand metadata.
+
+    Each returned dict has keys: topic, traffic (int), news_count (int), demand (float).
     Falls back silently if network/feed parsing fails.
     """
     geo = env_value("TREND_GEO", "US").strip().upper() or "US"
@@ -310,7 +334,8 @@ def fetch_latest_topics(max_items: int = 20) -> list[str]:
         raw = r.read()
 
     root = ET.fromstring(raw)
-    topics: list[str] = []
+    entries: list[dict] = []
+    seen: set[str] = set()
     for item in root.findall(".//item"):
         t = (item.findtext("title") or "").strip()
         if not t:
@@ -318,11 +343,37 @@ def fetch_latest_topics(max_items: int = 20) -> list[str]:
         # Remove hash-prefixes and extra separators for cleaner prompt context.
         t = re.sub(r"\s*#\w+", "", t).strip()
         t = re.sub(r"\s*[|:]\s*", " - ", t)
-        if t and is_valid_entity(t, min_length=4) and t not in topics:
-            topics.append(t)
-        if len(topics) >= max_items:
+        if not t or not is_valid_entity(t, min_length=4) or t in seen:
+            continue
+        seen.add(t)
+        traffic = _parse_approx_traffic(
+            item.findtext(f"{{{GOOGLE_TRENDS_HT_NS}}}approx_traffic") or ""
+        )
+        news_count = len(item.findall(f"{{{GOOGLE_TRENDS_HT_NS}}}news_item"))
+        entries.append(
+            {
+                "topic": t,
+                "traffic": traffic,
+                "news_count": news_count,
+                "demand": demand_score(traffic, news_count),
+            }
+        )
+        if len(entries) >= max_items:
             break
-    return topics
+    return entries
+
+
+def fetch_latest_topics(max_items: int = 20) -> list[str]:
+    """Back-compat wrapper — returns topic strings only (demand metadata dropped)."""
+    return [e["topic"] for e in fetch_trending_entries(max_items)]
+
+
+def _demand_min_score() -> float:
+    """Minimum demand score a trend must clear before the LLM selector sees it."""
+    try:
+        return float(env_value("DEMAND_MIN_SCORE", "0.35"))
+    except (TypeError, ValueError):
+        return 0.35
 
 
 def _is_usable_topic(topic: str) -> bool:
@@ -441,13 +492,36 @@ def pick_rotated_channel_fit_fallback(niche: str = "viral") -> str:
 
 
 def pick_latest_topic(niche: str = "viral") -> tuple[str, str | None]:
-    """Pick a topic from RSS, filtered by niche (high_cpm vs viral)."""
+    """Pick a topic from RSS, demand-filtered and niche-filtered."""
     label = "HIGH-CPM" if niche == "high_cpm" else "viral"
     try:
-        topics = fetch_latest_topics()
+        entries = fetch_trending_entries()
+        thr = _demand_min_score()
+        topics: list[str] = []
+        if entries:
+            viable = [e for e in entries if e["demand"] >= thr]
+            # Log below-threshold topics separately (distinct reason from null/placeholder).
+            for e in entries:
+                if e["demand"] < thr:
+                    log_entity_rejection(
+                        "demand_filter",
+                        e["topic"],
+                        {
+                            "demand": e["demand"],
+                            "traffic": e["traffic"],
+                            "news_count": e["news_count"],
+                            "threshold": thr,
+                        },
+                        reason="low_demand",
+                    )
+            # Never pass an empty list to the selector on a low-traffic day.
+            pool_entries = viable if viable else entries
+            topics = [e["topic"] for e in pool_entries]
+            preview = ", ".join(
+                f'{e["topic"]} ({e["demand"]})' for e in pool_entries[:5]
+            )
+            print(f"  RSS top topics (demand≥{thr}): {preview}")
         if topics:
-            preview = ", ".join(topics[:5])
-            print(f"  RSS top topics: {preview}")
             # Prefer niche-matching candidates first for OpenAI ranking.
             niche_first = [
                 t for t in topics if _is_usable_topic(t) and _is_channel_fit_topic(t, niche)
