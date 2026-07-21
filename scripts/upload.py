@@ -8,6 +8,9 @@ Run auth.py once to get your refresh token.
 import os, sys, json, argparse, mimetypes, time
 import urllib.request, urllib.parse
 
+sys.path.insert(0, os.path.dirname(__file__))
+from topic_validation import EntityValidationError, assert_publishable_metadata, log_entity_rejection
+
 CLIENT_ID     = os.environ.get("YOUTUBE_CLIENT_ID")
 CLIENT_SECRET = os.environ.get("YOUTUBE_CLIENT_SECRET")
 REFRESH_TOKEN = os.environ.get("YOUTUBE_REFRESH_TOKEN")
@@ -38,6 +41,12 @@ def upload_video(access_token, video_path, title, description, tags=None, schedu
     privacy: "private" | "public" | "unlisted"
     scheduled_utc: ISO 8601 string — if set, video stays private until that time.
     """
+    try:
+        assert_publishable_metadata(title, description, source="upload.upload_video")
+    except EntityValidationError as exc:
+        log_entity_rejection("upload.upload_video", title, {"description": description, "error": str(exc)})
+        raise
+
     status = privacy
     publish_at = None
 

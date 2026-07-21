@@ -11,6 +11,16 @@ import os, json, random, time, re, urllib.request, urllib.error, xml.etree.Eleme
 from pathlib import Path
 from datetime import datetime, timezone
 
+from topic_validation import (
+    EntityValidationError,
+    assert_publishable_title,
+    contains_invalid_publish_text,
+    is_valid_entity,
+    log_entity_rejection,
+    normalize_entity,
+    require_valid_entity,
+)
+
 API_URL = "https://openrouter.ai/api/v1/chat/completions"
 OPENAI_API_URL = "https://api.openai.com/v1/chat/completions"
 GOOGLE_TRENDS_RSS = "https://trends.google.com/trending/rss?geo={geo}"
@@ -308,7 +318,7 @@ def fetch_latest_topics(max_items: int = 20) -> list[str]:
         # Remove hash-prefixes and extra separators for cleaner prompt context.
         t = re.sub(r"\s*#\w+", "", t).strip()
         t = re.sub(r"\s*[|:]\s*", " - ", t)
-        if t and t not in topics:
+        if t and is_valid_entity(t, min_length=4) and t not in topics:
             topics.append(t)
         if len(topics) >= max_items:
             break
@@ -316,14 +326,7 @@ def fetch_latest_topics(max_items: int = 20) -> list[str]:
 
 
 def _is_usable_topic(topic: str) -> bool:
-    t = (topic or "").strip()
-    if len(t) < 4:
-        return False
-    if t in {"...", "unknown", "n/a", "null"}:
-        return False
-    if not re.search(r"[A-Za-z0-9]", t):
-        return False
-    return True
+    return is_valid_entity(topic, min_length=4)
 
 
 def _is_channel_fit_topic(topic: str, niche: str = "viral") -> bool:
@@ -396,10 +399,16 @@ def select_topic_with_openai(
             resp = json.loads(r.read())
         raw = resp["choices"][0]["message"]["content"].strip()
         data = json.loads(raw)
-        topic = (data.get("selected_topic") or "").strip()
-        query = (data.get("search_query") or "").strip()
-        if topic:
+        topic = normalize_entity(data.get("selected_topic"))
+        query = normalize_entity(data.get("search_query"))
+        if topic and is_valid_entity(topic, min_length=4):
             return topic, query or None
+        if topic or data.get("selected_topic") is not None:
+            log_entity_rejection(
+                "openai_topic_selector",
+                data.get("selected_topic"),
+                {"raw_response": raw, "parsed": data, "topics_input": topics},
+            )
     except Exception as e:
         print(f"  OpenAI topic selector failed: {e}")
     return None, None
@@ -445,26 +454,34 @@ def pick_latest_topic(niche: str = "viral") -> tuple[str, str | None]:
             ]
             rank_pool = (niche_first + [t for t in topics if t not in niche_first])[:10]
             chosen, search_query = select_topic_with_openai(rank_pool, niche=niche)
-            if chosen:
+            if chosen and _is_usable_topic(chosen):
                 # If OpenAI picked off-niche for high_cpm, try a niche candidate instead.
                 if niche == "high_cpm" and not _is_channel_fit_topic(chosen, niche) and niche_first:
                     chosen = niche_first[0]
                     search_query = None
                     print(f"  Trending topic seed: {chosen} ({label} override)")
-                    return chosen, search_query
+                    return require_valid_entity(
+                        chosen, source="pick_latest_topic.openai_override", raw_upstream=topics
+                    ), search_query
                 print(f"  Trending topic seed: {chosen} (OpenAI-selected, {label})")
-                return chosen, search_query
+                return require_valid_entity(
+                    chosen, source="pick_latest_topic.openai", raw_upstream=topics
+                ), search_query
             for candidate in topics:
                 if _is_usable_topic(candidate) and _is_channel_fit_topic(candidate, niche):
                     print(f"  Trending topic seed: {candidate} (latest {label})")
-                    return candidate, None
+                    return require_valid_entity(
+                        candidate, source="pick_latest_topic.rss", raw_upstream=topics
+                    ), None
             print(f"  No {label} topic in RSS; using {label} fallback seed.")
         print(f"  Trending topic feed empty; using synthetic {label} seed.")
     except Exception as e:
         print(f"  Trending topic fetch failed: {e}")
     fallback_topic = pick_rotated_channel_fit_fallback(niche=niche)
     print(f"  Trending topic seed: {fallback_topic} ({label} fallback)")
-    return fallback_topic, None
+    return require_valid_entity(
+        fallback_topic, source="pick_latest_topic.fallback", raw_upstream={"niche": niche}
+    ), None
 
 
 def call_llm(prompt: str, model: str, niche: str = "viral") -> dict:
@@ -527,8 +544,11 @@ def _sanitize_title(title: str, trend: str = "") -> str:
     """Strip spammy clichés and enforce mobile-friendly length."""
     t = _compact_ws(title)
     low = t.lower()
+    safe_trend = trend if is_valid_entity(trend, min_length=4) else ""
     if any(phrase in low for phrase in TITLE_BANNED_PHRASES):
-        t = _fallback_title_from_topic(trend) if trend else "Trending update explained"
+        t = _fallback_title_from_topic(safe_trend) if safe_trend else "Trending update explained"
+    if not is_valid_entity(t, min_length=4) or contains_invalid_publish_text(t):
+        t = _fallback_title_from_topic(safe_trend) if safe_trend else "Trending update explained"
     if len(t) > TITLE_MAX_CHARS:
         cut = t[: TITLE_MAX_CHARS - 3].rsplit(" ", 1)[0]
         t = (cut or t[: TITLE_MAX_CHARS - 3]) + "..."
@@ -640,6 +660,25 @@ def validate(content: dict, trend: str = "") -> dict:
             else "trending topic social media news"
         )
         content["search_query"] = str(content.get("search_query") or content.get("title", "")).strip() or default_q
+
+    try:
+        assert_publishable_title(
+            str(content.get("title", "")),
+            source="content_gen.validate",
+        )
+    except EntityValidationError as exc:
+        log_entity_rejection(
+            "content_gen.validate.title",
+            content.get("title"),
+            {"trend": trend, "error": str(exc)},
+        )
+        safe_trend = trend if is_valid_entity(trend, min_length=4) else ""
+        content["title"] = (
+            _fallback_title_from_topic(safe_trend)
+            if safe_trend
+            else "Trending Update - What Happened?"
+        )
+        assert_publishable_title(content["title"], source="content_gen.validate.recovered")
 
     return _normalize_display_text(content)
 
@@ -791,7 +830,7 @@ def _unique_fallback_captions(focus: str) -> list:
 
 def _fallback_title_from_topic(latest_topic: str) -> str:
     topic = _compact_ws(latest_topic or "").strip(" -:")
-    if not topic:
+    if not is_valid_entity(topic, min_length=4):
         return random.choice(_TITLE_TEMPLATES_GENERIC).format(t="this trend")
     topic_l = topic.lower()
     if " vs " in f" {topic_l} ":
@@ -813,6 +852,13 @@ def fallback_for_topic(latest_topic: str) -> dict:
     an unrelated static title like "Movie Box App".
     """
     lt = _compact_ws(latest_topic or "").strip()
+    if not is_valid_entity(lt, min_length=4):
+        log_entity_rejection(
+            "fallback_for_topic",
+            latest_topic,
+            raw_upstream={"latest_topic": latest_topic},
+        )
+        lt = ""
     base = random.choice(_FALLBACK_POOL).copy()
     focus = lt or "this trend"
     base["title"] = _fallback_title_from_topic(lt)
@@ -933,6 +979,24 @@ def generate_topic(epilogue_extra: str | None = None, slot: str | None = None) -
     print(f"  OPENROUTER_API_KEY: {'SET (' + key[:8] + '...)' if key else 'NOT SET'}")
     print(f"  Niche mode: {niche} (slot={slot or 'n/a'})")
     latest_topic, selected_search_query = pick_latest_topic(niche=niche)
+    try:
+        latest_topic = require_valid_entity(
+            latest_topic,
+            source="generate_topic.pick_latest_topic",
+            raw_upstream={"niche": niche, "slot": slot},
+        )
+    except EntityValidationError as exc:
+        log_entity_rejection(
+            "generate_topic.pick_latest_topic",
+            latest_topic,
+            raw_upstream={"niche": niche, "slot": slot, "error": str(exc)},
+        )
+        latest_topic = pick_rotated_channel_fit_fallback(niche=niche)
+        latest_topic = require_valid_entity(
+            latest_topic,
+            source="generate_topic.recovered_fallback",
+            raw_upstream={"niche": niche, "slot": slot},
+        )
     prompt = make_prompt(latest_topic, epilogue_extra, niche=niche)
     for i, model in enumerate(MODELS):
         try:
@@ -974,6 +1038,10 @@ def generate_topic(epilogue_extra: str | None = None, slot: str | None = None) -
             content.pop("_niche", None)
             if selected_search_query:
                 content["search_query"] = selected_search_query
+            assert_publishable_title(
+                str(content.get("title", "")),
+                source="generate_topic.pre_return",
+            )
             print(f"  Topic: '{content['title']}'")
             print(f"  Question: '{content['question']}'")
             return content
@@ -992,6 +1060,7 @@ def generate_topic(epilogue_extra: str | None = None, slot: str | None = None) -
     out = validate(content, latest_topic)
     out["niche"] = niche
     out.pop("_niche", None)
+    assert_publishable_title(str(out.get("title", "")), source="generate_topic.fallback_return")
     return out
 
 

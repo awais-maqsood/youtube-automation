@@ -20,6 +20,7 @@ from datetime import datetime, timezone, timedelta
 from PIL import Image, ImageDraw, ImageFont
 import numpy as np
 from content_gen import generate_topic
+from topic_validation import EntityValidationError, assert_publishable_metadata, log_entity_rejection
 
 W, H = 1080, 1920
 FPS = 30
@@ -1447,6 +1448,15 @@ def generate(topic_id, slot, out_dir, *,
         "video": video,
         "thumbnail": thumb_file if thumb_ok else "",
     }
+    try:
+        assert_publishable_metadata(kit["title"], kit["description"], source="generate.kit")
+    except EntityValidationError as exc:
+        log_entity_rejection(
+            "generate.kit",
+            kit["title"],
+            {"description": kit["description"], "trend_topic": topic.get("trend_topic"), "error": str(exc)},
+        )
+        raise RuntimeError(f"Refusing to write publish kit with invalid metadata: {exc}") from exc
     kit_path = os.path.join(out_dir, "kit.json")
     with open(kit_path, "w") as f:
         json.dump(kit, f, indent=2)

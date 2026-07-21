@@ -7,6 +7,7 @@ from pathlib import Path
 HERE = Path(__file__).parent
 sys.path.insert(0, str(HERE))
 import upload as up
+from topic_validation import EntityValidationError, assert_publishable_metadata, log_entity_rejection
 
 
 def verify(run_id: str, sig: str) -> bool:
@@ -130,8 +131,16 @@ if missing:
     sys.exit(1)
 
 token = up.get_access_token()
+title = kit.get("title", "LLM Short")
+try:
+    assert_publishable_metadata(title, description, source="publish.pre_upload")
+except EntityValidationError as exc:
+    log_entity_rejection("publish.pre_upload", title, {"description": description, "error": str(exc)})
+    print(f"❌ Blocked publish — invalid title/description: {exc}")
+    sys.exit(1)
+
 video_id = up.upload_video(
-    token, tmp_path, kit.get("title", "LLM Short"), description, privacy="public"
+    token, tmp_path, title, description, privacy="public"
 )
 os.unlink(tmp_path)
 
