@@ -855,27 +855,19 @@ def _stable_hash(text: str) -> int:
 
 
 def _rotating_choice(pool: list[str], *, category: str, topic: str) -> str:
-    """Deterministic pick that avoids repeating the same shape consecutively."""
+    """Deterministic template pick that needs no persisted state.
+
+    Production runs on ephemeral GitHub Actions runners, so a local
+    shape_rotation.json cannot survive across scheduled invocations.
+    Index is derived from hash(category + topic + UTC date) — same topic
+    on the same day is stable/debuggable; the shape can shift next day.
+    """
     n = len(pool)
     if n == 0:
         return ""
-    base = _stable_hash(f"{category}:{topic}") % n
-    state_path = Path(__file__).resolve().parent.parent / "output" / "shape_rotation.json"
-    try:
-        state: dict = {}
-        if state_path.exists():
-            loaded = json.loads(state_path.read_text(encoding="utf-8"))
-            if isinstance(loaded, dict):
-                state = loaded
-        idx = base
-        if state.get(category) == idx and n > 1:
-            idx = (idx + 1) % n
-        state[category] = idx
-        state_path.parent.mkdir(parents=True, exist_ok=True)
-        state_path.write_text(json.dumps(state, indent=2), encoding="utf-8")
-        return pool[idx]
-    except Exception:
-        return pool[base]
+    from datetime import date
+    salt = date.today().isoformat()
+    return pool[_stable_hash(f"{category}:{topic}:{salt}") % n]
 
 
 def _anchor_title(entity: str, existing_title: str = "") -> str:
