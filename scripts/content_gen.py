@@ -7,7 +7,7 @@ the latest Google Trends RSS topic.
 Required env var: OPENROUTER_API_KEY
 """
 
-import os, json, random, time, re, urllib.request, urllib.error, xml.etree.ElementTree as ET
+import os, json, random, time, re, hashlib, urllib.request, urllib.error, xml.etree.ElementTree as ET
 from pathlib import Path
 from datetime import datetime, timezone
 
@@ -789,29 +789,128 @@ def _normalize_display_text(content: dict) -> dict:
 
 # Varied, non-repetitive title shapes. {t} is the topic phrase (title-cased).
 _TITLE_TEMPLATES_GENERIC = [
-    "{t} — what changed?",
-    "{t} explained in 30 sec",
-    "Everyone's talking about {t}",
-    "Why {t} is trending now",
+    "{t} — what actually changed?",
+    "{t} explained in under a minute",
+    "3 things to know about {t}",
+    "{t} isn't what most people think",
+    "You need to see this {t} update",
+    "The real story behind {t}",
+    "Why {t} is everywhere right now",
+    "{t} just took a sharp turn",
+    "Everyone's arguing about {t}",
+    "{t}: the 30-second version",
 ]
 _TITLE_TEMPLATES_VS = [
     "{t}: who actually wins?",
-    "{t} — the gap is bigger than expected",
+    "{t} — the gap is bigger than you think",
+    "{t}: it's not even close",
+    "Settling {t} once and for all",
 ]
 _TITLE_TEMPLATES_PRICE = [
     "{t}: what just changed",
     "Why {t} caught everyone off guard",
+    "{t} — should you care?",
+    "The truth about {t} nobody says",
 ]
 _TITLE_TEMPLATES_FEATURE = [
     "{t}: the part nobody mentions",
     "What {t} actually changes",
     "{t} is quietly a big upgrade",
+    "Is {t} worth the hype?",
 ]
 _TITLE_TEMPLATES_MATCH = [
-    "Can {t} survive the group?",
+    "Can {t} survive this?",
     "{t}: the stakes are insane",
     "Before {t}, know this",
+    "{t} could go either way",
 ]
+
+_HOOK_SHAPES = [
+    "{t} — here's the quick version",
+    "Wait, what's going on with {t}?",
+    "This {t} update is a big deal",
+    "Everyone's talking about {t} — here's why",
+    "The {t} story in 30 seconds",
+    "{t}: what you actually need to know",
+    "Nobody's explaining {t} clearly, so here goes",
+    "{t} just shifted the whole conversation",
+]
+
+_CONTEXT_SHAPES = [
+    "{t} is picking up fast.",
+    "People can't stop discussing {t}.",
+    "Here's what's driving {t}.",
+    "The {t} story keeps growing.",
+    "{t} is all over the feeds.",
+    "Reactions to {t} are split.",
+    "This is why {t} matters.",
+]
+
+_ANCHOR_JOINERS = ["{e}: {ti}", "{ti} — {e}", "{e} — {ti}", "{ti} ({e})"]
+
+
+def _stable_hash(text: str) -> int:
+    """Deterministic integer hash used for stable template rotation."""
+    return int(hashlib.md5(str(text).encode("utf-8", errors="replace")).hexdigest(), 16)
+
+
+def _rotating_choice(pool: list[str], *, category: str, topic: str) -> str:
+    """Deterministic pick that avoids repeating the same shape consecutively."""
+    n = len(pool)
+    if n == 0:
+        return ""
+    base = _stable_hash(f"{category}:{topic}") % n
+    state_path = Path(__file__).resolve().parent.parent / "output" / "shape_rotation.json"
+    try:
+        state: dict = {}
+        if state_path.exists():
+            loaded = json.loads(state_path.read_text(encoding="utf-8"))
+            if isinstance(loaded, dict):
+                state = loaded
+        idx = base
+        if state.get(category) == idx and n > 1:
+            idx = (idx + 1) % n
+        state[category] = idx
+        state_path.parent.mkdir(parents=True, exist_ok=True)
+        state_path.write_text(json.dumps(state, indent=2), encoding="utf-8")
+        return pool[idx]
+    except Exception:
+        return pool[base]
+
+
+def _anchor_title(entity: str, existing_title: str = "") -> str:
+    """Re-attach trend entity using a varied but deterministic title shape."""
+    e = _compact_ws(entity or "").strip()
+    ti = _compact_ws(existing_title or "").strip()
+    if not is_valid_entity(e, min_length=4):
+        return _sanitize_title(ti or _fallback_title_from_topic(""), trend="")
+    if not ti or contains_invalid_publish_text(ti):
+        return _sanitize_title(_fallback_title_from_topic(e), trend=e)
+    if e.lower() in ti.lower():
+        return _sanitize_title(ti, trend=e)
+    joiner = _rotating_choice(_ANCHOR_JOINERS, category="anchor_join", topic=e)
+    return _sanitize_title(joiner.format(e=e, ti=ti), trend=e)
+
+
+def _anchor_hook(topic: str) -> str:
+    """Topic-anchored hook with varied sentence structure."""
+    t = _compact_ws(topic or "").strip()
+    if not is_valid_entity(t, min_length=4):
+        return "Here's the quick breakdown"
+    return _rotating_choice(_HOOK_SHAPES, category="hook", topic=t).format(t=t)
+
+
+def _anchor_context_lines(topic: str) -> list[str]:
+    """Three topic-anchored context lines, deterministically varied."""
+    t = _compact_ws(topic or "").strip()
+    base = t if is_valid_entity(t, min_length=4) else "this trend"
+    h = _stable_hash(base)
+    n = len(_CONTEXT_SHAPES)
+    return [
+        base,
+        _CONTEXT_SHAPES[h % n].format(t=base),
+        _CONTEXT_SHAPES[(h + 1) % n].format(t=base),
+    ]
 
 
 CAPTION_BANNED = {
@@ -905,19 +1004,23 @@ def _unique_fallback_captions(focus: str) -> list:
 def _fallback_title_from_topic(latest_topic: str) -> str:
     topic = _compact_ws(latest_topic or "").strip(" -:")
     if not is_valid_entity(topic, min_length=4):
-        return random.choice(_TITLE_TEMPLATES_GENERIC).format(t="this trend")
+        return _rotating_choice(
+            _TITLE_TEMPLATES_GENERIC,
+            category="title_generic",
+            topic="this trend",
+        ).format(t="this trend")
     topic_l = topic.lower()
     if " vs " in f" {topic_l} ":
-        pool = _TITLE_TEMPLATES_VS
+        pool, cat = _TITLE_TEMPLATES_VS, "title_vs"
     elif "price" in topic_l or "stock" in topic_l:
-        pool = _TITLE_TEMPLATES_PRICE
+        pool, cat = _TITLE_TEMPLATES_PRICE, "title_price"
     elif "feature" in topic_l or "update" in topic_l:
-        pool = _TITLE_TEMPLATES_FEATURE
+        pool, cat = _TITLE_TEMPLATES_FEATURE, "title_feature"
     elif any(w in topic_l for w in ("launch", "update", "release", "debate", "controversy")):
-        pool = _TITLE_TEMPLATES_MATCH
+        pool, cat = _TITLE_TEMPLATES_MATCH, "title_match"
     else:
-        pool = _TITLE_TEMPLATES_GENERIC
-    return random.choice(pool).format(t=topic)
+        pool, cat = _TITLE_TEMPLATES_GENERIC, "title_generic"
+    return _rotating_choice(pool, category=cat, topic=topic).format(t=topic)
 
 
 def fallback_for_topic(latest_topic: str) -> dict:
@@ -936,12 +1039,8 @@ def fallback_for_topic(latest_topic: str) -> dict:
     base = random.choice(_FALLBACK_POOL).copy()
     focus = lt or "this trend"
     base["title"] = _fallback_title_from_topic(lt)
-    base["hook"] = f"{focus}... kya scene hai?"
-    base["context_lines"] = [
-        focus,
-        "Feeds pe yeh topic viral hai.",
-        "Log details samajhna chahte hain.",
-    ]
+    base["hook"] = _anchor_hook(focus)
+    base["context_lines"] = _anchor_context_lines(focus)
     base["why_lines"] = [
         "Opinions online split ho rahe hain.",
         "Search interest fast grow kar raha hai.",
@@ -1093,13 +1192,9 @@ def generate_topic(epilogue_extra: str | None = None, slot: str | None = None) -
                 or any(trend_l in str(cap[0]).lower() for cap in captions if isinstance(cap, list) and cap)
             )
             if not has_trend:
-                content["title"] = f"{latest_topic}: {title}".strip(": ")
-                content["hook"] = latest_topic
-                if context_lines:
-                    context_lines[0] = latest_topic
-                else:
-                    context_lines = [latest_topic, "People are talking about it.", "Here is the quick context."]
-                content["context_lines"] = context_lines[:3]
+                content["title"] = _anchor_title(latest_topic, title)
+                content["hook"] = _anchor_hook(latest_topic)
+                content["context_lines"] = _anchor_context_lines(latest_topic)
                 if isinstance(captions, list) and captions:
                     first = captions[0]
                     if isinstance(first, list) and len(first) == 2:
