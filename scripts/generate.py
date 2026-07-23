@@ -643,6 +643,143 @@ def fetch_freepik_stock_backgrounds(topic, target_count=5):
     return backgrounds
 
 
+def fetch_pexels_stock_backgrounds(topic, target_count=5):
+    """Free stock photos from Pexels (https://www.pexels.com/api/)."""
+    api_key = env_value("PEXELS_API_KEY", "").strip()
+    if not api_key:
+        return []
+
+    query = (
+        topic.get("search_query")
+        or topic.get("trend_topic")
+        or topic.get("title")
+        or topic.get("topic_id")
+        or "trending news"
+    )
+    search_url = "https://api.pexels.com/v1/search?" + urllib.parse.urlencode(
+        {
+            "query": query,
+            "orientation": "portrait",
+            "per_page": max(5, min(40, target_count * 3)),
+            "size": "large",
+        }
+    )
+    req = urllib.request.Request(
+        search_url,
+        headers={"Authorization": api_key, "Accept": "application/json"},
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=30) as r:
+            payload = json.loads(r.read())
+    except Exception as e:
+        print(f"  Pexels search failed: {e}")
+        return []
+
+    photos = payload.get("photos") or []
+    if not photos:
+        print("  Pexels returned no photos.")
+        return []
+
+    backgrounds = []
+    seen_urls = set()
+    for photo in photos:
+        if len(backgrounds) >= target_count:
+            break
+        src = photo.get("src") or {}
+        image_url = (
+            src.get("portrait")
+            or src.get("large2x")
+            or src.get("large")
+            or src.get("original")
+            or src.get("medium")
+        )
+        if not image_url or image_url in seen_urls:
+            continue
+        seen_urls.add(image_url)
+        try:
+            img_req = urllib.request.Request(
+                image_url,
+                headers={"User-Agent": "Mozilla/5.0 (compatible; llm-shorts/1.0)"},
+            )
+            with urllib.request.urlopen(img_req, timeout=30) as r:
+                raw = r.read()
+            img = Image.open(io.BytesIO(raw)).convert("RGB")
+            backgrounds.append(_cover_resize(img, W, H))
+        except Exception:
+            continue
+    return backgrounds
+
+
+def fetch_pixabay_stock_backgrounds(topic, target_count=5):
+    """Free stock photos from Pixabay (https://pixabay.com/api/docs/)."""
+    api_key = env_value("PIXABAY_API_KEY", "").strip()
+    if not api_key:
+        return []
+
+    query = (
+        topic.get("search_query")
+        or topic.get("trend_topic")
+        or topic.get("title")
+        or topic.get("topic_id")
+        or "trending news"
+    )
+    # Prefer vertical, but fall back to all if the feed is thin for a query.
+    backgrounds = []
+    for orientation in ("vertical", "all"):
+        if len(backgrounds) >= target_count:
+            break
+        search_url = "https://pixabay.com/api/?" + urllib.parse.urlencode(
+            {
+                "key": api_key,
+                "q": query,
+                "image_type": "photo",
+                "orientation": orientation,
+                "safesearch": "true",
+                "per_page": max(5, min(40, target_count * 3)),
+            }
+        )
+        req = urllib.request.Request(search_url, headers={"Accept": "application/json"})
+        try:
+            with urllib.request.urlopen(req, timeout=30) as r:
+                payload = json.loads(r.read())
+        except Exception as e:
+            print(f"  Pixabay search failed ({orientation}): {e}")
+            continue
+
+        hits = payload.get("hits") or []
+        if not hits:
+            continue
+
+        seen = set()
+        for hit in hits:
+            if len(backgrounds) >= target_count:
+                break
+            image_url = (
+                hit.get("largeImageURL")
+                or hit.get("webformatURL")
+                or hit.get("previewURL")
+            )
+            if not image_url or image_url in seen:
+                continue
+            seen.add(image_url)
+            try:
+                img_req = urllib.request.Request(
+                    image_url,
+                    headers={"User-Agent": "Mozilla/5.0 (compatible; llm-shorts/1.0)"},
+                )
+                with urllib.request.urlopen(img_req, timeout=30) as r:
+                    raw = r.read()
+                img = Image.open(io.BytesIO(raw)).convert("RGB")
+                backgrounds.append(_cover_resize(img, W, H))
+            except Exception:
+                continue
+        if backgrounds:
+            break
+    if not backgrounds:
+        print("  Pixabay returned no usable photos.")
+    return backgrounds
+
+
 def generate_openai_stock_backgrounds(topic, target_count=5):
     api_key = env_value("OPENAI_API_KEY", "").strip()
     if not api_key:
@@ -1386,6 +1523,10 @@ def generate(topic_id, slot, out_dir, *,
     provider = (env_value("STOCK_BACKGROUND_PROVIDER", "freepik") or "freepik").strip().lower()
     if provider == "gemini":
         image_count = int(env_value("GEMINI_IMAGE_COUNT", env_value("FREEPIK_IMAGE_COUNT", "5")) or "5")
+    elif provider in ("pexels", "pixabay"):
+        image_count = int(
+            env_value("PEXELS_IMAGE_COUNT", env_value("FREEPIK_IMAGE_COUNT", "8")) or "8"
+        )
     else:
         image_count = int(env_value("OPENAI_IMAGE_COUNT", env_value("FREEPIK_IMAGE_COUNT", "12")) or "12")
     image_count = max(3, min(25, image_count))
@@ -1396,20 +1537,43 @@ def generate(topic_id, slot, out_dir, *,
         if stock_bgs:
             print(f"  OpenAI stock backgrounds: enabled ({len(stock_bgs)} images)")
         else:
-            print("  OpenAI stock backgrounds: disabled (fallback to Freepik)")
+            print("  OpenAI stock backgrounds: disabled (trying free photo sources)")
     elif provider == "gemini":
         stock_bgs = generate_gemini_stock_backgrounds(topic, target_count=image_count)
         if stock_bgs:
             print(f"  Gemini stock backgrounds: enabled ({len(stock_bgs)} images)")
         else:
-            print("  Gemini stock backgrounds: disabled (fallback to Freepik)")
+            print("  Gemini stock backgrounds: disabled (trying free photo sources)")
+    elif provider == "pexels":
+        stock_bgs = fetch_pexels_stock_backgrounds(topic, target_count=image_count)
+        if stock_bgs:
+            print(f"  Pexels stock backgrounds: enabled ({len(stock_bgs)} images)")
+        else:
+            print("  Pexels stock backgrounds: disabled (trying other free sources)")
+    elif provider == "pixabay":
+        stock_bgs = fetch_pixabay_stock_backgrounds(topic, target_count=image_count)
+        if stock_bgs:
+            print(f"  Pixabay stock backgrounds: enabled ({len(stock_bgs)} images)")
+        else:
+            print("  Pixabay stock backgrounds: disabled (trying other free sources)")
 
+    # Free / paid photo fallbacks so we never silently ship plain procedural BGs
+    # when a free API key is available.
     if not stock_bgs:
         stock_bgs = fetch_freepik_stock_backgrounds(topic, target_count=image_count)
         if stock_bgs:
             print(f"  Freepik stock backgrounds: enabled ({len(stock_bgs)} images)")
-        else:
-            print("  Freepik stock backgrounds: disabled (fallback to procedural visuals)")
+    if not stock_bgs:
+        stock_bgs = fetch_pexels_stock_backgrounds(topic, target_count=image_count)
+        if stock_bgs:
+            print(f"  Pexels (free) stock backgrounds: enabled ({len(stock_bgs)} images)")
+    if not stock_bgs:
+        stock_bgs = fetch_pixabay_stock_backgrounds(topic, target_count=image_count)
+        if stock_bgs:
+            print(f"  Pixabay (free) stock backgrounds: enabled ({len(stock_bgs)} images)")
+    if not stock_bgs:
+        print("  ⚠ No stock photos loaded — falling back to plain procedural gradient.")
+        print("    Add PEXELS_API_KEY (free) or FREEPIK_API_KEY / GEMINI_API_KEY to fix this.")
 
     # Expose to the act functions so they draw text ON TOP of the subject image
     # (drawing over a finished frame ghosted the text out).

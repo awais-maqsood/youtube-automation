@@ -59,14 +59,19 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           FREEPIK_API_KEY: ${{ secrets.FREEPIK_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+          PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
           TREND_GEO: ${{ vars.TREND_GEO }}
-          STOCK_BACKGROUND_PROVIDER: gemini
+          # Prefer free Pixabay/Pexels photos (Gemini/Freepik remain code fallbacks).
+          STOCK_BACKGROUND_PROVIDER: pixabay
+          PEXELS_IMAGE_COUNT: 8
           GEMINI_IMAGE_COUNT: 5
           GEMINI_IMAGE_MODEL: gemini-3.1-flash-image-preview
           GEMINI_IMAGE_SIZE: 1K
           GEMINI_IMAGE_ASPECT_RATIO: 9:16
           FREEPIK_IMAGE_COUNT: 12
           FREEPIK_CROSSFADE: 0.12
+          STOCK_SCRIM: 0.40
         run: |
           python scripts/run_pipeline.py --slot ${{ steps.slot.outputs.slot }}
 
