@@ -371,9 +371,9 @@ def fetch_latest_topics(max_items: int = 20) -> list[str]:
 def _demand_min_score() -> float:
     """Minimum demand score a trend must clear before the LLM selector sees it."""
     try:
-        return float(env_value("DEMAND_MIN_SCORE", "0.35"))
+        return float(env_value("DEMAND_MIN_SCORE", "0.55"))
     except (TypeError, ValueError):
-        return 0.35
+        return 0.55
 
 
 def _is_usable_topic(topic: str) -> bool:
@@ -788,17 +788,17 @@ def _normalize_display_text(content: dict) -> dict:
 
 
 # Varied, non-repetitive title shapes. {t} is the topic phrase (title-cased).
+# Avoid spammy/bot-looking phrases that YouTube Shorts suppress ("Everyone's talking",
+# "The real story behind", "explained in 30 sec").
 _TITLE_TEMPLATES_GENERIC = [
     "{t} — what actually changed?",
-    "{t} explained in under a minute",
     "3 things to know about {t}",
     "{t} isn't what most people think",
-    "You need to see this {t} update",
-    "The real story behind {t}",
-    "Why {t} is everywhere right now",
+    "Why {t} just flipped the timeline",
     "{t} just took a sharp turn",
-    "Everyone's arguing about {t}",
-    "{t}: the 30-second version",
+    "Wait — this {t} detail matters",
+    "What {t} means in plain English",
+    "{t}: the part that got buried",
 ]
 _TITLE_TEMPLATES_VS = [
     "{t}: who actually wins?",
@@ -810,17 +810,17 @@ _TITLE_TEMPLATES_PRICE = [
     "{t}: what just changed",
     "Why {t} caught everyone off guard",
     "{t} — should you care?",
-    "The truth about {t} nobody says",
+    "The cost angle on {t} nobody leads with",
 ]
 _TITLE_TEMPLATES_FEATURE = [
     "{t}: the part nobody mentions",
     "What {t} actually changes",
     "{t} is quietly a big upgrade",
-    "Is {t} worth the hype?",
+    "Is {t} worth switching for?",
 ]
 _TITLE_TEMPLATES_MATCH = [
     "Can {t} survive this?",
-    "{t}: the stakes are insane",
+    "{t}: the stakes just jumped",
     "Before {t}, know this",
     "{t} could go either way",
 ]
@@ -829,11 +829,11 @@ _HOOK_SHAPES = [
     "{t} — here's the quick version",
     "Wait, what's going on with {t}?",
     "This {t} update is a big deal",
-    "Everyone's talking about {t} — here's why",
-    "The {t} story in 30 seconds",
+    "The {t} detail most people miss",
     "{t}: what you actually need to know",
-    "Nobody's explaining {t} clearly, so here goes",
-    "{t} just shifted the whole conversation",
+    "Stop scrolling — {t} just shifted",
+    "{t} just flipped the conversation",
+    "Plain English: what's up with {t}",
 ]
 
 _CONTEXT_SHAPES = [

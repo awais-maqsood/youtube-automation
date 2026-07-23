@@ -36,7 +36,32 @@ def get_access_token():
         raise RuntimeError(f"YouTube token refresh failed HTTP {e.code}: {body}") from e
 
 
-def upload_video(access_token, video_path, title, description, tags=None, scheduled_utc=None, privacy="private"):
+def youtube_category_id(niche: str | None = None, title: str = "", description: str = "") -> str:
+    """Map content niche/keywords to a YouTube categoryId (not hardcoded Sports)."""
+    text = f"{niche or ''} {title} {description}".lower()
+    if niche == "high_cpm" or any(
+        k in text for k in ("ai ", "finance", "invest", "saas", "money", "credit", "stock")
+    ):
+        return "28"  # Science & Technology
+    if any(k in text for k in ("game", "gaming", "esports", "nintendo", "xbox", "playstation")):
+        return "20"  # Gaming
+    if any(k in text for k in ("sport", "nfl", "nba", "mlb", "soccer", "football", "tennis", "world cup")):
+        return "17"  # Sports
+    if any(k in text for k in ("news", "lawsuit", "election", "policy", "trump", "breaking")):
+        return "25"  # News & Politics
+    return "24"  # Entertainment (default for viral Shorts)
+
+
+def upload_video(
+    access_token,
+    video_path,
+    title,
+    description,
+    tags=None,
+    scheduled_utc=None,
+    privacy="private",
+    category_id=None,
+):
     """Resumable upload. Returns video_id.
     privacy: "private" | "public" | "unlisted"
     scheduled_utc: ISO 8601 string — if set, video stays private until that time.
@@ -57,7 +82,7 @@ def upload_video(access_token, video_path, title, description, tags=None, schedu
     snippet = {
         "title":       title,
         "description": description,
-        "categoryId":  "17",   # Sports
+        "categoryId":  str(category_id or youtube_category_id(title=title, description=description)),
     }
     if tags:
         snippet["tags"] = [str(t).strip() for t in tags if str(t).strip()][:15]
@@ -162,6 +187,12 @@ def main():
     scheduled = None if args.no_schedule else kit.get("scheduled_time_utc")
     # Without a schedule, go public immediately (CI auto-publish). Scheduled uploads stay private until publishAt.
     privacy = "public" if args.no_schedule else "private"
+    category_id = youtube_category_id(
+        niche=kit.get("niche"),
+        title=kit.get("title", ""),
+        description=kit.get("description", ""),
+    )
+    print(f"  YouTube categoryId={category_id} (niche={kit.get('niche', 'n/a')})")
     vid_id = upload_video(
         token,
         kit["video"],
@@ -170,6 +201,7 @@ def main():
         tags=kit.get("tags"),
         scheduled_utc=scheduled,
         privacy=privacy,
+        category_id=category_id,
     )
 
     if vid_id and os.path.exists(kit.get("thumbnail","")):

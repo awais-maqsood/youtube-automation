@@ -6,7 +6,7 @@ LLM Shorts — Pipeline
 3. Emails you the review link
 """
 
-import os, sys, json, random, smtplib, ssl, hmac, hashlib, html, subprocess, tempfile, urllib.request, urllib.error, urllib.parse
+import os, sys, json, random, smtplib, ssl, hmac, hashlib, html, subprocess, tempfile, base64, urllib.request, urllib.error, urllib.parse
 from email.mime.multipart import MIMEMultipart
 from email.mime.text      import MIMEText
 from datetime             import datetime, timezone
@@ -31,6 +31,11 @@ def build_review_page(kit: dict, run_id: str, sig: str, video_url: str) -> str:
     title  = html.escape(kit["title"])
     topic  = html.escape(kit["topic"])
     slot   = kit["slot"]
+    niche  = html.escape(str(kit.get("niche") or "viral"))
+    # Persist the real diversified description for the Approve → publish path.
+    desc_raw = kit.get("description") or ""
+    desc_b64 = base64.b64encode(desc_raw.encode("utf-8")).decode("ascii")
+    tags_json = html.escape(json.dumps(kit.get("tags") or [], ensure_ascii=False))
     api    = f"https://api.github.com/repos/{repo}/actions/workflows"
 
     return f"""<!DOCTYPE html>
@@ -68,6 +73,7 @@ video {{ width: 100%; border-radius: 10px; background: #000;
   <span class="badge">{slot} slot &nbsp;·&nbsp; {topic}</span>
   <h2>{title}</h2>
   <div class="meta">Run: {run_id}</div>
+  <!--kit-meta niche="{niche}" tags="{tags_json}" description-b64="{desc_b64}" -->
 
   <video controls playsinline>
     <source src="{video_url}" type="video/mp4">

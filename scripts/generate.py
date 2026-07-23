@@ -36,6 +36,33 @@ BASE_HASHTAGS = ["#Shorts", "#Trending", "#Viral", "#Explainer", "#News"]
 # don't always surface at the same second — looks organic, not bot-scheduled.
 SLOT_HOURS = {"morning": 12, "afternoon": 17, "evening": 22, "night": 3}
 
+_DESC_CTA_VARIANTS = [
+    "What's YOUR take? Drop it in the comments.",
+    "Agree or disagree? Tell me below.",
+    "Comment your prediction — I read them.",
+    "Which side are you on? Comments are open.",
+    "Drop your hot take below.",
+    "What would you do? Reply in the comments.",
+]
+_DESC_FOLLOW_VIRAL = [
+    "New Shorts daily — hit follow if this helped.",
+    "Follow for the next trend breakdown.",
+    "More context Shorts every day — follow along.",
+    "Follow so you don't miss the next update.",
+]
+_DESC_FOLLOW_HIGH_CPM = [
+    "Follow for daily AI tools + money Shorts.",
+    "Subscribe for practical money + AI breakdowns.",
+    "Follow for high-value tool tips daily.",
+    "More money/tech Shorts tomorrow — follow along.",
+]
+_DESC_INTRO = [
+    "{prefix} {trend}",
+    "Quick take on {trend}.",
+    "Today's topic: {trend}",
+    "{trend} — short breakdown.",
+]
+
 
 def load_env_file(env_path: Path) -> dict:
     env = {}
@@ -193,30 +220,55 @@ def _topic_hashtag(trend: str) -> str:
 
 
 def build_youtube_description(topic: dict) -> str:
-    """SEO-rich description with comment CTA — helps discovery and engagement."""
+    """SEO-rich description with rotated CTA/follow lines — avoids identical spam skeletons."""
+    from content_gen import _rotating_choice, _stable_hash
+
     trend = _kit_one_line(topic.get("trend_topic") or topic.get("title") or "")
     hook = _kit_one_line(topic.get("hook") or "")
     q = _kit_one_line(topic.get("question") or "")
     niche = (topic.get("niche") or "viral").lower()
-    blocks: list[str] = []
-    if hook:
-        blocks.append(hook)
+    key = trend or hook or topic.get("topic_id") or "x"
+
+    prefix = "Money tip:" if niche == "high_cpm" else "Trending now:"
+    cta = _rotating_choice(_DESC_CTA_VARIANTS, category="desc_cta", topic=key)
+    follow = _rotating_choice(
+        _DESC_FOLLOW_HIGH_CPM if niche == "high_cpm" else _DESC_FOLLOW_VIRAL,
+        category="desc_follow",
+        topic=key,
+    )
+    intro = ""
     if trend:
-        prefix = "Money tip:" if niche == "high_cpm" else "Trending now:"
-        blocks.append(f"{prefix} {trend}")
+        intro = _rotating_choice(_DESC_INTRO, category="desc_intro", topic=key).format(
+            prefix=prefix,
+            trend=trend,
+        )
+
+    blocks: list[str] = []
+    # Alternate hook/intro order so descriptions aren't structurally identical.
+    if _stable_hash(f"order:{key}") % 2 == 0:
+        if hook:
+            blocks.append(hook)
+        if intro:
+            blocks.append(intro)
+    else:
+        if intro:
+            blocks.append(intro)
+        if hook:
+            blocks.append(hook)
     blocks.append("")
-    blocks.append("What's YOUR take? Drop it in the comments.")
+    blocks.append(cta)
     if q:
         blocks.append(q)
     blocks.append("")
+    blocks.append(follow)
+
     if niche == "high_cpm":
-        blocks.append("Follow for daily AI tools + money Shorts.")
         tags = ["#Shorts", "#AITools", "#PersonalFinance", "#Investing", "#BusinessTips"]
         extra = ["#MoneyTips", "#SaaS", "#Productivity"]
     else:
-        blocks.append("Follow for daily trending Shorts.")
-        tags = list(BASE_HASHTAGS)
-        extra = ["#TrendingNow", "#LatestUpdate", "#InternetCulture"]
+        # Keep hashtag stack short — stuffing #Trending #Viral every time reads as spam.
+        tags = ["#Shorts"]
+        extra = ["#News", "#Explainer"]
     topic_tag = _topic_hashtag(trend)
     if topic_tag and topic_tag not in tags:
         tags.append(topic_tag)

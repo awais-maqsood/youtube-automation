@@ -40,6 +40,7 @@ def get_kit_from_gh_pages(run_id: str) -> dict | None:
 
     # Extract kit fields embedded in the HTML
     import re
+    import html as html_mod
 
     kit = {}
     for field, pattern in [
@@ -50,6 +51,26 @@ def get_kit_from_gh_pages(run_id: str) -> dict | None:
         m = re.search(pattern, content)
         if m:
             kit[field] = m.group(1).strip()
+
+    # Real diversified description + niche/tags from generation (not the old AI-hashtag stub).
+    meta = re.search(
+        r'<!--kit-meta niche="([^"]*)" tags="([^"]*)" description-b64="([^"]*)" -->',
+        content,
+    )
+    if meta:
+        kit["niche"] = html_mod.unescape(meta.group(1) or "viral")
+        try:
+            kit["tags"] = json.loads(html_mod.unescape(meta.group(2) or "[]"))
+        except json.JSONDecodeError:
+            kit["tags"] = []
+        try:
+            kit["description"] = base64.b64decode(meta.group(3)).decode("utf-8")
+        except Exception:
+            kit["description"] = ""
+    else:
+        kit["niche"] = "viral"
+        kit["tags"] = []
+        kit["description"] = ""
 
     # Extract release asset video URL
     vm = re.search(r'<source src="([^"]+)" type="video/mp4">', content)
@@ -120,8 +141,11 @@ with tempfile.NamedTemporaryFile(suffix=".mp4", delete=False) as tmp:
     tmp_path = tmp.name
 print(f"  ✓ Video downloaded ({os.path.getsize(tmp_path)//1024}KB)")
 
-# Upload to YouTube
-description = "#AIShorts #LLM #ArtificialIntelligence #MachineLearning #AILife #ChatGPT #FutureOfAI #DeepLearning #NeuralNetwork #AIExperience #AIConsciousness #LanguageModel"
+# Use the same diversified description from generation (never the old hardcoded AI tag dump).
+description = (kit.get("description") or "").strip()
+if not description:
+    print("❌ Missing description on review page — regenerate the Short so kit-meta is embedded.")
+    sys.exit(1)
 
 missing = [v for v in ("YOUTUBE_CLIENT_ID", "YOUTUBE_CLIENT_SECRET", "YOUTUBE_REFRESH_TOKEN")
            if not os.environ.get(v)]
@@ -139,8 +163,20 @@ except EntityValidationError as exc:
     print(f"❌ Blocked publish — invalid title/description: {exc}")
     sys.exit(1)
 
+category_id = up.youtube_category_id(
+    niche=kit.get("niche"),
+    title=title,
+    description=description,
+)
+print(f"  YouTube categoryId={category_id} (niche={kit.get('niche', 'n/a')})")
 video_id = up.upload_video(
-    token, tmp_path, title, description, privacy="public"
+    token,
+    tmp_path,
+    title,
+    description,
+    tags=kit.get("tags"),
+    privacy="public",
+    category_id=category_id,
 )
 os.unlink(tmp_path)
 
