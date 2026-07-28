@@ -92,6 +92,7 @@ jobs:
           SIMILARITY_OPENER_MAX: ${{ vars.SIMILARITY_OPENER_MAX }}
           SIMILARITY_CTA_MAX: ${{ vars.SIMILARITY_CTA_MAX }}
           SIMILARITY_CATALOG_MAX: ${{ vars.SIMILARITY_CATALOG_MAX }}
+          TITLE_FAMILY_COOLDOWN: ${{ vars.TITLE_FAMILY_COOLDOWN }}
           DAILY_UPLOAD_CAP: ${{ vars.DAILY_UPLOAD_CAP }}
           BYPASS_DAILY_UPLOAD_CAP: ${{ github.event.inputs.bypass_daily_cap }}
           # Prefer free Pixabay/Pexels photos (Gemini/Freepik remain code fallbacks).
@@ -135,6 +136,12 @@ jobs:
           YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
           YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
           YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+          NER_MIN_CONFIDENCE: ${{ vars.NER_MIN_CONFIDENCE }}
+          SIMILARITY_TITLE_MAX: ${{ vars.SIMILARITY_TITLE_MAX }}
+          SIMILARITY_OPENER_MAX: ${{ vars.SIMILARITY_OPENER_MAX }}
+          SIMILARITY_CTA_MAX: ${{ vars.SIMILARITY_CTA_MAX }}
+          SIMILARITY_CATALOG_MAX: ${{ vars.SIMILARITY_CATALOG_MAX }}
+          TITLE_FAMILY_COOLDOWN: ${{ vars.TITLE_FAMILY_COOLDOWN }}
           DAILY_UPLOAD_CAP: ${{ vars.DAILY_UPLOAD_CAP }}
           BYPASS_DAILY_UPLOAD_CAP: ${{ github.event.inputs.bypass_daily_cap }}
         run: |
