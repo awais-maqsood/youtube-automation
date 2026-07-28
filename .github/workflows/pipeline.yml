@@ -2,16 +2,18 @@ name: Auto Generate And Upload
 
 on:
   schedule:
-    # 4 videos/day (UTC): morning+afternoon = high-CPM, evening+night = viral
-    - cron: "5 3 * * *"
+    # Temporary rollback: 2 videos/day (UTC). Raise DAILY_UPLOAD_CAP + restore crons later.
+    # morning (12 UTC) = high-CPM, evening (22 UTC) = viral
     - cron: "5 12 * * *"
-    - cron: "5 17 * * *"
     - cron: "5 22 * * *"
   workflow_dispatch:
     inputs:
       slot:
         description: "morning/afternoon=high-CPM; evening/night=viral"
         default: "morning"
+      bypass_daily_cap:
+        description: "Ignore DAILY_UPLOAD_CAP for this manual run (true/false)"
+        default: "false"
 
 permissions:
   contents: read
@@ -23,6 +25,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Restore distribution state cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            data/publish_catalog.json
+            data/daily_upload_log.json
+          key: distribution-state-${{ github.run_id }}
+          restore-keys: |
+            distribution-state-
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -33,7 +45,8 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y ffmpeg fonts-dejavu-core
           python -m pip install --upgrade pip
-          pip install Pillow numpy --quiet
+          pip install Pillow numpy spacy --quiet
+          python -m spacy download en_core_web_sm --quiet
 
       - name: Detect slot
         id: slot
@@ -53,7 +66,16 @@ jobs:
             fi
           fi
 
+      - name: Check daily upload cap
+        id: cap
+        env:
+          DAILY_UPLOAD_CAP: ${{ vars.DAILY_UPLOAD_CAP }}
+          BYPASS_DAILY_UPLOAD_CAP: ${{ github.event.inputs.bypass_daily_cap }}
+        run: |
+          python scripts/daily_cap.py --check --github-output
+
       - name: Generate video
+        if: steps.cap.outputs.should_run == 'true'
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -62,6 +84,16 @@ jobs:
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
           PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
           TREND_GEO: ${{ vars.TREND_GEO }}
+          NER_MIN_CONFIDENCE: ${{ vars.NER_MIN_CONFIDENCE }}
+          DEMAND_MIN_SCORE: ${{ vars.DEMAND_MIN_SCORE }}
+          SHORTS_DURATION_MIN: ${{ vars.SHORTS_DURATION_MIN }}
+          SHORTS_DURATION_MAX: ${{ vars.SHORTS_DURATION_MAX }}
+          SIMILARITY_TITLE_MAX: ${{ vars.SIMILARITY_TITLE_MAX }}
+          SIMILARITY_OPENER_MAX: ${{ vars.SIMILARITY_OPENER_MAX }}
+          SIMILARITY_CTA_MAX: ${{ vars.SIMILARITY_CTA_MAX }}
+          SIMILARITY_CATALOG_MAX: ${{ vars.SIMILARITY_CATALOG_MAX }}
+          DAILY_UPLOAD_CAP: ${{ vars.DAILY_UPLOAD_CAP }}
+          BYPASS_DAILY_UPLOAD_CAP: ${{ github.event.inputs.bypass_daily_cap }}
           # Prefer free Pixabay/Pexels photos (Gemini/Freepik remain code fallbacks).
           STOCK_BACKGROUND_PROVIDER: pixabay
           PEXELS_IMAGE_COUNT: 8
@@ -76,6 +108,7 @@ jobs:
           python scripts/run_pipeline.py --slot ${{ steps.slot.outputs.slot }}
 
       - name: Email review notice (before publish)
+        if: steps.cap.outputs.should_run == 'true'
         env:
           GMAIL_ADDRESS: ${{ secrets.GMAIL_ADDRESS }}
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
@@ -88,6 +121,7 @@ jobs:
           python scripts/notify_before_publish.py --kit output/kit.json
 
       - name: Optional pre-publish review window
+        if: steps.cap.outputs.should_run == 'true'
         env:
           PRE_PUBLISH_WAIT_SECONDS: ${{ vars.PRE_PUBLISH_WAIT_SECONDS }}
         run: |
@@ -96,12 +130,21 @@ jobs:
           sleep "$WAIT"
 
       - name: Upload to YouTube
+        if: steps.cap.outputs.should_run == 'true'
         env:
           YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
           YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
           YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+          DAILY_UPLOAD_CAP: ${{ vars.DAILY_UPLOAD_CAP }}
+          BYPASS_DAILY_UPLOAD_CAP: ${{ github.event.inputs.bypass_daily_cap }}
         run: |
           python scripts/upload.py --kit output/kit.json --no-schedule
+
+      - name: Skip notice (daily cap)
+        if: steps.cap.outputs.should_run != 'true'
+        run: |
+          echo "Skipped — daily upload cap reached (${{ steps.cap.outputs.daily_count }}/${{ steps.cap.outputs.daily_cap }} UTC)."
+          echo "Raise repo variable DAILY_UPLOAD_CAP or re-run with bypass_daily_cap=true."
 
       - name: Upload artifacts
         if: always()
@@ -113,3 +156,5 @@ jobs:
             output/video.mp4
             output/kit.json
             output/thumbnail.jpg
+            data/daily_upload_log.json
+            data/publish_catalog.json

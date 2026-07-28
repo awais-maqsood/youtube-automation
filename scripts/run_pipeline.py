@@ -5,25 +5,44 @@ Single-command entrypoint for Shorts generation.
 Runs topic selection, script generation, stock lookup, and local video render
 in one terminal window.
 
-Slots (4/day):
+Slots:
   morning, afternoon → high_cpm (AI tools / finance / SaaS)
   evening, night     → viral trending topics
+
+Daily volume is gated by DAILY_UPLOAD_CAP (default 2).
 """
 
 import argparse
+import sys
+
 from generate import generate
 from content_gen import niche_for_slot
+from daily_cap import DailyCapExceeded, assert_under_daily_cap
 
 
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--slot", default="morning", choices=["morning", "afternoon", "evening", "night"])
     ap.add_argument("--out", default="output")
+    ap.add_argument(
+        "--ignore-daily-cap",
+        action="store_true",
+        help="Skip DAILY_UPLOAD_CAP check for this run",
+    )
     args = ap.parse_args()
 
     niche = niche_for_slot(args.slot)
     print("== Trending Shorts Pipeline ==")
     print(f"Slot: {args.slot} | Niche: {niche}")
+
+    if not args.ignore_daily_cap:
+        try:
+            assert_under_daily_cap(source="run_pipeline")
+        except DailyCapExceeded as exc:
+            print(f"== Pipeline skipped (daily cap) ==")
+            print(str(exc))
+            return 3
+
     print("Step 1/4: pick niche-fit topic")
     print("Step 2/4: generate title + script")
     print("Step 3/4: fetch stock images and render video")

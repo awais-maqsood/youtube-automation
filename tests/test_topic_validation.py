@@ -16,6 +16,8 @@ from topic_validation import (  # noqa: E402
     assert_publishable_title,
     contains_invalid_publish_text,
     is_valid_entity,
+    passes_named_entity_gate,
+    require_named_entity,
     require_valid_entity,
 )
 
@@ -33,6 +35,48 @@ class TestEntityValidation(unittest.TestCase):
         with self.assertRaises(EntityValidationError):
             require_valid_entity(None, source="unit_test", raw_upstream={"selected_topic": None})
 
+
+class TestNamedEntityGate(unittest.TestCase):
+    def test_rejects_generic_category_topics(self) -> None:
+        generics = [
+            "internet debate going viral",
+            "streaming platform new release",
+            "app feature rollout reaction",
+            "breaking entertainment headline",
+            "viral social media challenge",
+            "new smartphone launch reaction",
+            "policy change public reaction",
+            "celebrity interview controversy",
+        ]
+        for bad in generics:
+            with self.subTest(bad=bad):
+                self.assertFalse(passes_named_entity_gate(bad))
+                with self.assertRaises(EntityValidationError):
+                    require_named_entity(bad, source="unit_test")
+
+    def test_accepts_named_products_and_orgs(self) -> None:
+        goods = [
+            "iPhone 18 Pro leak",
+            "apple iphone 18",
+            "costco lawsuit settlement",
+            "Sony Xperia 1 VIII",
+            "ChatGPT Plus pricing update",
+            "FIFA World Cup 2026",
+            "Taylor Swift Eras Tour",
+            "NVIDIA Blackwell GPU launch",
+        ]
+        for good in goods:
+            with self.subTest(good=good):
+                self.assertTrue(passes_named_entity_gate(good), msg=good)
+                self.assertEqual(
+                    require_named_entity(good, source="unit_test"),
+                    " ".join(str(good).split()).strip(),
+                )
+
+    def test_fallback_seeds_all_pass_gate(self) -> None:
+        for seed in cg.VIRAL_FALLBACKS + cg.HIGH_CPM_FALLBACKS:
+            with self.subTest(seed=seed):
+                self.assertTrue(passes_named_entity_gate(seed), msg=seed)
 
 class TestPublishGuard(unittest.TestCase):
     def test_blocks_none_in_rendered_title(self) -> None:
@@ -77,8 +121,9 @@ class TestPipelineSkipsPublishOnNullEntity(unittest.TestCase):
 class TestUploadGuard(unittest.TestCase):
     def test_upload_blocks_none_title(self) -> None:
         import upload as up
+        from pre_publish_gate import PrePublishBlocked
 
-        with self.assertRaises(EntityValidationError):
+        with self.assertRaises((EntityValidationError, PrePublishBlocked)):
             up.upload_video("fake-token", "missing.mp4", "None explained in 30 sec", "desc")
 
 

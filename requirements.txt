@@ -3,3 +3,4 @@ numpy
 gTTS
 requests
 python-dotenv
+spacy>=3.7,<4

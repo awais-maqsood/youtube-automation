@@ -18,6 +18,8 @@ from topic_validation import (
     is_valid_entity,
     log_entity_rejection,
     normalize_entity,
+    passes_named_entity_gate,
+    require_named_entity,
     require_valid_entity,
 )
 
@@ -44,6 +46,11 @@ def load_env_file(env_path: Path) -> dict[str, str]:
 ENV_FILE_VALUES = load_env_file(Path(__file__).resolve().parent.parent / ".env")
 FALLBACK_LOG_PATH = Path(__file__).resolve().parent.parent / "output" / "fallback_stats.json"
 SEED_HISTORY_PATH = Path(__file__).resolve().parent.parent / "output" / "topic_seed_history.json"
+TITLE_HISTORY_PATH = Path(__file__).resolve().parent.parent / "output" / "title_history.json"
+TITLE_HISTORY_MAX = 100
+TITLE_HISTORY_NEGATIVES = 20
+# Do not reuse the same title/opener structural family within this many recent videos.
+TITLE_FAMILY_COOLDOWN = 3
 
 
 def env_value(name: str, default: str = "") -> str:
@@ -61,7 +68,7 @@ MODELS = [
     "google/gemma-4-31b-it:free",               # last-resort, still capable
 ]
 
-# 4 videos/day: morning + afternoon = high-CPM niches; evening + night = viral trends.
+# 4 videos/day historically; volume is now gated by DAILY_UPLOAD_CAP (default 2).
 HIGH_CPM_SLOTS = {"morning", "afternoon"}
 
 VIRAL_ANGLES = [
@@ -100,30 +107,34 @@ HIGH_CPM_KEYWORDS = [
     "apple", "google", "microsoft", "amazon", "tesla", "nvidia",
 ]
 
+# Fallback seeds MUST be concrete named entities (person/org/product/event).
+# Generic category phrases ("streaming platform new release") get distribution-suppressed.
 VIRAL_FALLBACKS = [
-    "celebrity interview controversy",
-    "streaming platform new release",
-    "viral social media challenge",
-    "new smartphone launch reaction",
-    "policy change public reaction",
-    "breaking entertainment headline",
-    "internet debate going viral",
-    "app feature rollout reaction",
+    "Taylor Swift Eras Tour",
+    "iPhone 18 Pro leak",
+    "Netflix Squid Game season",
+    "Sony Xperia 1 VIII",
+    "Nintendo Switch 2 launch",
+    "FIFA World Cup 2026",
+    "Elon Musk SpaceX Starship",
+    "GTA 6 release window",
+    "Beyonce Cowboy Carter tour",
+    "PlayStation 5 Pro review",
 ]
 
 HIGH_CPM_FALLBACKS = [
-    "ChatGPT new feature pricing",
-    "best AI tools for freelancers",
-    "credit score mistake to avoid",
-    "high yield savings rate update",
-    "SaaS subscription cost trap",
-    "mortgage rate change explained",
-    "side hustle tax rules beginners",
-    "insurance claim denial reasons",
-    "stock market volatility explained",
-    "AI coding tool ROI for startups",
-    "personal finance budget reset",
-    "business software pricing war",
+    "ChatGPT Plus pricing update",
+    "NVIDIA Blackwell GPU launch",
+    "Apple Vision Pro apps",
+    "Claude AI Anthropic pricing",
+    "Tesla FSD subscription cost",
+    "Google Gemini Android features",
+    "Microsoft Copilot Office pricing",
+    "Amazon AWS price change",
+    "Stripe SaaS billing update",
+    "Federal Reserve interest rate",
+    "Shopify Plus merchant fees",
+    "OpenAI GPT-5 release rumors",
 ]
 
 # Backward-compatible aliases used by older helpers.
@@ -140,6 +151,12 @@ def niche_for_slot(slot: str | None) -> str:
 
 OPENAI_TOPIC_SELECTOR_VIRAL = """You select the best YouTube Shorts topic for a viral trending-news channel.
 
+HARD REQUIREMENT — named entity only:
+- selected_topic MUST name a specific person, company, product, event, or titled work
+  (e.g. "iPhone 18", "Taylor Swift", "FIFA World Cup 2026", "Netflix Squid Game").
+- REJECT generic categories with no proper noun ("internet debate going viral",
+  "streaming platform new release", "app feature rollout reaction").
+
 Prefer high-discovery public topics: entertainment, internet culture, celebrity, product launches, controversies.
 Skip niche finance/AI-only stories unless they are already mainstream viral.
 
@@ -152,6 +169,12 @@ Return ONLY valid JSON:
 """
 
 OPENAI_TOPIC_SELECTOR_HIGH_CPM = """You select the best YouTube Shorts topic for a HIGH-CPM monetization niche.
+
+HARD REQUIREMENT — named entity only:
+- selected_topic MUST name a specific product, company, person, or event
+  (e.g. "ChatGPT Plus", "NVIDIA Blackwell", "Federal Reserve", "Apple Vision Pro").
+- REJECT generic categories ("AI tools for freelancers", "SaaS pricing war",
+  "credit score mistake") unless they include a concrete proper noun.
 
 Prefer advertiser-friendly topics in this order:
 1) AI tools / SaaS / productivity software
@@ -168,7 +191,7 @@ Return ONLY valid JSON:
 }
 """
 
-SYSTEM_PROMPT_VIRAL = """You write 30-second vertical YouTube Shorts for a viral trending-topics channel.
+SYSTEM_PROMPT_VIRAL = """You write vertical YouTube Shorts for a viral trending-topics channel.
 
 The short should feel topical, fast, clear, and highly clickable.
 Do NOT write fiction, horror, haunted internet stories, creepypasta, or made-up events.
@@ -178,35 +201,45 @@ CRITICAL — SEARCH & TRUST RULES:
 - Do NOT fabricate facts, quotes, numbers, timelines, or outcomes.
 - Title MUST include the exact trending topic phrase or a recognizable keyword from it.
 - Title max 55 characters (mobile feed truncates longer titles).
-- BANNED title clichés (never use): "Shock Awaits", "Nobody Saw Coming", "Shocking Turnaround", "Flip the Group", "Schedule Secrets", "The Truth", "Worth It", "Hype Ya Reality".
 - Write titles people actually search: names, products, companies, events, or public keywords from the trend.
+
+CRITICAL — ANTI-TEMPLATE (YouTube suppresses formulaic clusters):
+- Every video MUST use a genuinely different sentence architecture for title, hook, and CTA.
+- Vary opening hook type across videos: question | bold claim | contrarian | direct fact | how/why | imperative.
+- Do NOT reuse rhetorical scaffolds. BANNED patterns (never use):
+  "Trending now", "3 things to know", "Wait — this", "Before X, know this",
+  "just flipped the conversation/timeline", "Which side are you on",
+  "could go either way", "the part that got buried", "Comment your prediction",
+  "Shock Awaits", "Nobody Saw Coming", "The Truth", "Worth It", "Hype Ya Reality",
+  "explained in 30 sec", "Everyone's talking".
+- If recent titles are provided as negative examples, do NOT copy their structure or phrasing.
 
 The video has 5 acts:
 1. HOOK — a strong first-line headline about the topic (must grab attention in 2 seconds)
 2. CONTEXT — 3 short lines that explain what it is
 3. WHY — 3 short lines explaining why people care
 4. QUESTION — one open-loop question plus 6 to 8 rapid short captions
-5. CLOSE — 2 or 3 short lines; LAST line must ask viewers to comment their take
+5. CLOSE — 2 or 3 short lines; LAST line must ask viewers to comment (vary CTA wording)
 
 Style rules:
 - Write like a viral trending-topic explainer short, not a documentary.
 - Use a mix of simple English with light Hinglish/Urdu phrasing where natural.
 - Focus on what happened, why it matters, and what people are debating.
 - Be punchy, simple, broad, and readable on screen.
-- Hook: 4-8 words, punchy, different wording from title.
+- Hook: 4-8 words, punchy, different wording AND structure from title.
 - Context lines: 3 short lines, max 8 words each.
 - Why lines: 3 short lines, max 8 words each.
-- Question: 4-10 words, must invite comments.
+- Question: 4-10 words, must invite comments (fresh phrasing each time).
 - Captions: 6 to 8 items, max 5 words each, energetic but factual.
 - CAPTION UNIQUENESS: every caption MUST include a concrete word from the trend; invent fresh phrasing every time.
 - BANNED caption fillers: "FULL TIME?", "MATCH ALERT", "TRENDING NOW", "GOAL ALERT", "QUICK BREAKDOWN".
-- Close lines: 2 or 3 short lines; final line = comment CTA (no emoji in JSON).
+- Close lines: 2 or 3 short lines; final line = unique comment CTA (no emoji in JSON).
 - youtube_tags: 8-12 search tags based on the trend.
 
 Palette: pick 3 RGB colors — high contrast for mobile screens.
 Respond ONLY with valid JSON. No markdown fences. No explanation."""
 
-SYSTEM_PROMPT_HIGH_CPM = """You write 30-second vertical YouTube Shorts for HIGH-CPM niches (AI tools, personal finance, SaaS, business money decisions).
+SYSTEM_PROMPT_HIGH_CPM = """You write vertical YouTube Shorts for HIGH-CPM niches (AI tools, personal finance, SaaS, business money decisions).
 
 Goal: educational, advertiser-safe, searchable explainers that attract high-value viewers.
 Do NOT write fiction, get-rich-quick promises, guaranteed returns, medical advice, or illegal advice.
@@ -216,21 +249,29 @@ CRITICAL — SEARCH & TRUST RULES:
 - Do NOT invent prices, rates, tax rules, or product claims.
 - Title MUST include a keyword from the topic (tool name, finance term, company, or money phrase).
 - Title max 55 characters.
-- BANNED clichés: "Shock Awaits", "Nobody Saw Coming", "The Truth", "Worth It", "Hype Ya Reality", "Get Rich".
-- Prefer titles people search: "ChatGPT pricing", "credit score tip", "AI tool for freelancers", "mortgage rate update".
+- Prefer titles people search: named products/companies + concrete angle.
+
+CRITICAL — ANTI-TEMPLATE (YouTube suppresses formulaic clusters):
+- Every video MUST use a genuinely different sentence architecture for title, hook, and CTA.
+- Vary opening type: question | claim | contrarian | direct fact | how/why | cost-warning.
+- BANNED patterns (never use): "Trending now", "Money tip:", "3 things to know",
+  "Wait — this", "Before X, know this", "just flipped", "Which side are you on",
+  "Shock Awaits", "Nobody Saw Coming", "The Truth", "Worth It", "Get Rich",
+  "explained in 30 sec".
+- If recent titles are provided as negative examples, do NOT copy their structure or phrasing.
 
 The video has 5 acts:
 1. HOOK — money/tool impact headline (2-second grab)
 2. CONTEXT — 3 short lines explaining the update/tool/rule
 3. WHY — 3 short lines on cost, risk, or opportunity
 4. QUESTION — open-loop question + 6 to 8 rapid captions
-5. CLOSE — wrap-up; LAST line must ask viewers to comment their take
+5. CLOSE — wrap-up; LAST line must ask viewers to comment (vary CTA wording)
 
 Style rules:
 - Clear, practical, beginner-friendly explainer tone.
 - Light Hinglish/Urdu is fine where natural.
 - Focus on costs, benefits, mistakes, comparisons, and next steps — not drama.
-- Hook: 4-8 words, different from title.
+- Hook: 4-8 words, different wording AND structure from title.
 - Context/why lines: max 8 words each.
 - Captions: 6-8 unique items, max 5 words, include a topic keyword.
 - BANNED caption fillers: "FULL TIME?", "MATCH ALERT", "TRENDING NOW", "GOAL ALERT".
@@ -244,11 +285,26 @@ OPENAI_TOPIC_SELECTOR_SYSTEM = OPENAI_TOPIC_SELECTOR_VIRAL
 SYSTEM_PROMPT = SYSTEM_PROMPT_VIRAL
 
 
-def make_prompt(latest_topic: str, epilogue_extra: str | None = None, niche: str = "viral") -> str:
+def make_prompt(
+    latest_topic: str,
+    epilogue_extra: str | None = None,
+    niche: str = "viral",
+    recent_titles: list[str] | None = None,
+) -> str:
     angles = HIGH_CPM_ANGLES if niche == "high_cpm" else VIRAL_ANGLES
     angle = random.choice(angles)
+    # Force a structural family so the LLM doesn't collapse to one skeleton.
+    hook_families = [
+        "question",
+        "bold claim",
+        "contrarian statement",
+        "direct fact",
+        "how/why explainer",
+        "imperative / watch-this",
+    ]
+    title_family = random.choice(hook_families)
     if niche == "high_cpm":
-        package_line = "Create a 30-second HIGH-CPM (AI tools / finance / SaaS / business) YouTube Short package."
+        package_line = "Create a HIGH-CPM (AI tools / finance / SaaS / business) YouTube Short package."
         framing = (
             "Frame this as a practical money/tool explainer when possible "
             "(cost, risk, productivity, beginner mistake, comparison)."
@@ -256,7 +312,7 @@ def make_prompt(latest_topic: str, epilogue_extra: str | None = None, niche: str
         tags_hint = '["AI tools", "personal finance", "... 8-12 niche + trend tags"]'
         search_hint = "specific stock-image search phrase for office finance AI productivity"
     else:
-        package_line = "Create a 30-second viral trending-topic YouTube Short package."
+        package_line = "Create a viral trending-topic YouTube Short package."
         framing = "Keep it discovery-friendly and broadly interesting."
         tags_hint = '["trend keyword 1", "trend keyword 2", "... 8-12 search tags"]'
         search_hint = "specific stock-image search phrase based on trend"
@@ -266,6 +322,8 @@ def make_prompt(latest_topic: str, epilogue_extra: str | None = None, niche: str
 Current trending topic: {latest_topic}
 Content angle: {angle}
 Niche mode: {niche}
+Required title opening style for THIS video only: {title_family}
+(Do not reuse this same style next time — it is assigned per run.)
 
 The output must be directly about this exact trend phrase.
 {framing}
@@ -273,7 +331,8 @@ Do not turn it into fiction.
 Do not fabricate facts, timelines, prices, or outcomes.
 Do not convert it into a haunted or horror metaphor.
 The title MUST contain words from "{latest_topic}" and stay under 55 characters.
-The hook must use different wording than the title.
+The hook must use different wording AND a different sentence structure than the title.
+CTA / close final line must be freshly phrased (not a stock "which side are you on").
 
 Return this exact JSON:
 {{
@@ -285,10 +344,18 @@ Return this exact JSON:
   "why_lines": ["3 short lines", "why people care", "max 8 words each"],
   "question": "4-10 word question that invites comments",
   "captions": [["TOPIC-SPECIFIC CAPTION", [r,g,b]], "... 6 to 8 unique, each uses a word from the trend"],
-  "close_lines": ["2 lines wrap-up", "Comment your pick below"],
+  "close_lines": ["2 lines wrap-up", "fresh comment CTA"],
   "search_query": "{search_hint}",
   "youtube_tags": {tags_hint}
 }}"""
+    negatives = [t for t in (recent_titles or []) if str(t).strip()][-TITLE_HISTORY_NEGATIVES:]
+    if negatives:
+        listed = "\n".join(f"- {t}" for t in negatives)
+        base += (
+            "\n\nNEGATIVE EXAMPLES — recent titles already used. "
+            "Do NOT copy their phrasing, openings, or sentence skeletons:\n"
+            f"{listed}"
+        )
     if epilogue_extra:
         base += f"\n\nEpilogue instruction: {epilogue_extra}"
     return base
@@ -466,7 +533,7 @@ def select_topic_with_openai(
 
 
 def pick_rotated_channel_fit_fallback(niche: str = "viral") -> str:
-    """Pick a synthetic seed while avoiding the last few picks (reduces duplicate titles)."""
+    """Pick a named-entity seed while avoiding the last few picks (reduces duplicate titles)."""
     pool_src = HIGH_CPM_FALLBACKS if niche == "high_cpm" else VIRAL_FALLBACKS
     try:
         SEED_HISTORY_PATH.parent.mkdir(parents=True, exist_ok=True)
@@ -476,7 +543,13 @@ def pick_rotated_channel_fit_fallback(niche: str = "viral") -> str:
             if isinstance(data, dict):
                 recent = [str(x) for x in data.get("recent_seeds", []) if str(x).strip()]
         avoid = set(s.lower() for s in recent[-4:])
-        pool = [s for s in pool_src if s.lower() not in avoid]
+        # Hard gate: never emit a generic category seed.
+        pool = [
+            s for s in pool_src
+            if s.lower() not in avoid and passes_named_entity_gate(s)
+        ]
+        if not pool:
+            pool = [s for s in pool_src if passes_named_entity_gate(s)]
         if not pool:
             pool = list(pool_src)
         choice = random.choice(pool)
@@ -492,7 +565,7 @@ def pick_rotated_channel_fit_fallback(niche: str = "viral") -> str:
 
 
 def pick_latest_topic(niche: str = "viral") -> tuple[str, str | None]:
-    """Pick a topic from RSS, demand-filtered and niche-filtered."""
+    """Pick a topic from RSS, demand-filtered, niche-filtered, and named-entity gated."""
     label = "HIGH-CPM" if niche == "high_cpm" else "viral"
     try:
         entries = fetch_trending_entries()
@@ -516,11 +589,33 @@ def pick_latest_topic(niche: str = "viral") -> tuple[str, str | None]:
                     )
             # Never pass an empty list to the selector on a low-traffic day.
             pool_entries = viable if viable else entries
-            topics = [e["topic"] for e in pool_entries]
-            preview = ", ".join(
-                f'{e["topic"]} ({e["demand"]})' for e in pool_entries[:5]
-            )
-            print(f"  RSS top topics (demand≥{thr}): {preview}")
+            # Hard named-entity gate: reject generic category topics before ranking.
+            named_entries: list[dict] = []
+            for e in pool_entries:
+                if passes_named_entity_gate(e["topic"]):
+                    named_entries.append(e)
+                else:
+                    log_entity_rejection(
+                        "named_entity_gate",
+                        e["topic"],
+                        {
+                            "demand": e["demand"],
+                            "traffic": e["traffic"],
+                            "news_count": e["news_count"],
+                        },
+                        reason="no_named_entity",
+                    )
+            if not named_entries:
+                print(
+                    f"  All RSS topics failed named-entity gate "
+                    f"({len(pool_entries)} candidates); using {label} fallback seed."
+                )
+            else:
+                topics = [e["topic"] for e in named_entries]
+                preview = ", ".join(
+                    f'{e["topic"]} ({e["demand"]})' for e in named_entries[:5]
+                )
+                print(f"  RSS named-entity topics (demand≥{thr}): {preview}")
         if topics:
             # Prefer niche-matching candidates first for OpenAI ranking.
             niche_first = [
@@ -529,31 +624,61 @@ def pick_latest_topic(niche: str = "viral") -> tuple[str, str | None]:
             rank_pool = (niche_first + [t for t in topics if t not in niche_first])[:10]
             chosen, search_query = select_topic_with_openai(rank_pool, niche=niche)
             if chosen and _is_usable_topic(chosen):
+                # Reject OpenAI picks that lack a concrete proper noun.
+                if not passes_named_entity_gate(chosen):
+                    log_entity_rejection(
+                        "named_entity_gate.openai",
+                        chosen,
+                        {"rank_pool": rank_pool, "niche": niche},
+                        reason="no_named_entity",
+                    )
+                    chosen = None
+                    search_query = None
+            if chosen and _is_usable_topic(chosen):
                 # If OpenAI picked off-niche for high_cpm, try a niche candidate instead.
                 if niche == "high_cpm" and not _is_channel_fit_topic(chosen, niche) and niche_first:
-                    chosen = niche_first[0]
-                    search_query = None
-                    print(f"  Trending topic seed: {chosen} ({label} override)")
-                    return require_valid_entity(
-                        chosen, source="pick_latest_topic.openai_override", raw_upstream=topics
-                    ), search_query
+                    # Keep override only if it still clears the entity gate.
+                    override = next(
+                        (t for t in niche_first if passes_named_entity_gate(t)),
+                        None,
+                    )
+                    if override:
+                        chosen = override
+                        search_query = None
+                        print(f"  Trending topic seed: {chosen} ({label} override)")
+                        return require_named_entity(
+                            chosen,
+                            source="pick_latest_topic.openai_override",
+                            raw_upstream=topics,
+                        ), search_query
                 print(f"  Trending topic seed: {chosen} (OpenAI-selected, {label})")
-                return require_valid_entity(
+                return require_named_entity(
                     chosen, source="pick_latest_topic.openai", raw_upstream=topics
                 ), search_query
             for candidate in topics:
-                if _is_usable_topic(candidate) and _is_channel_fit_topic(candidate, niche):
+                if (
+                    _is_usable_topic(candidate)
+                    and _is_channel_fit_topic(candidate, niche)
+                    and passes_named_entity_gate(candidate)
+                ):
                     print(f"  Trending topic seed: {candidate} (latest {label})")
-                    return require_valid_entity(
+                    return require_named_entity(
                         candidate, source="pick_latest_topic.rss", raw_upstream=topics
                     ), None
-            print(f"  No {label} topic in RSS; using {label} fallback seed.")
+            # Named-entity RSS topics exist but none niche-matched — take first gated topic.
+            for candidate in topics:
+                if _is_usable_topic(candidate) and passes_named_entity_gate(candidate):
+                    print(f"  Trending topic seed: {candidate} (named-entity RSS, {label})")
+                    return require_named_entity(
+                        candidate, source="pick_latest_topic.rss_any", raw_upstream=topics
+                    ), None
+            print(f"  No {label} named-entity topic in RSS; using {label} fallback seed.")
         print(f"  Trending topic feed empty; using synthetic {label} seed.")
     except Exception as e:
         print(f"  Trending topic fetch failed: {e}")
     fallback_topic = pick_rotated_channel_fit_fallback(niche=niche)
     print(f"  Trending topic seed: {fallback_topic} ({label} fallback)")
-    return require_valid_entity(
+    return require_named_entity(
         fallback_topic, source="pick_latest_topic.fallback", raw_upstream={"niche": niche}
     ), None
 
@@ -609,20 +734,24 @@ TITLE_BANNED_PHRASES = [
     "shock awaits", "nobody saw coming", "shocking turnaround", "flip the group",
     "schedule secrets", "group stage shock", "the truth", "worth it",
     "hype ya reality", "is it safe", "secrets:", "nobody is talking",
+    "3 things to know", "flipped the conversation", "flipped the timeline",
+    "could go either way", "the part that got buried", "trending now",
+    "which side are you on", "comment your prediction", "explained in 30",
+    "everyone's talking", "wait — this", "wait - this",
 ]
 
 TITLE_MAX_CHARS = 55
 
 
 def _sanitize_title(title: str, trend: str = "") -> str:
-    """Strip spammy clichés and enforce mobile-friendly length."""
+    """Strip spammy/formulaic scaffolds and enforce mobile-friendly length."""
     t = _compact_ws(title)
     low = t.lower()
     safe_trend = trend if is_valid_entity(trend, min_length=4) else ""
-    if any(phrase in low for phrase in TITLE_BANNED_PHRASES):
-        t = _fallback_title_from_topic(safe_trend) if safe_trend else "Trending update explained"
+    if any(phrase in low for phrase in TITLE_BANNED_PHRASES) or _contains_formulaic_scaffold(t):
+        t = _fallback_title_from_topic(safe_trend) if safe_trend else "Fresh update — what changed"
     if not is_valid_entity(t, min_length=4) or contains_invalid_publish_text(t):
-        t = _fallback_title_from_topic(safe_trend) if safe_trend else "Trending update explained"
+        t = _fallback_title_from_topic(safe_trend) if safe_trend else "Fresh update — what changed"
     if len(t) > TITLE_MAX_CHARS:
         cut = t[: TITLE_MAX_CHARS - 3].rsplit(" ", 1)[0]
         t = (cut or t[: TITLE_MAX_CHARS - 3]) + "..."
@@ -714,9 +843,16 @@ def validate(content: dict, trend: str = "") -> dict:
 
     close_lines = [str(x) for x in content.get("close_lines", []) if str(x).strip()]
     while len(close_lines) < 2:
-        close_lines.append("This trend is moving fast.")
-    if not any("comment" in line.lower() for line in close_lines):
-        close_lines.append("Comment your pick below.")
+        close_lines.append("Context is still moving — verify before sharing.")
+    if not any("comment" in line.lower() or "reply" in line.lower() or "below" in line.lower() for line in close_lines):
+        close_lines.append(random.choice(_CLOSE_CTA_POOL))
+    # Replace formulaic CTAs if the LLM slipped.
+    close_lines = [
+        random.choice(_CLOSE_CTA_POOL)
+        if _contains_formulaic_scaffold(line) or "which side are you on" in line.lower()
+        else line
+        for line in close_lines
+    ]
     content["close_lines"] = close_lines[:3]
 
     tags = content.get("youtube_tags", [])
@@ -772,11 +908,14 @@ def _normalize_display_text(content: dict) -> dict:
     if title and hook:
         tl, hl = title.lower(), hook.lower()
         if tl == hl or tl in hl or hl in tl:
-            if len(hook) <= len(title):
-                content["hook"] = "Quick trend breakdown in 30 sec."
-            else:
-                content["title"] = hook
-                content["hook"] = "Yeh trend abhi viral hai — detail dekho."
+            # Rebuild hook with a different structure instead of a fixed filler line.
+            trend = _compact_ws(str(content.get("trend_topic") or title))
+            content["hook"] = _anchor_hook(trend)
+            hook = _compact_ws(str(content.get("hook", "")))
+            if hook.lower() == tl or tl in hook.lower():
+                content["hook"] = random.choice(
+                    ["Cold open — stay with this.", "Short read, no fluff.", "Context first."]
+                )
 
     title = _compact_ws(str(content.get("title", "")))
     low = title.lower()
@@ -787,81 +926,132 @@ def _normalize_display_text(content: dict) -> dict:
     return content
 
 
-# Varied, non-repetitive title shapes. {t} is the topic phrase (title-cased).
-# Avoid spammy/bot-looking phrases that YouTube Shorts suppress ("Everyone's talking",
-# "The real story behind", "explained in 30 sec").
-_TITLE_TEMPLATES_GENERIC = [
-    "{t} — what actually changed?",
-    "3 things to know about {t}",
-    "{t} isn't what most people think",
-    "Why {t} just flipped the timeline",
-    "{t} just took a sharp turn",
-    "Wait — this {t} detail matters",
-    "What {t} means in plain English",
-    "{t}: the part that got buried",
-]
-_TITLE_TEMPLATES_VS = [
-    "{t}: who actually wins?",
-    "{t} — the gap is bigger than you think",
-    "{t}: it's not even close",
-    "Settling {t} once and for all",
-]
-_TITLE_TEMPLATES_PRICE = [
-    "{t}: what just changed",
-    "Why {t} caught everyone off guard",
-    "{t} — should you care?",
-    "The cost angle on {t} nobody leads with",
-]
-_TITLE_TEMPLATES_FEATURE = [
-    "{t}: the part nobody mentions",
-    "What {t} actually changes",
-    "{t} is quietly a big upgrade",
-    "Is {t} worth switching for?",
-]
-_TITLE_TEMPLATES_MATCH = [
-    "Can {t} survive this?",
-    "{t}: the stakes just jumped",
-    "Before {t}, know this",
-    "{t} could go either way",
-]
-
-_HOOK_SHAPES = [
-    "{t} — here's the quick version",
-    "Wait, what's going on with {t}?",
-    "This {t} update is a big deal",
-    "The {t} detail most people miss",
-    "{t}: what you actually need to know",
-    "Stop scrolling — {t} just shifted",
-    "{t} just flipped the conversation",
-    "Plain English: what's up with {t}",
+# Structurally distinct title families — NOT synonym rotations of one scaffold.
+# Each tuple: (family_id, template). {t} = topic phrase.
+_TITLE_STRUCTURES: list[tuple[str, str]] = [
+    # question
+    ("question", "Did {t} just rewrite the odds?"),
+    ("question", "Is {t} the real story?"),
+    ("question", "Who benefits from {t}?"),
+    ("question", "What if {t} sticks?"),
+    ("question", "Where does {t} go next?"),
+    # bold claim
+    ("claim", "{t} just broke the usual script"),
+    ("claim", "{t} is rewriting the feed"),
+    ("claim", "{t} hit harder than expected"),
+    ("claim", "{t} forced a new narrative"),
+    ("claim", "{t} moved the goalposts"),
+    # contrarian
+    ("contrarian", "Most takes on {t} miss this"),
+    ("contrarian", "Ignore the loud take on {t}"),
+    ("contrarian", "{t} isn't the plot twist people want"),
+    ("contrarian", "The quiet angle on {t}"),
+    ("contrarian", "Stop overreading {t}"),
+    # direct fact
+    ("fact", "{t}: the detail that stuck"),
+    ("fact", "{t} — timeline in one breath"),
+    ("fact", "Inside {t}, stripped down"),
+    ("fact", "{t}, no fluff"),
+    ("fact", "Plain read: {t}"),
+    # how/why
+    ("how_why", "How {t} got here so fast"),
+    ("how_why", "Why {t} is everywhere tonight"),
+    ("how_why", "How search caught up to {t}"),
+    ("how_why", "Why {t} won't stay quiet"),
+    ("how_why", "How {t} spilled over"),
+    # imperative
+    ("imperative", "Catch {t} before the take hardens"),
+    ("imperative", "Read {t} without the noise"),
+    ("imperative", "Sit with {t} for 20 seconds"),
+    ("imperative", "Don't scroll past {t}"),
+    ("imperative", "Clock {t} while it's live"),
+    # comparison / stakes
+    ("compare", "{t} vs the expected story"),
+    ("compare", "{t}: hype vs substance"),
+    ("compare", "Early read on {t}'s stakes"),
+    ("compare", "{t} under pressure"),
+    ("compare", "Pressure test: {t}"),
 ]
 
-_CONTEXT_SHAPES = [
-    "{t} is picking up fast.",
-    "People can't stop discussing {t}.",
-    "Here's what's driving {t}.",
-    "The {t} story keeps growing.",
-    "{t} is all over the feeds.",
-    "Reactions to {t} are split.",
-    "This is why {t} matters.",
+_HOOK_STRUCTURES: list[tuple[str, str]] = [
+    ("question", "So… what's actually up with {t}?"),
+    ("question", "Hold up — {t}?"),
+    ("claim", "{t} just landed."),
+    ("claim", "Here's {t}, cut short."),
+    ("contrarian", "Skip the loud take on {t}."),
+    ("contrarian", "{t} is quieter than the noise."),
+    ("fact", "{t}. Straight facts."),
+    ("fact", "Cold open: {t}."),
+    ("how_why", "How {t} got loud."),
+    ("how_why", "Why {t} matters now."),
+    ("imperative", "Look at {t} first."),
+    ("imperative", "Start with {t}."),
 ]
 
-_ANCHOR_JOINERS = ["{e}: {ti}", "{ti} — {e}", "{e} — {ti}", "{ti} ({e})"]
+_CONTEXT_STRUCTURES: list[tuple[str, str]] = [
+    ("fact", "{t} is in heavy search."),
+    ("fact", "Coverage around {t} spiked."),
+    ("claim", "{t} is driving the chat."),
+    ("claim", "Feeds keep looping {t}."),
+    ("contrarian", "Not everyone buys the {t} take."),
+    ("contrarian", "Split opinions on {t}."),
+    ("how_why", "Here's the push behind {t}."),
+    ("how_why", "Context for {t}, fast."),
+    ("question", "Why is {t} everywhere?"),
+    ("question", "What's fueling {t}?"),
+]
+
+_CLOSE_CTA_POOL = [
+    "What do you make of it? Say so below.",
+    "Would you bet on this outcome? Reply.",
+    "Honest read — leave yours in comments.",
+    "If you disagree, write why under this.",
+    "One-line verdict in the comments.",
+    "Curious what you'd do — tell me.",
+    "Your angle beats mine? Prove it below.",
+    "Vote with a comment: buy-in or pass.",
+    "Leave the take you won't say out loud.",
+    "Type the detail everyone is skipping.",
+    "Reply with the counter-argument.",
+    "Drop the version of this you'd trust.",
+]
+
+_ANCHOR_JOINERS = [
+    "{e}: {ti}",
+    "{ti} — {e}",
+    "{e} — {ti}",
+    "{ti} ({e})",
+    "{e} | {ti}",
+]
+
+# Phrases that signal the old formulaic scaffolds — sanitize/regenerate if seen.
+_FORMULAIC_TITLE_MARKERS = (
+    "3 things to know",
+    "wait — this",
+    "wait - this",
+    "before ",
+    ", know this",
+    "flipped the conversation",
+    "flipped the timeline",
+    "could go either way",
+    "the part that got buried",
+    "trending now",
+    "which side are you on",
+    "comment your prediction",
+    "explained in 30",
+    "everyone's talking",
+    "shock awaits",
+    "nobody saw coming",
+)
 
 
 def _stable_hash(text: str) -> int:
-    """Deterministic integer hash used for stable template rotation."""
+    """Deterministic integer hash used for stable picks when needed."""
     return int(hashlib.md5(str(text).encode("utf-8", errors="replace")).hexdigest(), 16)
 
 
 def _rotating_choice(pool: list[str], *, category: str, topic: str) -> str:
-    """Deterministic template pick that needs no persisted state.
-
-    Production runs on ephemeral GitHub Actions runners, so a local
-    shape_rotation.json cannot survive across scheduled invocations.
-    Index is derived from hash(category + topic + UTC date) — same topic
-    on the same day is stable/debuggable; the shape can shift next day.
-    """
+    """Pick from a pool with date+topic salt (kept for callers that need stability)."""
     n = len(pool)
     if n == 0:
         return ""
@@ -870,38 +1060,221 @@ def _rotating_choice(pool: list[str], *, category: str, topic: str) -> str:
     return pool[_stable_hash(f"{category}:{topic}:{salt}") % n]
 
 
+def _load_title_history() -> list[dict]:
+    try:
+        if not TITLE_HISTORY_PATH.exists():
+            return []
+        data = json.loads(TITLE_HISTORY_PATH.read_text(encoding="utf-8"))
+        if isinstance(data, dict):
+            rows = data.get("titles", [])
+        elif isinstance(data, list):
+            rows = data
+        else:
+            return []
+        return [r for r in rows if isinstance(r, dict) and str(r.get("title", "")).strip()]
+    except Exception as e:
+        print(f"  [WARN] title history read failed: {e}")
+        return []
+
+
+def recent_title_strings(limit: int = TITLE_HISTORY_NEGATIVES) -> list[str]:
+    rows = _load_title_history()
+    out: list[str] = []
+    for r in rows[-max(1, limit) :]:
+        t = _compact_ws(str(r.get("title", "")))
+        if t:
+            out.append(t)
+    return out
+
+
+def record_generated_title(
+    title: str,
+    *,
+    hook: str = "",
+    family: str = "",
+    trend: str = "",
+) -> None:
+    """Append a generated title so later runs can treat it as a negative example."""
+    try:
+        TITLE_HISTORY_PATH.parent.mkdir(parents=True, exist_ok=True)
+        rows = _load_title_history()
+        rows.append(
+            {
+                "title": _compact_ws(title),
+                "hook": _compact_ws(hook),
+                "family": family or title_structure_family(title),
+                "trend": _compact_ws(trend),
+                "utc": datetime.now(timezone.utc).isoformat(),
+            }
+        )
+        TITLE_HISTORY_PATH.write_text(
+            json.dumps({"titles": rows[-TITLE_HISTORY_MAX:]}, indent=2),
+            encoding="utf-8",
+        )
+    except Exception as e:
+        print(f"  [WARN] title history write failed: {e}")
+
+
+def title_structure_family(title: str) -> str:
+    """Coarse structural family label for diversity checks."""
+    t = _compact_ws(title).lower()
+    if not t:
+        return "empty"
+    if t.startswith(("how ", "why ")):
+        return "how_why"
+    if t.endswith("?") or t.startswith(("did ", "is ", "who ", "what ", "where ")):
+        return "question"
+    if t.startswith(("most ", "ignore ", "stop ", "don't ", "dont ")):
+        return "contrarian"
+    if t.startswith(("catch ", "read ", "sit ", "clock ", "look ", "start ", "don't scroll", "dont scroll")):
+        return "imperative"
+    if " vs " in f" {t} " or t.startswith("pressure test") or t.startswith("early read"):
+        return "compare"
+    if ":" in t or "—" in t or " - " in t:
+        return "fact"
+    return "claim"
+
+
+def _strip_entity_skeleton(title: str, entity: str = "") -> str:
+    """Approximate structural skeleton by blanking the entity phrase."""
+    t = _compact_ws(title).lower()
+    e = _compact_ws(entity).lower()
+    if e and e in t:
+        t = t.replace(e, "{t}")
+    else:
+        # Blank longest capitalized-ish token runs heuristically
+        t = re.sub(r"\b[a-z0-9][a-z0-9'&+.-]{2,}\b", "{x}", t, count=3)
+    return re.sub(r"\s+", " ", t).strip()
+
+
+def _family_cooldown() -> int:
+    try:
+        return max(1, int(env_value("TITLE_FAMILY_COOLDOWN", str(TITLE_FAMILY_COOLDOWN)) or TITLE_FAMILY_COOLDOWN))
+    except (TypeError, ValueError):
+        return TITLE_FAMILY_COOLDOWN
+
+
+def _recent_families_and_skeletons(limit: int | None = None) -> tuple[set[str], set[str]]:
+    """Return families/skeletons that must be avoided (hard cooldown window)."""
+    cool = _family_cooldown() if limit is None else max(1, limit)
+    rows = _load_title_history()[-cool:]
+    families = {
+        str(r.get("family") or title_structure_family(str(r.get("title", ""))))
+        for r in rows
+        if str(r.get("title", "")).strip()
+    }
+    skeletons = {
+        _strip_entity_skeleton(str(r.get("title", "")), str(r.get("trend", "")))
+        for r in rows
+    }
+    skeletons.discard("")
+    return families, skeletons
+
+
+def _contains_formulaic_scaffold(text: str) -> bool:
+    low = _compact_ws(text).lower()
+    if not low:
+        return False
+    if "before " in low and "know this" in low:
+        return True
+    markers = [m for m in _FORMULAIC_TITLE_MARKERS if m not in ("before ", ", know this")]
+    return any(m in low for m in markers)
+
+
+def _pick_structure(
+    structures: list[tuple[str, str]],
+    *,
+    topic: str,
+    avoid_families: set[str] | None = None,
+    avoid_skeletons: set[str] | None = None,
+) -> tuple[str, str]:
+    """Pick a (family, template). Hard-avoid recent families when any alternative exists."""
+    avoid_families = avoid_families or set()
+    avoid_skeletons = avoid_skeletons or set()
+    rng = random.Random(
+        _stable_hash(f"{topic}:{datetime.now(timezone.utc).isoformat()}:{random.random()}")
+    )
+
+    def _candidates(*, skip_families: bool, skip_skeletons: bool) -> list[tuple[str, str]]:
+        out: list[tuple[str, str]] = []
+        for fam, tmpl in structures:
+            filled = tmpl.format(t=topic)
+            skel = _strip_entity_skeleton(filled, topic)
+            if skip_families and fam in avoid_families:
+                continue
+            if skip_skeletons and skel in avoid_skeletons:
+                continue
+            if _contains_formulaic_scaffold(filled):
+                continue
+            out.append((fam, tmpl))
+        return out
+
+    # Prefer: new family AND new skeleton → new family → new skeleton → anything.
+    pool = (
+        _candidates(skip_families=True, skip_skeletons=True)
+        or _candidates(skip_families=True, skip_skeletons=False)
+        or _candidates(skip_families=False, skip_skeletons=True)
+        or _candidates(skip_families=False, skip_skeletons=False)
+        or list(structures)
+    )
+    return rng.choice(pool)
+
+
 def _anchor_title(entity: str, existing_title: str = "") -> str:
-    """Re-attach trend entity using a varied but deterministic title shape."""
+    """Re-attach trend entity without collapsing to a fixed scaffold."""
     e = _compact_ws(entity or "").strip()
     ti = _compact_ws(existing_title or "").strip()
     if not is_valid_entity(e, min_length=4):
         return _sanitize_title(ti or _fallback_title_from_topic(""), trend="")
-    if not ti or contains_invalid_publish_text(ti):
+    if not ti or contains_invalid_publish_text(ti) or _contains_formulaic_scaffold(ti):
         return _sanitize_title(_fallback_title_from_topic(e), trend=e)
     if e.lower() in ti.lower():
         return _sanitize_title(ti, trend=e)
-    joiner = _rotating_choice(_ANCHOR_JOINERS, category="anchor_join", topic=e)
+    joiner = random.choice(_ANCHOR_JOINERS)
     return _sanitize_title(joiner.format(e=e, ti=ti), trend=e)
 
 
 def _anchor_hook(topic: str) -> str:
-    """Topic-anchored hook with varied sentence structure."""
+    """Topic-anchored hook with a structurally distinct family from recent titles."""
     t = _compact_ws(topic or "").strip()
     if not is_valid_entity(t, min_length=4):
-        return "Here's the quick breakdown"
-    return _rotating_choice(_HOOK_SHAPES, category="hook", topic=t).format(t=t)
+        return random.choice(["Cold open — listen up.", "Straight to the point.", "Here's the short read."])
+    families, skeletons = _recent_families_and_skeletons()
+    fam, tmpl = _pick_structure(
+        _HOOK_STRUCTURES, topic=t, avoid_families=families, avoid_skeletons=skeletons
+    )
+    return tmpl.format(t=t)
 
 
 def _anchor_context_lines(topic: str) -> list[str]:
-    """Three topic-anchored context lines, deterministically varied."""
+    """Three topic-anchored context lines from mixed structural families."""
     t = _compact_ws(topic or "").strip()
-    base = t if is_valid_entity(t, min_length=4) else "this trend"
-    h = _stable_hash(base)
-    n = len(_CONTEXT_SHAPES)
+    base = t if is_valid_entity(t, min_length=4) else "this update"
+    families, _ = _recent_families_and_skeletons()
+    used: set[str] = set()
+    lines = [base]
+    pool = list(_CONTEXT_STRUCTURES)
+    random.shuffle(pool)
+    for fam, tmpl in pool:
+        if fam in used and len(used) < 3:
+            continue
+        if fam in families and len(lines) < 2:
+            # Prefer unused families early, but don't stall.
+            continue
+        lines.append(tmpl.format(t=base))
+        used.add(fam)
+        if len(lines) >= 3:
+            break
+    while len(lines) < 3:
+        fam, tmpl = random.choice(_CONTEXT_STRUCTURES)
+        lines.append(tmpl.format(t=base))
+    return lines[:3]
+
+
+def _fallback_close_lines() -> list[str]:
     return [
-        base,
-        _CONTEXT_SHAPES[h % n].format(t=base),
-        _CONTEXT_SHAPES[(h + 1) % n].format(t=base),
+        "Context moves fast — check the source before you share.",
+        random.choice(_CLOSE_CTA_POOL),
     ]
 
 
@@ -994,25 +1367,24 @@ def _unique_fallback_captions(focus: str) -> list:
 
 
 def _fallback_title_from_topic(latest_topic: str) -> str:
+    """Build a title from structurally distinct families — not one scaffold bank."""
     topic = _compact_ws(latest_topic or "").strip(" -:")
     if not is_valid_entity(topic, min_length=4):
-        return _rotating_choice(
-            _TITLE_TEMPLATES_GENERIC,
-            category="title_generic",
-            topic="this trend",
-        ).format(t="this trend")
-    topic_l = topic.lower()
-    if " vs " in f" {topic_l} ":
-        pool, cat = _TITLE_TEMPLATES_VS, "title_vs"
-    elif "price" in topic_l or "stock" in topic_l:
-        pool, cat = _TITLE_TEMPLATES_PRICE, "title_price"
-    elif "feature" in topic_l or "update" in topic_l:
-        pool, cat = _TITLE_TEMPLATES_FEATURE, "title_feature"
-    elif any(w in topic_l for w in ("launch", "update", "release", "debate", "controversy")):
-        pool, cat = _TITLE_TEMPLATES_MATCH, "title_match"
-    else:
-        pool, cat = _TITLE_TEMPLATES_GENERIC, "title_generic"
-    return _rotating_choice(pool, category=cat, topic=topic).format(t=topic)
+        topic = "this update"
+    families, skeletons = _recent_families_and_skeletons()
+    fam, tmpl = _pick_structure(
+        _TITLE_STRUCTURES,
+        topic=topic,
+        avoid_families=families,
+        avoid_skeletons=skeletons,
+    )
+    title = tmpl.format(t=topic)
+    # Persist family hint on the string via sanitize only; callers record family later.
+    _ = fam
+    if len(title) > TITLE_MAX_CHARS:
+        cut = title[: TITLE_MAX_CHARS - 3].rsplit(" ", 1)[0]
+        title = (cut or title[: TITLE_MAX_CHARS - 3]) + "..."
+    return title
 
 
 def fallback_for_topic(latest_topic: str) -> dict:
@@ -1029,24 +1401,30 @@ def fallback_for_topic(latest_topic: str) -> dict:
         )
         lt = ""
     base = random.choice(_FALLBACK_POOL).copy()
-    focus = lt or "this trend"
-    base["title"] = _fallback_title_from_topic(lt)
+    focus = lt or "this update"
+    title = _fallback_title_from_topic(lt)
+    base["title"] = title
     base["hook"] = _anchor_hook(focus)
     base["context_lines"] = _anchor_context_lines(focus)
     base["why_lines"] = [
-        "Opinions online split ho rahe hain.",
-        "Search interest fast grow kar raha hai.",
-        "Har koi quick verdict chahta hai.",
+        "Search interest jumped fast.",
+        "Takes online are already splitting.",
+        "People want a clean read now.",
     ]
-    base["question"] = "Real story kya hai?"
+    base["question"] = random.choice(
+        [
+            "What stands out to you?",
+            "Does this change your view?",
+            "Buy the take or pass?",
+            "What's the missing piece?",
+        ]
+    )
     base["captions"] = _unique_fallback_captions(focus)
-    base["close_lines"] = [
-        "Trend fast move kar raha hai, update check zaroor karo.",
-        "Comment your pick below.",
-    ]
+    base["close_lines"] = _fallback_close_lines()
     if lt:
         base["search_query"] = lt
     base["trend_topic"] = lt
+    base["_title_family"] = title_structure_family(title)
     return base
 
 
@@ -1145,7 +1523,7 @@ def generate_topic(epilogue_extra: str | None = None, slot: str | None = None) -
     print(f"  Niche mode: {niche} (slot={slot or 'n/a'})")
     latest_topic, selected_search_query = pick_latest_topic(niche=niche)
     try:
-        latest_topic = require_valid_entity(
+        latest_topic = require_named_entity(
             latest_topic,
             source="generate_topic.pick_latest_topic",
             raw_upstream={"niche": niche, "slot": slot},
@@ -1155,14 +1533,20 @@ def generate_topic(epilogue_extra: str | None = None, slot: str | None = None) -
             "generate_topic.pick_latest_topic",
             latest_topic,
             raw_upstream={"niche": niche, "slot": slot, "error": str(exc)},
+            reason="no_named_entity",
         )
         latest_topic = pick_rotated_channel_fit_fallback(niche=niche)
-        latest_topic = require_valid_entity(
+        latest_topic = require_named_entity(
             latest_topic,
             source="generate_topic.recovered_fallback",
             raw_upstream={"niche": niche, "slot": slot},
         )
-    prompt = make_prompt(latest_topic, epilogue_extra, niche=niche)
+    prompt = make_prompt(
+        latest_topic,
+        epilogue_extra,
+        niche=niche,
+        recent_titles=recent_title_strings(TITLE_HISTORY_NEGATIVES),
+    )
     for i, model in enumerate(MODELS):
         try:
             print(f"  Generating topic (model: {model})...")
@@ -1193,6 +1577,11 @@ def generate_topic(epilogue_extra: str | None = None, slot: str | None = None) -
                         first[0] = latest_topic[:42]
                         captions[0] = first
                         content["captions"] = captions
+            # Kill residual formulaic scaffolds from the LLM.
+            if _contains_formulaic_scaffold(str(content.get("title", ""))):
+                content["title"] = _fallback_title_from_topic(latest_topic)
+            if _contains_formulaic_scaffold(str(content.get("hook", ""))):
+                content["hook"] = _anchor_hook(latest_topic)
             content = _normalize_display_text(content)
             content["trend_topic"] = latest_topic
             content["niche"] = niche
@@ -1202,6 +1591,13 @@ def generate_topic(epilogue_extra: str | None = None, slot: str | None = None) -
             assert_publishable_title(
                 str(content.get("title", "")),
                 source="generate_topic.pre_return",
+            )
+            content = _apply_similarity_guard(content, latest_topic)
+            record_generated_title(
+                str(content.get("title", "")),
+                hook=str(content.get("hook", "")),
+                family=title_structure_family(str(content.get("title", ""))),
+                trend=latest_topic,
             )
             print(f"  Topic: '{content['title']}'")
             print(f"  Question: '{content['question']}'")
@@ -1222,7 +1618,74 @@ def generate_topic(epilogue_extra: str | None = None, slot: str | None = None) -
     out["niche"] = niche
     out.pop("_niche", None)
     assert_publishable_title(str(out.get("title", "")), source="generate_topic.fallback_return")
+    out = _apply_similarity_guard(out, latest_topic)
+    record_generated_title(
+        str(out.get("title", "")),
+        hook=str(out.get("hook", "")),
+        family=str(out.pop("_title_family", "") or title_structure_family(str(out.get("title", "")))),
+        trend=latest_topic,
+    )
     return out
+
+
+def _apply_similarity_guard(content: dict, trend: str) -> dict:
+    """Hard-reject near-duplicate title/opener/CTA vs the published catalog; regenerate."""
+    from similarity_guard import SimilarityRejectError, diversify_content_against_catalog
+
+    def _regen_title(entity: str, _content: dict) -> str:
+        return _fallback_title_from_topic(entity or trend)
+
+    def _regen_opener(entity: str, _content: dict) -> str:
+        return _anchor_hook(entity or trend)
+
+    def _regen_cta(entity: str, _content: dict) -> list[str]:
+        return _fallback_close_lines()
+
+    # Family cooldown: if title family was used in the last N videos, force a new family now.
+    recent_families, _ = _recent_families_and_skeletons()
+    fam = title_structure_family(str(content.get("title", "")))
+    if fam and fam in recent_families:
+        print(f"  [SIM] title family '{fam}' still in cooldown — regenerating title")
+        content["title"] = _fallback_title_from_topic(trend)
+        content["hook"] = _anchor_hook(trend)
+
+    try:
+        content, scores = diversify_content_against_catalog(
+            content,
+            regenerate_title=_regen_title,
+            regenerate_opener=_regen_opener,
+            regenerate_cta=_regen_cta,
+            max_attempts=int(env_value("SIMILARITY_MAX_ATTEMPTS", "6") or "6"),
+        )
+        # Second family check after diversification.
+        fam2 = title_structure_family(str(content.get("title", "")))
+        if fam2 in recent_families:
+            content["title"] = _fallback_title_from_topic(trend)
+            fam2 = title_structure_family(str(content.get("title", "")))
+            scores = content.get("_similarity") or scores
+        print(
+            f"  Similarity: title={scores['title']['score']:.3f} "
+            f"opener={scores['opener']['score']:.3f} "
+            f"cta={scores['cta']['score']:.3f} "
+            f"family={fam2} "
+            f"(catalog={scores.get('catalog_size', 0)})"
+        )
+        return content
+    except SimilarityRejectError as exc:
+        log_entity_rejection(
+            "similarity_guard",
+            content.get("title"),
+            {"scores": exc.scores, "trend": trend},
+            reason="similarity_reject",
+        )
+        # Last-resort diversification even after failed attempts.
+        content["title"] = _fallback_title_from_topic(trend)
+        content["hook"] = _anchor_hook(trend)
+        content["close_lines"] = _fallback_close_lines()
+        content["_similarity"] = exc.scores
+        content["_similarity_failed"] = True
+        print(f"  [WARN] Similarity guard exhausted retries; forced fresh scaffolds ({exc})")
+        return content
 
 
 if __name__ == "__main__":

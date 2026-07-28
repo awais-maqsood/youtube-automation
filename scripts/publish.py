@@ -8,6 +8,7 @@ HERE = Path(__file__).parent
 sys.path.insert(0, str(HERE))
 import upload as up
 from topic_validation import EntityValidationError, assert_publishable_metadata, log_entity_rejection
+from pre_publish_gate import PrePublishBlocked, gate_kit, run_pre_publish_gate
 
 
 def verify(run_id: str, sig: str) -> bool:
@@ -157,7 +158,21 @@ if missing:
 token = up.get_access_token()
 title = kit.get("title", "LLM Short")
 try:
-    assert_publishable_metadata(title, description, source="publish.pre_upload")
+    gate_kit(
+        {
+            "title": title,
+            "description": description,
+            "niche": kit.get("niche"),
+            "topic": kit.get("topic"),
+            "trend_topic": kit.get("trend_topic") or kit.get("topic"),
+            "opener": kit.get("opener") or kit.get("hook") or "",
+            "hook": kit.get("hook") or "",
+        },
+        source="publish.pre_upload",
+    )
+except PrePublishBlocked as exc:
+    print(f"❌ Blocked publish — pre-publish gate: {exc.reason}: {exc}")
+    sys.exit(1)
 except EntityValidationError as exc:
     log_entity_rejection("publish.pre_upload", title, {"description": description, "error": str(exc)})
     print(f"❌ Blocked publish — invalid title/description: {exc}")
@@ -169,15 +184,21 @@ category_id = up.youtube_category_id(
     description=description,
 )
 print(f"  YouTube categoryId={category_id} (niche={kit.get('niche', 'n/a')})")
-video_id = up.upload_video(
-    token,
-    tmp_path,
-    title,
-    description,
-    tags=kit.get("tags"),
-    privacy="public",
-    category_id=category_id,
-)
+try:
+    video_id = up.upload_video(
+        token,
+        tmp_path,
+        title,
+        description,
+        tags=kit.get("tags"),
+        privacy="public",
+        category_id=category_id,
+        opener=str(kit.get("opener") or kit.get("hook") or ""),
+        trend=str(kit.get("trend_topic") or kit.get("topic") or ""),
+    )
+except PrePublishBlocked as exc:
+    print(f"❌ Blocked publish — pre-publish gate: {exc.reason}: {exc}")
+    sys.exit(1)
 os.unlink(tmp_path)
 
 if not video_id:

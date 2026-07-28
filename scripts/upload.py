@@ -10,6 +10,7 @@ import urllib.request, urllib.parse
 
 sys.path.insert(0, os.path.dirname(__file__))
 from topic_validation import EntityValidationError, assert_publishable_metadata, log_entity_rejection
+from pre_publish_gate import PrePublishBlocked, run_pre_publish_gate
 
 CLIENT_ID     = os.environ.get("YOUTUBE_CLIENT_ID")
 CLIENT_SECRET = os.environ.get("YOUTUBE_CLIENT_SECRET")
@@ -61,14 +62,27 @@ def upload_video(
     scheduled_utc=None,
     privacy="private",
     category_id=None,
+    opener: str = "",
+    trend: str = "",
 ):
     """Resumable upload. Returns video_id.
     privacy: "private" | "public" | "unlisted"
     scheduled_utc: ISO 8601 string — if set, video stays private until that time.
+
+    Fail-closed: named-entity + similarity pre-publish gate runs before any upload bytes.
     """
     try:
-        assert_publishable_metadata(title, description, source="upload.upload_video")
+        run_pre_publish_gate(
+            title=title,
+            description=description,
+            opener=opener,
+            trend=trend,
+            source="upload.upload_video",
+        )
+    except PrePublishBlocked:
+        raise
     except EntityValidationError as exc:
+        # Belt-and-suspenders — gate already covers this, but keep legacy path clear.
         log_entity_rejection("upload.upload_video", title, {"description": description, "error": str(exc)})
         raise
 
@@ -182,6 +196,23 @@ def main():
         kit = json.load(f)
 
     print(f"📤 Uploading: {kit['title']}")
+
+    # Fail closed before touching YouTube auth / bytes.
+    try:
+        from pre_publish_gate import gate_kit
+        from daily_cap import DailyCapExceeded, assert_under_daily_cap
+
+        assert_under_daily_cap(source="upload.main")
+        gate_kit(kit, source="upload.main")
+    except DailyCapExceeded as exc:
+        print(f"❌ Skipping publish — daily upload cap reached.")
+        print(f"   {exc}")
+        sys.exit(3)
+    except PrePublishBlocked as exc:
+        print(f"❌ Skipping publish — pre-publish gate blocked this kit.")
+        print(f"   reason={exc.reason}: {exc}")
+        sys.exit(2)
+
     token = get_access_token()
 
     scheduled = None if args.no_schedule else kit.get("scheduled_time_utc")
@@ -193,16 +224,23 @@ def main():
         description=kit.get("description", ""),
     )
     print(f"  YouTube categoryId={category_id} (niche={kit.get('niche', 'n/a')})")
-    vid_id = upload_video(
-        token,
-        kit["video"],
-        kit["title"],
-        kit["description"],
-        tags=kit.get("tags"),
-        scheduled_utc=scheduled,
-        privacy=privacy,
-        category_id=category_id,
-    )
+    try:
+        vid_id = upload_video(
+            token,
+            kit["video"],
+            kit["title"],
+            kit["description"],
+            tags=kit.get("tags"),
+            scheduled_utc=scheduled,
+            privacy=privacy,
+            category_id=category_id,
+            opener=str(kit.get("opener") or kit.get("hook") or ""),
+            trend=str(kit.get("trend_topic") or kit.get("trend") or kit.get("topic") or ""),
+        )
+    except PrePublishBlocked as exc:
+        print(f"❌ Skipping publish — pre-publish gate blocked this kit.")
+        print(f"   reason={exc.reason}: {exc}")
+        sys.exit(2)
 
     if vid_id and os.path.exists(kit.get("thumbnail","")):
         upload_thumbnail(token, vid_id, kit["thumbnail"])
@@ -210,6 +248,26 @@ def main():
     print(f"✅ Done. video_id={vid_id}")
     if scheduled:
         print(f"   Scheduled for: {scheduled}")
+
+    try:
+        from similarity_guard import extract_cta_from_description, record_catalog_entry
+        from daily_cap import record_daily_upload
+
+        record_catalog_entry(
+            title=kit.get("title", ""),
+            opener="",
+            cta=extract_cta_from_description(kit.get("description", "")),
+            trend=str(kit.get("topic") or ""),
+            description=kit.get("description", ""),
+            source="upload.success",
+        )
+        record_daily_upload(
+            title=str(kit.get("title") or ""),
+            slot=str(kit.get("slot") or ""),
+            source="upload.success",
+        )
+    except Exception as exc:
+        print(f"  [WARN] Catalog/daily-cap update skipped: {exc}")
 
 
 if __name__ == "__main__":

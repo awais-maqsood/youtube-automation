@@ -2,12 +2,12 @@
 """
 LLM Shorts — Video Generator
 Every run: Groq invents a fresh topic + content + visual style choices.
-5-act structure is fixed. Everything inside is driven by Groq output.
-  Act 1 BOOT       5s  — terminal boot
-  Act 2 DATA FLOOD 5s  — chaotic token rain
-  Act 3 QUESTION   6s  — core question + answers
-  Act 4 CLIMAX     8s  — YTP meme captions
-  Act 5 EPILOGUE   6s  — quiet personal close
+5-act structure is fixed. Duration varies (~15–45s) from script length + jitter.
+  Act 1 BOOT       — terminal boot / hook
+  Act 2 DATA FLOOD — context lines
+  Act 3 QUESTION   — why + question
+  Act 4 CLIMAX     — rapid captions
+  Act 5 EPILOGUE   — close + CTA
 """
 
 import os, sys, math, random, wave, subprocess, json, argparse, colorsys, base64
@@ -21,12 +21,35 @@ from PIL import Image, ImageDraw, ImageFont
 import numpy as np
 from content_gen import generate_topic
 from topic_validation import EntityValidationError, assert_publishable_metadata, log_entity_rejection
+from similarity_guard import (
+    SimilarityRejectError,
+    assert_below_similarity_threshold,
+    extract_cta_from_description,
+    record_catalog_entry,
+    score_candidate_against_catalog,
+)
 
 W, H = 1080, 1920
 FPS = 30
 RATE = 44100
 FONT_M = "mono"
 FONT_S = "serif-bold"
+
+# Baseline act mix (frames @ 30fps ≈ 30.0s). Scaled per-run by plan_video_pacing().
+_BASE_ACT_FRAMES = {
+    "boot": 105,        # ~3.5s
+    "data_flood": 150,  # ~5.0s
+    "question": 180,    # ~6.0s
+    "climax": 330,      # ~11.0s
+    "epilogue": 135,    # ~4.5s
+}
+_MIN_ACT_FRAMES = {
+    "boot": 45,
+    "data_flood": 60,
+    "question": 60,
+    "climax": 120,
+    "epilogue": 60,
+}
 
 # Keep tags minimal and relevant. Over-stuffing generic tags (#Trending #Viral
 # #WhatHappened ...) reads as spam to YouTube and viewers. #Shorts + a couple of
@@ -36,32 +59,44 @@ BASE_HASHTAGS = ["#Shorts", "#Trending", "#Viral", "#Explainer", "#News"]
 # don't always surface at the same second — looks organic, not bot-scheduled.
 SLOT_HOURS = {"morning": 12, "afternoon": 17, "evening": 22, "night": 3}
 
-_DESC_CTA_VARIANTS = [
-    "What's YOUR take? Drop it in the comments.",
-    "Agree or disagree? Tell me below.",
-    "Comment your prediction — I read them.",
-    "Which side are you on? Comments are open.",
-    "Drop your hot take below.",
-    "What would you do? Reply in the comments.",
+_DESC_CTA_POOL = [
+    "What do you make of it? Say so below.",
+    "Would you bet on this outcome? Reply.",
+    "Honest read — leave yours in comments.",
+    "If you disagree, write why under this.",
+    "One-line verdict in the comments.",
+    "Curious what you'd do — tell me.",
+    "Your angle beats mine? Prove it below.",
+    "Vote with a comment: buy-in or pass.",
+    "Leave the take you won't say out loud.",
+    "Type the detail everyone is skipping.",
+    "Reply with the counter-argument.",
+    "Drop the version of this you'd trust.",
+    "Does this change your plan? Comment.",
+    "Where do you land after this clip?",
+    "Send the nuance the headline skipped.",
+    "Is the panic overdone? Argue below.",
+    "What should people watch next on this?",
+    "Call the next move in one sentence.",
 ]
-_DESC_FOLLOW_VIRAL = [
-    "New Shorts daily — hit follow if this helped.",
-    "Follow for the next trend breakdown.",
-    "More context Shorts every day — follow along.",
-    "Follow so you don't miss the next update.",
+_DESC_FOLLOW_POOL = [
+    "More named-topic Shorts coming — follow if useful.",
+    "I post the next concrete update here.",
+    "Follow for the next product/event breakdown.",
+    "Subscribe if you want the next clear read.",
+    "Next Short covers the follow-up — stay close.",
+    "Hit follow for more searchable explainers.",
+    "I break the next named story here first.",
+    "Follow along for the next high-signal clip.",
 ]
-_DESC_FOLLOW_HIGH_CPM = [
-    "Follow for daily AI tools + money Shorts.",
-    "Subscribe for practical money + AI breakdowns.",
-    "Follow for high-value tool tips daily.",
-    "More money/tech Shorts tomorrow — follow along.",
-]
-_DESC_INTRO = [
-    "{prefix} {trend}",
-    "Quick take on {trend}.",
-    "Today's topic: {trend}",
-    "{trend} — short breakdown.",
-]
+# Distinct description architectures — not synonym swaps of one skeleton.
+_DESC_ARCHITECTURES = (
+    "hook_then_trend",
+    "trend_then_hook",
+    "question_led",
+    "minimal_fact",
+    "claim_then_ask",
+)
 
 
 def load_env_file(env_path: Path) -> dict:
@@ -220,53 +255,79 @@ def _topic_hashtag(trend: str) -> str:
 
 
 def build_youtube_description(topic: dict) -> str:
-    """SEO-rich description with rotated CTA/follow lines — avoids identical spam skeletons."""
-    from content_gen import _rotating_choice, _stable_hash
+    """Build a description with genuinely varied sentence architecture (not one scaffold)."""
+    from content_gen import _stable_hash, recent_title_strings
 
     trend = _kit_one_line(topic.get("trend_topic") or topic.get("title") or "")
     hook = _kit_one_line(topic.get("hook") or "")
     q = _kit_one_line(topic.get("question") or "")
     niche = (topic.get("niche") or "viral").lower()
-    key = trend or hook or topic.get("topic_id") or "x"
+    key = f"{trend}|{hook}|{topic.get('topic_id') or 'x'}"
 
-    prefix = "Money tip:" if niche == "high_cpm" else "Trending now:"
-    cta = _rotating_choice(_DESC_CTA_VARIANTS, category="desc_cta", topic=key)
-    follow = _rotating_choice(
-        _DESC_FOLLOW_HIGH_CPM if niche == "high_cpm" else _DESC_FOLLOW_VIRAL,
-        category="desc_follow",
-        topic=key,
-    )
-    intro = ""
-    if trend:
-        intro = _rotating_choice(_DESC_INTRO, category="desc_intro", topic=key).format(
-            prefix=prefix,
-            trend=trend,
-        )
+    # Avoid CTAs that match recent title scaffolds when possible.
+    recent = {t.lower() for t in recent_title_strings(12)}
+    cta_pool = [c for c in _DESC_CTA_POOL if c.lower() not in recent] or list(_DESC_CTA_POOL)
+    cta = cta_pool[_stable_hash(f"cta:{key}") % len(cta_pool)]
+    # Re-roll with wall-clock entropy so same-day reruns don't lock one CTA.
+    if random.random() < 0.55:
+        cta = random.choice(cta_pool)
+    follow = random.choice(_DESC_FOLLOW_POOL)
 
+    arch = _DESC_ARCHITECTURES[_stable_hash(f"arch:{key}:{random.randint(0, 10_000)}") % len(_DESC_ARCHITECTURES)]
     blocks: list[str] = []
-    # Alternate hook/intro order so descriptions aren't structurally identical.
-    if _stable_hash(f"order:{key}") % 2 == 0:
+
+    if arch == "hook_then_trend":
         if hook:
             blocks.append(hook)
-        if intro:
-            blocks.append(intro)
-    else:
-        if intro:
-            blocks.append(intro)
+        if trend:
+            blocks.append(f"Focus: {trend}.")
+        blocks.append("")
+        blocks.append(cta)
+        if q:
+            blocks.append(q)
+    elif arch == "trend_then_hook":
+        if trend:
+            blocks.append(trend)
         if hook:
             blocks.append(hook)
-    blocks.append("")
-    blocks.append(cta)
-    if q:
-        blocks.append(q)
-    blocks.append("")
-    blocks.append(follow)
+        blocks.append("")
+        if q:
+            blocks.append(q)
+        blocks.append(cta)
+    elif arch == "question_led":
+        if q:
+            blocks.append(q)
+        elif trend:
+            blocks.append(f"What's actually going on with {trend}?")
+        if hook:
+            blocks.append(hook)
+        blocks.append("")
+        blocks.append(cta)
+    elif arch == "minimal_fact":
+        if trend:
+            blocks.append(f"{trend} — short context only.")
+        blocks.append(cta)
+        if follow:
+            blocks.append(follow)
+            follow = ""  # already placed
+    else:  # claim_then_ask
+        if hook:
+            blocks.append(hook)
+        elif trend:
+            blocks.append(f"{trend} deserves a cleaner read.")
+        blocks.append("")
+        blocks.append(cta)
+        if q:
+            blocks.append(q)
+
+    if follow:
+        blocks.append("")
+        blocks.append(follow)
 
     if niche == "high_cpm":
         tags = ["#Shorts", "#AITools", "#PersonalFinance", "#Investing", "#BusinessTips"]
         extra = ["#MoneyTips", "#SaaS", "#Productivity"]
     else:
-        # Keep hashtag stack short — stuffing #Trending #Viral every time reads as spam.
         tags = ["#Shorts"]
         extra = ["#News", "#Explainer"]
     topic_tag = _topic_hashtag(trend)
@@ -276,7 +337,7 @@ def build_youtube_description(topic: dict) -> str:
         if t not in tags:
             tags.append(t)
     blocks.append(" ".join(tags))
-    return "\n".join(blocks)
+    return "\n".join(b for b in blocks if b is not None)
 
 
 def build_youtube_tags(topic: dict) -> list[str]:
@@ -1274,17 +1335,111 @@ EPILOGUE_COLORS = {
 
 CUT_SPEED = {"slow": 6, "medium": 4, "fast": 2}
 
+# ── Duration / pacing ─────────────────────────────────────────────────────────
+
+
+def _script_word_count(topic: dict) -> int:
+    parts: list[str] = []
+    for key in ("hook", "title", "question", "trend_topic"):
+        parts.append(str(topic.get(key) or ""))
+    for key in ("context_lines", "why_lines", "close_lines"):
+        for line in topic.get(key) or []:
+            parts.append(str(line))
+    for cap in topic.get("captions") or []:
+        if isinstance(cap, (list, tuple)) and cap:
+            parts.append(str(cap[0]))
+        elif isinstance(cap, str):
+            parts.append(cap)
+    return len(re.findall(r"[A-Za-z0-9']+", " ".join(parts)))
+
+
+def _duration_bounds() -> tuple[float, float]:
+    """Configurable Shorts duration window (seconds). Defaults 15–45."""
+    try:
+        min_s = float(env_value("SHORTS_DURATION_MIN", "15") or "15")
+    except (TypeError, ValueError):
+        min_s = 15.0
+    try:
+        max_s = float(env_value("SHORTS_DURATION_MAX", "45") or "45")
+    except (TypeError, ValueError):
+        max_s = 45.0
+    min_s = max(12.0, min(min_s, 60.0))
+    max_s = max(min_s, min(max_s, 60.0))
+    return min_s, max_s
+
+
+def plan_video_pacing(topic: dict) -> dict:
+    """Choose a per-run duration in [min, max] and distribute frames across acts.
+
+    Target length is driven primarily by script word count (more copy → longer),
+    with controlled random jitter so uploads don't cluster on one fixed runtime.
+    """
+    min_s, max_s = _duration_bounds()
+    words = _script_word_count(topic)
+    # ~35 words → near min; ~110 words → near max (typical Shorts packages).
+    span = max(1.0, max_s - min_s)
+    t = (words - 35) / 75.0
+    t = max(0.0, min(1.0, t))
+    base_target = min_s + t * span
+    jitter = random.uniform(-0.20, 0.20) * span
+    target_s = max(min_s, min(max_s, base_target + jitter))
+
+    total_frames = int(round(target_s * FPS))
+    weight_sum = sum(_BASE_ACT_FRAMES.values())
+    raw = {
+        act: max(
+            _MIN_ACT_FRAMES[act],
+            int(round(total_frames * (_BASE_ACT_FRAMES[act] / weight_sum))),
+        )
+        for act in _BASE_ACT_FRAMES
+    }
+    # Reconcile rounding / minimum floors back to total_frames.
+    diff = total_frames - sum(raw.values())
+    # Prefer adjusting climax (largest act) so hook/epilogue stay readable.
+    order = ["climax", "question", "data_flood", "epilogue", "boot"]
+    idx = 0
+    while diff != 0 and idx < 500:
+        act = order[idx % len(order)]
+        if diff > 0:
+            raw[act] += 1
+            diff -= 1
+        elif raw[act] > _MIN_ACT_FRAMES[act]:
+            raw[act] -= 1
+            diff += 1
+        idx += 1
+
+    actual_s = sum(raw.values()) / float(FPS)
+    pacing = {
+        "target_seconds": round(target_s, 2),
+        "actual_seconds": round(actual_s, 2),
+        "word_count": words,
+        "frames": raw,
+        "fps": FPS,
+    }
+    topic["_pacing"] = pacing
+    return pacing
+
+
+def _act_frames(topic: dict, act: str) -> int:
+    pacing = topic.get("_pacing") or {}
+    frames = pacing.get("frames") or {}
+    if act in frames:
+        return int(frames[act])
+    return int(_BASE_ACT_FRAMES[act])
+
+
 # ── Acts ──────────────────────────────────────────────────────────────────────
 
 
 def act_boot(topic):
-    n = 105  # ~3.5s — hook must land fast
+    n = _act_frames(topic, "boot")
     hook = topic["hook"]
     title = topic["title"]
     trend = topic.get("trend_topic", title)
     color = tuple(topic["palette"][0])
     p1 = tuple(topic["palette"][1])
     frames = []
+    trend_frames = max(12, n // 4)
 
     hook_font, _, hook_lines = fit_font_wrapped(
         FONT_S, hook, W - 160, 112, min_size=56, max_lines=3
@@ -1304,7 +1459,7 @@ def act_boot(topic):
     for i in range(n):
         img = act_base_image(i, n, (12, 14, 18), (max(18, p1[0] // 5), max(18, p1[1] // 5), max(18, p1[2] // 5)))
         d = ImageDraw.Draw(img)
-        if i < 30:
+        if i < trend_frames:
             trend_font, _ = fit_font(FONT_M, trend.upper(), W - 160, 48, min_size=34)
             d.text((70, 80), trend.upper(), font=trend_font, fill=(220, 220, 220))
         panel_hook = draw_text_panel_block(
@@ -1330,7 +1485,7 @@ def act_boot(topic):
 
 
 def act_data_flood(topic):
-    n = 150  # ~5s
+    n = _act_frames(topic, "data_flood")
     lines = topic["context_lines"]
     frames = []
     palette = topic["palette"]
@@ -1340,12 +1495,13 @@ def act_data_flood(topic):
     if (topic.get("niche") or "") == "high_cpm":
         labels = ["MONEY ANGLE", "TOOL BREAKDOWN", "COST CHECK", "QUICK CONTEXT"]
     chrome = labels[_topic_style_index(topic, len(labels))]
+    reveal_every = max(12, n // 4)
 
     for i in range(n):
         img = act_base_image(i, n, (max(10, p0[0] // 7), max(10, p0[1] // 7), max(10, p0[2] // 7)), (max(10, p1[0] // 7), max(10, p1[1] // 7), max(10, p1[2] // 7)))
         d = ImageDraw.Draw(img)
         d.text((70, 120), chrome, font=fnt(FONT_M, 42), fill=(235, 235, 235))
-        visible = min(3, i // 36 + 1)
+        visible = min(3, i // reveal_every + 1)
         for idx, line in enumerate(lines[:visible]):
             f_line, _ = fit_font(FONT_S, line, W - 160, 94, min_size=54)
             y = 460 + idx * 230
@@ -1358,7 +1514,7 @@ def act_data_flood(topic):
 
 
 def act_question(topic):
-    n = 180  # ~6s
+    n = _act_frames(topic, "question")
     frames = []
     q = topic["question"]
     why_lines = topic["why_lines"]
@@ -1369,12 +1525,13 @@ def act_question(topic):
     if (topic.get("niche") or "") == "high_cpm":
         labels = ["WHY IT MATTERS", "COST IMPACT", "RISK CHECK", "SMART MOVE"]
     chrome = labels[_topic_style_index(topic, len(labels))]
+    reveal_every = max(14, n // 4)
 
     for i in range(n):
         img = act_base_image(i, n, (max(12, p1[0] // 6), max(12, p1[1] // 6), max(12, p1[2] // 6)), (max(12, p0[0] // 6), max(12, p0[1] // 6), max(12, p0[2] // 6)))
         d = ImageDraw.Draw(img)
         d.text((70, 120), chrome, font=fnt(FONT_M, 42), fill=(235, 235, 235))
-        visible = min(3, i // 42 + 1)
+        visible = min(3, i // reveal_every + 1)
         for idx, line in enumerate(why_lines[:visible]):
             f_line, _ = fit_font(FONT_S, line, W - 180, 84, min_size=52)
             y = 400 + idx * 210
@@ -1392,7 +1549,7 @@ def act_question(topic):
 
 
 def act_climax(topic):
-    n = 330  # ~11s — captions need time to land
+    n = _act_frames(topic, "climax")
     frames = []
     captions = topic["captions"]
     palette = topic["palette"]
@@ -1417,9 +1574,10 @@ def act_climax(topic):
             {"label": "FINANCE TAKE", "y": 1000, "side": True, "counter_y": 1340},
         ]
     st = styles[_topic_style_index(topic, len(styles))]
+    fade_frames = max(10, n // 16)
 
     for i in range(n):
-        cap_idx = min(len(captions) - 1, int(i / max(1, n / len(captions))))
+        cap_idx = min(len(captions) - 1, int(i / max(1, n / max(1, len(captions)))))
         cap_entry = captions[cap_idx]
         cap_text = cap_entry[0]
         cap_color = (
@@ -1442,21 +1600,23 @@ def act_climax(topic):
         draw_outlined(d, cap_text, y_cap, f_cap, cap_color)
         d.text((90, st["counter_y"]), f"{cap_idx + 1}/{len(captions)}", font=fnt(FONT_M, 40), fill=(235, 235, 235))
         img = add_noise(img, 2)
-        if i > n - 20:
-            fade = (i - (n - 20)) / 20
+        if i > n - fade_frames:
+            fade = (i - (n - fade_frames)) / float(fade_frames)
             img = Image.fromarray((np.array(img) * (1 - fade)).astype(np.uint8))
         frames.append(img)
     return frames, data_cascade(n / FPS, vol=0.06)
 
 
 def act_epilogue(topic):
-    n = 135  # ~4.5s
+    n = _act_frames(topic, "epilogue")
     frames = []
     parts = topic["close_lines"]
     ecolor = tuple(topic["palette"][2])
     appear = [(j + 1) * n // (len(parts) + 2) for j in range(len(parts))]
     f_cur = fnt(FONT_M, 64)
     p0 = tuple(topic["palette"][0]); p1 = tuple(topic["palette"][1])
+    fade_in = max(10, n // 10)
+    blink_after = max(15, n // 5)
 
     for i in range(n):
         img = act_base_image(i, n, (max(12, p1[0] // 8), max(12, p1[1] // 8), max(12, p1[2] // 8)), (max(12, p0[0] // 8), max(12, p0[1] // 8), max(12, p0[2] // 8)))
@@ -1464,7 +1624,7 @@ def act_epilogue(topic):
         cy = H // 2 - len(parts) * 75
         for j, part in enumerate(parts):
             if i >= appear[j]:
-                fade = min(1.0, (i - appear[j]) / 20.0)
+                fade = min(1.0, (i - appear[j]) / float(max(8, fade_in)))
                 a = clamp(255 * fade)
                 fe, _ = fit_font(FONT_S, part, W - 80, 92)
                 pw = fe.getlength(part)
@@ -1479,16 +1639,16 @@ def act_epilogue(topic):
                 img = Image.alpha_composite(img.convert("RGBA"), panel_line).convert("RGB")
                 d = ImageDraw.Draw(img)
                 draw_outlined(d, part, y_line, fe, col)
-        if i > appear[-1] + 30 and (i // 10) % 2 == 0:
+        if i > appear[-1] + blink_after and (i // 10) % 2 == 0:
             d.text(
                 (W // 2 - 20, cy + len(parts) * 150 + 30), "█", font=f_cur, fill=ecolor
             )
-        if i >= appear[-1] + 10:
+        if i >= appear[-1] + max(6, n // 12):
             cta_font, _ = fit_font(FONT_M, "COMMENT YOUR PICK", W - 120, 44, min_size=36)
             d.text((W // 2 - cta_font.getlength("COMMENT YOUR PICK") / 2, H - 200),
                    "COMMENT YOUR PICK", font=cta_font, fill=(255, 220, 60))
-        if i < 20:
-            img = Image.fromarray((np.array(img) * (i / 20)).astype(np.uint8))
+        if i < fade_in:
+            img = Image.fromarray((np.array(img) * (i / float(fade_in))).astype(np.uint8))
         frames.append(add_noise(img, 2))
     return frames, eerie_pad(n / FPS, vol=0.05)
 
@@ -1518,6 +1678,13 @@ def generate(topic_id, slot, out_dir, *,
         f"Trend: {topic.get('trend_topic', topic.get('topic_id', 'unknown'))} | "
         f"Niche: {topic.get('niche', 'viral')} | "
         f"Search: {topic.get('search_query', topic['title'])}"
+    )
+
+    pacing = plan_video_pacing(topic)
+    print(
+        f"  Pacing: target {pacing['target_seconds']:.1f}s → "
+        f"{pacing['actual_seconds']:.1f}s "
+        f"(words={pacing['word_count']}, frames={pacing['frames']})"
     )
 
     provider = (env_value("STOCK_BACKGROUND_PROVIDER", "freepik") or "freepik").strip().lower()
@@ -1653,13 +1820,60 @@ def generate(topic_id, slot, out_dir, *,
     tomorrow = (datetime.now(timezone.utc) + timedelta(days=1)).strftime("%Y-%m-%d")
     thumb_file = os.path.join(out_dir, "thumbnail.jpg")
     thumb_ok = write_promo_thumbnail(topic, video, thumb_file)
+
+    # Description CTA similarity — rebuild architecture if CTA matches catalog too closely.
+    description = build_youtube_description(topic)
+    sim_scores = topic.get("_similarity") or {}
+    try:
+        cta = extract_cta_from_description(description)
+        sim_scores = score_candidate_against_catalog(
+            title=str(topic.get("title") or ""),
+            opener=str(topic.get("hook") or ""),
+            cta=cta,
+            entity=str(topic.get("trend_topic") or ""),
+        )
+        if sim_scores.get("cta", {}).get("reject") or sim_scores.get("title", {}).get("reject") or sim_scores.get("opener", {}).get("reject"):
+            # Force a different description architecture / CTA pool pick.
+            for _ in range(5):
+                description = build_youtube_description(topic)
+                cta = extract_cta_from_description(description)
+                sim_scores = score_candidate_against_catalog(
+                    title=str(topic.get("title") or ""),
+                    opener=str(topic.get("hook") or ""),
+                    cta=cta,
+                    entity=str(topic.get("trend_topic") or ""),
+                )
+                if not sim_scores.get("reject"):
+                    break
+            assert_below_similarity_threshold(
+                title=str(topic.get("title") or ""),
+                opener=str(topic.get("hook") or ""),
+                cta=extract_cta_from_description(description),
+                entity=str(topic.get("trend_topic") or ""),
+                source="generate.kit_similarity",
+            )
+    except SimilarityRejectError as exc:
+        log_entity_rejection(
+            "generate.kit_similarity",
+            topic.get("title"),
+            {"scores": exc.scores, "description": description},
+            reason="similarity_reject",
+        )
+        raise RuntimeError(f"Refusing to write kit — similarity gate failed: {exc}") from exc
+
     kit = {
         "title": topic["title"],
-        "description": build_youtube_description(topic),
+        "description": description,
         "tags": build_youtube_tags(topic),
         "topic": topic.get("topic_id", "generated"),
+        "trend_topic": topic.get("trend_topic") or topic.get("title"),
+        "hook": topic.get("hook") or "",
+        "opener": topic.get("hook") or "",
         "niche": topic.get("niche", "viral"),
         "slot": slot,
+        "duration_seconds": (topic.get("_pacing") or {}).get("actual_seconds"),
+        "pacing": topic.get("_pacing"),
+        "similarity": sim_scores,
         "scheduled_time_utc": f"{tomorrow}T{SLOT_HOURS.get(slot, SLOT_HOURS['morning']):02d}:{random.randint(0, 54):02d}:00Z",
         "video": video,
         "thumbnail": thumb_file if thumb_ok else "",
@@ -1673,6 +1887,16 @@ def generate(topic_id, slot, out_dir, *,
             {"description": kit["description"], "trend_topic": topic.get("trend_topic"), "error": str(exc)},
         )
         raise RuntimeError(f"Refusing to write publish kit with invalid metadata: {exc}") from exc
+
+    record_catalog_entry(
+        title=kit["title"],
+        opener=str(topic.get("hook") or ""),
+        cta=extract_cta_from_description(kit["description"]),
+        trend=str(topic.get("trend_topic") or ""),
+        description=kit["description"],
+        source="generate.kit",
+    )
+
     kit_path = os.path.join(out_dir, "kit.json")
     with open(kit_path, "w") as f:
         json.dump(kit, f, indent=2)
