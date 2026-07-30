@@ -45,8 +45,10 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y ffmpeg fonts-dejavu-core
           python -m pip install --upgrade pip
-          pip install Pillow numpy spacy --quiet
-          python -m spacy download en_core_web_sm --quiet
+          # click is required by spaCy's CLI (download); lexicon NER still works if model fails.
+          pip install Pillow numpy "spacy>=3.7,<4" click --quiet
+          python -m spacy download en_core_web_sm --quiet \
+            || echo "::warning::spaCy model download failed; continuing with lexicon/pattern NER"
 
       - name: Detect slot
         id: slot

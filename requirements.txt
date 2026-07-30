@@ -4,3 +4,4 @@ gTTS
 requests
 python-dotenv
 spacy>=3.7,<4
+click>=8.0
