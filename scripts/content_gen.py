@@ -61,11 +61,10 @@ def env_value(name: str, default: str = "") -> str:
 # Re-verified live against OpenRouter chat/completions: the previous slugs lost
 # their free tier and 404'd every run, which is why every video used canned text.
 MODELS = [
-    "nvidia/nemotron-3-super-120b-a12b:free",   # clean JSON, strong instruction following
-    "inclusionai/ling-3.0-flash:free",          # fast, returns clean JSON
-    "google/gemma-4-26b-a4b-it:free",           # solid instruct fallback
-    "nvidia/nemotron-3-nano-30b-a3b:free",      # emits reasoning preamble (stripped below)
-    "google/gemma-4-31b-it:free",               # last-resort, frequently rate-limited
+    "google/gemma-4-26b-a4b-it:free",                          # reliable JSON on the real prompt
+    "poolside/laguna-s-2.1:free",                             # solid instruct fallback
+    "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",     # reasoning model; JSON recovered below
+    "google/gemma-4-31b-it:free",                             # last-resort, frequently rate-limited
 ]
 
 # 4 videos/day historically; volume is now gated by DAILY_UPLOAD_CAP (default 2).
@@ -717,7 +716,7 @@ def call_llm(prompt: str, model: str, niche: str = "viral") -> dict:
         body = e.read().decode("utf-8", errors="replace")
         raise RuntimeError(f"LLM HTTP {e.code} {e.reason}: {body}") from e
 
-    msg = resp["choices"][0]["message"]
+    msg = (resp.get("choices") or [{}])[0].get("message") or {}
     raw = (msg.get("content") or msg.get("reasoning") or "").strip()
     if not raw:
         raise RuntimeError("Model returned empty response")
@@ -732,7 +731,7 @@ def call_llm(prompt: str, model: str, niche: str = "viral") -> dict:
     except json.JSONDecodeError:
         obj = _extract_json_object(raw)
         if obj is None:
-            raise
+            raise RuntimeError(f"Model returned non-JSON content: {raw[:180]!r}") from None
         return obj
 
 
