@@ -15,6 +15,14 @@ Daily volume is gated by DAILY_UPLOAD_CAP (default 2).
 import argparse
 import sys
 
+# Log lines carry arrows/em dashes; legacy Windows consoles default to cp1252
+# and would abort the run on the first such character.
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+    except (AttributeError, ValueError):
+        pass
+
 from generate import generate
 from content_gen import niche_for_slot
 from daily_cap import DailyCapExceeded, assert_under_daily_cap

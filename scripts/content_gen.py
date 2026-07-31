@@ -58,14 +58,14 @@ def env_value(name: str, default: str = "") -> str:
 
 # Models tried in order — first available wins. All are free-tier on OpenRouter.
 # Multiple providers so a single 429/outage doesn't force the generic fallback.
-# Verified live against the OpenRouter /models endpoint (the previous slugs had
-# been delisted and 404'd every run, which is why every video used canned text).
+# Re-verified live against OpenRouter chat/completions: the previous slugs lost
+# their free tier and 404'd every run, which is why every video used canned text.
 MODELS = [
-    "openai/gpt-oss-120b:free",                 # clean JSON, strong instruction following
-    "meta-llama/llama-3.3-70b-instruct:free",   # excellent when not rate-limited
-    "qwen/qwen3-next-80b-a3b-instruct:free",    # solid instruct fallback
-    "z-ai/glm-4.5-air:free",                     # returns fenced JSON (fences stripped below)
-    "google/gemma-4-31b-it:free",               # last-resort, still capable
+    "nvidia/nemotron-3-super-120b-a12b:free",   # clean JSON, strong instruction following
+    "inclusionai/ling-3.0-flash:free",          # fast, returns clean JSON
+    "google/gemma-4-26b-a4b-it:free",           # solid instruct fallback
+    "nvidia/nemotron-3-nano-30b-a3b:free",      # emits reasoning preamble (stripped below)
+    "google/gemma-4-31b-it:free",               # last-resort, frequently rate-limited
 ]
 
 # 4 videos/day historically; volume is now gated by DAILY_UPLOAD_CAP (default 2).
@@ -727,7 +727,48 @@ def call_llm(prompt: str, model: str, niche: str = "viral") -> dict:
     if raw.startswith("```"):
         lines = raw.split("\n")
         raw = "\n".join(lines[1:-1] if lines[-1].strip() == "```" else lines[1:])
-    return json.loads(raw)
+    try:
+        return json.loads(raw)
+    except json.JSONDecodeError:
+        obj = _extract_json_object(raw)
+        if obj is None:
+            raise
+        return obj
+
+
+def _extract_json_object(raw: str) -> dict | None:
+    """Recover the JSON object from models that wrap it in commentary."""
+    start = raw.find("{")
+    while start != -1:
+        depth = 0
+        in_str = False
+        escaped = False
+        for i in range(start, len(raw)):
+            ch = raw[i]
+            if in_str:
+                if escaped:
+                    escaped = False
+                elif ch == "\\":
+                    escaped = True
+                elif ch == '"':
+                    in_str = False
+                continue
+            if ch == '"':
+                in_str = True
+            elif ch == "{":
+                depth += 1
+            elif ch == "}":
+                depth -= 1
+                if depth == 0:
+                    try:
+                        parsed = json.loads(raw[start : i + 1])
+                    except json.JSONDecodeError:
+                        break
+                    if isinstance(parsed, dict):
+                        return parsed
+                    break
+        start = raw.find("{", start + 1)
+    return None
 
 
 TITLE_BANNED_PHRASES = [

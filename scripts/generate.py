@@ -413,7 +413,8 @@ def write_promo_thumbnail(topic: dict, video_path: str, thumb_path: str) -> bool
             img = img.resize((W, H), Image.Resampling.LANCZOS)
 
         banner_h = int(H * (0.38 + 0.04 * (style % 3)))
-        banner = Image.new("RGBA", (W, banner_h), (0, 0, 0, 0))
+        # Full-canvas layer: alpha_composite requires both images to be the same size.
+        banner = Image.new("RGBA", img.size, (0, 0, 0, 0))
         bd = ImageDraw.Draw(banner)
         # Topic palette drives the banner so thumbs aren't all the same green.
         br, bg_, bb = accent[0] // 4, accent[1] // 4, max(20, accent[2] // 5)
@@ -1682,7 +1683,7 @@ def generate(topic_id, slot, out_dir, *,
 
     pacing = plan_video_pacing(topic)
     print(
-        f"  Pacing: target {pacing['target_seconds']:.1f}s → "
+        f"  Pacing: target {pacing['target_seconds']:.1f}s -> "
         f"{pacing['actual_seconds']:.1f}s "
         f"(words={pacing['word_count']}, frames={pacing['frames']})"
     )
@@ -1824,33 +1825,42 @@ def generate(topic_id, slot, out_dir, *,
     # Description CTA similarity — rebuild architecture if CTA matches catalog too closely.
     description = build_youtube_description(topic)
     sim_scores = topic.get("_similarity") or {}
+    cand_title = str(topic.get("title") or "")
+    cand_opener = str(topic.get("hook") or "")
+    cand_entity = str(topic.get("trend_topic") or "")
+    # This candidate was already written to title history upstream, so it would
+    # otherwise match itself at 1.000 and fail the gate.
+    self_titles = {cand_title} if cand_title else None
     try:
         cta = extract_cta_from_description(description)
         sim_scores = score_candidate_against_catalog(
-            title=str(topic.get("title") or ""),
-            opener=str(topic.get("hook") or ""),
+            title=cand_title,
+            opener=cand_opener,
             cta=cta,
-            entity=str(topic.get("trend_topic") or ""),
+            entity=cand_entity,
+            exclude_titles=self_titles,
         )
-        if sim_scores.get("cta", {}).get("reject") or sim_scores.get("title", {}).get("reject") or sim_scores.get("opener", {}).get("reject"):
+        if sim_scores.get("reject"):
             # Force a different description architecture / CTA pool pick.
             for _ in range(5):
                 description = build_youtube_description(topic)
                 cta = extract_cta_from_description(description)
                 sim_scores = score_candidate_against_catalog(
-                    title=str(topic.get("title") or ""),
-                    opener=str(topic.get("hook") or ""),
+                    title=cand_title,
+                    opener=cand_opener,
                     cta=cta,
-                    entity=str(topic.get("trend_topic") or ""),
+                    entity=cand_entity,
+                    exclude_titles=self_titles,
                 )
                 if not sim_scores.get("reject"):
                     break
             assert_below_similarity_threshold(
-                title=str(topic.get("title") or ""),
-                opener=str(topic.get("hook") or ""),
+                title=cand_title,
+                opener=cand_opener,
                 cta=extract_cta_from_description(description),
-                entity=str(topic.get("trend_topic") or ""),
+                entity=cand_entity,
                 source="generate.kit_similarity",
+                exclude_titles=self_titles,
             )
     except SimilarityRejectError as exc:
         log_entity_rejection(
