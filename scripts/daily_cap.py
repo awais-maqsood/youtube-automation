@@ -2,8 +2,8 @@
 """
 Configurable daily upload/generation cap.
 
-Temporary rollback control while distribution fixes are validated.
-Set DAILY_UPLOAD_CAP (default 2). Raise later without code changes.
+Volume control for scheduled publishes.
+Set DAILY_UPLOAD_CAP (default 4) to match the four daily cron slots.
 
 State file: data/daily_upload_log.json (UTC day keys).
 Bypass: BYPASS_DAILY_UPLOAD_CAP=1 (manual workflow_dispatch).
@@ -20,7 +20,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 LOG_PATH = ROOT / "data" / "daily_upload_log.json"
-DEFAULT_CAP = 2
+DEFAULT_CAP = 4
 
 
 class DailyCapExceeded(RuntimeError):

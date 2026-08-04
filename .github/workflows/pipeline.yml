@@ -2,9 +2,10 @@ name: Auto Generate And Upload
 
 on:
   schedule:
-    # Temporary rollback: 2 videos/day (UTC). Raise DAILY_UPLOAD_CAP + restore crons later.
-    # morning (12 UTC) = high-CPM, evening (22 UTC) = viral
+    # 4 videos/day (UTC): morning+afternoon = high-CPM, evening+night = viral
+    - cron: "5 3 * * *"
     - cron: "5 12 * * *"
+    - cron: "5 17 * * *"
     - cron: "5 22 * * *"
   workflow_dispatch:
     inputs:

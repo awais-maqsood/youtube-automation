@@ -9,7 +9,7 @@ Slots:
   morning, afternoon → high_cpm (AI tools / finance / SaaS)
   evening, night     → viral trending topics
 
-Daily volume is gated by DAILY_UPLOAD_CAP (default 2).
+Daily volume is gated by DAILY_UPLOAD_CAP (default 4).
 """
 
 import argparse

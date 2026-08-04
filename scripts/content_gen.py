@@ -67,7 +67,7 @@ MODELS = [
     "google/gemma-4-31b-it:free",                             # last-resort, frequently rate-limited
 ]
 
-# 4 videos/day historically; volume is now gated by DAILY_UPLOAD_CAP (default 2).
+# 4 videos/day; volume is gated by DAILY_UPLOAD_CAP (default 4).
 HIGH_CPM_SLOTS = {"morning", "afternoon"}
 
 VIRAL_ANGLES = [
