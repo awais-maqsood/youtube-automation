@@ -107,7 +107,8 @@ jobs:
           GEMINI_IMAGE_ASPECT_RATIO: 9:16
           FREEPIK_IMAGE_COUNT: 12
           FREEPIK_CROSSFADE: 0.12
-          STOCK_SCRIM: 0.40
+          STOCK_SCRIM: 0.25
+          STOCK_MIN_LUMINANCE: 45
         run: |
           python scripts/run_pipeline.py --slot ${{ steps.slot.outputs.slot }}
 

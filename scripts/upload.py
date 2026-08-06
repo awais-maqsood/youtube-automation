@@ -177,9 +177,18 @@ def upload_thumbnail(access_token, video_id, thumb_path):
         }
     )
     req.get_method = lambda: "POST"
-    with urllib.request.urlopen(req) as r:
-        print(f"  ✓ Thumbnail set")
-
+    try:
+        with urllib.request.urlopen(req) as r:
+            body = r.read().decode("utf-8", errors="replace")
+            print(f"  ✓ Thumbnail set ({len(data)} bytes)")
+            if body.strip():
+                print(f"    YouTube thumb response: {body[:240]}")
+    except urllib.error.HTTPError as e:
+        err = e.read().decode("utf-8", errors="replace")
+        print(f"  [WARN] Thumbnail upload failed HTTP {e.code}: {err[:400]}")
+        # Do not abort the publish — video already uploaded.
+        return False
+    return True
 
 def main():
     ap = argparse.ArgumentParser()

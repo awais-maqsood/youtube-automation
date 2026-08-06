@@ -144,6 +144,40 @@ def lerp(a, b, t):
     return a + (b - a) * t
 
 
+def _image_luminance(img) -> float:
+    """Mean perceived luminance 0–255 for an RGB image (sampled for speed)."""
+    rgb = img.convert("RGB")
+    # Downsample so we don't scan 2M pixels per stock candidate.
+    sample = rgb.resize((54, 96), Image.Resampling.BILINEAR)
+    px = list(sample.getdata())
+    if not px:
+        return 0.0
+    return sum(0.2126 * r + 0.7152 * g + 0.0722 * b for r, g, b in px) / len(px)
+
+
+def _stock_min_luminance() -> float:
+    try:
+        return float(env_value("STOCK_MIN_LUMINANCE", "45") or "45")
+    except (TypeError, ValueError):
+        return 45.0
+
+
+def _is_usable_stock(img) -> bool:
+    """Reject near-black / empty stock that becomes a 'black screen' Short."""
+    try:
+        if img.size[0] < 200 or img.size[1] < 200:
+            return False
+        lum = _image_luminance(img)
+        if lum < _stock_min_luminance():
+            return False
+        # Also reject if >70% of sampled pixels are near-black.
+        sample = img.convert("RGB").resize((54, 96), Image.Resampling.BILINEAR)
+        dark = sum(1 for c in sample.getdata() if max(c) < 28) / max(1, sample.width * sample.height)
+        return dark < 0.70
+    except Exception:
+        return False
+
+
 def _resolve_font_source(font_key):
     candidates = FONT_CANDIDATES.get(font_key, [font_key])
     for candidate in candidates:
@@ -377,8 +411,9 @@ def write_promo_thumbnail(topic: dict, video_path: str, thumb_path: str) -> bool
     accent = (clamp(p0[0]), clamp(p0[1]), clamp(p0[2]))
     accent2 = (clamp(p1[0]), clamp(p1[1]), clamp(p1[2]))
     style = _topic_style_index(topic, 4)
-    # Pull a frame from different moments so backgrounds diversify across uploads.
-    seek_ss = {0: "0.5", 1: "1.2", 2: "3.5", 3: "8.0"}.get(style, "1.0")
+    # Prefer brighter seek points — style-only seeks often landed on near-black
+    # stock (Studio then shows a black tile).
+    seek_candidates = ["0.8", "2.5", "5.0", "8.0", "12.0", "1.2"]
     labels = [
         "TRENDING NOW",
         "VIRAL SHORTS",
@@ -396,18 +431,43 @@ def write_promo_thumbnail(topic: dict, video_path: str, thumb_path: str) -> bool
     tmp = tempfile.NamedTemporaryFile(suffix=".jpg", delete=False)
     tmp.close()
     try:
-        r = subprocess.run(
-            [
-                "ffmpeg", "-y", "-ss", seek_ss,
-                "-i", video_path,
-                "-frames:v", "1", "-q:v", "2",
-                tmp.name,
-            ],
-            capture_output=True, text=True, timeout=90,
-        )
-        if r.returncode != 0:
-            print(f"  Thumbnail frame extract failed: {r.stderr[-500:]}")
+        best_path = None
+        best_lum = -1.0
+        seek_ss = seek_candidates[0]
+        for cand in seek_candidates:
+            cand_path = tmp.name + f".{cand.replace('.', '_')}.jpg"
+            r = subprocess.run(
+                [
+                    "ffmpeg", "-y", "-ss", cand,
+                    "-i", video_path,
+                    "-frames:v", "1", "-q:v", "2",
+                    cand_path,
+                ],
+                capture_output=True, text=True, timeout=90,
+            )
+            if r.returncode != 0 or not Path(cand_path).exists():
+                continue
+            try:
+                probe = Image.open(cand_path).convert("RGB")
+                lum = _image_luminance(probe)
+                if lum > best_lum:
+                    best_lum = lum
+                    best_path = cand_path
+                    seek_ss = cand
+            except Exception:
+                continue
+        if not best_path:
+            print("  Thumbnail frame extract failed: no usable seek frames")
             return False
+        # Promote the brightest frame to the working temp path.
+        import shutil
+        Path(tmp.name).unlink(missing_ok=True)
+        shutil.move(best_path, tmp.name)
+        for leftover in Path(tmp.name).parent.glob(Path(tmp.name).name + ".*.jpg"):
+            try:
+                leftover.unlink(missing_ok=True)
+            except Exception:
+                pass
         img = Image.open(tmp.name).convert("RGBA")
         if img.size != (W, H):
             img = img.resize((W, H), Image.Resampling.LANCZOS)
@@ -698,6 +758,8 @@ def fetch_freepik_stock_backgrounds(topic, target_count=5):
             with urllib.request.urlopen(image_url, timeout=30) as r:
                 raw = r.read()
             img = Image.open(io.BytesIO(raw)).convert("RGB")
+            if not _is_usable_stock(img):
+                continue
             backgrounds.append(_cover_resize(img, W, H))
         except Exception:
             continue
@@ -766,6 +828,8 @@ def fetch_pexels_stock_backgrounds(topic, target_count=5):
             with urllib.request.urlopen(img_req, timeout=30) as r:
                 raw = r.read()
             img = Image.open(io.BytesIO(raw)).convert("RGB")
+            if not _is_usable_stock(img):
+                continue
             backgrounds.append(_cover_resize(img, W, H))
         except Exception:
             continue
@@ -786,57 +850,69 @@ def fetch_pixabay_stock_backgrounds(topic, target_count=5):
         or "trending news"
     )
     # Prefer vertical, but fall back to all if the feed is thin for a query.
+    # Second pass uses a brighter generic query so dark celebrity/stock shots
+    # don't ship as black-screen Shorts.
     backgrounds = []
-    for orientation in ("vertical", "all"):
+    queries = [query]
+    soft = " ".join(str(query).split()[:3] + ["portrait", "daylight"]).strip()
+    if soft.lower() != str(query).lower():
+        queries.append(soft)
+    queries.append("colorful city street daylight vertical")
+    for q in queries:
         if len(backgrounds) >= target_count:
             break
-        search_url = "https://pixabay.com/api/?" + urllib.parse.urlencode(
-            {
-                "key": api_key,
-                "q": query,
-                "image_type": "photo",
-                "orientation": orientation,
-                "safesearch": "true",
-                "per_page": max(5, min(40, target_count * 3)),
-            }
-        )
-        req = urllib.request.Request(search_url, headers={"Accept": "application/json"})
-        try:
-            with urllib.request.urlopen(req, timeout=30) as r:
-                payload = json.loads(r.read())
-        except Exception as e:
-            print(f"  Pixabay search failed ({orientation}): {e}")
-            continue
-
-        hits = payload.get("hits") or []
-        if not hits:
-            continue
-
-        seen = set()
-        for hit in hits:
+        for orientation in ("vertical", "all"):
             if len(backgrounds) >= target_count:
                 break
-            image_url = (
-                hit.get("largeImageURL")
-                or hit.get("webformatURL")
-                or hit.get("previewURL")
+            search_url = "https://pixabay.com/api/?" + urllib.parse.urlencode(
+                {
+                    "key": api_key,
+                    "q": q,
+                    "image_type": "photo",
+                    "orientation": orientation,
+                    "safesearch": "true",
+                    "per_page": max(5, min(40, target_count * 3)),
+                }
             )
-            if not image_url or image_url in seen:
-                continue
-            seen.add(image_url)
+            req = urllib.request.Request(search_url, headers={"Accept": "application/json"})
             try:
-                img_req = urllib.request.Request(
-                    image_url,
-                    headers={"User-Agent": "Mozilla/5.0 (compatible; llm-shorts/1.0)"},
-                )
-                with urllib.request.urlopen(img_req, timeout=30) as r:
-                    raw = r.read()
-                img = Image.open(io.BytesIO(raw)).convert("RGB")
-                backgrounds.append(_cover_resize(img, W, H))
-            except Exception:
+                with urllib.request.urlopen(req, timeout=30) as r:
+                    payload = json.loads(r.read())
+            except Exception as e:
+                print(f"  Pixabay search failed ({orientation}): {e}")
                 continue
-        if backgrounds:
-            break
+
+            hits = payload.get("hits") or []
+            if not hits:
+                continue
+
+            seen = set()
+            for hit in hits:
+                if len(backgrounds) >= target_count:
+                    break
+                image_url = (
+                    hit.get("largeImageURL")
+                    or hit.get("webformatURL")
+                    or hit.get("previewURL")
+                )
+                if not image_url or image_url in seen:
+                    continue
+                seen.add(image_url)
+                try:
+                    img_req = urllib.request.Request(
+                        image_url,
+                        headers={"User-Agent": "Mozilla/5.0 (compatible; llm-shorts/1.0)"},
+                    )
+                    with urllib.request.urlopen(img_req, timeout=30) as r:
+                        raw = r.read()
+                    img = Image.open(io.BytesIO(raw)).convert("RGB")
+                    if not _is_usable_stock(img):
+                        continue
+                    backgrounds.append(_cover_resize(img, W, H))
+                except Exception:
+                    continue
+            if backgrounds:
+                break
     if not backgrounds:
         print("  Pixabay returned no usable photos.")
     return backgrounds
@@ -1044,9 +1120,10 @@ def act_base_image(i: int, n: int, c1, c2):
     else:
         view = current_bg
 
-    # Darken so white captions read clearly over busy/bright imagery (bokeh etc.).
-    scrim = float(env_value("STOCK_SCRIM", "0.45") or "0.45")
-    scrim = min(0.9, max(0.0, scrim))
+    # Darken so white captions read clearly — keep light enough that Studio
+    # auto-thumbs and mid-roll frames don't look like a black screen.
+    scrim = float(env_value("STOCK_SCRIM", "0.25") or "0.25")
+    scrim = min(0.55, max(0.0, scrim))
     if scrim > 0:
         black = Image.new("RGB", view.size, (0, 0, 0))
         view = Image.blend(view, black, scrim)
@@ -1767,7 +1844,18 @@ def generate(topic_id, slot, out_dir, *,
 
     print(f"  Total: {len(all_frames)} frames = {len(all_frames)/FPS:.1f}s")
     for idx, frm in enumerate(all_frames):
-        frm.save(f"{frames_dir}/f{idx:05d}.jpg", "JPEG", quality=95)
+        frm.convert("RGB").save(f"{frames_dir}/f{idx:05d}.jpg", "JPEG", quality=95)
+
+    # Fail closed on near-black renders (YouTube Studio shows black tiles + stalled playback).
+    sample_idxs = sorted({0, len(all_frames)//4, len(all_frames)//2, (3*len(all_frames))//4, len(all_frames)-1})
+    sample_lums = [_image_luminance(all_frames[i]) for i in sample_idxs if 0 <= i < len(all_frames)]
+    avg_lum = sum(sample_lums) / max(1, len(sample_lums))
+    print(f"  Visual QA: mean luminance={avg_lum:.1f} (min usable ~40)")
+    if avg_lum < 35:
+        raise RuntimeError(
+            f"Refusing to publish near-black video (mean luminance={avg_lum:.1f}). "
+            "Stock photos were too dark after scrim — retry with brighter search terms."
+        )
 
     wav = os.path.join(out_dir, "audio.wav")
     bed = np.concatenate(all_audio)
@@ -1787,6 +1875,12 @@ def generate(topic_id, slot, out_dir, *,
             wav,
             "-c:v",
             "libx264",
+            "-profile:v",
+            "high",
+            "-level",
+            "4.0",
+            "-pix_fmt",
+            "yuv420p",
             "-preset",
             "fast",
             "-crf",
@@ -1795,8 +1889,12 @@ def generate(topic_id, slot, out_dir, *,
             "aac",
             "-b:a",
             "128k",
-            "-pix_fmt",
-            "yuv420p",
+            "-ac",
+            "2",
+            "-ar",
+            "44100",
+            "-movflags",
+            "+faststart",
             "-shortest",
             "-vf",
             # Clean, crisp look: light saturation/contrast lift + gentle sharpen.
