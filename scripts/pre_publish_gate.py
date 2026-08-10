@@ -13,7 +13,6 @@ On failure: log + alert webhook, raise PrePublishBlocked (do not upload).
 from __future__ import annotations
 
 import json
-import os
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -22,6 +21,8 @@ from similarity_guard import (
     SimilarityRejectError,
     assert_below_similarity_threshold,
     extract_cta_from_description,
+    load_catalog,
+    score_candidate_against_catalog,
 )
 from topic_validation import (
     EntityValidationError,
@@ -74,9 +75,12 @@ def run_pre_publish_gate(
     description: str,
     opener: str = "",
     trend: str = "",
+    niche: str = "",
     source: str = "pre_publish",
 ) -> dict[str, Any]:
     """Validate final metadata. Returns check results on success; raises on failure."""
+    from app_safety import is_app_safety_mode, is_app_safety_title, normalize_app_key
+
     title = normalize_entity(title)
     description = str(description or "").strip()
     opener = normalize_entity(opener)
@@ -123,18 +127,49 @@ def run_pre_publish_gate(
             details=details,
         ) from exc
 
-    # 3) Similarity hard gate vs published catalog (exclude this title / self)
+    # 3) Similarity — app_safety series locks the TRUTH title scaffold.
     cta = extract_cta_from_description(description)
+    app_mode = is_app_safety_mode(niche if niche is not None else "") or is_app_safety_title(title)
     try:
-        sim = assert_below_similarity_threshold(
-            title=title,
-            opener=opener,
-            cta=cta,
-            entity=trend or title,
-            source=f"{source}.similarity",
-            exclude_titles={title},
-        )
-        results["checks"]["similarity"] = {"ok": True, **sim}
+        if app_mode:
+            app_key = normalize_app_key(trend or title)
+            for entry in load_catalog():
+                prior = normalize_app_key(
+                    str(entry.get("entity") or entry.get("trend") or entry.get("title") or "")
+                )
+                prior_title = normalize_entity(entry.get("title")).lower()
+                if app_key and prior and app_key == prior and prior_title != title.lower():
+                    details = {"app": app_key, "match": entry.get("title")}
+                    _alert(f"{source}.similarity", title, details, reason="app_duplicate")
+                    _record_block({**results, "reason": "app_duplicate", "details": details})
+                    raise PrePublishBlocked(
+                        f"Pre-publish blocked (duplicate app): {app_key}",
+                        reason="app_duplicate",
+                        details=details,
+                    )
+            sim = score_candidate_against_catalog(
+                title=title,
+                opener=opener,
+                cta=cta,
+                entity=trend or title,
+                exclude_titles={title},
+            )
+            if isinstance(sim.get("title"), dict):
+                sim["title"]["reject"] = False
+                sim["title"]["score"] = 0.0
+            # Soft: opener/CTA may rhyme across the series; do not hard-block publish.
+            sim["reject"] = False
+            results["checks"]["similarity"] = {"ok": True, "mode": "app_safety", **sim}
+        else:
+            sim = assert_below_similarity_threshold(
+                title=title,
+                opener=opener,
+                cta=cta,
+                entity=trend or title,
+                source=f"{source}.similarity",
+                exclude_titles={title},
+            )
+            results["checks"]["similarity"] = {"ok": True, **sim}
     except SimilarityRejectError as exc:
         details = {"scores": exc.scores, "opener": opener, "cta": cta, "trend": trend}
         _alert(f"{source}.similarity", title, details, reason="similarity_reject")
@@ -161,5 +196,6 @@ def gate_kit(kit: dict, *, source: str = "pre_publish.kit") -> dict[str, Any]:
         description=str(kit.get("description") or ""),
         opener=str(kit.get("opener") or kit.get("hook") or ""),
         trend=str(kit.get("trend_topic") or kit.get("trend") or kit.get("topic") or ""),
+        niche=str(kit.get("niche") or ""),
         source=source,
     )

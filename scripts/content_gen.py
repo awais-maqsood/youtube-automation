@@ -67,7 +67,7 @@ MODELS = [
     "google/gemma-4-31b-it:free",                             # last-resort, frequently rate-limited
 ]
 
-# 4 videos/day; volume is gated by DAILY_UPLOAD_CAP (default 4).
+# Channel default is BlinkViral app-safety series (override with CHANNEL_NICHE).
 HIGH_CPM_SLOTS = {"morning", "afternoon"}
 
 VIRAL_ANGLES = [
@@ -84,6 +84,14 @@ HIGH_CPM_ANGLES = [
     "hidden cost / fee breakdown",
     "beginner mistake warning",
     "ROI / productivity payoff",
+]
+
+APP_SAFETY_ANGLES = [
+    "app safety verdict",
+    "apk scam red-flag check",
+    "sideload risk warning",
+    "clone app truth check",
+    "permissions danger flash",
 ]
 
 VIRAL_KEYWORDS = [
@@ -143,8 +151,18 @@ CHANNEL_FIT_FALLBACKS = VIRAL_FALLBACKS + HIGH_CPM_FALLBACKS
 
 
 def niche_for_slot(slot: str | None) -> str:
-    """morning/afternoon → high_cpm; evening/night → viral."""
+    """Resolve niche. BlinkViral default = app_safety for every slot."""
+    from app_safety import channel_niche, is_app_safety_mode
+
+    forced = channel_niche()
+    if is_app_safety_mode(forced):
+        return "app_safety"
     s = (slot or "").strip().lower()
+    if forced in {"viral", "high_cpm"}:
+        # Allow explicit CHANNEL_NICHE override; still map high_cpm by slot if viral default.
+        if forced == "high_cpm":
+            return "high_cpm"
+        return "viral" if s not in HIGH_CPM_SLOTS else "high_cpm"
     return "high_cpm" if s in HIGH_CPM_SLOTS else "viral"
 
 
@@ -772,23 +790,42 @@ def _extract_json_object(raw: str) -> dict | None:
 
 TITLE_BANNED_PHRASES = [
     "shock awaits", "nobody saw coming", "shocking turnaround", "flip the group",
-    "schedule secrets", "group stage shock", "the truth", "worth it",
-    "hype ya reality", "is it safe", "secrets:", "nobody is talking",
+    "schedule secrets", "group stage shock", "worth it",
+    "hype ya reality", "secrets:", "nobody is talking",
     "3 things to know", "flipped the conversation", "flipped the timeline",
     "could go either way", "the part that got buried", "trending now",
     "which side are you on", "comment your prediction", "explained in 30",
     "everyone's talking", "wait — this", "wait - this",
 ]
 
-TITLE_MAX_CHARS = 55
+# Allowed ONLY for the intentional BlinkViral app-safety series title pattern.
+_APP_SAFETY_TITLE_RE = re.compile(
+    r"^.+\s+-\s+Is It Safe\?\s+The TRUTH$",
+    re.I,
+)
+
+TITLE_MAX_CHARS = 70
 
 
-def _sanitize_title(title: str, trend: str = "") -> str:
+def _sanitize_title(title: str, trend: str = "", niche: str = "") -> str:
     """Strip spammy/formulaic scaffolds and enforce mobile-friendly length."""
+    from app_safety import app_safety_title, is_app_safety_mode
+
     t = _compact_ws(title)
     low = t.lower()
     safe_trend = trend if is_valid_entity(trend, min_length=4) else ""
-    if any(phrase in low for phrase in TITLE_BANNED_PHRASES) or _contains_formulaic_scaffold(t):
+
+    # Preserve the breakout search-intent pattern for the app-safety series.
+    if is_app_safety_mode(niche) or _APP_SAFETY_TITLE_RE.match(t):
+        if safe_trend:
+            return app_safety_title(safe_trend)
+        if _APP_SAFETY_TITLE_RE.match(t):
+            return t
+
+    banned = list(TITLE_BANNED_PHRASES)
+    # Outside app_safety, still block the old scaffolds.
+    banned.extend(["the truth", "is it safe"])
+    if any(phrase in low for phrase in banned) or _contains_formulaic_scaffold(t):
         t = _fallback_title_from_topic(safe_trend) if safe_trend else "Fresh update — what changed"
     if not is_valid_entity(t, min_length=4) or contains_invalid_publish_text(t):
         t = _fallback_title_from_topic(safe_trend) if safe_trend else "Fresh update — what changed"
@@ -823,9 +860,10 @@ def _default_youtube_tags(trend: str = "", niche: str = "viral") -> list[str]:
 
 def validate(content: dict, trend: str = "") -> dict:
     """Ensure all required fields exist and have correct types."""
+    niche = str(content.get("_niche") or content.get("niche") or "")
     if not content.get("title"):
         content["title"] = "Trending Update - What Happened?"
-    content["title"] = _sanitize_title(str(content["title"]), trend)
+    content["title"] = _sanitize_title(str(content["title"]), trend, niche=niche)
 
     if not content.get("topic_id"):
         content["topic_id"] = "unknown"
@@ -1557,10 +1595,43 @@ _FALLBACK_POOL = [
 
 def generate_topic(epilogue_extra: str | None = None, slot: str | None = None) -> dict:
     """Generate a completely fresh topic and all content via OpenRouter."""
+    from app_safety import (
+        build_app_safety_package,
+        is_app_safety_mode,
+        pick_next_app,
+    )
+
     niche = niche_for_slot(slot)
     key = env_value("OPENROUTER_API_KEY", "")
     print(f"  OPENROUTER_API_KEY: {'SET (' + key[:8] + '...)' if key else 'NOT SET'}")
     print(f"  Niche mode: {niche} (slot={slot or 'n/a'})")
+
+    # BlinkViral pivot: fixed app queue + locked search-intent titles (no Trends scattergun).
+    if is_app_safety_mode(niche):
+        app = pick_next_app()
+        content = build_app_safety_package(app)
+        content["_niche"] = "app_safety"
+        latest_topic = str(content["trend_topic"])
+        content = validate(content, latest_topic)
+        content["niche"] = "app_safety"
+        content.pop("_niche", None)
+        content["trend_topic"] = latest_topic
+        assert_publishable_title(
+            str(content.get("title", "")),
+            source="generate_topic.app_safety",
+        )
+        content = _apply_similarity_guard(content, latest_topic)
+        record_generated_title(
+            str(content.get("title", "")),
+            hook=str(content.get("hook", "")),
+            family="app_safety_truth",
+            trend=latest_topic,
+        )
+        print(f"  App-safety seed: {latest_topic} (verdict={content.get('verdict')})")
+        print(f"  Topic: '{content['title']}'")
+        print(f"  Question: '{content['question']}'")
+        return content
+
     latest_topic, selected_search_query = pick_latest_topic(niche=niche)
     try:
         latest_topic = require_named_entity(
@@ -1670,7 +1741,77 @@ def generate_topic(epilogue_extra: str | None = None, slot: str | None = None) -
 
 def _apply_similarity_guard(content: dict, trend: str) -> dict:
     """Hard-reject near-duplicate title/opener/CTA vs the published catalog; regenerate."""
-    from similarity_guard import SimilarityRejectError, diversify_content_against_catalog
+    from app_safety import is_app_safety_mode, normalize_app_key
+    from similarity_guard import (
+        SimilarityRejectError,
+        diversify_content_against_catalog,
+        load_catalog,
+        score_candidate_against_catalog,
+    )
+
+    niche = str(content.get("niche") or content.get("_niche") or "")
+
+    # App-safety series intentionally reuses one title scaffold; only block same-app repeats.
+    if is_app_safety_mode(niche):
+        app_key = normalize_app_key(trend or content.get("trend_topic") or content.get("title") or "")
+        locked_title = str(content.get("title") or "").strip().lower()
+        catalog = load_catalog()
+        for entry in catalog:
+            entry_title = str(entry.get("title") or "").strip().lower()
+            if entry_title and entry_title == locked_title:
+                continue  # self / same-run history echo
+            prior = normalize_app_key(
+                str(entry.get("entity") or entry.get("trend") or entry.get("title") or "")
+            )
+            if app_key and prior and app_key == prior:
+                raise RuntimeError(
+                    f"App-safety duplicate blocked: '{trend}' already in publish catalog"
+                )
+        # Do not run structural title similarity — every episode shares the TRUTH scaffold.
+        # Soft-check opener/CTA only for logging; never rewrite the locked title.
+        from similarity_guard import extract_cta_from_content
+
+        scores = score_candidate_against_catalog(
+            title=str(content.get("title") or ""),
+            opener=str(content.get("hook") or ""),
+            cta=extract_cta_from_content(content),
+            entity=str(trend or ""),
+            exclude_titles={str(content.get("title") or "")},
+        )
+        # Force title channel accept for this series.
+        if isinstance(scores.get("title"), dict):
+            scores["title"]["reject"] = False
+            scores["title"]["score"] = 0.0
+        scores["reject"] = bool(
+            scores.get("opener", {}).get("reject") or scores.get("cta", {}).get("reject")
+        )
+        if scores.get("opener", {}).get("reject"):
+            content["hook"] = random.choice(
+                [
+                    f"{trend} safe hai?",
+                    f"Stop before installing {trend}",
+                    f"{trend} — risk check",
+                ]
+            )
+        if scores.get("cta", {}).get("reject"):
+            content["close_lines"] = [
+                f"{trend}: know before you install.",
+                random.choice(
+                    [
+                        "Comment the app — I check it.",
+                        "Follow for App TRUTH series.",
+                        "Next app name in comments.",
+                    ]
+                ),
+            ]
+        content["_similarity"] = scores
+        print(
+            f"  Similarity (app_safety): title=locked "
+            f"opener={scores['opener']['score']:.3f} "
+            f"cta={scores['cta']['score']:.3f} "
+            f"(catalog={scores.get('catalog_size', 0)})"
+        )
+        return content
 
     def _regen_title(entity: str, _content: dict) -> str:
         return _fallback_title_from_topic(entity or trend)

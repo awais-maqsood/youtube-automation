@@ -205,6 +205,12 @@ _NAMED_ENTITY_LEXICON = frozenset(
         "fifa", "uefa", "nba", "nfl", "mlb", "nhl", "ufc", "wwe",
         "olympics", "world cup", "super bowl", "oscars", "grammys",
         "nasa", "fcc", "sec", "federal reserve", "fed",
+        # BlinkViral app-safety series (pirated/streaming/APK legitimacy checks)
+        "vidmate", "snaptube", "movie box", "cinema hd", "terabox",
+        "flixvision", "flix hd", "showbox", "mobdro", "teatv", "tea tv",
+        "beetv", "bee tv", "cyberflix", "cyberflix tv", "apkpure", "aptoide",
+        "happymod", "lucky patcher", "urban vpn", "1dm", "1dm downloader",
+        "gb whatsapp", "fm whatsapp", "vlc", "free vpn",
     }
 )
 

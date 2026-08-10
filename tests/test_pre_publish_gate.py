@@ -68,12 +68,14 @@ class TestPrePublishGate(unittest.TestCase):
         self.assertEqual(ctx.exception.reason, "no_named_entity")
 
     def test_blocks_similar_scaffold(self) -> None:
+        # Explicit non-app niche so CHANNEL_NICHE=app_safety does not soft-pass.
         with self.assertRaises(ppg.PrePublishBlocked) as ctx:
             ppg.run_pre_publish_gate(
                 title="How Sony Xperia 1 VIII got here so fast",
                 description="Focus: Sony Xperia 1 VIII.\n\nReply with the counter-argument.\n#Shorts",
                 trend="Sony Xperia 1 VIII",
                 opener="Totally different opener line here.",
+                niche="viral",
                 source="unit_test",
             )
         self.assertEqual(ctx.exception.reason, "similarity_reject")
@@ -84,6 +86,7 @@ class TestPrePublishGate(unittest.TestCase):
             description="Sony Xperia 1 VIII — short context only.\n\nReply with the counter-argument.\n#Shorts",
             trend="Sony Xperia 1 VIII",
             opener="Straight facts on the Xperia drop.",
+            niche="viral",
             source="unit_test",
         )
         self.assertTrue(result["ok"])

@@ -6,10 +6,9 @@ Runs topic selection, script generation, stock lookup, and local video render
 in one terminal window.
 
 Slots:
-  morning, afternoon → high_cpm (AI tools / finance / SaaS)
-  evening, night     → viral trending topics
+  All slots → app_safety (BlinkViral "Is It Safe? The TRUTH" series)
 
-Daily volume is gated by DAILY_UPLOAD_CAP (default 4).
+Daily volume is gated by DAILY_UPLOAD_CAP (default 2).
 """
 
 import argparse
@@ -40,7 +39,7 @@ def main() -> int:
     args = ap.parse_args()
 
     niche = niche_for_slot(args.slot)
-    print("== Trending Shorts Pipeline ==")
+    print("== BlinkViral App TRUTH Pipeline ==")
     print(f"Slot: {args.slot} | Niche: {niche}")
 
     if not args.ignore_daily_cap:

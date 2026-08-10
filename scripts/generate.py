@@ -44,11 +44,11 @@ _BASE_ACT_FRAMES = {
     "epilogue": 135,    # ~4.5s
 }
 _MIN_ACT_FRAMES = {
-    "boot": 45,
-    "data_flood": 60,
-    "question": 60,
-    "climax": 120,
-    "epilogue": 60,
+    "boot": 30,
+    "data_flood": 45,
+    "question": 45,
+    "climax": 90,
+    "epilogue": 45,
 }
 
 # Keep tags minimal and relevant. Over-stuffing generic tags (#Trending #Viral
@@ -361,6 +361,9 @@ def build_youtube_description(topic: dict) -> str:
     if niche == "high_cpm":
         tags = ["#Shorts", "#AITools", "#PersonalFinance", "#Investing", "#BusinessTips"]
         extra = ["#MoneyTips", "#SaaS", "#Productivity"]
+    elif niche == "app_safety":
+        tags = ["#Shorts", "#AppSafety", "#AndroidApps"]
+        extra = ["#APK", "#IsItSafe"]
     else:
         tags = ["#Shorts"]
         extra = ["#News", "#Explainer"]
@@ -1431,18 +1434,33 @@ def _script_word_count(topic: dict) -> int:
     return len(re.findall(r"[A-Za-z0-9']+", " ".join(parts)))
 
 
-def _duration_bounds() -> tuple[float, float]:
-    """Configurable Shorts duration window (seconds). Defaults 15–45."""
+def _duration_bounds(topic: dict | None = None) -> tuple[float, float]:
+    """Configurable Shorts duration window (seconds).
+
+    App-safety series defaults to 15–20s (breakout pacing). Other niches 15–45.
+    """
+    niche = ""
+    if isinstance(topic, dict):
+        niche = str(topic.get("niche") or "")
+    is_app = niche == "app_safety" or (
+        (os.environ.get("CHANNEL_NICHE") or "app_safety").strip().lower() == "app_safety"
+    )
+    default_min = "15"
+    default_max = "20" if is_app else "45"
     try:
-        min_s = float(env_value("SHORTS_DURATION_MIN", "15") or "15")
+        min_s = float(env_value("SHORTS_DURATION_MIN", default_min) or default_min)
     except (TypeError, ValueError):
         min_s = 15.0
     try:
-        max_s = float(env_value("SHORTS_DURATION_MAX", "45") or "45")
+        max_s = float(env_value("SHORTS_DURATION_MAX", default_max) or default_max)
     except (TypeError, ValueError):
-        max_s = 45.0
+        max_s = 20.0 if is_app else 45.0
     min_s = max(12.0, min(min_s, 60.0))
     max_s = max(min_s, min(max_s, 60.0))
+    if is_app:
+        # Hard clamp the verdict series to the breakout window.
+        max_s = min(max_s, 20.0)
+        min_s = min(min_s, max_s)
     return min_s, max_s
 
 
@@ -1452,14 +1470,18 @@ def plan_video_pacing(topic: dict) -> dict:
     Target length is driven primarily by script word count (more copy → longer),
     with controlled random jitter so uploads don't cluster on one fixed runtime.
     """
-    min_s, max_s = _duration_bounds()
+    min_s, max_s = _duration_bounds(topic)
     words = _script_word_count(topic)
-    # ~35 words → near min; ~110 words → near max (typical Shorts packages).
+    # App-safety scripts are short (~45–70 words) → stay near 15–20s.
+    # Other packages: ~35 words → near min; ~110 words → near max.
     span = max(1.0, max_s - min_s)
-    t = (words - 35) / 75.0
+    if str(topic.get("niche") or "") == "app_safety":
+        t = (words - 40) / 40.0
+    else:
+        t = (words - 35) / 75.0
     t = max(0.0, min(1.0, t))
     base_target = min_s + t * span
-    jitter = random.uniform(-0.20, 0.20) * span
+    jitter = random.uniform(-0.15, 0.15) * span
     target_s = max(min_s, min(max_s, base_target + jitter))
 
     total_frames = int(round(target_s * FPS))
@@ -1926,6 +1948,7 @@ def generate(topic_id, slot, out_dir, *,
     cand_title = str(topic.get("title") or "")
     cand_opener = str(topic.get("hook") or "")
     cand_entity = str(topic.get("trend_topic") or "")
+    niche = str(topic.get("niche") or "")
     # This candidate was already written to title history upstream, so it would
     # otherwise match itself at 1.000 and fail the gate.
     self_titles = {cand_title} if cand_title else None
@@ -1938,7 +1961,38 @@ def generate(topic_id, slot, out_dir, *,
             entity=cand_entity,
             exclude_titles=self_titles,
         )
-        if sim_scores.get("reject"):
+        # App-safety series locks the TRUTH title scaffold — never hard-fail on title.
+        if niche == "app_safety" or "is it safe" in cand_title.lower():
+            if isinstance(sim_scores.get("title"), dict):
+                sim_scores["title"]["reject"] = False
+                sim_scores["title"]["score"] = 0.0
+            sim_scores["reject"] = bool(
+                sim_scores.get("opener", {}).get("reject")
+                or sim_scores.get("cta", {}).get("reject")
+            )
+            # Soft: rewrite CTA/description only; keep title locked.
+            if sim_scores.get("reject"):
+                for _ in range(5):
+                    description = build_youtube_description(topic)
+                    cta = extract_cta_from_description(description)
+                    sim_scores = score_candidate_against_catalog(
+                        title=cand_title,
+                        opener=cand_opener,
+                        cta=cta,
+                        entity=cand_entity,
+                        exclude_titles=self_titles,
+                    )
+                    if isinstance(sim_scores.get("title"), dict):
+                        sim_scores["title"]["reject"] = False
+                        sim_scores["title"]["score"] = 0.0
+                    sim_scores["reject"] = bool(
+                        sim_scores.get("opener", {}).get("reject")
+                        or sim_scores.get("cta", {}).get("reject")
+                    )
+                    if not sim_scores.get("reject"):
+                        break
+                sim_scores["reject"] = False
+        elif sim_scores.get("reject"):
             # Force a different description architecture / CTA pool pick.
             for _ in range(5):
                 description = build_youtube_description(topic)

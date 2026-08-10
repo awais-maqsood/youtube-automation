@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Unit tests for trending-topic entity validation and pre-publish guards."""
 
+import os
 import sys
 import unittest
 from pathlib import Path
@@ -102,6 +103,7 @@ class TestPipelineSkipsPublishOnNullEntity(unittest.TestCase):
         self.assertNotIn("None", title)
         assert_publishable_title(title)
 
+    @patch.dict(os.environ, {"CHANNEL_NICHE": "viral"}, clear=False)
     @patch("content_gen.call_llm")
     @patch("content_gen.pick_latest_topic")
     @patch("content_gen.time.sleep")

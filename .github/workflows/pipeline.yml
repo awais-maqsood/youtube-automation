@@ -2,15 +2,14 @@ name: Auto Generate And Upload
 
 on:
   schedule:
-    # 4 videos/day (UTC): morning+afternoon = high-CPM, evening+night = viral
-    - cron: "5 3 * * *"
+    # BlinkViral App TRUTH series: 2 Shorts/day (UTC).
+    # ~12:05 UTC ≈ evening PKT/IST; ~22:05 UTC ≈ morning SA next day.
     - cron: "5 12 * * *"
-    - cron: "5 17 * * *"
     - cron: "5 22 * * *"
   workflow_dispatch:
     inputs:
       slot:
-        description: "morning/afternoon=high-CPM; evening/night=viral"
+        description: "Any slot — CHANNEL_NICHE=app_safety for all (App TRUTH series)"
         default: "morning"
       bypass_daily_cap:
         description: "Ignore DAILY_UPLOAD_CAP for this manual run (true/false)"
@@ -89,13 +88,14 @@ jobs:
           TREND_GEO: ${{ vars.TREND_GEO }}
           NER_MIN_CONFIDENCE: ${{ vars.NER_MIN_CONFIDENCE }}
           DEMAND_MIN_SCORE: ${{ vars.DEMAND_MIN_SCORE }}
-          SHORTS_DURATION_MIN: ${{ vars.SHORTS_DURATION_MIN }}
-          SHORTS_DURATION_MAX: ${{ vars.SHORTS_DURATION_MAX }}
+          SHORTS_DURATION_MIN: "15"
+          SHORTS_DURATION_MAX: "20"
           SIMILARITY_TITLE_MAX: ${{ vars.SIMILARITY_TITLE_MAX }}
           SIMILARITY_OPENER_MAX: ${{ vars.SIMILARITY_OPENER_MAX }}
           SIMILARITY_CTA_MAX: ${{ vars.SIMILARITY_CTA_MAX }}
           SIMILARITY_CATALOG_MAX: ${{ vars.SIMILARITY_CATALOG_MAX }}
           TITLE_FAMILY_COOLDOWN: ${{ vars.TITLE_FAMILY_COOLDOWN }}
+          CHANNEL_NICHE: app_safety
           DAILY_UPLOAD_CAP: ${{ vars.DAILY_UPLOAD_CAP }}
           BYPASS_DAILY_UPLOAD_CAP: ${{ github.event.inputs.bypass_daily_cap }}
           # Prefer free Pixabay/Pexels photos (Gemini/Freepik remain code fallbacks).
@@ -146,6 +146,7 @@ jobs:
           SIMILARITY_CTA_MAX: ${{ vars.SIMILARITY_CTA_MAX }}
           SIMILARITY_CATALOG_MAX: ${{ vars.SIMILARITY_CATALOG_MAX }}
           TITLE_FAMILY_COOLDOWN: ${{ vars.TITLE_FAMILY_COOLDOWN }}
+          CHANNEL_NICHE: app_safety
           DAILY_UPLOAD_CAP: ${{ vars.DAILY_UPLOAD_CAP }}
           BYPASS_DAILY_UPLOAD_CAP: ${{ github.event.inputs.bypass_daily_cap }}
         run: |

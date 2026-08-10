@@ -44,6 +44,10 @@ def youtube_category_id(niche: str | None = None, title: str = "", description: 
         k in text for k in ("ai ", "finance", "invest", "saas", "money", "credit", "stock")
     ):
         return "28"  # Science & Technology
+    if niche == "app_safety" or any(
+        k in text for k in ("apk", "is it safe", "the truth", "vidmate", "snaptube", "vpn")
+    ):
+        return "28"  # Science & Technology
     if any(k in text for k in ("game", "gaming", "esports", "nintendo", "xbox", "playstation")):
         return "20"  # Gaming
     if any(k in text for k in ("sport", "nfl", "nba", "mlb", "soccer", "football", "tennis", "world cup")):
@@ -64,6 +68,7 @@ def upload_video(
     category_id=None,
     opener: str = "",
     trend: str = "",
+    niche: str = "",
 ):
     """Resumable upload. Returns video_id.
     privacy: "private" | "public" | "unlisted"
@@ -77,6 +82,7 @@ def upload_video(
             description=description,
             opener=opener,
             trend=trend,
+            niche=niche,
             source="upload.upload_video",
         )
     except PrePublishBlocked:
@@ -245,6 +251,7 @@ def main():
             category_id=category_id,
             opener=str(kit.get("opener") or kit.get("hook") or ""),
             trend=str(kit.get("trend_topic") or kit.get("trend") or kit.get("topic") or ""),
+            niche=str(kit.get("niche") or ""),
         )
     except PrePublishBlocked as exc:
         print(f"❌ Skipping publish — pre-publish gate blocked this kit.")
