@@ -492,6 +492,7 @@ def record_catalog_entry(
     opener: str = "",
     cta: str = "",
     trend: str = "",
+    app_id: str = "",
     description: str = "",
     source: str = "generate",
 ) -> None:
@@ -501,17 +502,18 @@ def record_catalog_entry(
         return
     opener = _compact(opener)
     cta = _compact(cta) or extract_cta_from_description(description)
+    row: dict[str, Any] = {
+        "title": title,
+        "opener": opener,
+        "cta": cta,
+        "trend": _compact(trend),
+        "utc": datetime.now(timezone.utc).isoformat(),
+        "source": source,
+    }
+    if _compact(app_id):
+        row["app_id"] = _compact(app_id)
     entries = load_catalog(limit=_catalog_max() * 2)
-    entries.append(
-        {
-            "title": title,
-            "opener": opener,
-            "cta": cta,
-            "trend": _compact(trend),
-            "utc": datetime.now(timezone.utc).isoformat(),
-            "source": source,
-        }
-    )
+    entries.append(row)
     # Dedupe exact triples keeping latest.
     dedup: dict[tuple[str, str, str], dict] = {}
     for e in entries:

@@ -269,11 +269,15 @@ def main():
         from similarity_guard import extract_cta_from_description, record_catalog_entry
         from daily_cap import record_daily_upload
 
+        from app_safety import resolve_app_id
+
+        trend_topic = str(kit.get("trend_topic") or kit.get("trend") or "")
         record_catalog_entry(
             title=kit.get("title", ""),
-            opener="",
+            opener=str(kit.get("opener") or kit.get("hook") or ""),
             cta=extract_cta_from_description(kit.get("description", "")),
-            trend=str(kit.get("topic") or ""),
+            trend=trend_topic or str(kit.get("topic") or ""),
+            app_id=resolve_app_id(trend_topic or str(kit.get("topic") or kit.get("title") or "")),
             description=kit.get("description", ""),
             source="upload.success",
         )

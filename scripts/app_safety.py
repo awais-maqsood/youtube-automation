@@ -291,6 +291,46 @@ def normalize_app_key(value: str) -> str:
     return " ".join(text.split())
 
 
+def resolve_app_id(value: str) -> str:
+    """Map catalog/kit values to a canonical queue app id."""
+    raw = str(value or "").strip().lower()
+    if raw.startswith("app_safety_"):
+        cand = raw[len("app_safety_") :].replace("-", "_")
+        if cand in _APP_BY_ID:
+            return cand
+    app = lookup_app(value)
+    if app:
+        return str(app["id"])
+    slug = re.sub(r"[^a-z0-9]+", "_", normalize_app_key(value)).strip("_")
+    return slug or "unknown"
+
+
+def catalog_app_id(entry: dict[str, Any]) -> str:
+    """Best-effort app id from a publish-catalog row."""
+    for field in ("app_id", "trend_topic", "trend", "entity", "topic", "title"):
+        val = entry.get(field)
+        if not val:
+            continue
+        resolved = resolve_app_id(str(val))
+        if resolved in _APP_BY_ID:
+            return resolved
+    return resolve_app_id(str(entry.get("title") or ""))
+
+
+def published_app_ids(*, catalog: list[dict[str, Any]] | None = None) -> set[str]:
+    """App ids already present in the durable publish catalog."""
+    if catalog is None:
+        from similarity_guard import load_catalog
+
+        catalog = load_catalog()
+    used: set[str] = set()
+    for entry in catalog:
+        app_id = catalog_app_id(entry)
+        if app_id in _APP_BY_ID:
+            used.add(app_id)
+    return used
+
+
 def _load_state() -> dict[str, Any]:
     if not QUEUE_STATE_PATH.exists():
         return {"cursor": 0, "used_ids": []}
@@ -312,9 +352,13 @@ def _save_state(state: dict[str, Any]) -> None:
 
 
 def pick_next_app(*, avoid_ids: set[str] | None = None) -> dict[str, Any]:
-    """Rotate through the ranked queue; skip recently used ids when possible."""
+    """Rotate through the ranked queue; skip recently used and already-published apps."""
     state = _load_state()
-    avoid = {*(avoid_ids or set()), *state.get("used_ids", [])[-8:]}
+    avoid = {
+        *(avoid_ids or set()),
+        *state.get("used_ids", [])[-8:],
+        *published_app_ids(),
+    }
     n = len(APP_SAFETY_QUEUE)
     start = int(state.get("cursor") or 0) % n
     chosen = None
@@ -325,6 +369,7 @@ def pick_next_app(*, avoid_ids: set[str] | None = None) -> dict[str, Any]:
             state["cursor"] = (start + i + 1) % n
             break
     if chosen is None:
+        # Full queue already published — rotate from cursor anyway (series wrap).
         chosen = APP_SAFETY_QUEUE[start]
         state["cursor"] = (start + 1) % n
     used = [str(x) for x in state.get("used_ids") or [] if str(x) != chosen["id"]]

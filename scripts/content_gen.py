@@ -1741,7 +1741,7 @@ def generate_topic(epilogue_extra: str | None = None, slot: str | None = None) -
 
 def _apply_similarity_guard(content: dict, trend: str) -> dict:
     """Hard-reject near-duplicate title/opener/CTA vs the published catalog; regenerate."""
-    from app_safety import is_app_safety_mode, normalize_app_key
+    from app_safety import is_app_safety_mode
     from similarity_guard import (
         SimilarityRejectError,
         diversify_content_against_catalog,
@@ -1753,17 +1753,13 @@ def _apply_similarity_guard(content: dict, trend: str) -> dict:
 
     # App-safety series intentionally reuses one title scaffold; only block same-app repeats.
     if is_app_safety_mode(niche):
-        app_key = normalize_app_key(trend or content.get("trend_topic") or content.get("title") or "")
-        locked_title = str(content.get("title") or "").strip().lower()
+        from app_safety import catalog_app_id, resolve_app_id
+
+        app_id = resolve_app_id(trend or content.get("trend_topic") or content.get("title") or "")
         catalog = load_catalog()
         for entry in catalog:
-            entry_title = str(entry.get("title") or "").strip().lower()
-            if entry_title and entry_title == locked_title:
-                continue  # self / same-run history echo
-            prior = normalize_app_key(
-                str(entry.get("entity") or entry.get("trend") or entry.get("title") or "")
-            )
-            if app_key and prior and app_key == prior:
+            prior_id = catalog_app_id(entry)
+            if app_id and prior_id and app_id == prior_id:
                 raise RuntimeError(
                     f"App-safety duplicate blocked: '{trend}' already in publish catalog"
                 )

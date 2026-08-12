@@ -79,7 +79,7 @@ def run_pre_publish_gate(
     source: str = "pre_publish",
 ) -> dict[str, Any]:
     """Validate final metadata. Returns check results on success; raises on failure."""
-    from app_safety import is_app_safety_mode, is_app_safety_title, normalize_app_key
+    from app_safety import is_app_safety_mode, is_app_safety_title
 
     title = normalize_entity(title)
     description = str(description or "").strip()
@@ -132,18 +132,17 @@ def run_pre_publish_gate(
     app_mode = is_app_safety_mode(niche if niche is not None else "") or is_app_safety_title(title)
     try:
         if app_mode:
-            app_key = normalize_app_key(trend or title)
+            from app_safety import catalog_app_id, resolve_app_id
+
+            app_id = resolve_app_id(trend or title)
             for entry in load_catalog():
-                prior = normalize_app_key(
-                    str(entry.get("entity") or entry.get("trend") or entry.get("title") or "")
-                )
-                prior_title = normalize_entity(entry.get("title")).lower()
-                if app_key and prior and app_key == prior and prior_title != title.lower():
-                    details = {"app": app_key, "match": entry.get("title")}
+                prior_id = catalog_app_id(entry)
+                if app_id and prior_id and app_id == prior_id:
+                    details = {"app": app_id, "match": entry.get("title")}
                     _alert(f"{source}.similarity", title, details, reason="app_duplicate")
                     _record_block({**results, "reason": "app_duplicate", "details": details})
                     raise PrePublishBlocked(
-                        f"Pre-publish blocked (duplicate app): {app_key}",
+                        f"Pre-publish blocked (duplicate app): {app_id}",
                         reason="app_duplicate",
                         details=details,
                     )

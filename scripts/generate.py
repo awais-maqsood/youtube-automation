@@ -2050,11 +2050,15 @@ def generate(topic_id, slot, out_dir, *,
         )
         raise RuntimeError(f"Refusing to write publish kit with invalid metadata: {exc}") from exc
 
+    from app_safety import resolve_app_id
+
+    trend_topic = str(topic.get("trend_topic") or "")
     record_catalog_entry(
         title=kit["title"],
         opener=str(topic.get("hook") or ""),
         cta=extract_cta_from_description(kit["description"]),
-        trend=str(topic.get("trend_topic") or ""),
+        trend=trend_topic,
+        app_id=resolve_app_id(trend_topic or str(topic.get("topic_id") or "")),
         description=kit["description"],
         source="generate.kit",
     )

@@ -31,6 +31,7 @@ jobs:
           path: |
             data/publish_catalog.json
             data/daily_upload_log.json
+            data/app_safety_queue.json
           key: distribution-state-${{ github.run_id }}
           restore-keys: |
             distribution-state-
@@ -170,3 +171,4 @@ jobs:
             output/thumbnail.jpg
             data/daily_upload_log.json
             data/publish_catalog.json
+            data/app_safety_queue.json
