@@ -1753,15 +1753,17 @@ def _apply_similarity_guard(content: dict, trend: str) -> dict:
 
     # App-safety series intentionally reuses one title scaffold; only block same-app repeats.
     if is_app_safety_mode(niche):
-        from app_safety import catalog_app_id, resolve_app_id
+        from app_safety import catalog_app_id, is_uploaded_catalog_entry, resolve_app_id
 
         app_id = resolve_app_id(trend or content.get("trend_topic") or content.get("title") or "")
         catalog = load_catalog()
         for entry in catalog:
+            if not is_uploaded_catalog_entry(entry):
+                continue  # ignore generate.kit self-rows / failed-upload drafts
             prior_id = catalog_app_id(entry)
             if app_id and prior_id and app_id == prior_id:
                 raise RuntimeError(
-                    f"App-safety duplicate blocked: '{trend}' already in publish catalog"
+                    f"App-safety duplicate blocked: '{trend}' already uploaded"
                 )
         # Do not run structural title similarity — every episode shares the TRUTH scaffold.
         # Soft-check opener/CTA only for logging; never rewrite the locked title.

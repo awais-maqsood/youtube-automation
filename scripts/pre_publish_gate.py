@@ -132,10 +132,14 @@ def run_pre_publish_gate(
     app_mode = is_app_safety_mode(niche if niche is not None else "") or is_app_safety_title(title)
     try:
         if app_mode:
-            from app_safety import catalog_app_id, resolve_app_id
+            from app_safety import catalog_app_id, is_uploaded_catalog_entry, resolve_app_id
 
             app_id = resolve_app_id(trend or title)
             for entry in load_catalog():
+                # Only block on prior successful uploads — generate.kit records the
+                # same app earlier in this run and must not self-block publish.
+                if not is_uploaded_catalog_entry(entry):
+                    continue
                 prior_id = catalog_app_id(entry)
                 if app_id and prior_id and app_id == prior_id:
                     details = {"app": app_id, "match": entry.get("title")}

@@ -99,12 +99,37 @@ class AppSafetySeriesTests(unittest.TestCase):
                     "app_id": "movie_box",
                     "opener": "a",
                     "cta": "b",
+                    "source": "upload.success",
                 }
             ]
         )
         content = asafety.build_app_safety_package(asafety.lookup_app("movie_box"))
         with self.assertRaises(RuntimeError):
             cg._apply_similarity_guard(content, "Movie Box")
+
+    def test_generate_kit_row_does_not_block_same_app(self) -> None:
+        import similarity_guard as sg
+
+        catalog_path = Path(self._tmpdir.name) / "publish_catalog.json"
+        self._orig_catalog = sg.CATALOG_PATH
+        sg.CATALOG_PATH = catalog_path
+        self.addCleanup(lambda: setattr(sg, "CATALOG_PATH", self._orig_catalog))
+        sg.save_catalog(
+            [
+                {
+                    "title": "Cinema HD - Is It Safe? The TRUTH",
+                    "trend": "Cinema HD",
+                    "app_id": "cinema_hd",
+                    "opener": "a",
+                    "cta": "b",
+                    "source": "generate.kit",
+                }
+            ]
+        )
+        content = asafety.build_app_safety_package(asafety.lookup_app("cinema_hd"))
+        out = cg._apply_similarity_guard(content, "Cinema HD")
+        self.assertEqual(out["title"], content["title"])
+        self.assertNotIn("cinema_hd", asafety.published_app_ids())
 
 
     def test_generate_topic_app_safety(self) -> None:

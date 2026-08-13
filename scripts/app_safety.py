@@ -317,14 +317,26 @@ def catalog_app_id(entry: dict[str, Any]) -> str:
     return resolve_app_id(str(entry.get("title") or ""))
 
 
+def is_uploaded_catalog_entry(entry: dict[str, Any]) -> bool:
+    """True only for rows written after a successful YouTube upload.
+
+    generate.kit also appends catalog rows for opener/CTA scoring; those must
+    not count as published or upload will self-block the same run.
+    """
+    source = str(entry.get("source") or "").strip().lower()
+    return source.startswith("upload")
+
+
 def published_app_ids(*, catalog: list[dict[str, Any]] | None = None) -> set[str]:
-    """App ids already present in the durable publish catalog."""
+    """App ids already successfully uploaded (not merely generated)."""
     if catalog is None:
         from similarity_guard import load_catalog
 
         catalog = load_catalog()
     used: set[str] = set()
     for entry in catalog:
+        if not is_uploaded_catalog_entry(entry):
+            continue
         app_id = catalog_app_id(entry)
         if app_id in _APP_BY_ID:
             used.add(app_id)
@@ -352,24 +364,35 @@ def _save_state(state: dict[str, Any]) -> None:
 
 
 def pick_next_app(*, avoid_ids: set[str] | None = None) -> dict[str, Any]:
-    """Rotate through the ranked queue; skip recently used and already-published apps."""
+    """Rotate through the ranked queue; skip already-uploaded apps.
+
+    Soft-skips recently picked ids when another unpublished app is available so
+    a failed upload can still retry the same app on the next run.
+    """
     state = _load_state()
-    avoid = {
-        *(avoid_ids or set()),
-        *state.get("used_ids", [])[-8:],
-        *published_app_ids(),
-    }
+    published = published_app_ids()
+    hard_avoid = {*(avoid_ids or set()), *published}
+    soft_avoid = set(state.get("used_ids", [])[-8:])
     n = len(APP_SAFETY_QUEUE)
     start = int(state.get("cursor") or 0) % n
     chosen = None
+    # Pass 1: skip published + recent picks.
     for i in range(n):
         cand = APP_SAFETY_QUEUE[(start + i) % n]
-        if cand["id"] not in avoid:
+        if cand["id"] not in hard_avoid and cand["id"] not in soft_avoid:
             chosen = cand
             state["cursor"] = (start + i + 1) % n
             break
+    # Pass 2: skip only published (allow retry of failed generate/upload).
     if chosen is None:
-        # Full queue already published — rotate from cursor anyway (series wrap).
+        for i in range(n):
+            cand = APP_SAFETY_QUEUE[(start + i) % n]
+            if cand["id"] not in hard_avoid:
+                chosen = cand
+                state["cursor"] = (start + i + 1) % n
+                break
+    if chosen is None:
+        # Full queue already uploaded — rotate from cursor anyway (series wrap).
         chosen = APP_SAFETY_QUEUE[start]
         state["cursor"] = (start + 1) % n
     used = [str(x) for x in state.get("used_ids") or [] if str(x) != chosen["id"]]
