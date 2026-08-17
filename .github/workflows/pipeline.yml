@@ -2,10 +2,9 @@ name: Auto Generate And Upload
 
 on:
   schedule:
-    # BlinkViral App TRUTH series: 2 Shorts/day (UTC).
-    # ~12:05 UTC ≈ evening PKT/IST; ~22:05 UTC ≈ morning SA next day.
+    # BlinkViral App TRUTH series: 1 Short/day (UTC).
+    # ~12:05 UTC ≈ evening PKT/IST.
     - cron: "5 12 * * *"
-    - cron: "5 22 * * *"
   workflow_dispatch:
     inputs:
       slot:
