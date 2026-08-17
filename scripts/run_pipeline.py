@@ -8,7 +8,7 @@ in one terminal window.
 Slots:
   All slots → app_safety (BlinkViral "Is It Safe? The TRUTH" series)
 
-Daily volume is gated by DAILY_UPLOAD_CAP (default 1).
+Daily volume is gated by DAILY_UPLOAD_CAP (default 4).
 """
 
 import argparse
