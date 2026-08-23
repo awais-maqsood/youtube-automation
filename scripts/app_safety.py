@@ -12,6 +12,7 @@ import json
 import os
 import random
 import re
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -327,8 +328,48 @@ def is_uploaded_catalog_entry(entry: dict[str, Any]) -> bool:
     return source.startswith("upload")
 
 
+def _entry_utc_day(entry: dict[str, Any]) -> str:
+    raw = str(entry.get("utc") or "").strip()
+    return raw[:10] if len(raw) >= 10 else ""
+
+
+def published_app_ids_on_day(
+    day: str | None = None,
+    *,
+    catalog: list[dict[str, Any]] | None = None,
+) -> set[str]:
+    """App ids successfully uploaded on a given UTC day (default: today)."""
+    day = day or datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    if catalog is None:
+        from similarity_guard import load_catalog
+
+        catalog = load_catalog()
+    used: set[str] = set()
+    for entry in catalog:
+        if not is_uploaded_catalog_entry(entry):
+            continue
+        if _entry_utc_day(entry) != day:
+            continue
+        app_id = catalog_app_id(entry)
+        if app_id in _APP_BY_ID:
+            used.add(app_id)
+    return used
+
+
+def is_same_day_app_duplicate(
+    app_id: str,
+    *,
+    day: str | None = None,
+    catalog: list[dict[str, Any]] | None = None,
+) -> bool:
+    """True when this app already uploaded successfully on the UTC day."""
+    if not app_id or app_id not in _APP_BY_ID:
+        return False
+    return app_id in published_app_ids_on_day(day, catalog=catalog)
+
+
 def published_app_ids(*, catalog: list[dict[str, Any]] | None = None) -> set[str]:
-    """App ids already successfully uploaded (not merely generated)."""
+    """App ids already successfully uploaded (any day; used for status only)."""
     if catalog is None:
         from similarity_guard import load_catalog
 
@@ -364,26 +405,26 @@ def _save_state(state: dict[str, Any]) -> None:
 
 
 def pick_next_app(*, avoid_ids: set[str] | None = None) -> dict[str, Any]:
-    """Rotate through the ranked queue; skip already-uploaded apps.
+    """Rotate through the ranked queue; skip apps already uploaded today.
 
-    Soft-skips recently picked ids when another unpublished app is available so
-    a failed upload can still retry the same app on the next run.
+    After a full 20-app cycle, older uploads are eligible again on a new day.
+    Soft-skips recent picks when another app is available for retry after failures.
     """
     state = _load_state()
-    published = published_app_ids()
-    hard_avoid = {*(avoid_ids or set()), *published}
+    published_today = published_app_ids_on_day()
+    hard_avoid = {*(avoid_ids or set()), *published_today}
     soft_avoid = set(state.get("used_ids", [])[-8:])
     n = len(APP_SAFETY_QUEUE)
     start = int(state.get("cursor") or 0) % n
     chosen = None
-    # Pass 1: skip published + recent picks.
+    # Pass 1: skip today's uploads + recent picks.
     for i in range(n):
         cand = APP_SAFETY_QUEUE[(start + i) % n]
         if cand["id"] not in hard_avoid and cand["id"] not in soft_avoid:
             chosen = cand
             state["cursor"] = (start + i + 1) % n
             break
-    # Pass 2: skip only published (allow retry of failed generate/upload).
+    # Pass 2: skip only today's uploads (allow retry of failed generate/upload).
     if chosen is None:
         for i in range(n):
             cand = APP_SAFETY_QUEUE[(start + i) % n]
@@ -392,7 +433,7 @@ def pick_next_app(*, avoid_ids: set[str] | None = None) -> dict[str, Any]:
                 state["cursor"] = (start + i + 1) % n
                 break
     if chosen is None:
-        # Full queue already uploaded — rotate from cursor anyway (series wrap).
+        # All apps already uploaded today — daily cap should stop the pipeline.
         chosen = APP_SAFETY_QUEUE[start]
         state["cursor"] = (start + 1) % n
     used = [str(x) for x in state.get("used_ids") or [] if str(x) != chosen["id"]]

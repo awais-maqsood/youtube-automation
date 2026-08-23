@@ -132,24 +132,18 @@ def run_pre_publish_gate(
     app_mode = is_app_safety_mode(niche if niche is not None else "") or is_app_safety_title(title)
     try:
         if app_mode:
-            from app_safety import catalog_app_id, is_uploaded_catalog_entry, resolve_app_id
+            from app_safety import is_same_day_app_duplicate, resolve_app_id
 
             app_id = resolve_app_id(trend or title)
-            for entry in load_catalog():
-                # Only block on prior successful uploads — generate.kit records the
-                # same app earlier in this run and must not self-block publish.
-                if not is_uploaded_catalog_entry(entry):
-                    continue
-                prior_id = catalog_app_id(entry)
-                if app_id and prior_id and app_id == prior_id:
-                    details = {"app": app_id, "match": entry.get("title")}
-                    _alert(f"{source}.similarity", title, details, reason="app_duplicate")
-                    _record_block({**results, "reason": "app_duplicate", "details": details})
-                    raise PrePublishBlocked(
-                        f"Pre-publish blocked (duplicate app): {app_id}",
-                        reason="app_duplicate",
-                        details=details,
-                    )
+            if is_same_day_app_duplicate(app_id, catalog=load_catalog()):
+                details = {"app": app_id, "title": title}
+                _alert(f"{source}.similarity", title, details, reason="app_duplicate")
+                _record_block({**results, "reason": "app_duplicate", "details": details})
+                raise PrePublishBlocked(
+                    f"Pre-publish blocked (duplicate app today): {app_id}",
+                    reason="app_duplicate",
+                    details=details,
+                )
             sim = score_candidate_against_catalog(
                 title=title,
                 opener=opener,

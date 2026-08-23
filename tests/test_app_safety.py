@@ -7,6 +7,7 @@ import os
 import sys
 import tempfile
 import unittest
+from datetime import datetime, timezone
 from pathlib import Path
 from unittest import mock
 
@@ -77,14 +78,16 @@ class AppSafetySeriesTests(unittest.TestCase):
         entry = {"title": "X - Is It Safe? The TRUTH", "app_id": "cinema_hd", "trend": "app_safety_movie_box"}
         self.assertEqual(asafety.catalog_app_id(entry), "cinema_hd")
 
-    def test_pick_next_skips_published_apps(self) -> None:
+    def test_pick_next_skips_published_apps_today(self) -> None:
         with mock.patch.object(
-            asafety, "published_app_ids", return_value={"vidmate", "snaptube", "movie_box"}
+            asafety,
+            "published_app_ids_on_day",
+            return_value={"vidmate", "snaptube", "movie_box"},
         ):
             app = asafety.pick_next_app()
         self.assertEqual(app["id"], "cinema_hd")
 
-    def test_duplicate_guard_blocks_same_app_same_title(self) -> None:
+    def test_old_upload_does_not_block_today(self) -> None:
         import similarity_guard as sg
 
         catalog_path = Path(self._tmpdir.name) / "publish_catalog.json"
@@ -100,6 +103,32 @@ class AppSafetySeriesTests(unittest.TestCase):
                     "opener": "a",
                     "cta": "b",
                     "source": "upload.success",
+                    "utc": "2026-08-10T13:34:22+00:00",
+                }
+            ]
+        )
+        content = asafety.build_app_safety_package(asafety.lookup_app("movie_box"))
+        out = cg._apply_similarity_guard(content, "Movie Box")
+        self.assertEqual(out["title"], content["title"])
+
+    def test_duplicate_guard_blocks_same_app_same_day(self) -> None:
+        import similarity_guard as sg
+
+        catalog_path = Path(self._tmpdir.name) / "publish_catalog.json"
+        self._orig_catalog = sg.CATALOG_PATH
+        sg.CATALOG_PATH = catalog_path
+        self.addCleanup(lambda: setattr(sg, "CATALOG_PATH", self._orig_catalog))
+        today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        sg.save_catalog(
+            [
+                {
+                    "title": "Movie Box - Is It Safe? The TRUTH",
+                    "trend": "Movie Box",
+                    "app_id": "movie_box",
+                    "opener": "a",
+                    "cta": "b",
+                    "source": "upload.success",
+                    "utc": f"{today}T13:34:22+00:00",
                 }
             ]
         )
