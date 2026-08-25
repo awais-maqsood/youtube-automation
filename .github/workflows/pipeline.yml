@@ -154,6 +154,23 @@ jobs:
         run: |
           python scripts/upload.py --kit output/kit.json --no-schedule
 
+      # Same Short → Google Drive inbox → Zapier → Publer (IG/FB/TikTok), then Zap deletes Drive files.
+      - name: Upload to Google Drive (Publer inbox)
+        if: steps.cap.outputs.should_run == 'true'
+        env:
+          GOOGLE_DRIVE_CLIENT_ID: ${{ secrets.GOOGLE_DRIVE_CLIENT_ID }}
+          GOOGLE_DRIVE_CLIENT_SECRET: ${{ secrets.GOOGLE_DRIVE_CLIENT_SECRET }}
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          GOOGLE_DRIVE_REFRESH_TOKEN: ${{ secrets.GOOGLE_DRIVE_REFRESH_TOKEN }}
+          GOOGLE_DRIVE_FOLDER_ID: ${{ secrets.GOOGLE_DRIVE_FOLDER_ID }}
+        run: |
+          if [ -z "$GOOGLE_DRIVE_REFRESH_TOKEN" ] || [ -z "$GOOGLE_DRIVE_FOLDER_ID" ]; then
+            echo "::warning::Skipping Drive upload — set GOOGLE_DRIVE_REFRESH_TOKEN and GOOGLE_DRIVE_FOLDER_ID secrets."
+            exit 0
+          fi
+          python scripts/upload_drive.py --kit output/kit.json
+
       - name: Skip notice (daily cap)
         if: steps.cap.outputs.should_run != 'true'
         run: |
@@ -169,6 +186,7 @@ jobs:
           path: |
             output/video.mp4
             output/kit.json
+            output/drive_upload.json
             output/thumbnail.jpg
             data/daily_upload_log.json
             data/publish_catalog.json
