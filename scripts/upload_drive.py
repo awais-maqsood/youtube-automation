@@ -84,11 +84,6 @@ def get_access_token() -> str:
         raise RuntimeError(f"Drive token refresh failed HTTP {e.code}: {body}") from e
 
 
-def slugify(text: str, max_len: int = 48) -> str:
-    s = re.sub(r"[^a-zA-Z0-9]+", "-", (text or "short").strip().lower()).strip("-")
-    return (s or "short")[:max_len].rstrip("-")
-
-
 def _normalize_hashtag(tag: str) -> str:
     t = str(tag).strip()
     if not t:
