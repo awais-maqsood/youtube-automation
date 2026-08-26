@@ -99,48 +99,46 @@ def _normalize_hashtag(tag: str) -> str:
 
 
 def build_social_caption(kit: dict, *, max_chars: int = 2100) -> str:
-    """Caption for IG/FB/TikTok via Publer (title + body + hashtags)."""
+    """Caption for IG/FB/TikTok via Publer (title + short body + hashtags)."""
     title = (kit.get("title") or "").strip()
     description = (kit.get("description") or "").strip()
     tags = kit.get("tags") or []
 
     body_lines: list[str] = []
-    hashtag_lines: list[str] = []
+    found_tags: list[str] = []
     for line in description.splitlines():
         stripped = line.strip()
         if not stripped:
-            if body_lines and body_lines[-1] != "":
-                body_lines.append("")
             continue
-        # Lines that are mostly hashtags
-        if stripped.startswith("#") or (
-            stripped.count("#") >= 2 and len(stripped.split()) <= 12
-        ):
-            hashtag_lines.append(stripped)
-        else:
-            body_lines.append(stripped)
+        line_tags = re.findall(r"#\w+", stripped)
+        if line_tags and (stripped.startswith("#") or len(stripped.split()) <= 12):
+            found_tags.extend(line_tags)
+            continue
+        # Drop YouTube-only boilerplate that looks bad on Reels/TikTok
+        low = stripped.lower()
+        if low.startswith("http") or "subscribe" in low or "youtube.com" in low:
+            continue
+        body_lines.append(stripped)
 
-    body = "\n".join(body_lines).strip()
-    existing_tags = " ".join(hashtag_lines).strip()
+    body = " ".join(body_lines).strip()
+    # Prefer a short hook for social (first ~280 chars of prose)
+    if len(body) > 280:
+        cut = body[:280]
+        if " " in cut:
+            cut = cut.rsplit(" ", 1)[0]
+        body = cut.rstrip(".,;:") + "."
 
-    from_kit = " ".join(filter(None, (_normalize_hashtag(t) for t in tags[:15])))
-    # Prefer kit tags if description had none; otherwise keep description hashtags
-    # and append any missing kit tags.
-    if existing_tags:
-        have = {h.lower() for h in re.findall(r"#\w+", existing_tags)}
-        extra = [
-            _normalize_hashtag(t)
-            for t in tags[:15]
-            if _normalize_hashtag(t).lower() not in have
-        ]
-        hashtags = (existing_tags + (" " + " ".join(extra) if extra else "")).strip()
-    else:
-        hashtags = from_kit
+    tag_set: list[str] = []
+    for t in list(tags) + found_tags:
+        ht = _normalize_hashtag(t)
+        if ht and ht.lower() not in {x.lower() for x in tag_set}:
+            tag_set.append(ht)
+    # Social: keep it tight (IG/TikTok perform better with fewer tags)
+    hashtags = " ".join(tag_set[:12])
 
     parts = [p for p in (title, body, hashtags) if p]
     caption = "\n\n".join(parts).strip() or title or "New Short"
     if len(caption) > max_chars:
-        # Keep title + hashtags; trim body
         keep_tail = f"\n\n{hashtags}" if hashtags else ""
         budget = max_chars - len(title) - len(keep_tail) - 4
         if budget < 40:
@@ -148,6 +146,13 @@ def build_social_caption(kit: dict, *, max_chars: int = 2100) -> str:
         else:
             caption = f"{title}\n\n{body[:budget].rstrip()}…{keep_tail}"
     return caption
+
+
+def safe_drive_title(title: str, max_len: int = 80) -> str:
+    """Human-readable Drive file name (Zapier can map Name → Publer title)."""
+    cleaned = re.sub(r'[<>:"/\\|?*\x00-\x1f]+', "", (title or "Short").strip())
+    cleaned = re.sub(r"\s+", " ", cleaned).strip(" .") or "Short"
+    return cleaned[:max_len]
 
 
 def upload_video(
@@ -207,9 +212,8 @@ def upload_kit_to_drive(kit_path: Path, folder_id: str) -> dict:
 
     stamp = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
     title = (kit.get("title") or kit.get("topic") or "short").strip()
-    slug = slugify(title)
-    # Unique name so Zapier never reuses an old trigger fingerprint.
-    file_name = f"{stamp}_{slug}.mp4"
+    # Unique + readable: Zapier Title = Name without timestamp prefix / .mp4
+    file_name = f"{stamp} - {safe_drive_title(title)}.mp4"
     caption = build_social_caption(kit)
 
     token = get_access_token()
