@@ -1,30 +1,32 @@
 #!/usr/bin/env python3
 """
-Upload the generated Short + caption sidecar to Google Drive for Zapier → Publer.
+Upload the generated Short to Google Drive for Zapier → Publer.
 
 After YouTube upload succeeds, CI runs:
   python scripts/upload_drive.py --kit output/kit.json
 
-Creates in GOOGLE_DRIVE_FOLDER_ID:
-  {stamp}_{slug}.mp4   — video
-  {stamp}_{slug}.txt   — caption (title + description) for Zapier
-  {stamp}_{slug}.json  — machine metadata (file ids, title, platforms)
+Uploads ONLY one file into GOOGLE_DRIVE_FOLDER_ID:
+  {stamp}_{slug}.mp4
+  - Drive "name"      ≈ title (Zapier can map to Publer title)
+  - Drive "description" = full social caption (title + body + hashtags)
 
-Zapier (free middle ground — no Publer API):
-  Zap A: Google Drive "New File in Folder" (.mp4)
-       → Publer "Post Immediately" (or Create Post) with video + caption from .txt
-       → Google Drive "Delete File" (video)
-       → Google Drive "Delete File" (matching .txt and .json)  OR use Zap B below
+IMPORTANT (duplicates + missing captions):
+  Do NOT upload .txt/.json into the same Zap-watched folder — each file
+  retriggers Zapier and causes repeat posts.
 
-  Zap B (if you schedule instead of post immediately):
-       Publer "Post Published"
-       → Google Drive "Delete File" using file id stored in the .json / Sheet
+Zapier setup:
+  1. Trigger: Google Drive → New File in Folder → Publer Inbox
+  2. Filter: File Extension is mp4  (or MIME Type contains video)
+  3. Publer Post Immediately:
+       - Media  = Drive file
+       - Caption / Text = Drive Description   ← title + hashtags live here
+       - Title (if field exists) = Drive Name without .mp4
+       - Accounts = IG + FB + TikTok  (once each — do not add accounts twice)
+  4. Delete File = the triggering mp4 only
 
 Env (GitHub Secrets):
-  GOOGLE_DRIVE_CLIENT_ID       — or reuse YOUTUBE_CLIENT_ID
-  GOOGLE_DRIVE_CLIENT_SECRET   — or reuse YOUTUBE_CLIENT_SECRET
-  GOOGLE_DRIVE_REFRESH_TOKEN   — from scripts/auth_drive.py
-  GOOGLE_DRIVE_FOLDER_ID       — target folder id
+  GOOGLE_DRIVE_CLIENT_ID / SECRET / REFRESH_TOKEN / FOLDER_ID
+  (CLIENT_ID/SECRET may fall back to YOUTUBE_*)
 """
 
 from __future__ import annotations
@@ -41,8 +43,7 @@ import urllib.request
 from pathlib import Path
 
 TOKEN_URL = "https://oauth2.googleapis.com/token"
-UPLOAD_URL = "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart"
-FILES_URL = "https://www.googleapis.com/drive/v3/files"
+UPLOAD_URL = "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id,name,description,webViewLink"
 
 
 def _env(*names: str) -> str | None:
@@ -88,41 +89,89 @@ def slugify(text: str, max_len: int = 48) -> str:
     return (s or "short")[:max_len].rstrip("-")
 
 
-def build_caption(kit: dict) -> str:
+def _normalize_hashtag(tag: str) -> str:
+    t = str(tag).strip()
+    if not t:
+        return ""
+    if not t.startswith("#"):
+        t = "#" + re.sub(r"\s+", "", t)
+    return t
+
+
+def build_social_caption(kit: dict, *, max_chars: int = 2100) -> str:
+    """Caption for IG/FB/TikTok via Publer (title + body + hashtags)."""
     title = (kit.get("title") or "").strip()
     description = (kit.get("description") or "").strip()
     tags = kit.get("tags") or []
-    parts = []
-    if title:
-        parts.append(title)
-    if description:
-        parts.append(description)
-    if tags:
-        hashtags = " ".join(
-            t if str(t).startswith("#") else f"#{str(t).replace(' ', '')}" for t in tags[:12]
-        )
-        if hashtags:
-            parts.append(hashtags)
-    return "\n\n".join(parts).strip() or title or "New Short"
+
+    body_lines: list[str] = []
+    hashtag_lines: list[str] = []
+    for line in description.splitlines():
+        stripped = line.strip()
+        if not stripped:
+            if body_lines and body_lines[-1] != "":
+                body_lines.append("")
+            continue
+        # Lines that are mostly hashtags
+        if stripped.startswith("#") or (
+            stripped.count("#") >= 2 and len(stripped.split()) <= 12
+        ):
+            hashtag_lines.append(stripped)
+        else:
+            body_lines.append(stripped)
+
+    body = "\n".join(body_lines).strip()
+    existing_tags = " ".join(hashtag_lines).strip()
+
+    from_kit = " ".join(filter(None, (_normalize_hashtag(t) for t in tags[:15])))
+    # Prefer kit tags if description had none; otherwise keep description hashtags
+    # and append any missing kit tags.
+    if existing_tags:
+        have = {h.lower() for h in re.findall(r"#\w+", existing_tags)}
+        extra = [
+            _normalize_hashtag(t)
+            for t in tags[:15]
+            if _normalize_hashtag(t).lower() not in have
+        ]
+        hashtags = (existing_tags + (" " + " ".join(extra) if extra else "")).strip()
+    else:
+        hashtags = from_kit
+
+    parts = [p for p in (title, body, hashtags) if p]
+    caption = "\n\n".join(parts).strip() or title or "New Short"
+    if len(caption) > max_chars:
+        # Keep title + hashtags; trim body
+        keep_tail = f"\n\n{hashtags}" if hashtags else ""
+        budget = max_chars - len(title) - len(keep_tail) - 4
+        if budget < 40:
+            caption = (title + keep_tail)[:max_chars]
+        else:
+            caption = f"{title}\n\n{body[:budget].rstrip()}…{keep_tail}"
+    return caption
 
 
-def upload_bytes(
+def upload_video(
     access_token: str,
     *,
     name: str,
+    description: str,
     data: bytes,
-    mime_type: str,
     folder_id: str,
 ) -> dict:
-    metadata = {"name": name, "parents": [folder_id]}
+    metadata = {
+        "name": name,
+        "parents": [folder_id],
+        "description": description,
+        "mimeType": "video/mp4",
+    }
     boundary = f"boundary_{int(time.time() * 1000)}"
-    meta_json = json.dumps(metadata, separators=(",", ":"))
+    meta_json = json.dumps(metadata, ensure_ascii=False, separators=(",", ":"))
     body = (
         f"--{boundary}\r\n"
-        f'Content-Type: application/json; charset=UTF-8\r\n\r\n'
+        f"Content-Type: application/json; charset=UTF-8\r\n\r\n"
         f"{meta_json}\r\n"
         f"--{boundary}\r\n"
-        f"Content-Type: {mime_type}\r\n\r\n"
+        f"Content-Type: video/mp4\r\n\r\n"
     ).encode("utf-8") + data + f"\r\n--{boundary}--\r\n".encode("utf-8")
 
     req = urllib.request.Request(
@@ -157,71 +206,54 @@ def upload_kit_to_drive(kit_path: Path, folder_id: str) -> dict:
         raise FileNotFoundError(f"Video not found for kit: tried {video_rel}")
 
     stamp = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
-    slug = slugify(kit.get("title") or kit.get("topic") or "short")
-    base = f"{stamp}_{slug}"
-    caption = build_caption(kit)
+    title = (kit.get("title") or kit.get("topic") or "short").strip()
+    slug = slugify(title)
+    # Unique name so Zapier never reuses an old trigger fingerprint.
+    file_name = f"{stamp}_{slug}.mp4"
+    caption = build_social_caption(kit)
 
     token = get_access_token()
-    video_bytes = video_path.read_bytes()
-    video_meta = upload_bytes(
+    video_meta = upload_video(
         token,
-        name=f"{base}.mp4",
-        data=video_bytes,
-        mime_type="video/mp4",
-        folder_id=folder_id,
-    )
-    caption_meta = upload_bytes(
-        token,
-        name=f"{base}.txt",
-        data=caption.encode("utf-8"),
-        mime_type="text/plain",
+        name=file_name,
+        description=caption,
+        data=video_path.read_bytes(),
         folder_id=folder_id,
     )
 
     result = {
         "uploaded_at_utc": stamp,
-        "base_name": base,
-        "title": kit.get("title"),
-        "topic": kit.get("topic"),
+        "file_name": file_name,
+        "title": title,
         "caption": caption,
         "platforms": ["instagram", "facebook", "tiktok"],
         "video": {
             "id": video_meta.get("id"),
-            "name": video_meta.get("name"),
-            "webViewLink": f"https://drive.google.com/file/d/{video_meta.get('id')}/view",
+            "name": video_meta.get("name") or file_name,
+            "description": video_meta.get("description") or caption,
+            "webViewLink": video_meta.get("webViewLink")
+            or f"https://drive.google.com/file/d/{video_meta.get('id')}/view",
         },
-        "caption_file": {
-            "id": caption_meta.get("id"),
-            "name": caption_meta.get("name"),
+        "zapier": {
+            "filter": "only .mp4 / video/*",
+            "map_caption_from": "Google Drive Description",
+            "map_title_from": "Google Drive Name (strip .mp4)",
+            "accounts_once": True,
         },
-        "delete_after_publer": True,
-        "note": (
-            "Zapier: after Publer publishes, delete video + caption (+ this json) "
-            "from Drive using these file ids."
-        ),
-    }
-
-    json_meta = upload_bytes(
-        token,
-        name=f"{base}.json",
-        data=(json.dumps(result, indent=2) + "\n").encode("utf-8"),
-        mime_type="application/json",
-        folder_id=folder_id,
-    )
-    result["meta_file"] = {
-        "id": json_meta.get("id"),
-        "name": json_meta.get("name"),
     }
 
     out_path = kit_path.parent / "drive_upload.json"
-    out_path.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
+    out_path.write_text(json.dumps(result, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(f"Drive upload OK: {result['video']['webViewLink']}")
+    print(f"Caption chars: {len(caption)}")
     print(f"Wrote {out_path}")
     return result
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Upload Short + caption to Google Drive for Publer/Zapier")
+    parser = argparse.ArgumentParser(
+        description="Upload Short to Google Drive for Publer/Zapier (single mp4 + caption in description)"
+    )
     parser.add_argument("--kit", default="output/kit.json", help="Path to kit.json")
     args = parser.parse_args()
 
