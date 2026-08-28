@@ -154,7 +154,24 @@ jobs:
         run: |
           python scripts/upload.py --kit output/kit.json --no-schedule
 
-      # Same Short → Google Drive inbox → Zapier → Publer (IG/FB/TikTok), then Zap deletes Drive files.
+      # Same Short → Postiz Public API (Instagram + Facebook).
+      - name: Post to Instagram + Facebook (Postiz)
+        if: steps.cap.outputs.should_run == 'true'
+        env:
+          POSTIZ_API_KEY: ${{ secrets.POSTIZ_API_KEY }}
+          POSTIZ_BASE_URL: ${{ vars.POSTIZ_BASE_URL }}
+          POSTIZ_PLATFORMS: ${{ vars.POSTIZ_PLATFORMS }}
+          POSTIZ_POST_TYPE: ${{ vars.POSTIZ_POST_TYPE }}
+          POSTIZ_INSTAGRAM_CHANNEL_ID: ${{ vars.POSTIZ_INSTAGRAM_CHANNEL_ID }}
+          POSTIZ_FACEBOOK_CHANNEL_ID: ${{ vars.POSTIZ_FACEBOOK_CHANNEL_ID }}
+        run: |
+          if [ -z "$POSTIZ_API_KEY" ]; then
+            echo "::warning::Skipping Postiz — set POSTIZ_API_KEY secret."
+            exit 0
+          fi
+          python scripts/upload_postiz.py --kit output/kit.json
+
+      # Optional fallback: Drive inbox → Zapier → Publer (e.g. TikTok), then Zap deletes Drive files.
       - name: Upload to Google Drive (Publer inbox)
         if: steps.cap.outputs.should_run == 'true'
         env:
@@ -187,6 +204,7 @@ jobs:
             output/video.mp4
             output/kit.json
             output/drive_upload.json
+            output/postiz_upload.json
             output/thumbnail.jpg
             data/daily_upload_log.json
             data/publish_catalog.json
