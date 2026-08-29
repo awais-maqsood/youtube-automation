@@ -126,10 +126,17 @@ After channels are connected in Postiz:
    - `POSTIZ_POST_TYPE` — `now` (use `draft` to test without publishing)
    - `POSTIZ_INSTAGRAM_CHANNEL_ID` — from `GET /integrations`
    - `POSTIZ_FACEBOOK_CHANNEL_ID` — from `GET /integrations`
+   - `POSTIZ_FACEBOOK_MODE` — `link` (default: caption + YouTube URL) or `video`
 3. CI runs after YouTube upload:
    ```bash
    python scripts/upload_postiz.py --kit output/kit.json
    ```
+
+**Publish behavior**
+
+- **Instagram:** native video Reel (uploaded via `/upload`)
+- **Facebook (`link` mode):** text caption + `settings.url` = `kit.youtube_url` (no video upload; avoids Meta video-permission errors)
+- **Facebook (`video` mode):** native video (requires Meta `pages_manage_posts` video publish access)
 
 **Local test**
 

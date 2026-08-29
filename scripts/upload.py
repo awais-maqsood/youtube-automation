@@ -265,6 +265,18 @@ def main():
     if scheduled:
         print(f"   Scheduled for: {scheduled}")
 
+    # Persist YouTube URL so Postiz (Facebook link posts) and other steps can reuse it.
+    if vid_id:
+        kit["youtube_id"] = vid_id
+        kit["youtube_url"] = f"https://youtu.be/{vid_id}"
+        try:
+            with open(args.kit, "w", encoding="utf-8") as f:
+                json.dump(kit, f, indent=2, ensure_ascii=False)
+                f.write("\n")
+            print(f"  Wrote youtube_url to {args.kit}")
+        except OSError as exc:
+            print(f"  [WARN] Could not update kit with youtube_url: {exc}")
+
     try:
         from similarity_guard import extract_cta_from_description, record_catalog_entry
         from daily_cap import record_daily_upload

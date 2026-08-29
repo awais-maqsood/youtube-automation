@@ -164,6 +164,7 @@ jobs:
           POSTIZ_POST_TYPE: ${{ vars.POSTIZ_POST_TYPE }}
           POSTIZ_INSTAGRAM_CHANNEL_ID: ${{ vars.POSTIZ_INSTAGRAM_CHANNEL_ID }}
           POSTIZ_FACEBOOK_CHANNEL_ID: ${{ vars.POSTIZ_FACEBOOK_CHANNEL_ID }}
+          POSTIZ_FACEBOOK_MODE: ${{ vars.POSTIZ_FACEBOOK_MODE }}
         run: |
           if [ -z "$POSTIZ_API_KEY" ]; then
             echo "::warning::Skipping Postiz — set POSTIZ_API_KEY secret."
