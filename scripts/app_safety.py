@@ -368,6 +368,29 @@ def is_same_day_app_duplicate(
     return app_id in published_app_ids_on_day(day, catalog=catalog)
 
 
+def _all_queue_app_ids() -> set[str]:
+    return {str(app["id"]) for app in APP_SAFETY_QUEUE}
+
+
+def is_cycle_complete(*, catalog: list[dict[str, Any]] | None = None) -> bool:
+    """True once every app in the queue has a successful upload in the catalog."""
+    published = published_app_ids(catalog=catalog)
+    return _all_queue_app_ids() <= published
+
+
+def is_app_duplicate(
+    app_id: str,
+    *,
+    catalog: list[dict[str, Any]] | None = None,
+) -> bool:
+    """Block repeat uploads within a queue cycle; same-day only after full cycle."""
+    if not app_id or app_id not in _APP_BY_ID:
+        return False
+    if is_cycle_complete(catalog=catalog):
+        return is_same_day_app_duplicate(app_id, catalog=catalog)
+    return app_id in published_app_ids(catalog=catalog)
+
+
 def published_app_ids(*, catalog: list[dict[str, Any]] | None = None) -> set[str]:
     """App ids already successfully uploaded (any day; used for status only)."""
     if catalog is None:
@@ -405,26 +428,33 @@ def _save_state(state: dict[str, Any]) -> None:
 
 
 def pick_next_app(*, avoid_ids: set[str] | None = None) -> dict[str, Any]:
-    """Rotate through the ranked queue; skip apps already uploaded today.
+    """Rotate through the ranked queue; skip apps already uploaded this cycle.
 
-    After a full 20-app cycle, older uploads are eligible again on a new day.
+    Within a cycle, each app is posted at most once (lifetime catalog check).
+    After all 20 apps ship, only same-day duplicates are blocked until the next day.
     Soft-skips recent picks when another app is available for retry after failures.
     """
     state = _load_state()
-    published_today = published_app_ids_on_day()
-    hard_avoid = {*(avoid_ids or set()), *published_today}
+    catalog = None
+    from similarity_guard import load_catalog
+
+    catalog = load_catalog()
+    if is_cycle_complete(catalog=catalog):
+        hard_avoid = {*(avoid_ids or set()), *published_app_ids_on_day(catalog=catalog)}
+    else:
+        hard_avoid = {*(avoid_ids or set()), *published_app_ids(catalog=catalog)}
     soft_avoid = set(state.get("used_ids", [])[-8:])
     n = len(APP_SAFETY_QUEUE)
     start = int(state.get("cursor") or 0) % n
     chosen = None
-    # Pass 1: skip today's uploads + recent picks.
+    # Pass 1: skip cycle uploads + recent picks.
     for i in range(n):
         cand = APP_SAFETY_QUEUE[(start + i) % n]
         if cand["id"] not in hard_avoid and cand["id"] not in soft_avoid:
             chosen = cand
             state["cursor"] = (start + i + 1) % n
             break
-    # Pass 2: skip only today's uploads (allow retry of failed generate/upload).
+    # Pass 2: skip only hard-avoid set (allow retry of failed generate/upload).
     if chosen is None:
         for i in range(n):
             cand = APP_SAFETY_QUEUE[(start + i) % n]
@@ -433,9 +463,10 @@ def pick_next_app(*, avoid_ids: set[str] | None = None) -> dict[str, Any]:
                 state["cursor"] = (start + i + 1) % n
                 break
     if chosen is None:
-        # All apps already uploaded today — daily cap should stop the pipeline.
-        chosen = APP_SAFETY_QUEUE[start]
-        state["cursor"] = (start + 1) % n
+        raise RuntimeError(
+            "No app available — every app in the queue is blocked for today. "
+            "Daily cap should have stopped the pipeline."
+        )
     used = [str(x) for x in state.get("used_ids") or [] if str(x) != chosen["id"]]
     used.append(chosen["id"])
     state["used_ids"] = used[-40:]

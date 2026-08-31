@@ -277,13 +277,13 @@ def main():
         except OSError as exc:
             print(f"  [WARN] Could not update kit with youtube_url: {exc}")
 
+    from similarity_guard import extract_cta_from_description, record_catalog_entry
+    from daily_cap import record_daily_upload
+
+    from app_safety import resolve_app_id
+
+    trend_topic = str(kit.get("trend_topic") or kit.get("trend") or "")
     try:
-        from similarity_guard import extract_cta_from_description, record_catalog_entry
-        from daily_cap import record_daily_upload
-
-        from app_safety import resolve_app_id
-
-        trend_topic = str(kit.get("trend_topic") or kit.get("trend") or "")
         record_catalog_entry(
             title=kit.get("title", ""),
             opener=str(kit.get("opener") or kit.get("hook") or ""),
@@ -292,6 +292,7 @@ def main():
             app_id=resolve_app_id(trend_topic or str(kit.get("topic") or kit.get("title") or "")),
             description=kit.get("description", ""),
             source="upload.success",
+            youtube_id=str(vid_id or ""),
         )
         record_daily_upload(
             title=str(kit.get("title") or ""),
@@ -299,7 +300,9 @@ def main():
             source="upload.success",
         )
     except Exception as exc:
-        print(f"  [WARN] Catalog/daily-cap update skipped: {exc}")
+        print(f"  ❌ Catalog/daily-cap update failed after YouTube upload: {exc}")
+        print(f"     video_id={vid_id} — aborting so dedup state stays consistent.")
+        sys.exit(3)
 
 
 if __name__ == "__main__":

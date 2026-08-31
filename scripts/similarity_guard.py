@@ -257,6 +257,31 @@ def load_catalog(limit: int | None = None) -> list[dict]:
     return catalog[-max_n:]
 
 
+def is_postiz_duplicate(
+    *,
+    youtube_id: str = "",
+    app_id: str = "",
+    catalog: list[dict[str, Any]] | None = None,
+) -> bool:
+    """True when this YouTube video or app was already posted to Postiz."""
+    if catalog is None:
+        catalog = load_catalog()
+    yt = _compact(youtube_id)
+    aid = _compact(app_id)
+    for entry in catalog:
+        source = str(entry.get("source") or "").strip().lower()
+        if not source.startswith("upload.postiz"):
+            continue
+        if yt and _compact(entry.get("youtube_id")) == yt:
+            return True
+        if aid:
+            from app_safety import catalog_app_id
+
+            if catalog_app_id(entry) == aid:
+                return True
+    return False
+
+
 def save_catalog(entries: list[dict]) -> None:
     CATALOG_PATH.parent.mkdir(parents=True, exist_ok=True)
     payload = {
@@ -495,6 +520,7 @@ def record_catalog_entry(
     app_id: str = "",
     description: str = "",
     source: str = "generate",
+    youtube_id: str = "",
 ) -> None:
     """Append a published/generated entry to the durable rolling catalog."""
     title = _compact(title)
@@ -512,6 +538,8 @@ def record_catalog_entry(
     }
     if _compact(app_id):
         row["app_id"] = _compact(app_id)
+    if _compact(youtube_id):
+        row["youtube_id"] = _compact(youtube_id)
     entries = load_catalog(limit=_catalog_max() * 2)
     entries.append(row)
     # Dedupe exact triples keeping latest.

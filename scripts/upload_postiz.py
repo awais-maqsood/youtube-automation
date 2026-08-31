@@ -331,8 +331,21 @@ def upload_kit_to_postiz(
     channel_ids = _platform_channel_ids()
     facebook_mode = _facebook_mode()
     youtube_url = _youtube_url_from_kit(kit)
+    youtube_id = (kit.get("youtube_id") or kit.get("youtubeId") or "").strip()
     resolved_type = (post_type or _env("POSTIZ_POST_TYPE", "now")).lower()
     schedule_date = _env("POSTIZ_SCHEDULE_DATE") or None
+
+    from app_safety import resolve_app_id
+    from similarity_guard import is_postiz_duplicate, record_catalog_entry
+
+    trend_topic = str(kit.get("trend_topic") or kit.get("trend") or kit.get("topic") or "")
+    app_id = resolve_app_id(trend_topic or str(kit.get("title") or ""))
+    if not dry_run and is_postiz_duplicate(youtube_id=youtube_id, app_id=app_id):
+        print(
+            f"Postiz skip — already posted "
+            f"(youtube_id={youtube_id or 'n/a'}, app_id={app_id or 'n/a'})"
+        )
+        return {"skipped": True, "reason": "postiz_duplicate", "app_id": app_id, "youtube_id": youtube_id}
 
     needs_video = "instagram" in platforms or (
         "facebook" in platforms and facebook_mode == "video"
@@ -438,6 +451,16 @@ def upload_kit_to_postiz(
     # Create returns immediately; poll for ERROR (esp. Facebook).
     if resolved_type != "draft":
         _assert_platforms_ok(post_resp, channel_ids)
+
+    record_catalog_entry(
+        title=str(kit.get("title") or ""),
+        opener=str(kit.get("opener") or kit.get("hook") or ""),
+        trend=trend_topic,
+        app_id=app_id,
+        description=str(kit.get("description") or ""),
+        source="upload.postiz.success",
+        youtube_id=youtube_id,
+    )
 
     return result
 

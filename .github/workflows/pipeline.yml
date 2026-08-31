@@ -19,6 +19,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: pipeline-${{ github.repository }}
+  cancel-in-progress: false
+
 jobs:
   pipeline:
     runs-on: ubuntu-latest
@@ -33,9 +37,9 @@ jobs:
             data/publish_catalog.json
             data/daily_upload_log.json
             data/app_safety_queue.json
-          key: distribution-state-${{ github.run_id }}
+          key: distribution-state-v1
           restore-keys: |
-            distribution-state-
+            distribution-state-v1
 
       - name: Set up Python
         uses: actions/setup-python@v5

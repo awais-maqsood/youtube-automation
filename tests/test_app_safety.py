@@ -78,16 +78,16 @@ class AppSafetySeriesTests(unittest.TestCase):
         entry = {"title": "X - Is It Safe? The TRUTH", "app_id": "cinema_hd", "trend": "app_safety_movie_box"}
         self.assertEqual(asafety.catalog_app_id(entry), "cinema_hd")
 
-    def test_pick_next_skips_published_apps_today(self) -> None:
+    def test_pick_next_skips_published_apps_in_cycle(self) -> None:
         with mock.patch.object(
             asafety,
-            "published_app_ids_on_day",
+            "published_app_ids",
             return_value={"vidmate", "snaptube", "movie_box"},
-        ):
+        ), mock.patch.object(asafety, "is_cycle_complete", return_value=False):
             app = asafety.pick_next_app()
         self.assertEqual(app["id"], "cinema_hd")
 
-    def test_old_upload_does_not_block_today(self) -> None:
+    def test_published_app_blocks_within_cycle(self) -> None:
         import similarity_guard as sg
 
         catalog_path = Path(self._tmpdir.name) / "publish_catalog.json"
@@ -108,8 +108,8 @@ class AppSafetySeriesTests(unittest.TestCase):
             ]
         )
         content = asafety.build_app_safety_package(asafety.lookup_app("movie_box"))
-        out = cg._apply_similarity_guard(content, "Movie Box")
-        self.assertEqual(out["title"], content["title"])
+        with self.assertRaises(RuntimeError):
+            cg._apply_similarity_guard(content, "Movie Box")
 
     def test_duplicate_guard_blocks_same_app_same_day(self) -> None:
         import similarity_guard as sg
@@ -167,6 +167,51 @@ class AppSafetySeriesTests(unittest.TestCase):
         self.assertEqual(content["niche"], "app_safety")
         self.assertIn("Is It Safe? The TRUTH", content["title"])
         self.assertTrue(content.get("trend_topic"))
+
+    def test_cycle_complete_allows_repeat_after_full_queue(self) -> None:
+        import similarity_guard as sg
+
+        catalog_path = Path(self._tmpdir.name) / "publish_catalog.json"
+        self._orig_catalog = sg.CATALOG_PATH
+        sg.CATALOG_PATH = catalog_path
+        self.addCleanup(lambda: setattr(sg, "CATALOG_PATH", self._orig_catalog))
+        entries = []
+        for app in asafety.APP_SAFETY_QUEUE:
+            entries.append(
+                {
+                    "title": f"{app['name']} - Is It Safe? The TRUTH",
+                    "trend": app["name"],
+                    "app_id": app["id"],
+                    "opener": "a",
+                    "cta": "b",
+                    "source": "upload.success",
+                    "utc": "2026-08-10T13:34:22+00:00",
+                }
+            )
+        sg.save_catalog(entries)
+        self.assertTrue(asafety.is_cycle_complete())
+        self.assertFalse(asafety.is_app_duplicate("movie_box"))
+
+    def test_is_app_duplicate_within_cycle(self) -> None:
+        import similarity_guard as sg
+
+        catalog_path = Path(self._tmpdir.name) / "publish_catalog.json"
+        self._orig_catalog = sg.CATALOG_PATH
+        sg.CATALOG_PATH = catalog_path
+        self.addCleanup(lambda: setattr(sg, "CATALOG_PATH", self._orig_catalog))
+        sg.save_catalog(
+            [
+                {
+                    "title": "Showbox - Is It Safe? The TRUTH",
+                    "trend": "Showbox",
+                    "app_id": "showbox",
+                    "source": "upload.success",
+                    "utc": "2026-08-30T10:00:00+00:00",
+                }
+            ]
+        )
+        self.assertTrue(asafety.is_app_duplicate("showbox"))
+        self.assertFalse(asafety.is_app_duplicate("vidmate"))
 
 
 if __name__ == "__main__":

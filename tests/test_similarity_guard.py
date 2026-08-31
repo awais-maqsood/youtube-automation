@@ -139,6 +139,32 @@ class TestCatalogGuard(unittest.TestCase):
                 entity="iPhone 18 Pro",
             )
 
+    def test_postiz_duplicate_by_youtube_id(self) -> None:
+        self.assertTrue(
+            sg.is_postiz_duplicate(
+                youtube_id="abc123",
+                catalog=[
+                    {
+                        "source": "upload.postiz.success",
+                        "youtube_id": "abc123",
+                        "app_id": "showbox",
+                    }
+                ],
+            )
+        )
+        self.assertFalse(
+            sg.is_postiz_duplicate(
+                youtube_id="new456",
+                catalog=[
+                    {
+                        "source": "upload.postiz.success",
+                        "youtube_id": "abc123",
+                        "app_id": "showbox",
+                    }
+                ],
+            )
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

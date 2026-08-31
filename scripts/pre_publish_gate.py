@@ -132,15 +132,15 @@ def run_pre_publish_gate(
     app_mode = is_app_safety_mode(niche if niche is not None else "") or is_app_safety_title(title)
     try:
         if app_mode:
-            from app_safety import is_same_day_app_duplicate, resolve_app_id
+            from app_safety import is_app_duplicate, resolve_app_id
 
             app_id = resolve_app_id(trend or title)
-            if is_same_day_app_duplicate(app_id, catalog=load_catalog()):
+            if is_app_duplicate(app_id, catalog=load_catalog()):
                 details = {"app": app_id, "title": title}
                 _alert(f"{source}.similarity", title, details, reason="app_duplicate")
                 _record_block({**results, "reason": "app_duplicate", "details": details})
                 raise PrePublishBlocked(
-                    f"Pre-publish blocked (duplicate app today): {app_id}",
+                    f"Pre-publish blocked (duplicate app): {app_id}",
                     reason="app_duplicate",
                     details=details,
                 )

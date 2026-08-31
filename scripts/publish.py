@@ -207,3 +207,28 @@ if not video_id:
 
 print(f"✅ Published: https://youtu.be/{video_id}")
 send_confirm(kit.get("title", "LLM Short"), video_id)
+
+try:
+    from similarity_guard import extract_cta_from_description, record_catalog_entry
+    from daily_cap import record_daily_upload
+    from app_safety import resolve_app_id
+
+    trend_topic = str(kit.get("trend_topic") or kit.get("trend") or kit.get("topic") or "")
+    record_catalog_entry(
+        title=kit.get("title", ""),
+        opener=str(kit.get("opener") or kit.get("hook") or ""),
+        cta=extract_cta_from_description(description),
+        trend=trend_topic,
+        app_id=resolve_app_id(trend_topic or str(kit.get("title") or "")),
+        description=description,
+        source="upload.success",
+        youtube_id=str(video_id),
+    )
+    record_daily_upload(
+        title=str(kit.get("title") or ""),
+        slot=str(kit.get("slot") or ""),
+        source="upload.success",
+    )
+except Exception as exc:
+    print(f"❌ Catalog/daily-cap update failed after publish: {exc}")
+    sys.exit(3)
