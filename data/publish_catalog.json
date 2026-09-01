@@ -44,7 +44,9 @@
       "trend": "Cinema HD",
       "app_id": "cinema_hd",
       "utc": "2026-09-01T01:20:00+00:00",
-      "source": "upload.success"
+      "source": "upload.success",
+      "retired": true,
+      "note": "User deleted all copies — permanently blocked from rotation"
     }
   ]
 }

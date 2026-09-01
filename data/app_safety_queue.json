@@ -6,5 +6,8 @@
     "movie_box",
     "cinema_hd",
     "showbox"
+  ],
+  "blocked_app_ids": [
+    "cinema_hd"
   ]
 }

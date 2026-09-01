@@ -415,6 +415,8 @@ def is_app_duplicate(
     """Block repeat uploads within a queue cycle; same-day only after full cycle."""
     if not app_id or app_id not in _APP_BY_ID:
         return False
+    if app_id in blocked_app_ids():
+        return True
     if catalog is None:
         from similarity_guard import load_catalog
 
@@ -444,17 +446,28 @@ def published_app_ids(*, catalog: list[dict[str, Any]] | None = None) -> set[str
 
 def _load_state() -> dict[str, Any]:
     if not QUEUE_STATE_PATH.exists():
-        return {"cursor": 0, "used_ids": []}
+        return {"cursor": 0, "used_ids": [], "blocked_app_ids": []}
     try:
         data = json.loads(QUEUE_STATE_PATH.read_text(encoding="utf-8"))
         if isinstance(data, dict):
+            blocked = [str(x) for x in (data.get("blocked_app_ids") or []) if str(x).strip()]
             return {
                 "cursor": int(data.get("cursor") or 0),
                 "used_ids": [str(x) for x in (data.get("used_ids") or [])],
+                "blocked_app_ids": blocked,
             }
     except Exception:
         pass
-    return {"cursor": 0, "used_ids": []}
+    return {"cursor": 0, "used_ids": [], "blocked_app_ids": []}
+
+
+def blocked_app_ids() -> set[str]:
+    """Apps permanently retired from the rotation (user-deleted / do-not-repost)."""
+    state = _load_state()
+    blocked = {str(x) for x in state.get("blocked_app_ids") or [] if str(x).strip()}
+    # Default retire list — apps removed from channel after duplicate incidents.
+    blocked.update({"cinema_hd"})
+    return {app_id for app_id in blocked if app_id in _APP_BY_ID}
 
 
 def _save_state(state: dict[str, Any]) -> None:
@@ -474,15 +487,18 @@ def pick_next_app(*, avoid_ids: set[str] | None = None) -> dict[str, Any]:
     from similarity_guard import load_catalog
 
     catalog = load_catalog()
+    retired = blocked_app_ids()
     if is_cycle_complete(catalog=catalog):
         hard_avoid = {
             *(avoid_ids or set()),
+            *retired,
             *published_app_ids_on_day(catalog=catalog),
             *reserved_app_ids_on_day(catalog=catalog),
         }
     else:
         hard_avoid = {
             *(avoid_ids or set()),
+            *retired,
             *published_app_ids(catalog=catalog),
             *reserved_app_ids_on_day(catalog=catalog),
         }

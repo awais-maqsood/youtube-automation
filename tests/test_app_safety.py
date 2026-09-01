@@ -146,19 +146,19 @@ class AppSafetySeriesTests(unittest.TestCase):
         sg.save_catalog(
             [
                 {
-                    "title": "Cinema HD - Is It Safe? The TRUTH",
-                    "trend": "Cinema HD",
-                    "app_id": "cinema_hd",
+                    "title": "FlixVision - Is It Safe? The TRUTH",
+                    "trend": "FlixVision",
+                    "app_id": "flixvision",
                     "opener": "a",
                     "cta": "b",
                     "source": "generate.kit",
                 }
             ]
         )
-        content = asafety.build_app_safety_package(asafety.lookup_app("cinema_hd"))
-        out = cg._apply_similarity_guard(content, "Cinema HD")
+        content = asafety.build_app_safety_package(asafety.lookup_app("flixvision"))
+        out = cg._apply_similarity_guard(content, "FlixVision")
         self.assertEqual(out["title"], content["title"])
-        self.assertNotIn("cinema_hd", asafety.published_app_ids())
+        self.assertNotIn("flixvision", asafety.published_app_ids())
 
 
     def test_generate_topic_app_safety(self) -> None:
@@ -238,6 +238,17 @@ class AppSafetySeriesTests(unittest.TestCase):
         ):
             app = asafety.pick_next_app()
         self.assertNotEqual(app["id"], "terabox")
+
+    def test_blocked_app_never_picked(self) -> None:
+        with mock.patch.object(asafety, "published_app_ids", return_value=set()), mock.patch.object(
+            asafety, "reserved_app_ids_on_day", return_value=set()
+        ), mock.patch.object(asafety, "is_cycle_complete", return_value=False):
+            for _ in range(3):
+                app = asafety.pick_next_app()
+                self.assertNotEqual(app["id"], "cinema_hd")
+
+    def test_blocked_app_always_duplicate(self) -> None:
+        self.assertTrue(asafety.is_app_duplicate("cinema_hd"))
 
 
 if __name__ == "__main__":
