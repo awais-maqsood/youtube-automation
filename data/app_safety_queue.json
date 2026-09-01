@@ -1,8 +1,10 @@
 {
-  "cursor": 3,
+  "cursor": 4,
   "used_ids": [
     "vidmate",
     "snaptube",
-    "movie_box"
+    "movie_box",
+    "cinema_hd",
+    "showbox"
   ]
 }

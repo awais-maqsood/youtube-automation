@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-08-13T00:00:00+00:00",
+  "updated_utc": "2026-09-01T07:15:00+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -8,6 +8,42 @@
       "trend": "Movie Box",
       "app_id": "movie_box",
       "utc": "2026-08-11T22:51:29+00:00",
+      "source": "upload.success"
+    },
+    {
+      "title": "Vidmate - Is It Safe? The TRUTH",
+      "opener": "Vidmate safe hai?",
+      "cta": "Follow for App TRUTH series.",
+      "trend": "Vidmate",
+      "app_id": "vidmate",
+      "utc": "2026-08-28T12:00:00+00:00",
+      "source": "upload.success"
+    },
+    {
+      "title": "Snaptube - Is It Safe? The TRUTH",
+      "opener": "Everyone downloading Snaptube",
+      "cta": "Next app name in comments.",
+      "trend": "Snaptube",
+      "app_id": "snaptube",
+      "utc": "2026-08-29T12:00:00+00:00",
+      "source": "upload.success"
+    },
+    {
+      "title": "Showbox - Is It Safe? The TRUTH",
+      "opener": "Showbox safe hai?",
+      "cta": "Comment the app — I check it.",
+      "trend": "Showbox",
+      "app_id": "showbox",
+      "utc": "2026-08-30T12:00:00+00:00",
+      "source": "upload.success"
+    },
+    {
+      "title": "Cinema HD - Is It Safe? The TRUTH",
+      "opener": "Cinema HD safe hai?",
+      "cta": "Comment the app — I check it.",
+      "trend": "Cinema HD",
+      "app_id": "cinema_hd",
+      "utc": "2026-09-01T01:20:00+00:00",
       "source": "upload.success"
     }
   ]

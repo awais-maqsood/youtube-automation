@@ -325,7 +325,13 @@ def is_uploaded_catalog_entry(entry: dict[str, Any]) -> bool:
     not count as published or upload will self-block the same run.
     """
     source = str(entry.get("source") or "").strip().lower()
-    return source.startswith("upload")
+    return source.startswith("upload.success")
+
+
+def is_reserved_catalog_entry(entry: dict[str, Any]) -> bool:
+    """True for in-flight pipeline rows that should block re-selection today."""
+    source = str(entry.get("source") or "").strip().lower()
+    return source in {"generate.kit", "upload.pending"} or source.startswith("upload.success")
 
 
 def _entry_utc_day(entry: dict[str, Any]) -> str:
@@ -347,6 +353,29 @@ def published_app_ids_on_day(
     used: set[str] = set()
     for entry in catalog:
         if not is_uploaded_catalog_entry(entry):
+            continue
+        if _entry_utc_day(entry) != day:
+            continue
+        app_id = catalog_app_id(entry)
+        if app_id in _APP_BY_ID:
+            used.add(app_id)
+    return used
+
+
+def reserved_app_ids_on_day(
+    day: str | None = None,
+    *,
+    catalog: list[dict[str, Any]] | None = None,
+) -> set[str]:
+    """Apps already generated or uploaded today — block same-day re-picks."""
+    day = day or datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    if catalog is None:
+        from similarity_guard import load_catalog
+
+        catalog = load_catalog()
+    used: set[str] = set()
+    for entry in catalog:
+        if not is_reserved_catalog_entry(entry):
             continue
         if _entry_utc_day(entry) != day:
             continue
@@ -386,9 +415,15 @@ def is_app_duplicate(
     """Block repeat uploads within a queue cycle; same-day only after full cycle."""
     if not app_id or app_id not in _APP_BY_ID:
         return False
+    if catalog is None:
+        from similarity_guard import load_catalog
+
+        catalog = load_catalog()
     if is_cycle_complete(catalog=catalog):
         return is_same_day_app_duplicate(app_id, catalog=catalog)
-    return app_id in published_app_ids(catalog=catalog)
+    if app_id in published_app_ids(catalog=catalog):
+        return True
+    return app_id in reserved_app_ids_on_day(catalog=catalog)
 
 
 def published_app_ids(*, catalog: list[dict[str, Any]] | None = None) -> set[str]:
@@ -440,9 +475,17 @@ def pick_next_app(*, avoid_ids: set[str] | None = None) -> dict[str, Any]:
 
     catalog = load_catalog()
     if is_cycle_complete(catalog=catalog):
-        hard_avoid = {*(avoid_ids or set()), *published_app_ids_on_day(catalog=catalog)}
+        hard_avoid = {
+            *(avoid_ids or set()),
+            *published_app_ids_on_day(catalog=catalog),
+            *reserved_app_ids_on_day(catalog=catalog),
+        }
     else:
-        hard_avoid = {*(avoid_ids or set()), *published_app_ids(catalog=catalog)}
+        hard_avoid = {
+            *(avoid_ids or set()),
+            *published_app_ids(catalog=catalog),
+            *reserved_app_ids_on_day(catalog=catalog),
+        }
     soft_avoid = set(state.get("used_ids", [])[-8:])
     n = len(APP_SAFETY_QUEUE)
     start = int(state.get("cursor") or 0) % n

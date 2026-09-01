@@ -85,7 +85,7 @@ class AppSafetySeriesTests(unittest.TestCase):
             return_value={"vidmate", "snaptube", "movie_box"},
         ), mock.patch.object(asafety, "is_cycle_complete", return_value=False):
             app = asafety.pick_next_app()
-        self.assertEqual(app["id"], "cinema_hd")
+        self.assertEqual(app["id"], "terabox")
 
     def test_published_app_blocks_within_cycle(self) -> None:
         import similarity_guard as sg
@@ -212,6 +212,32 @@ class AppSafetySeriesTests(unittest.TestCase):
         )
         self.assertTrue(asafety.is_app_duplicate("showbox"))
         self.assertFalse(asafety.is_app_duplicate("vidmate"))
+
+    def test_generate_kit_blocks_same_day_repick(self) -> None:
+        import similarity_guard as sg
+
+        catalog_path = Path(self._tmpdir.name) / "publish_catalog.json"
+        self._orig_catalog = sg.CATALOG_PATH
+        sg.CATALOG_PATH = catalog_path
+        self.addCleanup(lambda: setattr(sg, "CATALOG_PATH", self._orig_catalog))
+        today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        sg.save_catalog(
+            [
+                {
+                    "title": "TeraBox - Is It Safe? The TRUTH",
+                    "trend": "TeraBox",
+                    "app_id": "terabox",
+                    "source": "generate.kit",
+                    "utc": f"{today}T10:00:00+00:00",
+                }
+            ]
+        )
+        self.assertIn("terabox", asafety.reserved_app_ids_on_day())
+        with mock.patch.object(asafety, "published_app_ids", return_value=set()), mock.patch.object(
+            asafety, "is_cycle_complete", return_value=False
+        ):
+            app = asafety.pick_next_app()
+        self.assertNotEqual(app["id"], "terabox")
 
 
 if __name__ == "__main__":

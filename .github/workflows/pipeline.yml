@@ -17,7 +17,7 @@ on:
         default: "false"
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: pipeline-${{ github.repository }}
@@ -29,17 +29,6 @@ jobs:
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
-
-      - name: Restore distribution state cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            data/publish_catalog.json
-            data/daily_upload_log.json
-            data/app_safety_queue.json
-          key: distribution-state-v1
-          restore-keys: |
-            distribution-state-v1
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -141,6 +130,7 @@ jobs:
           sleep "$WAIT"
 
       - name: Upload to YouTube
+        id: youtube
         if: steps.cap.outputs.should_run == 'true'
         env:
           YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
@@ -158,9 +148,15 @@ jobs:
         run: |
           python scripts/upload.py --kit output/kit.json --no-schedule
 
+      - name: Persist distribution state to git
+        if: steps.cap.outputs.should_run == 'true' && steps.youtube.outcome == 'success'
+        run: |
+          python scripts/persist_distribution_state.py --branch "${GITHUB_REF_NAME}"
+
       # Same Short → Postiz Public API (Instagram + Facebook).
       - name: Post to Instagram + Facebook (Postiz)
         if: steps.cap.outputs.should_run == 'true'
+        continue-on-error: true
         env:
           POSTIZ_API_KEY: ${{ secrets.POSTIZ_API_KEY }}
           POSTIZ_BASE_URL: ${{ vars.POSTIZ_BASE_URL }}
@@ -179,6 +175,7 @@ jobs:
       # Optional fallback: Drive inbox → Zapier → Publer (e.g. TikTok), then Zap deletes Drive files.
       - name: Upload to Google Drive (Publer inbox)
         if: steps.cap.outputs.should_run == 'true'
+        continue-on-error: true
         env:
           GOOGLE_DRIVE_CLIENT_ID: ${{ secrets.GOOGLE_DRIVE_CLIENT_ID }}
           GOOGLE_DRIVE_CLIENT_SECRET: ${{ secrets.GOOGLE_DRIVE_CLIENT_SECRET }}
