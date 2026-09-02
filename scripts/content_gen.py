@@ -67,7 +67,7 @@ MODELS = [
     "google/gemma-4-31b-it:free",                             # last-resort, frequently rate-limited
 ]
 
-# Channel default is BlinkViral app-safety series (override with CHANNEL_NICHE).
+# Channel default is viral/trending news (override with CHANNEL_NICHE=app_safety|high_cpm).
 HIGH_CPM_SLOTS = {"morning", "afternoon"}
 
 VIRAL_ANGLES = [
@@ -151,7 +151,7 @@ CHANNEL_FIT_FALLBACKS = VIRAL_FALLBACKS + HIGH_CPM_FALLBACKS
 
 
 def niche_for_slot(slot: str | None) -> str:
-    """Resolve niche. BlinkViral default = app_safety for every slot."""
+    """Resolve niche. Default viral: morning/afternoon=high_cpm tech, evening/night=trending."""
     from app_safety import channel_niche, is_app_safety_mode
 
     forced = channel_niche()

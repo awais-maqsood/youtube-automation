@@ -249,7 +249,7 @@ _APP_BY_NAME = {a["name"].lower(): a for a in APP_SAFETY_QUEUE}
 
 
 def channel_niche() -> str:
-    """Active channel niche. Default app_safety (BlinkViral pivot)."""
+    """Active channel niche. Default viral (Google Trends + tech news)."""
     raw = (os.environ.get("CHANNEL_NICHE") or "").strip().lower()
     if raw in {"app_safety", "viral", "high_cpm"}:
         return raw
@@ -257,7 +257,7 @@ def channel_niche() -> str:
     mode = (os.environ.get("CHANNEL_MODE") or "").strip().lower()
     if mode in {"app_safety", "appsafety", "app-safety"}:
         return "app_safety"
-    return "app_safety"
+    return "viral"
 
 
 def is_app_safety_mode(niche: str | None = None) -> bool:

@@ -1443,7 +1443,7 @@ def _duration_bounds(topic: dict | None = None) -> tuple[float, float]:
     if isinstance(topic, dict):
         niche = str(topic.get("niche") or "")
     is_app = niche == "app_safety" or (
-        (os.environ.get("CHANNEL_NICHE") or "app_safety").strip().lower() == "app_safety"
+        (os.environ.get("CHANNEL_NICHE") or "viral").strip().lower() == "app_safety"
     )
     default_min = "15"
     default_max = "20" if is_app else "45"

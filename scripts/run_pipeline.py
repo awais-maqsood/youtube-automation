@@ -5,8 +5,10 @@ Single-command entrypoint for Shorts generation.
 Runs topic selection, script generation, stock lookup, and local video render
 in one terminal window.
 
-Slots:
-  All slots → app_safety (BlinkViral "Is It Safe? The TRUTH" series)
+Slots (default CHANNEL_NICHE=viral):
+  morning / afternoon → high_cpm (tech, AI, finance news)
+  evening / night     → viral (latest trending news)
+  Set CHANNEL_NICHE=app_safety to restore the App TRUTH series.
 
 Daily volume is gated by DAILY_UPLOAD_CAP (default 4).
 """
@@ -39,7 +41,7 @@ def main() -> int:
     args = ap.parse_args()
 
     niche = niche_for_slot(args.slot)
-    print("== BlinkViral App TRUTH Pipeline ==")
+    print("== BlinkViral Shorts Pipeline ==")
     print(f"Slot: {args.slot} | Niche: {niche}")
 
     if not args.ignore_daily_cap:

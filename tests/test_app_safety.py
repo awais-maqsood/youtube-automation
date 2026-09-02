@@ -51,9 +51,18 @@ class AppSafetySeriesTests(unittest.TestCase):
         b = asafety.pick_next_app()
         self.assertNotEqual(a["id"], b["id"])
 
-    def test_niche_for_slot_defaults_app_safety(self) -> None:
+    def test_niche_for_slot_app_safety_mode(self) -> None:
         self.assertEqual(cg.niche_for_slot("morning"), "app_safety")
         self.assertEqual(cg.niche_for_slot("evening"), "app_safety")
+
+    def test_niche_for_slot_viral_default(self) -> None:
+        with mock.patch.dict(os.environ, {"CHANNEL_NICHE": "viral"}, clear=False):
+            self.assertEqual(cg.niche_for_slot("morning"), "high_cpm")
+            self.assertEqual(cg.niche_for_slot("evening"), "viral")
+
+    def test_channel_niche_defaults_viral(self) -> None:
+        with mock.patch.dict(os.environ, {}, clear=True):
+            self.assertEqual(asafety.channel_niche(), "viral")
 
     def test_sanitize_keeps_truth_title(self) -> None:
         out = cg._sanitize_title(

@@ -2,7 +2,7 @@ name: Auto Generate And Upload
 
 on:
   schedule:
-    # BlinkViral App TRUTH series: 4 Shorts/day (UTC).
+    # BlinkViral: 4 Shorts/day — morning/afternoon tech, evening/night trending (UTC).
     - cron: "5 3 * * *"
     - cron: "5 12 * * *"
     - cron: "5 17 * * *"
@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
     inputs:
       slot:
-        description: "Any slot — CHANNEL_NICHE=app_safety for all (App TRUTH series)"
+        description: "morning|afternoon|evening|night — tech vs trending by slot"
         default: "morning"
       bypass_daily_cap:
         description: "Ignore DAILY_UPLOAD_CAP for this manual run (true/false)"
@@ -90,7 +90,7 @@ jobs:
           SIMILARITY_CTA_MAX: ${{ vars.SIMILARITY_CTA_MAX }}
           SIMILARITY_CATALOG_MAX: ${{ vars.SIMILARITY_CATALOG_MAX }}
           TITLE_FAMILY_COOLDOWN: ${{ vars.TITLE_FAMILY_COOLDOWN }}
-          CHANNEL_NICHE: app_safety
+          CHANNEL_NICHE: ${{ vars.CHANNEL_NICHE || 'viral' }}
           DAILY_UPLOAD_CAP: ${{ vars.DAILY_UPLOAD_CAP }}
           BYPASS_DAILY_UPLOAD_CAP: ${{ github.event.inputs.bypass_daily_cap }}
           # Prefer free Pixabay/Pexels photos (Gemini/Freepik remain code fallbacks).
@@ -142,7 +142,7 @@ jobs:
           SIMILARITY_CTA_MAX: ${{ vars.SIMILARITY_CTA_MAX }}
           SIMILARITY_CATALOG_MAX: ${{ vars.SIMILARITY_CATALOG_MAX }}
           TITLE_FAMILY_COOLDOWN: ${{ vars.TITLE_FAMILY_COOLDOWN }}
-          CHANNEL_NICHE: app_safety
+          CHANNEL_NICHE: ${{ vars.CHANNEL_NICHE || 'viral' }}
           DAILY_UPLOAD_CAP: ${{ vars.DAILY_UPLOAD_CAP }}
           BYPASS_DAILY_UPLOAD_CAP: ${{ github.event.inputs.bypass_daily_cap }}
         run: |
