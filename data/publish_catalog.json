@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-02T07:59:01.443508+00:00",
+  "updated_utc": "2026-09-02T16:37:06.813159+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -65,6 +65,24 @@
       "source": "upload.success",
       "app_id": "netflix_squid_game_season",
       "youtube_id": "v5vRoSh_kBc"
+    },
+    {
+      "title": "Taylor Townsend Transfer Rumors: What's Next?",
+      "opener": "Why fans are buzzing now",
+      "cta": "",
+      "trend": "Taylor Townsend",
+      "utc": "2026-09-02T16:30:01.557947+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Taylor Townsend Transfer Rumors: What's Next?",
+      "opener": "Why fans are buzzing now",
+      "cta": "Vote with a comment: buy-in or pass.",
+      "trend": "Taylor Townsend",
+      "utc": "2026-09-02T16:37:06.812903+00:00",
+      "source": "upload.success",
+      "app_id": "taylor_townsend",
+      "youtube_id": "oBXShSeSrKI"
     }
   ]
 }
