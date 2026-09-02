@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-01T07:15:00+00:00",
+  "updated_utc": "2026-09-02T07:59:01.443508+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -47,6 +47,24 @@
       "source": "upload.success",
       "retired": true,
       "note": "User deleted all copies — permanently blocked from rotation"
+    },
+    {
+      "title": "Netflix Squid Game season update: What's next?",
+      "opener": "Ready for the next round?",
+      "cta": "",
+      "trend": "Netflix Squid Game season",
+      "utc": "2026-09-02T07:52:12.503363+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Netflix Squid Game season update: What's next?",
+      "opener": "Ready for the next round?",
+      "cta": "Follow for the next product/event breakdown.",
+      "trend": "Netflix Squid Game season",
+      "utc": "2026-09-02T07:59:01.443271+00:00",
+      "source": "upload.success",
+      "app_id": "netflix_squid_game_season",
+      "youtube_id": "v5vRoSh_kBc"
     }
   ]
 }

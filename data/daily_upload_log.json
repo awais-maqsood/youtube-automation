@@ -1,4 +1,16 @@
 {
-  "updated_utc": "2026-07-28T00:00:00+00:00",
-  "days": {}
+  "days": {
+    "2026-09-02": {
+      "count": 1,
+      "events": [
+        {
+          "utc": "2026-09-02T07:59:01.443762+00:00",
+          "title": "Netflix Squid Game season update: What's next?",
+          "slot": "evening",
+          "source": "upload.success"
+        }
+      ]
+    }
+  },
+  "updated_utc": "2026-09-02T07:59:01.443789+00:00"
 }
