@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-02T16:37:06.813159+00:00",
+  "updated_utc": "2026-09-02T19:51:54.567653+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -83,6 +83,24 @@
       "source": "upload.success",
       "app_id": "taylor_townsend",
       "youtube_id": "oBXShSeSrKI"
+    },
+    {
+      "title": "Is Markiplier GoPro really the next big thing?",
+      "opener": "He just unveiled a new camera",
+      "cta": "",
+      "trend": "Markiplier GoPro",
+      "utc": "2026-09-02T19:45:01.751740+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Is Markiplier GoPro really the next big thing?",
+      "opener": "He just unveiled a new camera",
+      "cta": "Hit follow for more searchable explainers.",
+      "trend": "Markiplier GoPro",
+      "utc": "2026-09-02T19:51:54.567396+00:00",
+      "source": "upload.success",
+      "app_id": "markiplier_gopro",
+      "youtube_id": "kx1fq6Oi1bE"
     }
   ]
 }

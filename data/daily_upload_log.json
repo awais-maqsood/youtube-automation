@@ -1,7 +1,7 @@
 {
   "days": {
     "2026-09-02": {
-      "count": 2,
+      "count": 3,
       "events": [
         {
           "utc": "2026-09-02T07:59:01.443762+00:00",
@@ -14,9 +14,15 @@
           "title": "Taylor Townsend Transfer Rumors: What's Next?",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-09-02T19:51:54.567982+00:00",
+          "title": "Is Markiplier GoPro really the next big thing?",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-09-02T16:37:06.813449+00:00"
+  "updated_utc": "2026-09-02T19:51:54.568009+00:00"
 }
