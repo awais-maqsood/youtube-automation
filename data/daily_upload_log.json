@@ -24,7 +24,7 @@
       ]
     },
     "2026-09-03": {
-      "count": 3,
+      "count": 4,
       "events": [
         {
           "utc": "2026-09-03T00:10:43.628116+00:00",
@@ -43,9 +43,15 @@
           "title": "Iga \u015awi\u0105tek beats Gauff in French Open final",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-09-03T19:55:05.330478+00:00",
+          "title": "Lindsay Clancy Career Is Over",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-09-03T16:27:44.012401+00:00"
+  "updated_utc": "2026-09-03T19:55:05.330516+00:00"
 }

@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-03T16:27:44.012125+00:00",
+  "updated_utc": "2026-09-03T19:55:05.330101+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -155,6 +155,24 @@
       "source": "upload.success",
       "app_id": "iga_wi_tek",
       "youtube_id": "1Z---7YxbNA"
+    },
+    {
+      "title": "Lindsay Clancy Career Is Over",
+      "opener": "Did she really quit?",
+      "cta": "",
+      "trend": "lindsay clancy",
+      "utc": "2026-09-03T19:48:16.540440+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Lindsay Clancy Career Is Over",
+      "opener": "Did she really quit?",
+      "cta": "What do you make of it? Say so below.",
+      "trend": "lindsay clancy",
+      "utc": "2026-09-03T19:55:05.329748+00:00",
+      "source": "upload.success",
+      "app_id": "lindsay_clancy",
+      "youtube_id": "j3qIW6XA4F8"
     }
   ]
 }
