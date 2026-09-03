@@ -22,7 +22,18 @@
           "source": "upload.success"
         }
       ]
+    },
+    "2026-09-03": {
+      "count": 1,
+      "events": [
+        {
+          "utc": "2026-09-03T00:10:43.628116+00:00",
+          "title": "Yahoo Fantasy Football Draft Explodes",
+          "slot": "evening",
+          "source": "upload.success"
+        }
+      ]
     }
   },
-  "updated_utc": "2026-09-02T19:51:54.568009+00:00"
+  "updated_utc": "2026-09-03T00:10:43.628137+00:00"
 }

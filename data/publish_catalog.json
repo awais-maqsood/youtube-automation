@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-02T19:51:54.567653+00:00",
+  "updated_utc": "2026-09-03T00:10:43.627840+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -101,6 +101,24 @@
       "source": "upload.success",
       "app_id": "markiplier_gopro",
       "youtube_id": "kx1fq6Oi1bE"
+    },
+    {
+      "title": "Yahoo Fantasy Football Draft Explodes",
+      "opener": "Who’s pulling crazy late picks?",
+      "cta": "",
+      "trend": "Yahoo Fantasy Football",
+      "utc": "2026-09-03T00:03:44.716576+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Yahoo Fantasy Football Draft Explodes",
+      "opener": "Who’s pulling crazy late picks?",
+      "cta": "Subscribe if you want the next clear read.",
+      "trend": "Yahoo Fantasy Football",
+      "utc": "2026-09-03T00:10:43.627547+00:00",
+      "source": "upload.success",
+      "app_id": "yahoo_fantasy_football",
+      "youtube_id": "EUtoFjMJ-iQ"
     }
   ]
 }
