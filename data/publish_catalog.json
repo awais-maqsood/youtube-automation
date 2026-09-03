@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-03T00:10:43.627840+00:00",
+  "updated_utc": "2026-09-03T08:07:33.861443+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -119,6 +119,24 @@
       "source": "upload.success",
       "app_id": "yahoo_fantasy_football",
       "youtube_id": "EUtoFjMJ-iQ"
+    },
+    {
+      "title": "Watch Donald Trump's Rally Moment",
+      "opener": "Explosive rally footage just dropped",
+      "cta": "",
+      "trend": "donald trump",
+      "utc": "2026-09-03T08:00:21.529107+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Watch Donald Trump's Rally Moment",
+      "opener": "Explosive rally footage just dropped",
+      "cta": "One-line verdict in the comments.",
+      "trend": "donald trump",
+      "utc": "2026-09-03T08:07:33.861142+00:00",
+      "source": "upload.success",
+      "app_id": "donald_trump",
+      "youtube_id": "ydvNHBxDVmw"
     }
   ]
 }

@@ -24,16 +24,22 @@
       ]
     },
     "2026-09-03": {
-      "count": 1,
+      "count": 2,
       "events": [
         {
           "utc": "2026-09-03T00:10:43.628116+00:00",
           "title": "Yahoo Fantasy Football Draft Explodes",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-09-03T08:07:33.861794+00:00",
+          "title": "Watch Donald Trump's Rally Moment",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-09-03T00:10:43.628137+00:00"
+  "updated_utc": "2026-09-03T08:07:33.861822+00:00"
 }
