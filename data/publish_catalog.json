@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-03T08:07:33.861443+00:00",
+  "updated_utc": "2026-09-03T16:27:44.012125+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -137,6 +137,24 @@
       "source": "upload.success",
       "app_id": "donald_trump",
       "youtube_id": "ydvNHBxDVmw"
+    },
+    {
+      "title": "Iga Świątek beats Gauff in French Open final",
+      "opener": "Who actually ruled the clay court?",
+      "cta": "",
+      "trend": "Iga Świątek",
+      "utc": "2026-09-03T16:21:01.163676+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Iga Świątek beats Gauff in French Open final",
+      "opener": "Who actually ruled the clay court?",
+      "cta": "Is the panic overdone? Argue below.",
+      "trend": "Iga Świątek",
+      "utc": "2026-09-03T16:27:44.011846+00:00",
+      "source": "upload.success",
+      "app_id": "iga_wi_tek",
+      "youtube_id": "1Z---7YxbNA"
     }
   ]
 }
