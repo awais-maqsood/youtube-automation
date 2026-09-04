@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-04T16:22:27.683790+00:00",
+  "updated_utc": "2026-09-04T19:34:31.001090+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -209,6 +209,24 @@
       "source": "upload.success",
       "app_id": "meghan_duchess_of_sussex",
       "youtube_id": "53TAE0Qdbk0"
+    },
+    {
+      "title": "Simon Cowell's New Look: What Changed?",
+      "opener": "He looks completely changed",
+      "cta": "",
+      "trend": "Simon Cowell",
+      "utc": "2026-09-04T19:27:48.525661+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Simon Cowell's New Look: What Changed?",
+      "opener": "He looks completely changed",
+      "cta": "Would you bet on this outcome? Reply.",
+      "trend": "Simon Cowell",
+      "utc": "2026-09-04T19:34:31.000791+00:00",
+      "source": "upload.success",
+      "app_id": "simon_cowell",
+      "youtube_id": "FRFUIEL3W68"
     }
   ]
 }
