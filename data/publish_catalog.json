@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-03T19:55:05.330101+00:00",
+  "updated_utc": "2026-09-04T08:02:32.808223+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -173,6 +173,24 @@
       "source": "upload.success",
       "app_id": "lindsay_clancy",
       "youtube_id": "j3qIW6XA4F8"
+    },
+    {
+      "title": "Alix Earle just dropped a major update?",
+      "opener": "Alix Earle shocked everyone again",
+      "cta": "",
+      "trend": "alix earle",
+      "utc": "2026-09-04T07:55:33.705996+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Alix Earle just dropped a major update?",
+      "opener": "Alix Earle shocked everyone again",
+      "cta": "Curious what you'd do — tell me.",
+      "trend": "alix earle",
+      "utc": "2026-09-04T08:02:32.807881+00:00",
+      "source": "upload.success",
+      "app_id": "alix_earle",
+      "youtube_id": "unuh1hT14Fw"
     }
   ]
 }
