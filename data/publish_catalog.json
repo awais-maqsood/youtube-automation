@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-05T00:03:31.983521+00:00",
+  "updated_utc": "2026-09-05T07:43:33.594600+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -245,6 +245,24 @@
       "source": "upload.success",
       "app_id": "ryan_reynolds",
       "youtube_id": "DezH-EeESXc"
+    },
+    {
+      "title": "WWE Releases: hype vs substance",
+      "opener": "Start with WWE Releases.",
+      "cta": "",
+      "trend": "WWE Releases",
+      "utc": "2026-09-05T07:36:41.645145+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "WWE Releases: hype vs substance",
+      "opener": "Start with WWE Releases.",
+      "cta": "Does this change your plan? Comment.",
+      "trend": "WWE Releases",
+      "utc": "2026-09-05T07:43:33.594231+00:00",
+      "source": "upload.success",
+      "app_id": "wwe_releases",
+      "youtube_id": "jy054LaWwcY"
     }
   ]
 }
