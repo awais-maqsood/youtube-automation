@@ -76,7 +76,7 @@
       ]
     },
     "2026-09-05": {
-      "count": 3,
+      "count": 4,
       "events": [
         {
           "utc": "2026-09-05T00:03:31.983823+00:00",
@@ -95,9 +95,15 @@
           "title": "Enzo Fern\u00e1ndez breaks national record",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-09-05T19:07:15.519892+00:00",
+          "title": "Ryan Garcia fight moment that shocked fans",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-09-05T15:11:26.886728+00:00"
+  "updated_utc": "2026-09-05T19:07:15.519937+00:00"
 }

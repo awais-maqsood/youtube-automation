@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-05T15:11:26.886256+00:00",
+  "updated_utc": "2026-09-05T19:07:15.519486+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -281,6 +281,24 @@
       "source": "upload.success",
       "app_id": "enzo_fern_ndez",
       "youtube_id": "n9aDJ0EFb1Y"
+    },
+    {
+      "title": "Ryan Garcia fight moment that shocked fans",
+      "opener": "Did Ryan Garcia surprise everyone?",
+      "cta": "",
+      "trend": "Ryan Garcia fight",
+      "utc": "2026-09-05T19:00:34.601148+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Ryan Garcia fight moment that shocked fans",
+      "opener": "Did Ryan Garcia surprise everyone?",
+      "cta": "I post the next concrete update here.",
+      "trend": "Ryan Garcia fight",
+      "utc": "2026-09-05T19:07:15.519142+00:00",
+      "source": "upload.success",
+      "app_id": "ryan_garcia_fight",
+      "youtube_id": "gN-R1QJUuhE"
     }
   ]
 }
