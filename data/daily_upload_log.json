@@ -76,7 +76,7 @@
       ]
     },
     "2026-09-05": {
-      "count": 2,
+      "count": 3,
       "events": [
         {
           "utc": "2026-09-05T00:03:31.983823+00:00",
@@ -89,9 +89,15 @@
           "title": "WWE Releases: hype vs substance",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-09-05T15:11:26.886705+00:00",
+          "title": "Enzo Fern\u00e1ndez breaks national record",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-09-05T07:43:33.595111+00:00"
+  "updated_utc": "2026-09-05T15:11:26.886728+00:00"
 }

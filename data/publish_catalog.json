@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-05T07:43:33.594600+00:00",
+  "updated_utc": "2026-09-05T15:11:26.886256+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -263,6 +263,24 @@
       "source": "upload.success",
       "app_id": "wwe_releases",
       "youtube_id": "jy054LaWwcY"
+    },
+    {
+      "title": "Enzo Fernández breaks national record",
+      "opener": "He’s dominating headlines worldwide!",
+      "cta": "",
+      "trend": "Enzo Fernández",
+      "utc": "2026-09-05T15:04:31.645166+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Enzo Fernández breaks national record",
+      "opener": "He’s dominating headlines worldwide!",
+      "cta": "Follow along for the next high-signal clip.",
+      "trend": "Enzo Fernández",
+      "utc": "2026-09-05T15:11:26.885879+00:00",
+      "source": "upload.success",
+      "app_id": "enzo_fern_ndez",
+      "youtube_id": "n9aDJ0EFb1Y"
     }
   ]
 }
