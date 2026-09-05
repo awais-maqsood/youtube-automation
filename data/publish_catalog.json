@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-04T19:34:31.001090+00:00",
+  "updated_utc": "2026-09-05T00:03:31.983521+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -227,6 +227,24 @@
       "source": "upload.success",
       "app_id": "simon_cowell",
       "youtube_id": "FRFUIEL3W68"
+    },
+    {
+      "title": "Ryan Reynolds Facts That Shock Everyone",
+      "opener": "Reynolds drops truth bombs fast",
+      "cta": "",
+      "trend": "Ryan Reynolds",
+      "utc": "2026-09-04T23:56:56.413173+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Ryan Reynolds Facts That Shock Everyone",
+      "opener": "Reynolds drops truth bombs fast",
+      "cta": "Reply with the counter-argument.",
+      "trend": "Ryan Reynolds",
+      "utc": "2026-09-05T00:03:31.983201+00:00",
+      "source": "upload.success",
+      "app_id": "ryan_reynolds",
+      "youtube_id": "DezH-EeESXc"
     }
   ]
 }

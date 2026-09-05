@@ -74,7 +74,18 @@
           "source": "upload.success"
         }
       ]
+    },
+    "2026-09-05": {
+      "count": 1,
+      "events": [
+        {
+          "utc": "2026-09-05T00:03:31.983823+00:00",
+          "title": "Ryan Reynolds Facts That Shock Everyone",
+          "slot": "evening",
+          "source": "upload.success"
+        }
+      ]
     }
   },
-  "updated_utc": "2026-09-04T19:34:31.001482+00:00"
+  "updated_utc": "2026-09-05T00:03:31.983839+00:00"
 }
