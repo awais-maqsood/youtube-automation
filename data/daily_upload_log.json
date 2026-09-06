@@ -103,7 +103,18 @@
           "source": "upload.success"
         }
       ]
+    },
+    "2026-09-06": {
+      "count": 1,
+      "events": [
+        {
+          "utc": "2026-09-06T19:11:21.744608+00:00",
+          "title": "Internacional vs Santos: What Really Changed?",
+          "slot": "evening",
+          "source": "upload.success"
+        }
+      ]
     }
   },
-  "updated_utc": "2026-09-05T19:07:15.519937+00:00"
+  "updated_utc": "2026-09-06T19:11:21.744652+00:00"
 }

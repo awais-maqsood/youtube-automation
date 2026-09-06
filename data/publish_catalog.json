@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-05T19:07:15.519486+00:00",
+  "updated_utc": "2026-09-06T19:11:21.744106+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -299,6 +299,24 @@
       "source": "upload.success",
       "app_id": "ryan_garcia_fight",
       "youtube_id": "gN-R1QJUuhE"
+    },
+    {
+      "title": "Internacional vs Santos: What Really Changed?",
+      "opener": "Something flipped in this clash",
+      "cta": "",
+      "trend": "Internacional vs Santos",
+      "utc": "2026-09-06T19:04:16.922067+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Internacional vs Santos: What Really Changed?",
+      "opener": "Something flipped in this clash",
+      "cta": "Next Short covers the follow-up — stay close.",
+      "trend": "Internacional vs Santos",
+      "utc": "2026-09-06T19:11:21.743663+00:00",
+      "source": "upload.success",
+      "app_id": "internacional_vs_santos",
+      "youtube_id": "qtqEXifxXb8"
     }
   ]
 }
