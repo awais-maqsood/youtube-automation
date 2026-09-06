@@ -105,16 +105,22 @@
       ]
     },
     "2026-09-06": {
-      "count": 1,
+      "count": 2,
       "events": [
         {
           "utc": "2026-09-06T19:11:21.744608+00:00",
           "title": "Internacional vs Santos: What Really Changed?",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-09-06T23:53:49.420182+00:00",
+          "title": "Ben Shelton's Victory Is Undeniable!",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-09-06T19:11:21.744652+00:00"
+  "updated_utc": "2026-09-06T23:53:49.420223+00:00"
 }

@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-06T19:11:21.744106+00:00",
+  "updated_utc": "2026-09-06T23:53:49.419642+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -317,6 +317,24 @@
       "source": "upload.success",
       "app_id": "internacional_vs_santos",
       "youtube_id": "qtqEXifxXb8"
+    },
+    {
+      "title": "Ben Shelton's Victory Is Undeniable!",
+      "opener": "He just smashed the competition!",
+      "cta": "",
+      "trend": "Ben Shelton",
+      "utc": "2026-09-06T23:46:45.735052+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Ben Shelton's Victory Is Undeniable!",
+      "opener": "He just smashed the competition!",
+      "cta": "Honest read — leave yours in comments.",
+      "trend": "Ben Shelton",
+      "utc": "2026-09-06T23:53:49.419220+00:00",
+      "source": "upload.success",
+      "app_id": "ben_shelton",
+      "youtube_id": "YTnyzh5v89o"
     }
   ]
 }
