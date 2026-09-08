@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-08T16:39:28.421833+00:00",
+  "updated_utc": "2026-09-08T19:58:57.249012+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -353,6 +353,24 @@
       "source": "upload.success",
       "app_id": "dunkin_free_pumpkin_spice_latte",
       "youtube_id": "HnnK4_G7mhg"
+    },
+    {
+      "title": "Watch This: Trump 9/11 Claims Fact-Checked Fast",
+      "opener": "Sorting fact from fiction on Trump 9/11",
+      "cta": "",
+      "trend": "Trump 9/11",
+      "utc": "2026-09-08T19:51:54.120939+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Watch This: Trump 9/11 Claims Fact-Checked Fast",
+      "opener": "Sorting fact from fiction on Trump 9/11",
+      "cta": "New named stories drop here first — follow.",
+      "trend": "Trump 9/11",
+      "utc": "2026-09-08T19:58:57.248564+00:00",
+      "source": "upload.success",
+      "app_id": "trump_9_11",
+      "youtube_id": "SOP7jokJnNY"
     }
   ]
 }
