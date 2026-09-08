@@ -78,6 +78,12 @@ _DESC_CTA_POOL = [
     "Is the panic overdone? Argue below.",
     "What should people watch next on this?",
     "Call the next move in one sentence.",
+    "Which side are you on? Spell it out.",
+    "Hot take welcome — keep it one line.",
+    "Did the clip change your mind? Say how.",
+    "Name the risk everyone is ignoring.",
+    "Would you share this with a friend? Why?",
+    "Pick a winner in the comments.",
 ]
 _DESC_FOLLOW_POOL = [
     "More named-topic Shorts coming — follow if useful.",
@@ -88,6 +94,10 @@ _DESC_FOLLOW_POOL = [
     "Hit follow for more searchable explainers.",
     "I break the next named story here first.",
     "Follow along for the next high-signal clip.",
+    "New named stories drop here first — follow.",
+    "Catch the next breakdown as it breaks.",
+    "More explainers land on this channel soon.",
+    "Stay for the next named-topic Short.",
 ]
 # Distinct description architectures — not synonym swaps of one skeleton.
 _DESC_ARCHITECTURES = (
@@ -291,6 +301,7 @@ def _topic_hashtag(trend: str) -> str:
 def build_youtube_description(topic: dict) -> str:
     """Build a description with genuinely varied sentence architecture (not one scaffold)."""
     from content_gen import _stable_hash, recent_title_strings
+    from similarity_guard import load_catalog
 
     trend = _kit_one_line(topic.get("trend_topic") or topic.get("title") or "")
     hook = _kit_one_line(topic.get("hook") or "")
@@ -298,14 +309,37 @@ def build_youtube_description(topic: dict) -> str:
     niche = (topic.get("niche") or "viral").lower()
     key = f"{trend}|{hook}|{topic.get('topic_id') or 'x'}"
 
-    # Avoid CTAs that match recent title scaffolds when possible.
+    # Avoid CTAs/follows already stored in the publish catalog (exact reuse = gate fail).
+    used_ctas = {
+        str(row.get("cta") or "").strip().lower()
+        for row in load_catalog()
+        if str(row.get("cta") or "").strip()
+    }
     recent = {t.lower() for t in recent_title_strings(12)}
-    cta_pool = [c for c in _DESC_CTA_POOL if c.lower() not in recent] or list(_DESC_CTA_POOL)
+    cta_pool = [
+        c
+        for c in _DESC_CTA_POOL
+        if c.lower() not in recent and c.lower() not in used_ctas
+    ] or [
+        c for c in _DESC_CTA_POOL if c.lower() not in used_ctas
+    ] or list(_DESC_CTA_POOL)
+    follow_pool = [
+        f for f in _DESC_FOLLOW_POOL if f.lower() not in used_ctas
+    ] or list(_DESC_FOLLOW_POOL)
+
     cta = cta_pool[_stable_hash(f"cta:{key}") % len(cta_pool)]
     # Re-roll with wall-clock entropy so same-day reruns don't lock one CTA.
     if random.random() < 0.55:
         cta = random.choice(cta_pool)
-    follow = random.choice(_DESC_FOLLOW_POOL)
+    # Last resort: mint a topic-specific invite that can't collide with the pool catalog.
+    if cta.lower() in used_ctas:
+        entity = (trend or "this").split()[0]
+        cta = f"What do you think about {entity}? Comment below."
+    follow = random.choice(follow_pool)
+    if follow.lower() in used_ctas or follow.lower() == cta.lower():
+        follow = random.choice(
+            [f for f in follow_pool if f.lower() != cta.lower()] or follow_pool
+        )
 
     arch = _DESC_ARCHITECTURES[_stable_hash(f"arch:{key}:{random.randint(0, 10_000)}") % len(_DESC_ARCHITECTURES)]
     blocks: list[str] = []

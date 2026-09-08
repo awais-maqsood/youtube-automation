@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 """
 content_gen.py
-Calls OpenRouter to build a topical short-form explainer package from
-the latest Google Trends RSS topic.
+Builds a topical short-form explainer package from Google Trends RSS.
 
-Required env var: OPENROUTER_API_KEY
+LLM preference:
+  1. OpenAI (OPENAI_API_KEY) — primary for script/title generation
+  2. OpenRouter free models (OPENROUTER_API_KEY) — fallback
+
+Topic seed selection also uses OpenAI when available.
 """
 
 import os, json, random, time, re, hashlib, urllib.request, urllib.error, xml.etree.ElementTree as ET
@@ -23,8 +26,10 @@ from topic_validation import (
     require_valid_entity,
 )
 
-API_URL = "https://openrouter.ai/api/v1/chat/completions"
+OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions"
 OPENAI_API_URL = "https://api.openai.com/v1/chat/completions"
+# Back-compat alias used by older imports/tests.
+API_URL = OPENROUTER_API_URL
 GOOGLE_TRENDS_RSS = "https://trends.google.com/trending/rss?geo={geo}"
 # Namespace for the ht:* demand fields already present in the Trends RSS payload.
 GOOGLE_TRENDS_HT_NS = "https://trends.google.com/trending/rss"
@@ -56,16 +61,41 @@ TITLE_FAMILY_COOLDOWN = 3
 def env_value(name: str, default: str = "") -> str:
     return os.environ.get(name) or ENV_FILE_VALUES.get(name, default)
 
-# Models tried in order — first available wins. All are free-tier on OpenRouter.
+# OpenAI primary models (paid, reliable JSON). Override with OPENAI_CONTENT_MODEL.
+OPENAI_MODELS = [
+    "gpt-4.1-mini",
+    "gpt-4o-mini",
+]
+
+# OpenRouter free-tier fallbacks when OpenAI is unset or fails.
 # Multiple providers so a single 429/outage doesn't force the generic fallback.
-# Re-verified live against OpenRouter chat/completions: the previous slugs lost
-# their free tier and 404'd every run, which is why every video used canned text.
-MODELS = [
+OPENROUTER_MODELS = [
     "google/gemma-4-26b-a4b-it:free",                          # reliable JSON on the real prompt
     "poolside/laguna-s-2.1:free",                             # solid instruct fallback
     "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",     # reasoning model; JSON recovered below
     "google/gemma-4-31b-it:free",                             # last-resort, frequently rate-limited
 ]
+# Back-compat for tests/imports that still reference MODELS.
+MODELS = OPENROUTER_MODELS
+
+
+def _llm_candidates() -> list[tuple[str, str]]:
+    """Return (provider, model) pairs in try order. OpenAI first when keyed."""
+    out: list[tuple[str, str]] = []
+    openai_key = env_value("OPENAI_API_KEY", "").strip()
+    if openai_key:
+        primary = (
+            env_value("OPENAI_CONTENT_MODEL", OPENAI_MODELS[0]).strip() or OPENAI_MODELS[0]
+        )
+        seen: set[str] = set()
+        for model in [primary, *OPENAI_MODELS]:
+            if model and model not in seen:
+                seen.add(model)
+                out.append(("openai", model))
+    if env_value("OPENROUTER_API_KEY", "").strip():
+        for model in OPENROUTER_MODELS:
+            out.append(("openrouter", model))
+    return out
 
 # Channel default is viral/trending news (override with CHANNEL_NICHE=app_safety|high_cpm).
 HIGH_CPM_SLOTS = {"morning", "afternoon"}
@@ -700,10 +730,33 @@ def pick_latest_topic(niche: str = "viral") -> tuple[str, str | None]:
     ), None
 
 
-def call_llm(prompt: str, model: str, niche: str = "viral") -> dict:
-    api_key = env_value("OPENROUTER_API_KEY", "")
-    if not api_key:
-        raise ValueError("OPENROUTER_API_KEY not set")
+def call_llm(
+    prompt: str,
+    model: str,
+    niche: str = "viral",
+    *,
+    provider: str | None = None,
+) -> dict:
+    """Call OpenAI or OpenRouter chat completions and parse JSON content."""
+    provider = (provider or "").strip().lower()
+    if not provider:
+        # Infer from model slug: OpenRouter free models use provider/name[:free].
+        provider = "openrouter" if "/" in model or model.endswith(":free") else "openai"
+
+    if provider == "openai":
+        api_key = env_value("OPENAI_API_KEY", "").strip()
+        if not api_key:
+            raise ValueError("OPENAI_API_KEY not set")
+        url = OPENAI_API_URL
+        timeout = 60
+    elif provider == "openrouter":
+        api_key = env_value("OPENROUTER_API_KEY", "").strip()
+        if not api_key:
+            raise ValueError("OPENROUTER_API_KEY not set")
+        url = OPENROUTER_API_URL
+        timeout = 30
+    else:
+        raise ValueError(f"Unknown LLM provider: {provider}")
 
     system = SYSTEM_PROMPT_HIGH_CPM if niche == "high_cpm" else SYSTEM_PROMPT_VIRAL
     payload = json.dumps(
@@ -719,7 +772,7 @@ def call_llm(prompt: str, model: str, niche: str = "viral") -> dict:
     ).encode()
 
     req = urllib.request.Request(
-        API_URL,
+        url,
         data=payload,
         headers={
             "Authorization": f"Bearer {api_key}",
@@ -728,7 +781,7 @@ def call_llm(prompt: str, model: str, niche: str = "viral") -> dict:
     )
 
     try:
-        with urllib.request.urlopen(req, timeout=30) as r:
+        with urllib.request.urlopen(req, timeout=timeout) as r:
             resp = json.loads(r.read())
     except urllib.error.HTTPError as e:
         body = e.read().decode("utf-8", errors="replace")
@@ -1594,7 +1647,7 @@ _FALLBACK_POOL = [
 
 
 def generate_topic(epilogue_extra: str | None = None, slot: str | None = None) -> dict:
-    """Generate a completely fresh topic and all content via OpenRouter."""
+    """Generate a completely fresh topic and all content (OpenAI primary, OpenRouter fallback)."""
     from app_safety import (
         build_app_safety_package,
         is_app_safety_mode,
@@ -1602,8 +1655,14 @@ def generate_topic(epilogue_extra: str | None = None, slot: str | None = None) -
     )
 
     niche = niche_for_slot(slot)
-    key = env_value("OPENROUTER_API_KEY", "")
-    print(f"  OPENROUTER_API_KEY: {'SET (' + key[:8] + '...)' if key else 'NOT SET'}")
+    openai_key = env_value("OPENAI_API_KEY", "").strip()
+    or_key = env_value("OPENROUTER_API_KEY", "").strip()
+    print(
+        f"  OPENAI_API_KEY: {'SET (' + openai_key[:8] + '...)' if openai_key else 'NOT SET'}"
+    )
+    print(
+        f"  OPENROUTER_API_KEY: {'SET (' + or_key[:8] + '...)' if or_key else 'NOT SET'}"
+    )
     print(f"  Niche mode: {niche} (slot={slot or 'n/a'})")
 
     # BlinkViral pivot: fixed app queue + locked search-intent titles (no Trends scattergun).
@@ -1658,10 +1717,32 @@ def generate_topic(epilogue_extra: str | None = None, slot: str | None = None) -
         niche=niche,
         recent_titles=recent_title_strings(TITLE_HISTORY_NEGATIVES),
     )
-    for i, model in enumerate(MODELS):
+    candidates = _llm_candidates()
+    if not candidates:
+        print("  No OPENAI_API_KEY or OPENROUTER_API_KEY — using fallback content.")
+        _track_fallback_usage(latest_topic, "no_llm_keys")
+        content = fallback_for_topic(latest_topic)
+        content["_niche"] = niche
+        content["niche"] = niche
+        if selected_search_query:
+            content["search_query"] = selected_search_query
+        out = validate(content, latest_topic)
+        out["niche"] = niche
+        out.pop("_niche", None)
+        assert_publishable_title(str(out.get("title", "")), source="generate_topic.fallback_return")
+        out = _apply_similarity_guard(out, latest_topic)
+        record_generated_title(
+            str(out.get("title", "")),
+            hook=str(out.get("hook", "")),
+            family=str(out.pop("_title_family", "") or title_structure_family(str(out.get("title", "")))),
+            trend=latest_topic,
+        )
+        return out
+
+    for i, (provider, model) in enumerate(candidates):
         try:
-            print(f"  Generating topic (model: {model})...")
-            content = call_llm(prompt, model, niche=niche)
+            print(f"  Generating topic (provider={provider}, model={model})...")
+            content = call_llm(prompt, model, niche=niche, provider=provider)
             content["_niche"] = niche
             content = validate(content, latest_topic)
             if selected_search_query and not content.get("search_query"):
@@ -1714,8 +1795,8 @@ def generate_topic(epilogue_extra: str | None = None, slot: str | None = None) -
             print(f"  Question: '{content['question']}'")
             return content
         except Exception as e:
-            print(f"  {model} failed: {e}")
-            if i < len(MODELS) - 1:
+            print(f"  {provider}/{model} failed: {e}")
+            if i < len(candidates) - 1:
                 print("  Waiting 5s before trying next model...")
                 time.sleep(5)
     print("  All models failed. Using fallback content.")
