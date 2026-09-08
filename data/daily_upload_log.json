@@ -120,7 +120,18 @@
           "source": "upload.success"
         }
       ]
+    },
+    "2026-09-08": {
+      "count": 1,
+      "events": [
+        {
+          "utc": "2026-09-08T16:39:28.422244+00:00",
+          "title": "Can You Really Get a Dunkin Free Pumpkin Spice Latte?",
+          "slot": "evening",
+          "source": "upload.success"
+        }
+      ]
     }
   },
-  "updated_utc": "2026-09-06T23:53:49.420223+00:00"
+  "updated_utc": "2026-09-08T16:39:28.422262+00:00"
 }

@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-06T23:53:49.419642+00:00",
+  "updated_utc": "2026-09-08T16:39:28.421833+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -335,6 +335,24 @@
       "source": "upload.success",
       "app_id": "ben_shelton",
       "youtube_id": "YTnyzh5v89o"
+    },
+    {
+      "title": "Can You Really Get a Dunkin Free Pumpkin Spice Latte?",
+      "opener": "Free Pumpkin Spice Latte craze explodes!",
+      "cta": "",
+      "trend": "Dunkin Free Pumpkin Spice Latte",
+      "utc": "2026-09-08T16:32:44.248220+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Can You Really Get a Dunkin Free Pumpkin Spice Latte?",
+      "opener": "Free Pumpkin Spice Latte craze explodes!",
+      "cta": "More named-topic Shorts coming — follow if useful.",
+      "trend": "Dunkin Free Pumpkin Spice Latte",
+      "utc": "2026-09-08T16:39:28.421440+00:00",
+      "source": "upload.success",
+      "app_id": "dunkin_free_pumpkin_spice_latte",
+      "youtube_id": "HnnK4_G7mhg"
     }
   ]
 }
