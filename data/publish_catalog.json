@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-09T08:10:50.176246+00:00",
+  "updated_utc": "2026-09-09T16:37:09.888894+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -407,6 +407,24 @@
       "source": "upload.success",
       "app_id": "iran_war_us_submarine",
       "youtube_id": "67RRRJen2-c"
+    },
+    {
+      "title": "Elena Rybakina Isn’t Just a Wimbledon Star",
+      "opener": "Why Rybakina is more than a tennis sensation",
+      "cta": "",
+      "trend": "Elena Rybakina",
+      "utc": "2026-09-09T16:30:04.231752+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Elena Rybakina Isn’t Just a Wimbledon Star",
+      "opener": "Why Rybakina is more than a tennis sensation",
+      "cta": "Catch the next breakdown as it breaks.",
+      "trend": "Elena Rybakina",
+      "utc": "2026-09-09T16:37:09.888385+00:00",
+      "source": "upload.success",
+      "app_id": "elena_rybakina",
+      "youtube_id": "VKXGxsJYMwM"
     }
   ]
 }

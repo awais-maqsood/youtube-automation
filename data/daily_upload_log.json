@@ -139,7 +139,7 @@
       ]
     },
     "2026-09-09": {
-      "count": 2,
+      "count": 3,
       "events": [
         {
           "utc": "2026-09-09T00:09:43.817857+00:00",
@@ -152,9 +152,15 @@
           "title": "Watch This: Iran War US Submarine Breakthrough",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-09-09T16:37:09.889493+00:00",
+          "title": "Elena Rybakina Isn\u2019t Just a Wimbledon Star",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-09-09T08:10:50.176824+00:00"
+  "updated_utc": "2026-09-09T16:37:09.889522+00:00"
 }
