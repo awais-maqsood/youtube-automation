@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-09T16:37:09.888894+00:00",
+  "updated_utc": "2026-09-09T19:49:56.486212+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -425,6 +425,24 @@
       "source": "upload.success",
       "app_id": "elena_rybakina",
       "youtube_id": "VKXGxsJYMwM"
+    },
+    {
+      "title": "Watch This: Coco Gauff’s Latest Breakthrough News",
+      "opener": "Coco Gauff just changed the game again",
+      "cta": "",
+      "trend": "Coco Gauff",
+      "utc": "2026-09-09T19:42:49.772913+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Watch This: Coco Gauff’s Latest Breakthrough News",
+      "opener": "Coco Gauff just changed the game again",
+      "cta": "Leave the take you won't say out loud.",
+      "trend": "Coco Gauff",
+      "utc": "2026-09-09T19:49:56.485677+00:00",
+      "source": "upload.success",
+      "app_id": "coco_gauff",
+      "youtube_id": "ziDMaLIIT0I"
     }
   ]
 }
