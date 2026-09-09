@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-08T19:58:57.249012+00:00",
+  "updated_utc": "2026-09-09T00:09:43.817303+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -371,6 +371,24 @@
       "source": "upload.success",
       "app_id": "trump_9_11",
       "youtube_id": "SOP7jokJnNY"
+    },
+    {
+      "title": "Watch This Viral US Open 2024 Tennis Moment",
+      "opener": "You won't believe this US Open clip!",
+      "cta": "",
+      "trend": "US Open 2024",
+      "utc": "2026-09-09T00:02:48.978691+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Watch This Viral US Open 2024 Tennis Moment",
+      "opener": "You won't believe this US Open clip!",
+      "cta": "More explainers land on this channel soon.",
+      "trend": "US Open 2024",
+      "utc": "2026-09-09T00:09:43.816881+00:00",
+      "source": "upload.success",
+      "app_id": "us_open_2024",
+      "youtube_id": "jrTLS-XZsLI"
     }
   ]
 }
