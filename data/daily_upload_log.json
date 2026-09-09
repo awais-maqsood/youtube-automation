@@ -139,16 +139,22 @@
       ]
     },
     "2026-09-09": {
-      "count": 1,
+      "count": 2,
       "events": [
         {
           "utc": "2026-09-09T00:09:43.817857+00:00",
           "title": "Watch This Viral US Open 2024 Tennis Moment",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-09-09T08:10:50.176796+00:00",
+          "title": "Watch This: Iran War US Submarine Breakthrough",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-09-09T00:09:43.817886+00:00"
+  "updated_utc": "2026-09-09T08:10:50.176824+00:00"
 }

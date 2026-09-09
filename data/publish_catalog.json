@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-09T00:09:43.817303+00:00",
+  "updated_utc": "2026-09-09T08:10:50.176246+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -389,6 +389,24 @@
       "source": "upload.success",
       "app_id": "us_open_2024",
       "youtube_id": "jrTLS-XZsLI"
+    },
+    {
+      "title": "Watch This: Iran War US Submarine Breakthrough",
+      "opener": "US subs dive into Iran conflict",
+      "cta": "",
+      "trend": "Iran war US submarine",
+      "utc": "2026-09-09T08:03:51.327630+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Watch This: Iran War US Submarine Breakthrough",
+      "opener": "US subs dive into Iran conflict",
+      "cta": "Stay for the next named-topic Short.",
+      "trend": "Iran war US submarine",
+      "utc": "2026-09-09T08:10:50.175755+00:00",
+      "source": "upload.success",
+      "app_id": "iran_war_us_submarine",
+      "youtube_id": "67RRRJen2-c"
     }
   ]
 }
