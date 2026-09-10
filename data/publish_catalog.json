@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-10T00:11:25.828700+00:00",
+  "updated_utc": "2026-09-10T08:10:42.986828+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -461,6 +461,24 @@
       "source": "upload.success",
       "app_id": "hasan_piker",
       "youtube_id": "SQSMC9F_v5w"
+    },
+    {
+      "title": "What Sparked Kaia Gerber’s Viral Moment?",
+      "opener": "This Kaia clip just broke the internet!",
+      "cta": "",
+      "trend": "Kaia Gerber",
+      "utc": "2026-09-10T08:03:39.687720+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "What Sparked Kaia Gerber’s Viral Moment?",
+      "opener": "This Kaia clip just broke the internet!",
+      "cta": "What’s your take on Kaia’s viral buzz?",
+      "trend": "Kaia Gerber",
+      "utc": "2026-09-10T08:10:42.986275+00:00",
+      "source": "upload.success",
+      "app_id": "kaia_gerber",
+      "youtube_id": "daY2yA1DI9c"
     }
   ]
 }
