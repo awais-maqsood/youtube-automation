@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-10T08:10:42.986828+00:00",
+  "updated_utc": "2026-09-10T16:25:21.509890+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -479,6 +479,24 @@
       "source": "upload.success",
       "app_id": "kaia_gerber",
       "youtube_id": "daY2yA1DI9c"
+    },
+    {
+      "title": "What Sparked the Fenerbahçe - Roma Controversy?",
+      "opener": "Inside the Fenerbahçe - Roma clash drama",
+      "cta": "",
+      "trend": "Fenerbahçe - Roma",
+      "utc": "2026-09-10T16:18:10.534487+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "What Sparked the Fenerbahçe - Roma Controversy?",
+      "opener": "Inside the Fenerbahçe - Roma clash drama",
+      "cta": "Pick a winner in the comments.",
+      "trend": "Fenerbahçe - Roma",
+      "utc": "2026-09-10T16:25:21.509341+00:00",
+      "source": "upload.success",
+      "app_id": "fenerbah_e_roma",
+      "youtube_id": "Ipp8BBE4GQY"
     }
   ]
 }
