@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-09T19:49:56.486212+00:00",
+  "updated_utc": "2026-09-10T00:11:25.828700+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -443,6 +443,24 @@
       "source": "upload.success",
       "app_id": "coco_gauff",
       "youtube_id": "ziDMaLIIT0I"
+    },
+    {
+      "title": "Why Hasan Piker’s Viral Moment Divides Fans",
+      "opener": "Hasan Piker sparks heated online debate",
+      "cta": "",
+      "trend": "Hasan Piker",
+      "utc": "2026-09-10T00:04:31.852044+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Why Hasan Piker’s Viral Moment Divides Fans",
+      "opener": "Hasan Piker sparks heated online debate",
+      "cta": "What’s your take on Hasan Piker’s viral clip?",
+      "trend": "Hasan Piker",
+      "utc": "2026-09-10T00:11:25.828234+00:00",
+      "source": "upload.success",
+      "app_id": "hasan_piker",
+      "youtube_id": "SQSMC9F_v5w"
     }
   ]
 }

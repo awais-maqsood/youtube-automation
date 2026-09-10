@@ -166,7 +166,18 @@
           "source": "upload.success"
         }
       ]
+    },
+    "2026-09-10": {
+      "count": 1,
+      "events": [
+        {
+          "utc": "2026-09-10T00:11:25.829287+00:00",
+          "title": "Why Hasan Piker\u2019s Viral Moment Divides Fans",
+          "slot": "evening",
+          "source": "upload.success"
+        }
+      ]
     }
   },
-  "updated_utc": "2026-09-09T19:49:56.486880+00:00"
+  "updated_utc": "2026-09-10T00:11:25.829310+00:00"
 }
