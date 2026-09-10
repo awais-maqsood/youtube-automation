@@ -168,7 +168,7 @@
       ]
     },
     "2026-09-10": {
-      "count": 3,
+      "count": 4,
       "events": [
         {
           "utc": "2026-09-10T00:11:25.829287+00:00",
@@ -187,9 +187,15 @@
           "title": "What Sparked the Fenerbah\u00e7e - Roma Controversy?",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-09-10T19:41:30.259915+00:00",
+          "title": "George Kittle\u2019s Controversy Isn\u2019t What You Think",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-09-10T16:25:21.510639+00:00"
+  "updated_utc": "2026-09-10T19:41:30.259945+00:00"
 }

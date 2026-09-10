@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-10T16:25:21.509890+00:00",
+  "updated_utc": "2026-09-10T19:41:30.259186+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -497,6 +497,24 @@
       "source": "upload.success",
       "app_id": "fenerbah_e_roma",
       "youtube_id": "Ipp8BBE4GQY"
+    },
+    {
+      "title": "George Kittle’s Controversy Isn’t What You Think",
+      "opener": "Behind George Kittle’s heated moments",
+      "cta": "",
+      "trend": "George Kittle",
+      "utc": "2026-09-10T19:34:21.675553+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "George Kittle’s Controversy Isn’t What You Think",
+      "opener": "Behind George Kittle’s heated moments",
+      "cta": "Hot take welcome — keep it one line.",
+      "trend": "George Kittle",
+      "utc": "2026-09-10T19:41:30.258624+00:00",
+      "source": "upload.success",
+      "app_id": "george_kittle",
+      "youtube_id": "-aUczS768Oo"
     }
   ]
 }
