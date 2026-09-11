@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-10T19:41:30.259186+00:00",
+  "updated_utc": "2026-09-11T16:29:16.364239+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -515,6 +515,24 @@
       "source": "upload.success",
       "app_id": "george_kittle",
       "youtube_id": "-aUczS768Oo"
+    },
+    {
+      "title": "Maria Bartiromo Fox News Departure Explained",
+      "opener": "Why did Maria really leave Fox News?",
+      "cta": "",
+      "trend": "Maria Bartiromo Fox News Departure",
+      "utc": "2026-09-11T16:22:26.980506+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Maria Bartiromo Fox News Departure Explained",
+      "opener": "Why did Maria really leave Fox News?",
+      "cta": "What’s your take on her exit?",
+      "trend": "Maria Bartiromo Fox News Departure",
+      "utc": "2026-09-11T16:29:16.363711+00:00",
+      "source": "upload.success",
+      "app_id": "maria_bartiromo_fox_news_departure",
+      "youtube_id": "htjh0J3Ox_w"
     }
   ]
 }

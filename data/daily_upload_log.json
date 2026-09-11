@@ -195,7 +195,18 @@
           "source": "upload.success"
         }
       ]
+    },
+    "2026-09-11": {
+      "count": 1,
+      "events": [
+        {
+          "utc": "2026-09-11T16:29:16.364857+00:00",
+          "title": "Maria Bartiromo Fox News Departure Explained",
+          "slot": "evening",
+          "source": "upload.success"
+        }
+      ]
     }
   },
-  "updated_utc": "2026-09-10T19:41:30.259945+00:00"
+  "updated_utc": "2026-09-11T16:29:16.364878+00:00"
 }
