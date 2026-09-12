@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-11T16:29:16.364239+00:00",
+  "updated_utc": "2026-09-12T00:14:39.114699+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -533,6 +533,24 @@
       "source": "upload.success",
       "app_id": "maria_bartiromo_fox_news_departure",
       "youtube_id": "htjh0J3Ox_w"
+    },
+    {
+      "title": "Watch This: Trinity Rodman Controversy Timeline",
+      "opener": "Controversy rocked Trinity Rodman’s rise",
+      "cta": "",
+      "trend": "Trinity Rodman",
+      "utc": "2026-09-12T00:07:31.790917+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Watch This: Trinity Rodman Controversy Timeline",
+      "opener": "Controversy rocked Trinity Rodman’s rise",
+      "cta": "What’s your take on Rodman’s controversies?",
+      "trend": "Trinity Rodman",
+      "utc": "2026-09-12T00:14:39.114078+00:00",
+      "source": "upload.success",
+      "app_id": "trinity_rodman",
+      "youtube_id": "9hG1u2NaG4E"
     }
   ]
 }
