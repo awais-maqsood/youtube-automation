@@ -208,16 +208,22 @@
       ]
     },
     "2026-09-12": {
-      "count": 1,
+      "count": 2,
       "events": [
         {
           "utc": "2026-09-12T00:14:39.115451+00:00",
           "title": "Watch This: Trinity Rodman Controversy Timeline",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-09-12T15:33:36.801349+00:00",
+          "title": "Lazio vs Milan Update: Big Shift in Game!",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-09-12T00:14:39.115480+00:00"
+  "updated_utc": "2026-09-12T15:33:36.801366+00:00"
 }
