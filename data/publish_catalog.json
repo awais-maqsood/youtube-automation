@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-12T15:33:36.800842+00:00",
+  "updated_utc": "2026-09-12T19:19:15.937801+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -569,6 +569,24 @@
       "source": "upload.success",
       "app_id": "lazio_vs_milan",
       "youtube_id": "zxyy6_d99yE"
+    },
+    {
+      "title": "Why Tommy Gantt Isn't What You Think",
+      "opener": "Tommy Gantt’s story just changed fast",
+      "cta": "",
+      "trend": "Tommy Gantt",
+      "utc": "2026-09-12T19:12:18.226574+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Why Tommy Gantt Isn't What You Think",
+      "opener": "Tommy Gantt’s story just changed fast",
+      "cta": "What’s your take on Tommy Gantt now?",
+      "trend": "Tommy Gantt",
+      "utc": "2026-09-12T19:19:15.937157+00:00",
+      "source": "upload.success",
+      "app_id": "tommy_gantt",
+      "youtube_id": "OdwJ3KfN5MQ"
     }
   ]
 }

@@ -208,7 +208,7 @@
       ]
     },
     "2026-09-12": {
-      "count": 2,
+      "count": 3,
       "events": [
         {
           "utc": "2026-09-12T00:14:39.115451+00:00",
@@ -221,9 +221,15 @@
           "title": "Lazio vs Milan Update: Big Shift in Game!",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-09-12T19:19:15.938596+00:00",
+          "title": "Why Tommy Gantt Isn't What You Think",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-09-12T15:33:36.801366+00:00"
+  "updated_utc": "2026-09-12T19:19:15.938636+00:00"
 }
