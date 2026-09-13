@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-12T19:19:15.937801+00:00",
+  "updated_utc": "2026-09-13T00:03:10.756689+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -587,6 +587,24 @@
       "source": "upload.success",
       "app_id": "tommy_gantt",
       "youtube_id": "OdwJ3KfN5MQ"
+    },
+    {
+      "title": "What Sparked Laura Rutledge's Recent Controversy?",
+      "opener": "Inside the Laura Rutledge dispute",
+      "cta": "",
+      "trend": "Laura Rutledge",
+      "utc": "2026-09-12T23:56:22.652746+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "What Sparked Laura Rutledge's Recent Controversy?",
+      "opener": "Inside the Laura Rutledge dispute",
+      "cta": "Your angle beats mine? Prove it below.",
+      "trend": "Laura Rutledge",
+      "utc": "2026-09-13T00:03:10.756132+00:00",
+      "source": "upload.success",
+      "app_id": "laura_rutledge",
+      "youtube_id": "BjhifKUd-74"
     }
   ]
 }

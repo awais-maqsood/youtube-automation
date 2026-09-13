@@ -229,7 +229,18 @@
           "source": "upload.success"
         }
       ]
+    },
+    "2026-09-13": {
+      "count": 1,
+      "events": [
+        {
+          "utc": "2026-09-13T00:03:10.757278+00:00",
+          "title": "What Sparked Laura Rutledge's Recent Controversy?",
+          "slot": "evening",
+          "source": "upload.success"
+        }
+      ]
     }
   },
-  "updated_utc": "2026-09-12T19:19:15.938636+00:00"
+  "updated_utc": "2026-09-13T00:03:10.757298+00:00"
 }
