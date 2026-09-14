@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-13T00:03:10.756689+00:00",
+  "updated_utc": "2026-09-14T21:01:34.311146+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -605,6 +605,24 @@
       "source": "upload.success",
       "app_id": "laura_rutledge",
       "youtube_id": "BjhifKUd-74"
+    },
+    {
+      "title": "Why Andrew Mountbatten-Windsor Is Making Headlines Now",
+      "opener": "Andrew Mountbatten-Windsor’s latest news breaks!",
+      "cta": "",
+      "trend": "Andrew Mountbatten-Windsor",
+      "utc": "2026-09-14T20:54:21.100363+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Why Andrew Mountbatten-Windsor Is Making Headlines Now",
+      "opener": "Andrew Mountbatten-Windsor’s latest news breaks!",
+      "cta": "What’s your take on Andrew Mountbatten-Windsor?",
+      "trend": "Andrew Mountbatten-Windsor",
+      "utc": "2026-09-14T21:01:34.310505+00:00",
+      "source": "upload.success",
+      "app_id": "andrew_mountbatten_windsor",
+      "youtube_id": "jK975hbhkqc"
     }
   ]
 }
