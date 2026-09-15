@@ -251,7 +251,18 @@
           "source": "upload.success"
         }
       ]
+    },
+    "2026-09-15": {
+      "count": 1,
+      "events": [
+        {
+          "utc": "2026-09-15T00:35:17.892535+00:00",
+          "title": "Jean Smart\u2019s Career Shift Surprises Everyone",
+          "slot": "evening",
+          "source": "upload.success"
+        }
+      ]
     }
   },
-  "updated_utc": "2026-09-14T21:01:34.312055+00:00"
+  "updated_utc": "2026-09-15T00:35:17.892559+00:00"
 }

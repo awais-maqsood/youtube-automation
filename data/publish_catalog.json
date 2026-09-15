@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-14T21:01:34.311146+00:00",
+  "updated_utc": "2026-09-15T00:35:17.891873+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -623,6 +623,24 @@
       "source": "upload.success",
       "app_id": "andrew_mountbatten_windsor",
       "youtube_id": "jK975hbhkqc"
+    },
+    {
+      "title": "Jean Smart’s Career Shift Surprises Everyone",
+      "opener": "You won't believe how Jean Smart changed!",
+      "cta": "",
+      "trend": "Jean Smart",
+      "utc": "2026-09-15T00:28:31.489000+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Jean Smart’s Career Shift Surprises Everyone",
+      "opener": "You won't believe how Jean Smart changed!",
+      "cta": "What’s your take on Jean Smart’s shift?",
+      "trend": "Jean Smart",
+      "utc": "2026-09-15T00:35:17.891335+00:00",
+      "source": "upload.success",
+      "app_id": "jean_smart",
+      "youtube_id": "xTGtzm3jNA0"
     }
   ]
 }
