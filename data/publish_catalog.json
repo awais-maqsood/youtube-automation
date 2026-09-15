@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-15T00:35:17.891873+00:00",
+  "updated_utc": "2026-09-15T16:56:35.005109+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -641,6 +641,24 @@
       "source": "upload.success",
       "app_id": "jean_smart",
       "youtube_id": "xTGtzm3jNA0"
+    },
+    {
+      "title": "How Rayo Vallecano vs Espanyol Clash Unfolds Now",
+      "opener": "Live drama at Rayo vs Espanyol!",
+      "cta": "",
+      "trend": "Rayo Vallecano vs Espanyol",
+      "utc": "2026-09-15T16:49:33.245408+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "How Rayo Vallecano vs Espanyol Clash Unfolds Now",
+      "opener": "Live drama at Rayo vs Espanyol!",
+      "cta": "Who’s winning your vote in Rayo vs Espanyol?",
+      "trend": "Rayo Vallecano vs Espanyol",
+      "utc": "2026-09-15T16:56:35.004438+00:00",
+      "source": "upload.success",
+      "app_id": "rayo_vallecano_vs_espanyol",
+      "youtube_id": "OuUoan2hPyU"
     }
   ]
 }
