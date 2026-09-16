@@ -270,16 +270,22 @@
       ]
     },
     "2026-09-16": {
-      "count": 1,
+      "count": 2,
       "events": [
         {
           "utc": "2026-09-16T00:15:19.272783+00:00",
           "title": "How Andrew Garfield Became Spider-Man Again",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-09-16T16:49:46.391460+00:00",
+          "title": "Trump Deferred Resignation Program Federal Workers: Trump\u2019s...",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-09-16T00:15:19.272808+00:00"
+  "updated_utc": "2026-09-16T16:49:46.391482+00:00"
 }
