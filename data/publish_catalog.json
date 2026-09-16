@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-15T16:56:35.005109+00:00",
+  "updated_utc": "2026-09-16T00:15:19.272012+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -659,6 +659,24 @@
       "source": "upload.success",
       "app_id": "rayo_vallecano_vs_espanyol",
       "youtube_id": "OuUoan2hPyU"
+    },
+    {
+      "title": "How Andrew Garfield Became Spider-Man Again",
+      "opener": "What’s up with Andrew Garfield now?",
+      "cta": "",
+      "trend": "Andrew Garfield",
+      "utc": "2026-09-16T00:08:18.056885+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "How Andrew Garfield Became Spider-Man Again",
+      "opener": "What’s up with Andrew Garfield now?",
+      "cta": "What’s your take on Andrew Garfield?",
+      "trend": "Andrew Garfield",
+      "utc": "2026-09-16T00:15:19.271338+00:00",
+      "source": "upload.success",
+      "app_id": "andrew_garfield",
+      "youtube_id": "ywrZJAcl9xM"
     }
   ]
 }
