@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-16T16:49:46.390776+00:00",
+  "updated_utc": "2026-09-22T08:35:27.427696+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -695,6 +695,24 @@
       "source": "upload.success",
       "app_id": "trump_deferred_resignation_program_federal_workers",
       "youtube_id": "4zFT-NpbKII"
+    },
+    {
+      "title": "Is DoorDash Facing Its Biggest Controversy Yet?",
+      "opener": "DoorDash controversy through the years",
+      "cta": "",
+      "trend": "DoorDash",
+      "utc": "2026-09-22T08:28:24.203021+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Is DoorDash Facing Its Biggest Controversy Yet?",
+      "opener": "DoorDash controversy through the years",
+      "cta": "What’s your take on DoorDash scandals?",
+      "trend": "DoorDash",
+      "utc": "2026-09-22T08:35:27.426997+00:00",
+      "source": "upload.success",
+      "app_id": "doordash",
+      "youtube_id": "7S9PTAEotiE"
     }
   ]
 }

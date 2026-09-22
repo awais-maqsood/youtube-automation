@@ -285,7 +285,18 @@
           "source": "upload.success"
         }
       ]
+    },
+    "2026-09-22": {
+      "count": 1,
+      "events": [
+        {
+          "utc": "2026-09-22T08:35:27.428526+00:00",
+          "title": "Is DoorDash Facing Its Biggest Controversy Yet?",
+          "slot": "evening",
+          "source": "upload.success"
+        }
+      ]
     }
   },
-  "updated_utc": "2026-09-16T16:49:46.391482+00:00"
+  "updated_utc": "2026-09-22T08:35:27.428571+00:00"
 }
