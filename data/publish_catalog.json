@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-22T08:35:27.427696+00:00",
+  "updated_utc": "2026-09-23T18:18:42.789914+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -713,6 +713,24 @@
       "source": "upload.success",
       "app_id": "doordash",
       "youtube_id": "7S9PTAEotiE"
+    },
+    {
+      "title": "What Sparked Harvey Weinstein's Controversy Timeline?",
+      "opener": "Harvey Weinstein’s downfall in quick flashes",
+      "cta": "",
+      "trend": "Harvey Weinstein",
+      "utc": "2026-09-23T18:11:29.338391+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "What Sparked Harvey Weinstein's Controversy Timeline?",
+      "opener": "Harvey Weinstein’s downfall in quick flashes",
+      "cta": "What moment shocked you most in Weinstein’s saga?",
+      "trend": "Harvey Weinstein",
+      "utc": "2026-09-23T18:18:42.789202+00:00",
+      "source": "upload.success",
+      "app_id": "harvey_weinstein",
+      "youtube_id": "pw2qCEPmO4U"
     }
   ]
 }
