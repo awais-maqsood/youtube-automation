@@ -315,7 +315,7 @@
       ]
     },
     "2026-09-24": {
-      "count": 2,
+      "count": 3,
       "events": [
         {
           "utc": "2026-09-24T00:31:46.375464+00:00",
@@ -328,9 +328,15 @@
           "title": "Watch This Viral Wendy's Moment Unfold Now",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-09-24T17:08:29.694094+00:00",
+          "title": "Watch This Before Buying GTA 6 Collector's Edition",
+          "slot": "afternoon",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-09-24T08:29:45.511787+00:00"
+  "updated_utc": "2026-09-24T17:08:29.694123+00:00"
 }
