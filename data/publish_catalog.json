@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-24T17:08:29.692810+00:00",
+  "updated_utc": "2026-09-24T20:30:41.102833+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -803,6 +803,24 @@
       "source": "upload.success",
       "app_id": "gta_6_collector_s_edition",
       "youtube_id": "sGdCbyZBwuQ"
+    },
+    {
+      "title": "Portugal World Cup: How Portugal’s World Cup Journey Just Changed",
+      "opener": "Portugal World Cup is quieter than the noise.",
+      "cta": "",
+      "trend": "Portugal World Cup",
+      "utc": "2026-09-24T20:23:33.312373+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Portugal World Cup: How Portugal’s World Cup Journey Just Changed",
+      "opener": "Portugal World Cup is quieter than the noise.",
+      "cta": "What’s your take on Portugal’s World Cup move?",
+      "trend": "Portugal World Cup",
+      "utc": "2026-09-24T20:30:41.101951+00:00",
+      "source": "upload.success",
+      "app_id": "portugal_world_cup",
+      "youtube_id": "gAyHSrZ7JSM"
     }
   ]
 }

@@ -315,7 +315,7 @@
       ]
     },
     "2026-09-24": {
-      "count": 3,
+      "count": 4,
       "events": [
         {
           "utc": "2026-09-24T00:31:46.375464+00:00",
@@ -334,9 +334,15 @@
           "title": "Watch This Before Buying GTA 6 Collector's Edition",
           "slot": "afternoon",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-09-24T20:30:41.103876+00:00",
+          "title": "Portugal World Cup: How Portugal\u2019s World Cup Journey Just Changed",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-09-24T17:08:29.694123+00:00"
+  "updated_utc": "2026-09-24T20:30:41.103906+00:00"
 }
