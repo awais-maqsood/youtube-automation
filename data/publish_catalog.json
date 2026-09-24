@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-24T00:31:46.374451+00:00",
+  "updated_utc": "2026-09-24T08:29:45.510547+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -767,6 +767,24 @@
       "source": "upload.success",
       "app_id": "matt_damon",
       "youtube_id": "X3FMmTg_o6c"
+    },
+    {
+      "title": "Watch This Viral Wendy's Moment Unfold Now",
+      "opener": "You won't believe Wendy's latest buzz!",
+      "cta": "",
+      "trend": "Wendy's",
+      "utc": "2026-09-24T08:22:32.279221+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Watch This Viral Wendy's Moment Unfold Now",
+      "opener": "You won't believe Wendy's latest buzz!",
+      "cta": "Name the risk everyone is ignoring.",
+      "trend": "Wendy's",
+      "utc": "2026-09-24T08:29:45.509743+00:00",
+      "source": "upload.success",
+      "app_id": "wendy_s",
+      "youtube_id": "GSbtiNDf1NU"
     }
   ]
 }
