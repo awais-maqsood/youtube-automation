@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-25T00:34:35.234943+00:00",
+  "updated_utc": "2026-09-25T08:51:24.528050+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -839,6 +839,24 @@
       "source": "upload.success",
       "app_id": "jordan_love",
       "youtube_id": "d6l_GYen8Jc"
+    },
+    {
+      "title": "Tatiana Prozorova Controversy Timeline Breakdown",
+      "opener": "The full Tatiana drama from start to now",
+      "cta": "",
+      "trend": "Tatiana Prozorova",
+      "utc": "2026-09-25T08:44:18.078508+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Tatiana Prozorova Controversy Timeline Breakdown",
+      "opener": "The full Tatiana drama from start to now",
+      "cta": "What should people watch next on this?",
+      "trend": "Tatiana Prozorova",
+      "utc": "2026-09-25T08:51:24.527200+00:00",
+      "source": "upload.success",
+      "app_id": "tatiana_prozorova",
+      "youtube_id": "LxONXxZMKf4"
     }
   ]
 }

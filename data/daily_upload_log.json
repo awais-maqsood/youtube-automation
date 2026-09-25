@@ -344,16 +344,22 @@
       ]
     },
     "2026-09-25": {
-      "count": 1,
+      "count": 2,
       "events": [
         {
           "utc": "2026-09-25T00:34:35.236073+00:00",
           "title": "What Really Changed for Jordan Love's Role?",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-09-25T08:51:24.529187+00:00",
+          "title": "Tatiana Prozorova Controversy Timeline Breakdown",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-09-25T00:34:35.236108+00:00"
+  "updated_utc": "2026-09-25T08:51:24.529218+00:00"
 }
