@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-24T20:30:41.102833+00:00",
+  "updated_utc": "2026-09-25T00:34:35.234943+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -821,6 +821,24 @@
       "source": "upload.success",
       "app_id": "portugal_world_cup",
       "youtube_id": "gAyHSrZ7JSM"
+    },
+    {
+      "title": "What Really Changed for Jordan Love's Role?",
+      "opener": "Jordan Love’s future just got reshaped",
+      "cta": "",
+      "trend": "Jordan Love",
+      "utc": "2026-09-25T00:27:19.554882+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "What Really Changed for Jordan Love's Role?",
+      "opener": "Jordan Love’s future just got reshaped",
+      "cta": "Did the clip change your mind? Say how.",
+      "trend": "Jordan Love",
+      "utc": "2026-09-25T00:34:35.234020+00:00",
+      "source": "upload.success",
+      "app_id": "jordan_love",
+      "youtube_id": "d6l_GYen8Jc"
     }
   ]
 }
