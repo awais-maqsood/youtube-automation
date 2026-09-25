@@ -344,7 +344,7 @@
       ]
     },
     "2026-09-25": {
-      "count": 3,
+      "count": 4,
       "events": [
         {
           "utc": "2026-09-25T00:34:35.236073+00:00",
@@ -363,9 +363,15 @@
           "title": "Supreme Court Limits Can Boost Business ROI",
           "slot": "afternoon",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-09-25T20:30:09.864671+00:00",
+          "title": "Why Elizabeth Holmes Documentary Sparks Debate",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-09-25T17:15:35.329438+00:00"
+  "updated_utc": "2026-09-25T20:30:09.864690+00:00"
 }

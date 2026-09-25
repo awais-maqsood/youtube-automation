@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-25T17:15:35.328302+00:00",
+  "updated_utc": "2026-09-25T20:30:09.863897+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -875,6 +875,24 @@
       "source": "upload.success",
       "app_id": "supreme_court",
       "youtube_id": "RiGx1ysQDNE"
+    },
+    {
+      "title": "Why Elizabeth Holmes Documentary Sparks Debate",
+      "opener": "The Elizabeth Holmes story timeline revealed",
+      "cta": "",
+      "trend": "Elizabeth Holmes documentary",
+      "utc": "2026-09-25T20:23:47.395624+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Why Elizabeth Holmes Documentary Sparks Debate",
+      "opener": "The Elizabeth Holmes story timeline revealed",
+      "cta": "What shocks you most from Holmes' story?",
+      "trend": "Elizabeth Holmes documentary",
+      "utc": "2026-09-25T20:30:09.863313+00:00",
+      "source": "upload.success",
+      "app_id": "elizabeth_holmes_documentary",
+      "youtube_id": "mxmgoCJaq70"
     }
   ]
 }
