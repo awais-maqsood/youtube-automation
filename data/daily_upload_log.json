@@ -344,7 +344,7 @@
       ]
     },
     "2026-09-25": {
-      "count": 2,
+      "count": 3,
       "events": [
         {
           "utc": "2026-09-25T00:34:35.236073+00:00",
@@ -357,9 +357,15 @@
           "title": "Tatiana Prozorova Controversy Timeline Breakdown",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-09-25T17:15:35.329408+00:00",
+          "title": "Supreme Court Limits Can Boost Business ROI",
+          "slot": "afternoon",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-09-25T08:51:24.529218+00:00"
+  "updated_utc": "2026-09-25T17:15:35.329438+00:00"
 }

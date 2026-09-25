@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-25T08:51:24.528050+00:00",
+  "updated_utc": "2026-09-25T17:15:35.328302+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -857,6 +857,24 @@
       "source": "upload.success",
       "app_id": "tatiana_prozorova",
       "youtube_id": "LxONXxZMKf4"
+    },
+    {
+      "title": "Supreme Court Limits Can Boost Business ROI",
+      "opener": "Why fewer court limits mean more profits",
+      "cta": "",
+      "trend": "Supreme Court",
+      "utc": "2026-09-25T17:03:31.503014+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Supreme Court Limits Can Boost Business ROI",
+      "opener": "Why fewer court limits mean more profits",
+      "cta": "Drop the version of this you'd trust.",
+      "trend": "Supreme Court",
+      "utc": "2026-09-25T17:15:35.327415+00:00",
+      "source": "upload.success",
+      "app_id": "supreme_court",
+      "youtube_id": "RiGx1ysQDNE"
     }
   ]
 }
