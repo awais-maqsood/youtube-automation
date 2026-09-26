@@ -373,16 +373,22 @@
       ]
     },
     "2026-09-26": {
-      "count": 1,
+      "count": 2,
       "events": [
         {
           "utc": "2026-09-26T00:37:54.882932+00:00",
           "title": "Ryan Seacrest Controversy Timeline Revealed",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-09-26T08:38:02.669624+00:00",
+          "title": "What Sparked Alix Earle's Biggest Controversy?",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-09-26T00:37:54.882965+00:00"
+  "updated_utc": "2026-09-26T08:38:02.669654+00:00"
 }

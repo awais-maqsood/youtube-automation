@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-26T00:37:54.881800+00:00",
+  "updated_utc": "2026-09-26T08:38:02.668484+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -911,6 +911,24 @@
       "source": "upload.success",
       "app_id": "ryan_seacrest",
       "youtube_id": "Kba3937UGMs"
+    },
+    {
+      "title": "What Sparked Alix Earle's Biggest Controversy?",
+      "opener": "Alix Earle’s drama timeline revealed!",
+      "cta": "",
+      "trend": "Alix Earle",
+      "utc": "2026-09-26T08:31:00.137364+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "What Sparked Alix Earle's Biggest Controversy?",
+      "opener": "Alix Earle’s drama timeline revealed!",
+      "cta": "Which side are you on? Spell it out.",
+      "trend": "Alix Earle",
+      "utc": "2026-09-26T08:38:02.667627+00:00",
+      "source": "upload.success",
+      "app_id": "alix_earle",
+      "youtube_id": "Op8nZ0QUjAc"
     }
   ]
 }
