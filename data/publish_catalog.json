@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-26T19:50:56.934975+00:00",
+  "updated_utc": "2026-09-27T00:33:47.559331+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -965,6 +965,24 @@
       "source": "upload.success",
       "app_id": "spain_vs_argentina",
       "youtube_id": "yY-Mxgs13KM"
+    },
+    {
+      "title": "UFC Fight Night Update That Changes Everything",
+      "opener": "Not your usual UFC headlines!",
+      "cta": "",
+      "trend": "UFC Fight Night",
+      "utc": "2026-09-27T00:26:29.054234+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "UFC Fight Night Update That Changes Everything",
+      "opener": "Not your usual UFC headlines!",
+      "cta": "Where do you land after this clip?",
+      "trend": "UFC Fight Night",
+      "utc": "2026-09-27T00:33:47.558285+00:00",
+      "source": "upload.success",
+      "app_id": "ufc_fight_night",
+      "youtube_id": "yzpBF5jjj84"
     }
   ]
 }
