@@ -402,7 +402,7 @@
       ]
     },
     "2026-09-27": {
-      "count": 3,
+      "count": 4,
       "events": [
         {
           "utc": "2026-09-27T00:33:47.560696+00:00",
@@ -421,9 +421,15 @@
           "title": "Rob Gronkowski\u2019s New Role: What Changed?",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-09-27T20:11:02.124834+00:00",
+          "title": "Is Sterling Shepard Injured or Playing This Week?",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-09-27T17:00:05.618590+00:00"
+  "updated_utc": "2026-09-27T20:11:02.124879+00:00"
 }

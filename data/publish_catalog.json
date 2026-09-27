@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-27T17:00:05.617374+00:00",
+  "updated_utc": "2026-09-27T20:11:02.123649+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -1019,6 +1019,24 @@
       "source": "upload.success",
       "app_id": "rob_gronkowski",
       "youtube_id": "0pf4iFvl3lw"
+    },
+    {
+      "title": "Is Sterling Shepard Injured or Playing This Week?",
+      "opener": "Sterling Shepard status: cleared or sidelined?",
+      "cta": "",
+      "trend": "Sterling Shepard",
+      "utc": "2026-09-27T20:03:55.494058+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Is Sterling Shepard Injured or Playing This Week?",
+      "opener": "Sterling Shepard status: cleared or sidelined?",
+      "cta": "Did Sterling Shepard surprise you? Comment below.",
+      "trend": "Sterling Shepard",
+      "utc": "2026-09-27T20:11:02.122726+00:00",
+      "source": "upload.success",
+      "app_id": "sterling_shepard",
+      "youtube_id": "P9r86M8EIq8"
     }
   ]
 }
