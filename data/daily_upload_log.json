@@ -402,16 +402,22 @@
       ]
     },
     "2026-09-27": {
-      "count": 1,
+      "count": 2,
       "events": [
         {
           "utc": "2026-09-27T00:33:47.560696+00:00",
           "title": "UFC Fight Night Update That Changes Everything",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-09-27T09:16:25.377628+00:00",
+          "title": "India vs West Indies Cricket Match: What Really Shifted?",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-09-27T00:33:47.560735+00:00"
+  "updated_utc": "2026-09-27T09:16:25.377647+00:00"
 }

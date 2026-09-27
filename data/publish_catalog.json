@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-27T00:33:47.559331+00:00",
+  "updated_utc": "2026-09-27T09:16:25.376802+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -983,6 +983,24 @@
       "source": "upload.success",
       "app_id": "ufc_fight_night",
       "youtube_id": "yzpBF5jjj84"
+    },
+    {
+      "title": "India vs West Indies Cricket Match: What Really Shifted?",
+      "opener": "Big momentum switch in India-WI clash!",
+      "cta": "",
+      "trend": "India vs West Indies Cricket Match",
+      "utc": "2026-09-27T09:10:04.858689+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "India vs West Indies Cricket Match: What Really Shifted?",
+      "opener": "Big momentum switch in India-WI clash!",
+      "cta": "Thoughts on India vs West Indies Cricket Match? Drop a comment.",
+      "trend": "India vs West Indies Cricket Match",
+      "utc": "2026-09-27T09:16:25.376145+00:00",
+      "source": "upload.success",
+      "app_id": "india_vs_west_indies_cricket_match",
+      "youtube_id": "xncJm65eZFc"
     }
   ]
 }
