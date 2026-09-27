@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-27T09:16:25.376802+00:00",
+  "updated_utc": "2026-09-27T17:00:05.617374+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -1001,6 +1001,24 @@
       "source": "upload.success",
       "app_id": "india_vs_west_indies_cricket_match",
       "youtube_id": "xncJm65eZFc"
+    },
+    {
+      "title": "Rob Gronkowski’s New Role: What Changed?",
+      "opener": "Gronk’s game just took a sharp turn",
+      "cta": "",
+      "trend": "Rob Gronkowski",
+      "utc": "2026-09-27T16:52:55.164976+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Rob Gronkowski’s New Role: What Changed?",
+      "opener": "Gronk’s game just took a sharp turn",
+      "cta": "Agree on Rob Gronkowski? Reply in comments.",
+      "trend": "Rob Gronkowski",
+      "utc": "2026-09-27T17:00:05.616448+00:00",
+      "source": "upload.success",
+      "app_id": "rob_gronkowski",
+      "youtube_id": "0pf4iFvl3lw"
     }
   ]
 }
