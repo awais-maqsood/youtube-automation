@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-28T09:20:09.774795+00:00",
+  "updated_utc": "2026-09-28T09:46:42.562327+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -1073,6 +1073,24 @@
       "source": "upload.success",
       "app_id": "trump_china",
       "youtube_id": "oeOz2-I9FD4"
+    },
+    {
+      "title": "Trump China Ties Shifted Dramatically — Here’s Why",
+      "opener": "Trump’s China policy isn’t what you think",
+      "cta": "",
+      "trend": "Trump China",
+      "utc": "2026-09-28T09:39:28.120712+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Trump China Ties Shifted Dramatically — Here’s Why",
+      "opener": "Trump’s China policy isn’t what you think",
+      "cta": "Thoughts on Trump China? Drop a comment.",
+      "trend": "Trump China",
+      "utc": "2026-09-28T09:46:42.561354+00:00",
+      "source": "upload.success",
+      "app_id": "trump_china",
+      "youtube_id": "2PdljXDxXUw"
     }
   ]
 }

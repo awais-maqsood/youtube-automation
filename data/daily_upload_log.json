@@ -431,7 +431,7 @@
       ]
     },
     "2026-09-28": {
-      "count": 2,
+      "count": 3,
       "events": [
         {
           "utc": "2026-09-28T00:39:02.287166+00:00",
@@ -444,9 +444,15 @@
           "title": "Read Trump China without the noise",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-09-28T09:46:42.563539+00:00",
+          "title": "Trump China Ties Shifted Dramatically \u2014 Here\u2019s Why",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-09-28T09:20:09.776105+00:00"
+  "updated_utc": "2026-09-28T09:46:42.563568+00:00"
 }
