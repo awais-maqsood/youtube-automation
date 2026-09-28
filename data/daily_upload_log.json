@@ -431,16 +431,22 @@
       ]
     },
     "2026-09-28": {
-      "count": 1,
+      "count": 2,
       "events": [
         {
           "utc": "2026-09-28T00:39:02.287166+00:00",
           "title": "Early read on Teyana Taylor's stakes",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-09-28T09:20:09.776074+00:00",
+          "title": "Read Trump China without the noise",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-09-28T00:39:02.287189+00:00"
+  "updated_utc": "2026-09-28T09:20:09.776105+00:00"
 }
