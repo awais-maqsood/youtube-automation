@@ -31,6 +31,10 @@ from similarity_guard import (
 
 W, H = 1080, 1920
 FPS = 30
+# Keep captions inside the visible Shorts frame (right chrome eats ~120–160px).
+SAFE_LEFT = 72
+SAFE_RIGHT = 168
+SAFE_TEXT_W = W - SAFE_LEFT - SAFE_RIGHT  # ~840px
 RATE = 44100
 FONT_M = "mono"
 FONT_S = "serif-bold"
@@ -236,28 +240,41 @@ def truncate_to_width(text, font, max_w):
 
 
 def wrap_words_to_lines(text, font, max_w, max_lines):
-    """Greedy word wrap to <= max_lines; last line may still exceed max_w (caller should shrink font)."""
+    """Greedy word wrap to <= max_lines; truncate last line with ... if needed."""
     words = " ".join(str(text).split()).split(" ")
     lines = []
     cur = ""
+    remaining = list(words)
     for w in words:
         if not w:
+            remaining = remaining[1:]
             continue
         trial = w if not cur else f"{cur} {w}"
         if font.getlength(trial) <= max_w:
             cur = trial
+            remaining = remaining[1:]
             continue
         if cur:
             lines.append(cur)
             cur = w
+            remaining = remaining[1:]
         else:
             lines.append(truncate_to_width(w, font, max_w))
             cur = ""
+            remaining = remaining[1:]
         if len(lines) >= max_lines:
+            cur = ""
             break
     if len(lines) < max_lines and cur:
         lines.append(cur)
-    return lines[:max_lines]
+        remaining = []
+    lines = lines[:max_lines]
+    # If we still have leftover words, mark truncation on the last line.
+    if remaining and lines:
+        marked = f"{lines[-1]} ..."
+        lines[-1] = truncate_to_width(marked, font, max_w)
+    # Final safety: every line must fit.
+    return [truncate_to_width(line, font, max_w) for line in lines]
 
 
 def fit_font_wrapped(path, text, max_w, start_size, min_size=44, *, max_lines=3):
@@ -268,7 +285,9 @@ def fit_font_wrapped(path, text, max_w, start_size, min_size=44, *, max_lines=3)
         try:
             f = ImageFont.truetype(source, size)
         except Exception:
-            return ImageFont.load_default(), min_size, wrap_words_to_lines(text, ImageFont.load_default(), max_w, max_lines)
+            f = ImageFont.load_default()
+            lines = wrap_words_to_lines(text, f, max_w, max_lines)
+            return f, min_size, lines
         lines = wrap_words_to_lines(text, f, max_w, max_lines)
         if not lines:
             return f, size, []
@@ -283,7 +302,19 @@ def fit_font_wrapped(path, text, max_w, start_size, min_size=44, *, max_lines=3)
         f = ImageFont.truetype(source, min_size)
     except Exception:
         f = ImageFont.load_default()
-    return f, min_size, wrap_words_to_lines(text, f, max_w, max_lines)
+    lines = wrap_words_to_lines(text, f, max_w, max_lines)
+    return f, min_size, [truncate_to_width(line, f, max_w) for line in lines]
+
+
+def layout_caption(text, font_key, *, max_w=None, start_size=94, min_size=42, max_lines=3):
+    """Fit + wrap a caption so it never exceeds the Shorts safe width."""
+    width = int(max_w if max_w is not None else SAFE_TEXT_W)
+    font, size, lines = fit_font_wrapped(
+        font_key, text, width, start_size, min_size=min_size, max_lines=max_lines
+    )
+    if not lines:
+        lines = [truncate_to_width(str(text), font, width)]
+    return font, size, lines, width
 
 
 def _kit_one_line(s: str) -> str:
@@ -572,53 +603,6 @@ def write_promo_thumbnail(topic: dict, video_path: str, thumb_path: str) -> bool
             pass
 
 
-def draw_outlined_lines(draw, lines, top_y, f, color, line_gap=None):
-    """Draw a centered block of outlined lines; returns bottom y (exclusive)."""
-    if line_gap is None:
-        line_gap = int(max(8, getattr(f, "size", 48) * 1.05))
-    y = top_y
-    PAD = 60
-    for line in lines:
-        tw = f.getlength(line)
-        x = max(PAD, (W - tw) / 2)
-        stroke = max(4, int(getattr(f, "size", 48) * 0.08))
-        for ox, oy in [
-            (-stroke, 0),
-            (stroke, 0),
-            (0, -stroke),
-            (0, stroke),
-            (-stroke + 1, -stroke + 1),
-            (stroke - 1, -stroke + 1),
-            (-stroke + 1, stroke - 1),
-            (stroke - 1, stroke - 1),
-        ]:
-            draw.text((x + ox, y + oy), line, font=f, fill=(0, 0, 0))
-        draw.text((x, y), line, font=f, fill=color)
-        y += line_gap
-    return y
-
-
-def draw_text_panel_block(lines, top_y, font, *, pad_x=28, pad_y=16, panel_alpha=165, line_gap=None):
-    if line_gap is None:
-        line_gap = int(max(8, getattr(font, "size", 48) * 1.05))
-    max_tw = max((font.getlength(line) for line in lines), default=0.0)
-    block_h = max(1, len(lines)) * line_gap + int(font.size * 0.25)
-    x = max(60, (W - max_tw) / 2)
-    panel = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-    pd = ImageDraw.Draw(panel)
-    pd.rounded_rectangle(
-        [
-            int(x - pad_x),
-            int(top_y - pad_y),
-            int(x + max_tw + pad_x),
-            int(top_y + block_h + pad_y),
-        ],
-        radius=22,
-        fill=(0, 0, 0, panel_alpha),
-    )
-    return panel
-
-
 def hsv_s1_to_rgb_array(h_arr, v=0.5):
     """
     Vectorised HSV→RGB with S=1 fixed.
@@ -668,11 +652,23 @@ def add_noise(img, s=7):
     return Image.fromarray(np.clip(arr, 0, 255).astype(np.uint8))
 
 
+def draw_outlined_lines(draw, lines, top_y, f, color, line_gap=None):
+    """Draw a centered block of outlined lines; returns bottom y (exclusive)."""
+    if line_gap is None:
+        line_gap = int(max(8, getattr(f, "size", 48) * 1.05))
+    y = top_y
+    for line in lines:
+        # Truncate again as a hard safety net.
+        safe = truncate_to_width(line, f, SAFE_TEXT_W)
+        draw_outlined(draw, safe, y, f, color)
+        y += line_gap
+    return y
+
+
 def draw_outlined(draw, text, y, f, color):
-    """Centered text with black outline. Caller must pass already-fitted font."""
-    PAD = 60
+    """Centered text with black outline, clamped to Shorts safe margins."""
     tw = f.getlength(text)
-    x = max(PAD, (W - tw) / 2)
+    x = max(SAFE_LEFT, min((W - tw) / 2, W - SAFE_RIGHT - tw))
     stroke = max(4, int(getattr(f, "size", 48) * 0.08))
     for ox, oy in [
         (-stroke, 0),
@@ -690,27 +686,72 @@ def draw_outlined(draw, text, y, f, color):
 
 def draw_text_panel(draw, text, y, font, *, pad_x=28, pad_y=16, panel_alpha=165):
     tw = font.getlength(text)
-    x = max(60, (W - tw) / 2)
+    x = max(SAFE_LEFT, min((W - tw) / 2, W - SAFE_RIGHT - tw))
+    left = max(24, int(x - pad_x))
+    right = min(W - 24, int(x + tw + pad_x))
     panel = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     pd = ImageDraw.Draw(panel)
     pd.rounded_rectangle(
-        [
-            int(x - pad_x),
-            int(y - pad_y),
-            int(x + tw + pad_x),
-            int(y + font.size + pad_y),
-        ],
+        [left, int(y - pad_y), right, int(y + getattr(font, "size", 48) + pad_y)],
         radius=22,
         fill=(0, 0, 0, panel_alpha),
     )
     return panel, x
 
 
+def draw_text_panel_block(lines, top_y, font, *, pad_x=28, pad_y=16, panel_alpha=165, line_gap=None):
+    if line_gap is None:
+        line_gap = int(max(8, getattr(font, "size", 48) * 1.05))
+    max_tw = max((font.getlength(line) for line in lines), default=0.0)
+    max_tw = min(max_tw, SAFE_TEXT_W)
+    block_h = max(1, len(lines)) * line_gap + int(getattr(font, "size", 48) * 0.25)
+    x = max(SAFE_LEFT, min((W - max_tw) / 2, W - SAFE_RIGHT - max_tw))
+    left = max(24, int(x - pad_x))
+    right = min(W - 24, int(x + max_tw + pad_x))
+    panel = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    pd = ImageDraw.Draw(panel)
+    pd.rounded_rectangle(
+        [left, int(top_y - pad_y), right, int(top_y + block_h + pad_y)],
+        radius=22,
+        fill=(0, 0, 0, panel_alpha),
+    )
+    return panel
+
+
+def draw_caption_stack(
+    img,
+    text,
+    top_y,
+    font_key,
+    color,
+    *,
+    start_size=94,
+    min_size=42,
+    max_lines=3,
+    pad_x=34,
+    pad_y=18,
+    panel_alpha=175,
+):
+    """Wrap + panel + outlined text. Never overflows the Shorts safe frame."""
+    font, _, lines, _ = layout_caption(
+        text, font_key, start_size=start_size, min_size=min_size, max_lines=max_lines
+    )
+    line_gap = int(max(10, getattr(font, "size", 48) * 1.08))
+    panel = draw_text_panel_block(
+        lines, top_y, font, pad_x=pad_x, pad_y=pad_y, panel_alpha=panel_alpha, line_gap=line_gap
+    )
+    img = Image.alpha_composite(img.convert("RGBA"), panel).convert("RGB")
+    d = ImageDraw.Draw(img)
+    draw_outlined_lines(d, lines, top_y, font, color, line_gap=line_gap)
+    next_y = top_y + max(1, len(lines)) * line_gap + int(getattr(font, "size", 48) * 0.45) + pad_y
+    return img, next_y
+
+
 def safe_text(draw, text, y, path, start_size, color):
-    """Fit font to width then draw outlined. One call does everything."""
-    f, _ = fit_font(path, text, W - 120, start_size)
-    draw_outlined(draw, text, y, f, color)
-    return f  # return for line measurements
+    """Fit/wrap font to safe width then draw outlined."""
+    f, _, lines, _ = layout_caption(text, path, start_size=start_size, min_size=40, max_lines=2)
+    draw_outlined_lines(draw, lines, y, f, color)
+    return f
 
 
 def simple_gradient_bg(c1, c2):
@@ -733,6 +774,42 @@ def _brighten_rgb(rgb, floor: int = 90) -> tuple[int, int, int]:
         return (clamp(r), clamp(g), clamp(b))
     scale = floor / max(1.0, mean)
     return (clamp(int(r * scale)), clamp(int(g * scale)), clamp(int(b * scale)))
+
+
+def fetch_picsum_default_backgrounds(topic, target_count=5):
+    """
+    No-API-key photo fallback (https://picsum.photos).
+    Gives real photographic beds when Pixabay/Freepik/Gemini keys are dead.
+    """
+    seed_base = abs(hash(str(
+        topic.get("trend_topic")
+        or topic.get("title")
+        or topic.get("topic_id")
+        or "shorts"
+    ))) % 10_000_000
+    backgrounds = []
+    for i in range(max(1, target_count) * 2):
+        if len(backgrounds) >= target_count:
+            break
+        seed = seed_base + i * 97
+        url = f"https://picsum.photos/seed/{seed}/{W}/{H}"
+        try:
+            req = urllib.request.Request(
+                url,
+                headers={"User-Agent": "Mozilla/5.0 (compatible; llm-shorts/1.0)"},
+            )
+            with urllib.request.urlopen(req, timeout=25) as r:
+                raw = r.read()
+            img = Image.open(io.BytesIO(raw)).convert("RGB")
+            if not _is_usable_stock(img):
+                img = _lift_frame_brightness(img, target_mean=55.0)
+            backgrounds.append(_cover_resize(img, W, H))
+        except Exception as e:
+            print(f"  Picsum default image failed (seed={seed}): {e}")
+            continue
+    if backgrounds:
+        print(f"  Picsum default photos: enabled ({len(backgrounds)} images)")
+    return backgrounds
 
 
 def generate_bright_procedural_backgrounds(topic, target_count: int = 5) -> list:
@@ -1654,7 +1731,7 @@ def act_boot(topic):
     trend_frames = max(12, n // 4)
 
     hook_font, _, hook_lines = fit_font_wrapped(
-        FONT_S, hook, W - 160, 112, min_size=56, max_lines=3
+        FONT_S, hook, SAFE_TEXT_W, 112, min_size=48, max_lines=3
     )
     hook_gap = int(max(10, hook_font.size * 1.08))
     hook_block_h = max(1, len(hook_lines)) * hook_gap + int(hook_font.size * 0.2)
@@ -1662,7 +1739,7 @@ def act_boot(topic):
     hook_top = int(hook_center_y - hook_block_h / 2)
 
     title_font, _, title_lines = fit_font_wrapped(
-        FONT_M, title, W - 200, 52, min_size=28, max_lines=2
+        FONT_M, title, SAFE_TEXT_W - 40, 52, min_size=28, max_lines=2
     )
     title_gap = int(max(9, title_font.size * 1.12))
     title_block_h = max(1, len(title_lines)) * title_gap + int(title_font.size * 0.35)
@@ -1672,20 +1749,25 @@ def act_boot(topic):
         img = act_base_image(i, n, (12, 14, 18), (max(18, p1[0] // 5), max(18, p1[1] // 5), max(18, p1[2] // 5)))
         d = ImageDraw.Draw(img)
         if i < trend_frames:
-            trend_font, _ = fit_font(FONT_M, trend.upper(), W - 160, 48, min_size=34)
-            d.text((70, 80), trend.upper(), font=trend_font, fill=(220, 220, 220))
+            trend_font, _, trend_lines = fit_font_wrapped(
+                FONT_M, trend.upper(), SAFE_TEXT_W, 48, min_size=30, max_lines=2
+            )
+            draw_outlined_lines(d, trend_lines, 80, trend_font, (220, 220, 220))
         panel_hook = draw_text_panel_block(
-            hook_lines, hook_top, hook_font, pad_x=42, pad_y=26, panel_alpha=190, line_gap=hook_gap
+            hook_lines, hook_top, hook_font, pad_x=36, pad_y=26, panel_alpha=190, line_gap=hook_gap
         )
         img = Image.alpha_composite(img.convert("RGBA"), panel_hook).convert("RGB")
         d = ImageDraw.Draw(img)
         draw_outlined_lines(d, hook_lines, hook_top, hook_font, (255, 255, 255), line_gap=hook_gap)
 
-        max_tw = max((title_font.getlength(line) for line in title_lines), default=0.0)
+        max_tw = min(
+            SAFE_TEXT_W,
+            max((title_font.getlength(line) for line in title_lines), default=0.0),
+        )
         pad_x, pad_y = 22, 14
-        x0 = max(56, (W - max_tw) / 2 - pad_x)
+        x0 = max(SAFE_LEFT, (W - max_tw) / 2 - pad_x)
         y0 = title_top - pad_y
-        x1 = min(W - 56, (W + max_tw) / 2 + pad_x)
+        x1 = min(W - SAFE_RIGHT, (W + max_tw) / 2 + pad_x)
         y1 = title_top + title_block_h + pad_y
         d.rounded_rectangle([int(x0), int(y0), int(x1), int(y1)], radius=18, fill=(0, 0, 0))
         draw_outlined_lines(d, title_lines, title_top, title_font, (235, 235, 235), line_gap=title_gap)
@@ -1712,15 +1794,24 @@ def act_data_flood(topic):
     for i in range(n):
         img = act_base_image(i, n, (max(10, p0[0] // 7), max(10, p0[1] // 7), max(10, p0[2] // 7)), (max(10, p1[0] // 7), max(10, p1[1] // 7), max(10, p1[2] // 7)))
         d = ImageDraw.Draw(img)
-        d.text((70, 120), chrome, font=fnt(FONT_M, 42), fill=(235, 235, 235))
+        d.text((SAFE_LEFT, 120), chrome, font=fnt(FONT_M, 42), fill=(235, 235, 235))
         visible = min(3, i // reveal_every + 1)
+        y = 420
         for idx, line in enumerate(lines[:visible]):
-            f_line, _ = fit_font(FONT_S, line, W - 160, 94, min_size=54)
-            y = 460 + idx * 230
-            panel, _ = draw_text_panel(d, line, y, f_line, pad_x=34, pad_y=20, panel_alpha=170)
-            img = Image.alpha_composite(img.convert("RGBA"), panel).convert("RGB")
-            d = ImageDraw.Draw(img)
-            draw_outlined(d, line, y, f_line, (255, 255, 255))
+            img, y = draw_caption_stack(
+                img,
+                line,
+                y,
+                FONT_S,
+                (255, 255, 255),
+                start_size=82,
+                min_size=42,
+                max_lines=4,
+                pad_x=30,
+                pad_y=14,
+                panel_alpha=170,
+            )
+            y += 28
         frames.append(add_noise(img, 2))
     return frames, eerie_pad(n / FPS, vol=0.06)
 
@@ -1742,20 +1833,37 @@ def act_question(topic):
     for i in range(n):
         img = act_base_image(i, n, (max(12, p1[0] // 6), max(12, p1[1] // 6), max(12, p1[2] // 6)), (max(12, p0[0] // 6), max(12, p0[1] // 6), max(12, p0[2] // 6)))
         d = ImageDraw.Draw(img)
-        d.text((70, 120), chrome, font=fnt(FONT_M, 42), fill=(235, 235, 235))
+        d.text((SAFE_LEFT, 120), chrome, font=fnt(FONT_M, 42), fill=(235, 235, 235))
         visible = min(3, i // reveal_every + 1)
+        y = 380
         for idx, line in enumerate(why_lines[:visible]):
-            f_line, _ = fit_font(FONT_S, line, W - 180, 84, min_size=52)
-            y = 400 + idx * 210
-            panel, _ = draw_text_panel(d, line, y, f_line, pad_x=34, pad_y=18, panel_alpha=178)
-            img = Image.alpha_composite(img.convert("RGBA"), panel).convert("RGB")
-            d = ImageDraw.Draw(img)
-            draw_outlined(d, line, y, f_line, (255, 255, 255))
-        fq, _ = fit_font(FONT_S, q, W - 140, 110, min_size=64)
-        panel_q, _ = draw_text_panel(d, q, 1370, fq, pad_x=40, pad_y=24, panel_alpha=185)
-        img = Image.alpha_composite(img.convert("RGBA"), panel_q).convert("RGB")
-        d = ImageDraw.Draw(img)
-        draw_outlined(d, q, 1370, fq, color)
+            img, y = draw_caption_stack(
+                img,
+                line,
+                y,
+                FONT_S,
+                (255, 255, 255),
+                start_size=80,
+                min_size=42,
+                max_lines=3,
+                pad_x=30,
+                pad_y=14,
+                panel_alpha=178,
+            )
+            y += 22
+        img, _ = draw_caption_stack(
+            img,
+            q,
+            1320,
+            FONT_S,
+            color,
+            start_size=100,
+            min_size=48,
+            max_lines=3,
+            pad_x=36,
+            pad_y=20,
+            panel_alpha=185,
+        )
         frames.append(add_noise(img, 2))
     return frames, eerie_pad(n / FPS, vol=0.07)
 
@@ -1797,20 +1905,29 @@ def act_climax(topic):
         )
         img = act_base_image(i, n, (max(14, p2[0] // 6), max(14, p2[1] // 6), max(14, p2[2] // 6)), (max(14, p1[0] // 7), max(14, p1[1] // 7), max(14, p1[2] // 7)))
         d = ImageDraw.Draw(img)
-        d.text((70, 120), st["label"], font=fnt(FONT_M, 42), fill=(235, 235, 235))
+        d.text((SAFE_LEFT, 120), st["label"], font=fnt(FONT_M, 42), fill=(235, 235, 235))
         if st["side"]:
             bar = Image.new("RGBA", img.size, (0, 0, 0, 0))
             bd = ImageDraw.Draw(bar)
             bd.rectangle([0, 0, 36, H], fill=(*p0, 220))
             img = Image.alpha_composite(img.convert("RGBA"), bar).convert("RGB")
             d = ImageDraw.Draw(img)
-        f_cap, _ = fit_font(FONT_S, cap_text, W - 140, 142, min_size=74)
         y_cap = st["y"]
-        panel_cap, _ = draw_text_panel(d, cap_text, y_cap, f_cap, pad_x=36, pad_y=20, panel_alpha=185)
-        img = Image.alpha_composite(img.convert("RGBA"), panel_cap).convert("RGB")
+        img, _ = draw_caption_stack(
+            img,
+            cap_text,
+            y_cap,
+            FONT_S,
+            cap_color,
+            start_size=120,
+            min_size=52,
+            max_lines=3,
+            pad_x=32,
+            pad_y=18,
+            panel_alpha=185,
+        )
         d = ImageDraw.Draw(img)
-        draw_outlined(d, cap_text, y_cap, f_cap, cap_color)
-        d.text((90, st["counter_y"]), f"{cap_idx + 1}/{len(captions)}", font=fnt(FONT_M, 40), fill=(235, 235, 235))
+        d.text((SAFE_LEFT + 18, st["counter_y"]), f"{cap_idx + 1}/{len(captions)}", font=fnt(FONT_M, 40), fill=(235, 235, 235))
         img = add_noise(img, 2)
         if i > n - fade_frames:
             fade = (i - (n - fade_frames)) / float(fade_frames)
@@ -1825,40 +1942,52 @@ def act_epilogue(topic):
     parts = topic["close_lines"]
     ecolor = tuple(topic["palette"][2])
     appear = [(j + 1) * n // (len(parts) + 2) for j in range(len(parts))]
-    f_cur = fnt(FONT_M, 64)
     p0 = tuple(topic["palette"][0]); p1 = tuple(topic["palette"][1])
     fade_in = max(10, n // 10)
     blink_after = max(15, n // 5)
+    f_cur = fnt(FONT_M, 64)
 
     for i in range(n):
         img = act_base_image(i, n, (max(12, p1[0] // 8), max(12, p1[1] // 8), max(12, p1[2] // 8)), (max(12, p0[0] // 8), max(12, p0[1] // 8), max(12, p0[2] // 8)))
-        d = ImageDraw.Draw(img)
-        cy = H // 2 - len(parts) * 75
+        cy = H // 2 - len(parts) * 90
+        y_cursor = cy
         for j, part in enumerate(parts):
             if i >= appear[j]:
                 fade = min(1.0, (i - appear[j]) / float(max(8, fade_in)))
                 a = clamp(255 * fade)
-                fe, _ = fit_font(FONT_S, part, W - 80, 92)
-                pw = fe.getlength(part)
                 col = (
                     clamp(ecolor[0] * a // 255),
                     clamp(ecolor[1] * a // 255),
                     clamp(ecolor[2] * a // 255),
                 )
-                y_line = cy + j * 150
                 panel_alpha = clamp(int(155 * fade), 0, 155)
-                panel_line, _ = draw_text_panel(d, part, y_line, fe, pad_x=28, pad_y=14, panel_alpha=panel_alpha)
-                img = Image.alpha_composite(img.convert("RGBA"), panel_line).convert("RGB")
-                d = ImageDraw.Draw(img)
-                draw_outlined(d, part, y_line, fe, col)
+                img, y_cursor = draw_caption_stack(
+                    img,
+                    part,
+                    y_cursor,
+                    FONT_S,
+                    col,
+                    start_size=86,
+                    min_size=40,
+                    max_lines=2,
+                    pad_x=28,
+                    pad_y=12,
+                    panel_alpha=panel_alpha,
+                )
+                y_cursor += 18
+            else:
+                y_cursor += 120
+        d = ImageDraw.Draw(img)
         if i > appear[-1] + blink_after and (i // 10) % 2 == 0:
             d.text(
                 (W // 2 - 20, cy + len(parts) * 150 + 30), "█", font=f_cur, fill=ecolor
             )
         if i >= appear[-1] + max(6, n // 12):
-            cta_font, _ = fit_font(FONT_M, "COMMENT YOUR PICK", W - 120, 44, min_size=36)
-            d.text((W // 2 - cta_font.getlength("COMMENT YOUR PICK") / 2, H - 200),
-                   "COMMENT YOUR PICK", font=cta_font, fill=(255, 220, 60))
+            cta = "COMMENT YOUR PICK"
+            cta_font, _, cta_lines, _ = layout_caption(
+                cta, FONT_M, start_size=44, min_size=32, max_lines=1
+            )
+            draw_outlined_lines(d, cta_lines, H - 200, cta_font, (255, 220, 60))
         if i < fade_in:
             img = Image.fromarray((np.array(img) * (i / float(fade_in))).astype(np.uint8))
         frames.append(add_noise(img, 2))
@@ -1936,8 +2065,7 @@ def generate(topic_id, slot, out_dir, *,
         else:
             print("  Pixabay stock backgrounds: disabled (trying other free sources)")
 
-    # Free / paid photo fallbacks so we never silently ship plain procedural BGs
-    # when a free API key is available.
+    # Free / paid photo fallbacks so we never silently ship plain procedural BGs.
     if not stock_bgs:
         stock_bgs = fetch_freepik_stock_backgrounds(topic, target_count=image_count)
         if stock_bgs:
@@ -1958,11 +2086,19 @@ def generate(topic_id, slot, out_dir, *,
         if stock_bgs:
             print(f"  Gemini stock backgrounds (fallback): enabled ({len(stock_bgs)} images)")
     if not stock_bgs:
+        # No-key photographic defaults — better than empty gray gradients.
+        stock_bgs = fetch_picsum_default_backgrounds(topic, target_count=max(4, min(8, image_count)))
+    if not stock_bgs:
         stock_bgs = generate_bright_procedural_backgrounds(topic, target_count=max(4, min(8, image_count)))
         print(
             f"  ⚠ Stock APIs unavailable — using bright procedural backgrounds "
             f"({len(stock_bgs)} frames). Fix PIXABAY/FREEPIK/PEXELS/GEMINI keys when possible."
         )
+
+    # Hard guarantee: never render with an empty stock list (acts fall back to
+    # near-black palette gradients that look like "missing default images").
+    if not stock_bgs:
+        stock_bgs = generate_bright_procedural_backgrounds(topic, target_count=6)
 
     # Expose to the act functions so they draw text ON TOP of the subject image
     # (drawing over a finished frame ghosted the text out).
