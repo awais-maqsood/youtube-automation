@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-28T09:46:42.562327+00:00",
+  "updated_utc": "2026-09-28T19:42:16.274209+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -1091,6 +1091,24 @@
       "source": "upload.success",
       "app_id": "trump_china",
       "youtube_id": "2PdljXDxXUw"
+    },
+    {
+      "title": "Stop overreading Matthew Knies",
+      "opener": "Matthew Knies' breakthrough moment revealed",
+      "cta": "",
+      "trend": "Matthew Knies",
+      "utc": "2026-09-28T19:35:20.951767+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Stop overreading Matthew Knies",
+      "opener": "Matthew Knies' breakthrough moment revealed",
+      "cta": "One-line read on Matthew Knies — leave a comment.",
+      "trend": "Matthew Knies",
+      "utc": "2026-09-28T19:42:16.273384+00:00",
+      "source": "upload.success",
+      "app_id": "matthew_knies",
+      "youtube_id": "WV0GK_D2Cwg"
     }
   ]
 }
