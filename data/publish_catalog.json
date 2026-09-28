@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-27T20:11:02.123649+00:00",
+  "updated_utc": "2026-09-28T00:39:02.286091+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -1037,6 +1037,24 @@
       "source": "upload.success",
       "app_id": "sterling_shepard",
       "youtube_id": "P9r86M8EIq8"
+    },
+    {
+      "title": "Early read on Teyana Taylor's stakes",
+      "opener": "Here's Teyana Taylor, cut short.",
+      "cta": "",
+      "trend": "Teyana Taylor",
+      "utc": "2026-09-28T00:32:08.879371+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Early read on Teyana Taylor's stakes",
+      "opener": "Here's Teyana Taylor, cut short.",
+      "cta": "What is your take on Teyana Taylor? Comment below.",
+      "trend": "Teyana Taylor",
+      "utc": "2026-09-28T00:39:02.285314+00:00",
+      "source": "upload.success",
+      "app_id": "teyana_taylor",
+      "youtube_id": "ThhpS1jgkOc"
     }
   ]
 }
