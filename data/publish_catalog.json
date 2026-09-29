@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-28T19:42:16.274209+00:00",
+  "updated_utc": "2026-09-29T09:51:39.642011+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -1109,6 +1109,24 @@
       "source": "upload.success",
       "app_id": "matthew_knies",
       "youtube_id": "WV0GK_D2Cwg"
+    },
+    {
+      "title": "Australia vs Brazil: Why Brazil Might Struggle Today",
+      "opener": "Brazil’s favorite status is under threat",
+      "cta": "",
+      "trend": "Australia vs Brazil",
+      "utc": "2026-09-29T09:43:20.538090+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Australia vs Brazil: Why Brazil Might Struggle Today",
+      "opener": "Brazil’s favorite status is under threat",
+      "cta": "Where do you stand on Australia vs Brazil? Tell me in comments.",
+      "trend": "Australia vs Brazil",
+      "utc": "2026-09-29T09:51:39.641322+00:00",
+      "source": "upload.success",
+      "app_id": "australia_vs_brazil",
+      "youtube_id": "ffOv-8VLaGs"
     }
   ]
 }

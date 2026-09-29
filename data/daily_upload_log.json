@@ -458,7 +458,18 @@
           "source": "upload.success"
         }
       ]
+    },
+    "2026-09-29": {
+      "count": 1,
+      "events": [
+        {
+          "utc": "2026-09-29T09:51:39.642895+00:00",
+          "title": "Australia vs Brazil: Why Brazil Might Struggle Today",
+          "slot": "evening",
+          "source": "upload.success"
+        }
+      ]
     }
   },
-  "updated_utc": "2026-09-28T19:42:16.275375+00:00"
+  "updated_utc": "2026-09-29T09:51:39.642923+00:00"
 }
