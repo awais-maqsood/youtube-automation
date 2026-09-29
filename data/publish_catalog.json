@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-29T18:09:09.154942+00:00",
+  "updated_utc": "2026-09-29T21:29:04.642966+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -1145,6 +1145,24 @@
       "source": "upload.success",
       "app_id": "odell_beckham_jr",
       "youtube_id": "B5GyY2q8148"
+    },
+    {
+      "title": "Jerry Colangelo: the detail that stuck",
+      "opener": "Why Jerry Colangelo matters now.",
+      "cta": "",
+      "trend": "Jerry Colangelo",
+      "utc": "2026-09-29T21:21:57.898651+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Jerry Colangelo: the detail that stuck",
+      "opener": "Why Jerry Colangelo matters now.",
+      "cta": "Thoughts on Jerry Colangelo? Drop a comment.",
+      "trend": "Jerry Colangelo",
+      "utc": "2026-09-29T21:29:04.641954+00:00",
+      "source": "upload.success",
+      "app_id": "jerry_colangelo",
+      "youtube_id": "lu8rt-7QoyE"
     }
   ]
 }

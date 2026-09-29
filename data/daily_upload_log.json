@@ -460,7 +460,7 @@
       ]
     },
     "2026-09-29": {
-      "count": 2,
+      "count": 3,
       "events": [
         {
           "utc": "2026-09-29T09:51:39.642895+00:00",
@@ -473,9 +473,15 @@
           "title": "How Odell Beckham Jr's Latest Move Shakes NFL",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-09-29T21:29:04.644199+00:00",
+          "title": "Jerry Colangelo: the detail that stuck",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-09-29T18:09:09.156101+00:00"
+  "updated_utc": "2026-09-29T21:29:04.644243+00:00"
 }
