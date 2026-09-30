@@ -481,7 +481,18 @@
           "source": "upload.success"
         }
       ]
+    },
+    "2026-09-30": {
+      "count": 1,
+      "events": [
+        {
+          "utc": "2026-09-30T01:20:18.909831+00:00",
+          "title": "Did Maura Higgins Just Drop Major News?",
+          "slot": "evening",
+          "source": "upload.success"
+        }
+      ]
     }
   },
-  "updated_utc": "2026-09-29T21:29:04.644243+00:00"
+  "updated_utc": "2026-09-30T01:20:18.909861+00:00"
 }

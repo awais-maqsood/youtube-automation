@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-29T21:29:04.642966+00:00",
+  "updated_utc": "2026-09-30T01:20:18.908544+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -1163,6 +1163,24 @@
       "source": "upload.success",
       "app_id": "jerry_colangelo",
       "youtube_id": "lu8rt-7QoyE"
+    },
+    {
+      "title": "Did Maura Higgins Just Drop Major News?",
+      "opener": "Maura Higgins stuns fans again!",
+      "cta": "",
+      "trend": "Maura Higgins",
+      "utc": "2026-09-30T01:13:18.460609+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Did Maura Higgins Just Drop Major News?",
+      "opener": "Maura Higgins stuns fans again!",
+      "cta": "One-line read on Maura Higgins — leave a comment.",
+      "trend": "Maura Higgins",
+      "utc": "2026-09-30T01:20:18.907527+00:00",
+      "source": "upload.success",
+      "app_id": "maura_higgins",
+      "youtube_id": "XzxXi4F40o0"
     }
   ]
 }
