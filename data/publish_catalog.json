@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-30T01:20:18.908544+00:00",
+  "updated_utc": "2026-09-30T21:36:10.845398+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -1181,6 +1181,24 @@
       "source": "upload.success",
       "app_id": "maura_higgins",
       "youtube_id": "XzxXi4F40o0"
+    },
+    {
+      "title": "Dunkin Halloween Menu Isn't What You Expect",
+      "opener": "Not your usual spooky treats!",
+      "cta": "",
+      "trend": "Dunkin Halloween Menu",
+      "utc": "2026-09-30T21:29:11.219200+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Dunkin Halloween Menu Isn't What You Expect",
+      "opener": "Not your usual spooky treats!",
+      "cta": "Agree on Dunkin Halloween Menu? Reply in comments.",
+      "trend": "Dunkin Halloween Menu",
+      "utc": "2026-09-30T21:36:10.844372+00:00",
+      "source": "upload.success",
+      "app_id": "dunkin_halloween_menu",
+      "youtube_id": "oGOnTxph1Rg"
     }
   ]
 }

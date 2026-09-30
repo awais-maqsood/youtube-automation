@@ -483,16 +483,22 @@
       ]
     },
     "2026-09-30": {
-      "count": 1,
+      "count": 2,
       "events": [
         {
           "utc": "2026-09-30T01:20:18.909831+00:00",
           "title": "Did Maura Higgins Just Drop Major News?",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-09-30T21:36:10.846707+00:00",
+          "title": "Dunkin Halloween Menu Isn't What You Expect",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-09-30T01:20:18.909861+00:00"
+  "updated_utc": "2026-09-30T21:36:10.846736+00:00"
 }
