@@ -500,16 +500,22 @@
       ]
     },
     "2026-10-01": {
-      "count": 1,
+      "count": 2,
       "events": [
         {
           "utc": "2026-10-01T01:19:53.136809+00:00",
           "title": "What Made Adley Rutschman\u2019s Moment So Viral?",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-10-01T10:08:25.925604+00:00",
+          "title": "Clock Charles Kelley while it's live",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-10-01T01:19:53.136833+00:00"
+  "updated_utc": "2026-10-01T10:08:25.925630+00:00"
 }

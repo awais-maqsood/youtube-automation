@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-01T01:19:53.135639+00:00",
+  "updated_utc": "2026-10-01T10:08:25.924400+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -1217,6 +1217,24 @@
       "source": "upload.success",
       "app_id": "adley_rutschman",
       "youtube_id": "eY-fJfnLHEg"
+    },
+    {
+      "title": "Clock Charles Kelley while it's live",
+      "opener": "Charles Kelley. Straight facts.",
+      "cta": "",
+      "trend": "Charles Kelley",
+      "utc": "2026-10-01T10:01:32.270160+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Clock Charles Kelley while it's live",
+      "opener": "Charles Kelley. Straight facts.",
+      "cta": "Hot take on Charles Kelley? Write it in the comments.",
+      "trend": "Charles Kelley",
+      "utc": "2026-10-01T10:08:25.923489+00:00",
+      "source": "upload.success",
+      "app_id": "charles_kelley",
+      "youtube_id": "t4-UqU8NShU"
     }
   ]
 }
