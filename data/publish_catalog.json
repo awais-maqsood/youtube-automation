@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-30T21:36:10.845398+00:00",
+  "updated_utc": "2026-10-01T01:19:53.135639+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -1199,6 +1199,24 @@
       "source": "upload.success",
       "app_id": "dunkin_halloween_menu",
       "youtube_id": "oGOnTxph1Rg"
+    },
+    {
+      "title": "What Made Adley Rutschman’s Moment So Viral?",
+      "opener": "Catch this insane Adley Rutschman clip!",
+      "cta": "",
+      "trend": "Adley Rutschman",
+      "utc": "2026-10-01T01:13:00.538636+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "What Made Adley Rutschman’s Moment So Viral?",
+      "opener": "Catch this insane Adley Rutschman clip!",
+      "cta": "Would you share this about Adley Rutschman? Comment why.",
+      "trend": "Adley Rutschman",
+      "utc": "2026-10-01T01:19:53.134778+00:00",
+      "source": "upload.success",
+      "app_id": "adley_rutschman",
+      "youtube_id": "eY-fJfnLHEg"
     }
   ]
 }
