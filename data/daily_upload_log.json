@@ -526,7 +526,18 @@
           "source": "upload.success"
         }
       ]
+    },
+    "2026-10-03": {
+      "count": 1,
+      "events": [
+        {
+          "utc": "2026-10-03T01:10:43.597707+00:00",
+          "title": "Why East of Eden Netflix cast is everywhere tonight",
+          "slot": "evening",
+          "source": "upload.success"
+        }
+      ]
     }
   },
-  "updated_utc": "2026-10-02T17:56:44.472467+00:00"
+  "updated_utc": "2026-10-03T01:10:43.597737+00:00"
 }
