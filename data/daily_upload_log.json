@@ -528,16 +528,22 @@
       ]
     },
     "2026-10-03": {
-      "count": 1,
+      "count": 2,
       "events": [
         {
           "utc": "2026-10-03T01:10:43.597707+00:00",
           "title": "Why East of Eden Netflix cast is everywhere tonight",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-10-03T09:10:44.615040+00:00",
+          "title": "India vs West Indies Cricket Match: Latest Update",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-10-03T01:10:43.597737+00:00"
+  "updated_utc": "2026-10-03T09:10:44.615071+00:00"
 }

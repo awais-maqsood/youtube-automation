@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-03T01:10:43.596180+00:00",
+  "updated_utc": "2026-10-03T09:10:44.613662+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -1271,6 +1271,24 @@
       "source": "upload.success",
       "app_id": "east_of_eden_netflix_cast",
       "youtube_id": "P0jbw_GZ_lY"
+    },
+    {
+      "title": "India vs West Indies Cricket Match: Latest Update",
+      "opener": "Who’s leading right now in India-West Indies?",
+      "cta": "",
+      "trend": "India vs West Indies cricket match",
+      "utc": "2026-10-03T09:03:39.436218+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "India vs West Indies Cricket Match: Latest Update",
+      "opener": "Who’s leading right now in India-West Indies?",
+      "cta": "What is your take on India vs West Indies cricket match? Comment below.",
+      "trend": "India vs West Indies cricket match",
+      "utc": "2026-10-03T09:10:44.612594+00:00",
+      "source": "upload.success",
+      "app_id": "india_vs_west_indies_cricket_match",
+      "youtube_id": "paOpcQr0a_U"
     }
   ]
 }
