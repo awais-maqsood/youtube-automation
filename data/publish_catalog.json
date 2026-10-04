@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-04T16:54:38.244391+00:00",
+  "updated_utc": "2026-10-04T20:12:28.180059+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -1343,6 +1343,24 @@
       "source": "upload.success",
       "app_id": "jason_kelce",
       "youtube_id": "Nyzep3etips"
+    },
+    {
+      "title": "Tee Higgins Injury Update Shakes Bengals Lineup",
+      "opener": "Bengals lose Tee Higgins unexpectedly",
+      "cta": "",
+      "trend": "Tee Higgins",
+      "utc": "2026-10-04T20:05:16.054862+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Tee Higgins Injury Update Shakes Bengals Lineup",
+      "opener": "Bengals lose Tee Higgins unexpectedly",
+      "cta": "Thoughts on Tee Higgins? Drop a comment.",
+      "trend": "Tee Higgins",
+      "utc": "2026-10-04T20:12:28.178834+00:00",
+      "source": "upload.success",
+      "app_id": "tee_higgins",
+      "youtube_id": "hE2UcAJWyoI"
     }
   ]
 }

@@ -551,7 +551,7 @@
       ]
     },
     "2026-10-04": {
-      "count": 2,
+      "count": 3,
       "events": [
         {
           "utc": "2026-10-04T00:36:29.551429+00:00",
@@ -564,9 +564,15 @@
           "title": "Why Jason Kelce\u2019s Game Has Transformed",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-10-04T20:12:28.181713+00:00",
+          "title": "Tee Higgins Injury Update Shakes Bengals Lineup",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-10-04T16:54:38.245882+00:00"
+  "updated_utc": "2026-10-04T20:12:28.181749+00:00"
 }
