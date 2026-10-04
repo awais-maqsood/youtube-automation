@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-03T16:15:28.341593+00:00",
+  "updated_utc": "2026-10-04T00:36:29.549813+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -1307,6 +1307,24 @@
       "source": "upload.success",
       "app_id": "odell_beckham",
       "youtube_id": "tdzLdbvPR_U"
+    },
+    {
+      "title": "How War HBO's Viral Scene Changed TV Drama",
+      "opener": "This War HBO clip blew up online",
+      "cta": "",
+      "trend": "War HBO",
+      "utc": "2026-10-04T00:29:22.121406+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "How War HBO's Viral Scene Changed TV Drama",
+      "opener": "This War HBO clip blew up online",
+      "cta": "What is your take on War HBO? Comment below.",
+      "trend": "War HBO",
+      "utc": "2026-10-04T00:36:29.548477+00:00",
+      "source": "upload.success",
+      "app_id": "war_hbo",
+      "youtube_id": "MXhwwfGW3qo"
     }
   ]
 }

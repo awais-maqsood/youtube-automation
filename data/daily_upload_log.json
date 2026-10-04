@@ -549,7 +549,18 @@
           "source": "upload.success"
         }
       ]
+    },
+    "2026-10-04": {
+      "count": 1,
+      "events": [
+        {
+          "utc": "2026-10-04T00:36:29.551429+00:00",
+          "title": "How War HBO's Viral Scene Changed TV Drama",
+          "slot": "evening",
+          "source": "upload.success"
+        }
+      ]
     }
   },
-  "updated_utc": "2026-10-03T16:15:28.343054+00:00"
+  "updated_utc": "2026-10-04T00:36:29.551465+00:00"
 }
