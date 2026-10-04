@@ -551,16 +551,22 @@
       ]
     },
     "2026-10-04": {
-      "count": 1,
+      "count": 2,
       "events": [
         {
           "utc": "2026-10-04T00:36:29.551429+00:00",
           "title": "How War HBO's Viral Scene Changed TV Drama",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-10-04T16:54:38.245850+00:00",
+          "title": "Why Jason Kelce\u2019s Game Has Transformed",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-10-04T00:36:29.551465+00:00"
+  "updated_utc": "2026-10-04T16:54:38.245882+00:00"
 }

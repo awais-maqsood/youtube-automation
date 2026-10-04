@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-04T00:36:29.549813+00:00",
+  "updated_utc": "2026-10-04T16:54:38.244391+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -1325,6 +1325,24 @@
       "source": "upload.success",
       "app_id": "war_hbo",
       "youtube_id": "MXhwwfGW3qo"
+    },
+    {
+      "title": "Why Jason Kelce’s Game Has Transformed",
+      "opener": "Jason Kelce’s biggest shift revealed",
+      "cta": "",
+      "trend": "Jason Kelce",
+      "utc": "2026-10-04T16:47:28.373971+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Why Jason Kelce’s Game Has Transformed",
+      "opener": "Jason Kelce’s biggest shift revealed",
+      "cta": "Did Jason Kelce surprise you? Comment below.",
+      "trend": "Jason Kelce",
+      "utc": "2026-10-04T16:54:38.243230+00:00",
+      "source": "upload.success",
+      "app_id": "jason_kelce",
+      "youtube_id": "Nyzep3etips"
     }
   ]
 }
