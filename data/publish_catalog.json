@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-05T00:51:45.105787+00:00",
+  "updated_utc": "2026-10-05T23:14:58.100855+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -1379,6 +1379,24 @@
       "source": "upload.success",
       "app_id": "charlotte_flair",
       "youtube_id": "zCc0bWuwLAo"
+    },
+    {
+      "title": "Knicks vs 76ers Viral Moment Shocks Fans",
+      "opener": "Biggest highlight from Knicks vs 76ers!",
+      "cta": "",
+      "trend": "Knicks vs 76ers",
+      "utc": "2026-10-05T23:07:57.234384+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Knicks vs 76ers Viral Moment Shocks Fans",
+      "opener": "Biggest highlight from Knicks vs 76ers!",
+      "cta": "What’s your take on this viral highlight?",
+      "trend": "Knicks vs 76ers",
+      "utc": "2026-10-05T23:14:58.099693+00:00",
+      "source": "upload.success",
+      "app_id": "knicks_vs_76ers",
+      "youtube_id": "hR-xs5U5hOM"
     }
   ]
 }

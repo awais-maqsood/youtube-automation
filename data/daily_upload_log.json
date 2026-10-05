@@ -574,16 +574,22 @@
       ]
     },
     "2026-10-05": {
-      "count": 1,
+      "count": 2,
       "events": [
         {
           "utc": "2026-10-05T00:51:45.107241+00:00",
           "title": "Charlotte Flair's Fiercest Facts You Didn't Know",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-10-05T23:14:58.102357+00:00",
+          "title": "Knicks vs 76ers Viral Moment Shocks Fans",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-10-05T00:51:45.107270+00:00"
+  "updated_utc": "2026-10-05T23:14:58.102387+00:00"
 }
