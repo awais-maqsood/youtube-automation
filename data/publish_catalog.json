@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-04T20:12:28.180059+00:00",
+  "updated_utc": "2026-10-05T00:51:45.105787+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -1361,6 +1361,24 @@
       "source": "upload.success",
       "app_id": "tee_higgins",
       "youtube_id": "hE2UcAJWyoI"
+    },
+    {
+      "title": "Charlotte Flair's Fiercest Facts You Didn't Know",
+      "opener": "Charlotte Flair: Fact or Fiction?",
+      "cta": "",
+      "trend": "Charlotte Flair",
+      "utc": "2026-10-05T00:44:46.141135+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Charlotte Flair's Fiercest Facts You Didn't Know",
+      "opener": "Charlotte Flair: Fact or Fiction?",
+      "cta": "Agree on Charlotte Flair? Reply in comments.",
+      "trend": "Charlotte Flair",
+      "utc": "2026-10-05T00:51:45.104643+00:00",
+      "source": "upload.success",
+      "app_id": "charlotte_flair",
+      "youtube_id": "zCc0bWuwLAo"
     }
   ]
 }
