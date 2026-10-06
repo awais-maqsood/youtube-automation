@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-05T23:14:58.100855+00:00",
+  "updated_utc": "2026-10-06T18:25:05.997773+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -1397,6 +1397,24 @@
       "source": "upload.success",
       "app_id": "knicks_vs_76ers",
       "youtube_id": "hR-xs5U5hOM"
+    },
+    {
+      "title": "Croatia vs Spain: Why Spain Was Outplayed",
+      "opener": "Spain lost control like never before",
+      "cta": "",
+      "trend": "Croatia vs Spain",
+      "utc": "2026-10-06T18:17:24.583981+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Croatia vs Spain: Why Spain Was Outplayed",
+      "opener": "Spain lost control like never before",
+      "cta": "Did Croatia vs Spain surprise you? Comment below.",
+      "trend": "Croatia vs Spain",
+      "utc": "2026-10-06T18:25:05.996569+00:00",
+      "source": "upload.success",
+      "app_id": "croatia_vs_spain",
+      "youtube_id": "UmGX6dQbp28"
     }
   ]
 }
