@@ -591,16 +591,22 @@
       ]
     },
     "2026-10-06": {
-      "count": 1,
+      "count": 2,
       "events": [
         {
           "utc": "2026-10-06T18:25:05.999408+00:00",
           "title": "Croatia vs Spain: Why Spain Was Outplayed",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-10-06T21:42:36.835432+00:00",
+          "title": "Colombia vs Peru Controversy Timeline Explained",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-10-06T18:25:05.999440+00:00"
+  "updated_utc": "2026-10-06T21:42:36.835464+00:00"
 }

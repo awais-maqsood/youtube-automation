@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-06T18:25:05.997773+00:00",
+  "updated_utc": "2026-10-06T21:42:36.833901+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -1415,6 +1415,24 @@
       "source": "upload.success",
       "app_id": "croatia_vs_spain",
       "youtube_id": "UmGX6dQbp28"
+    },
+    {
+      "title": "Colombia vs Peru Controversy Timeline Explained",
+      "opener": "Here’s all the drama in Colombia vs Peru",
+      "cta": "",
+      "trend": "Colombia vs Peru",
+      "utc": "2026-10-06T21:35:26.646689+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Colombia vs Peru Controversy Timeline Explained",
+      "opener": "Here’s all the drama in Colombia vs Peru",
+      "cta": "What’s your take on the Colombia vs Peru clash?",
+      "trend": "Colombia vs Peru",
+      "utc": "2026-10-06T21:42:36.832702+00:00",
+      "source": "upload.success",
+      "app_id": "colombia_vs_peru",
+      "youtube_id": "P7pWwmTkHGc"
     }
   ]
 }
