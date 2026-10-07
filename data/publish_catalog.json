@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-06T21:42:36.833901+00:00",
+  "updated_utc": "2026-10-07T01:31:05.155594+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -1433,6 +1433,24 @@
       "source": "upload.success",
       "app_id": "colombia_vs_peru",
       "youtube_id": "P7pWwmTkHGc"
+    },
+    {
+      "title": "Derek Jeter Wasn’t Always Baseball’s MVP",
+      "opener": "Think you know Derek Jeter’s true record?",
+      "cta": "",
+      "trend": "Derek Jeter",
+      "utc": "2026-10-07T01:24:41.351217+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Derek Jeter Wasn’t Always Baseball’s MVP",
+      "opener": "Think you know Derek Jeter’s true record?",
+      "cta": "Hot take on Derek Jeter? Write it in the comments.",
+      "trend": "Derek Jeter",
+      "utc": "2026-10-07T01:31:05.154756+00:00",
+      "source": "upload.success",
+      "app_id": "derek_jeter",
+      "youtube_id": "K5pzcJTi-wI"
     }
   ]
 }
