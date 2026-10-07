@@ -608,7 +608,7 @@
       ]
     },
     "2026-10-07": {
-      "count": 2,
+      "count": 3,
       "events": [
         {
           "utc": "2026-10-07T01:31:05.156685+00:00",
@@ -621,9 +621,15 @@
           "title": "Watch This: United States Midterm Election Facts",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-10-07T19:24:23.792705+00:00",
+          "title": "How Travis Kelce's Birthday Fueled Chiefs Win (Travis Kelce...",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-10-07T10:15:50.597675+00:00"
+  "updated_utc": "2026-10-07T19:24:23.792739+00:00"
 }

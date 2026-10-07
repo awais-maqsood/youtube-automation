@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-07T10:15:50.596140+00:00",
+  "updated_utc": "2026-10-07T19:24:23.791079+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -1469,6 +1469,24 @@
       "source": "upload.success",
       "app_id": "united_states_midterm_election",
       "youtube_id": "GVi5Zuej0Ng"
+    },
+    {
+      "title": "How Travis Kelce's Birthday Fueled Chiefs Win (Travis Kelce...",
+      "opener": "Look at Travis Kelce birthday Chiefs win first.",
+      "cta": "",
+      "trend": "Travis Kelce birthday Chiefs win",
+      "utc": "2026-10-07T19:17:08.000406+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "How Travis Kelce's Birthday Fueled Chiefs Win (Travis Kelce...",
+      "opener": "Look at Travis Kelce birthday Chiefs win first.",
+      "cta": "One-line read on Travis Kelce birthday Chiefs win — leave a comment.",
+      "trend": "Travis Kelce birthday Chiefs win",
+      "utc": "2026-10-07T19:24:23.789798+00:00",
+      "source": "upload.success",
+      "app_id": "travis_kelce_birthday_chiefs_win",
+      "youtube_id": "WvmiBs5hRmc"
     }
   ]
 }
