@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-07T19:24:23.791079+00:00",
+  "updated_utc": "2026-10-07T22:03:32.669244+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -1487,6 +1487,24 @@
       "source": "upload.success",
       "app_id": "travis_kelce_birthday_chiefs_win",
       "youtube_id": "WvmiBs5hRmc"
+    },
+    {
+      "title": "Kimberly Guilfoyle Controversies Timeline Revealed",
+      "opener": "All major Kimberly Guilfoyle scandals here",
+      "cta": "",
+      "trend": "Kimberly Guilfoyle",
+      "utc": "2026-10-07T21:56:31.774589+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Kimberly Guilfoyle Controversies Timeline Revealed",
+      "opener": "All major Kimberly Guilfoyle scandals here",
+      "cta": "Would you share this about Kimberly Guilfoyle? Comment why.",
+      "trend": "Kimberly Guilfoyle",
+      "utc": "2026-10-07T22:03:32.667960+00:00",
+      "source": "upload.success",
+      "app_id": "kimberly_guilfoyle",
+      "youtube_id": "yUvubZwnaVs"
     }
   ]
 }

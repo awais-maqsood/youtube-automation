@@ -608,7 +608,7 @@
       ]
     },
     "2026-10-07": {
-      "count": 3,
+      "count": 4,
       "events": [
         {
           "utc": "2026-10-07T01:31:05.156685+00:00",
@@ -627,9 +627,15 @@
           "title": "How Travis Kelce's Birthday Fueled Chiefs Win (Travis Kelce...",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-10-07T22:03:32.670861+00:00",
+          "title": "Kimberly Guilfoyle Controversies Timeline Revealed",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-10-07T19:24:23.792739+00:00"
+  "updated_utc": "2026-10-07T22:03:32.670901+00:00"
 }
