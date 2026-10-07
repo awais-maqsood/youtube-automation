@@ -608,16 +608,22 @@
       ]
     },
     "2026-10-07": {
-      "count": 1,
+      "count": 2,
       "events": [
         {
           "utc": "2026-10-07T01:31:05.156685+00:00",
           "title": "Derek Jeter Wasn\u2019t Always Baseball\u2019s MVP",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-10-07T10:15:50.597644+00:00",
+          "title": "Watch This: United States Midterm Election Facts",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-10-07T01:31:05.156705+00:00"
+  "updated_utc": "2026-10-07T10:15:50.597675+00:00"
 }
