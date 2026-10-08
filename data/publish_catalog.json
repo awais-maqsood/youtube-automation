@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-07T22:03:32.669244+00:00",
+  "updated_utc": "2026-10-08T01:54:17.329184+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -1505,6 +1505,24 @@
       "source": "upload.success",
       "app_id": "kimberly_guilfoyle",
       "youtube_id": "yUvubZwnaVs"
+    },
+    {
+      "title": "Spencer Jones Update: What You Need To Know",
+      "opener": "Spencer Jones just made headlines again!",
+      "cta": "",
+      "trend": "Spencer Jones",
+      "utc": "2026-10-08T01:47:12.689028+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Spencer Jones Update: What You Need To Know",
+      "opener": "Spencer Jones just made headlines again!",
+      "cta": "Would you share this about Spencer Jones? Comment why.",
+      "trend": "Spencer Jones",
+      "utc": "2026-10-08T01:54:17.327709+00:00",
+      "source": "upload.success",
+      "app_id": "spencer_jones",
+      "youtube_id": "lhOyCZlCbys"
     }
   ]
 }

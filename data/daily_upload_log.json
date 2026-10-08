@@ -635,7 +635,18 @@
           "source": "upload.success"
         }
       ]
+    },
+    "2026-10-08": {
+      "count": 1,
+      "events": [
+        {
+          "utc": "2026-10-08T01:54:17.331085+00:00",
+          "title": "Spencer Jones Update: What You Need To Know",
+          "slot": "evening",
+          "source": "upload.success"
+        }
+      ]
     }
   },
-  "updated_utc": "2026-10-07T22:03:32.670901+00:00"
+  "updated_utc": "2026-10-08T01:54:17.331134+00:00"
 }
