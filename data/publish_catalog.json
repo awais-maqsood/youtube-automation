@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-08T10:31:09.451900+00:00",
+  "updated_utc": "2026-10-08T22:07:12.941116+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -1541,6 +1541,24 @@
       "source": "upload.success",
       "app_id": "sophie_cunningham",
       "youtube_id": "dRpviWBC2CI"
+    },
+    {
+      "title": "Ashton Jeanty Injury Shakes NFL Fans Worldwide",
+      "opener": "Jeanty’s Injury Stops Fans Cold",
+      "cta": "",
+      "trend": "Ashton Jeanty injury",
+      "utc": "2026-10-08T22:00:21.427234+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Ashton Jeanty Injury Shakes NFL Fans Worldwide",
+      "opener": "Jeanty’s Injury Stops Fans Cold",
+      "cta": "Where do you stand on Ashton Jeanty injury? Tell me in comments.",
+      "trend": "Ashton Jeanty injury",
+      "utc": "2026-10-08T22:07:12.940056+00:00",
+      "source": "upload.success",
+      "app_id": "ashton_jeanty_injury",
+      "youtube_id": "vopqIXSCGJg"
     }
   ]
 }

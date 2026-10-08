@@ -637,7 +637,7 @@
       ]
     },
     "2026-10-08": {
-      "count": 2,
+      "count": 3,
       "events": [
         {
           "utc": "2026-10-08T01:54:17.331085+00:00",
@@ -650,9 +650,15 @@
           "title": "Sophie Cunningham\u2019s Controversy Timeline Exposed",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-10-08T22:07:12.942502+00:00",
+          "title": "Ashton Jeanty Injury Shakes NFL Fans Worldwide",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-10-08T10:31:09.453955+00:00"
+  "updated_utc": "2026-10-08T22:07:12.942536+00:00"
 }
