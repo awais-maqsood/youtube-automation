@@ -637,16 +637,22 @@
       ]
     },
     "2026-10-08": {
-      "count": 1,
+      "count": 2,
       "events": [
         {
           "utc": "2026-10-08T01:54:17.331085+00:00",
           "title": "Spencer Jones Update: What You Need To Know",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-10-08T10:31:09.453911+00:00",
+          "title": "Sophie Cunningham\u2019s Controversy Timeline Exposed",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-10-08T01:54:17.331134+00:00"
+  "updated_utc": "2026-10-08T10:31:09.453955+00:00"
 }

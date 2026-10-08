@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-08T01:54:17.329184+00:00",
+  "updated_utc": "2026-10-08T10:31:09.451900+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -1523,6 +1523,24 @@
       "source": "upload.success",
       "app_id": "spencer_jones",
       "youtube_id": "lhOyCZlCbys"
+    },
+    {
+      "title": "Sophie Cunningham’s Controversy Timeline Exposed",
+      "opener": "Sophie Cunningham faced waves of backlash!",
+      "cta": "",
+      "trend": "Sophie Cunningham",
+      "utc": "2026-10-08T10:24:05.231034+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Sophie Cunningham’s Controversy Timeline Exposed",
+      "opener": "Sophie Cunningham faced waves of backlash!",
+      "cta": "One-line read on Sophie Cunningham — leave a comment.",
+      "trend": "Sophie Cunningham",
+      "utc": "2026-10-08T10:31:09.450308+00:00",
+      "source": "upload.success",
+      "app_id": "sophie_cunningham",
+      "youtube_id": "dRpviWBC2CI"
     }
   ]
 }
