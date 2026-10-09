@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-09T18:25:02.432853+00:00",
+  "updated_utc": "2026-10-09T21:43:08.729967+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -1595,6 +1595,24 @@
       "source": "upload.success",
       "app_id": "al_nassr_vs_diriyah",
       "youtube_id": "om5Dbd8JLCw"
+    },
+    {
+      "title": "The quiet angle on Kaytron Allen",
+      "opener": "Inside Kaytron Allen’s drama timeline",
+      "cta": "",
+      "trend": "Kaytron Allen",
+      "utc": "2026-10-09T21:36:19.439266+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "The quiet angle on Kaytron Allen",
+      "opener": "Inside Kaytron Allen’s drama timeline",
+      "cta": "Hot take on Kaytron Allen? Write it in the comments.",
+      "trend": "Kaytron Allen",
+      "utc": "2026-10-09T21:43:08.728852+00:00",
+      "source": "upload.success",
+      "app_id": "kaytron_allen",
+      "youtube_id": "X56EpVXXyrk"
     }
   ]
 }

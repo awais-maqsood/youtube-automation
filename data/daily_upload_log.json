@@ -660,7 +660,7 @@
       ]
     },
     "2026-10-09": {
-      "count": 2,
+      "count": 3,
       "events": [
         {
           "utc": "2026-10-09T10:30:16.026277+00:00",
@@ -673,9 +673,15 @@
           "title": "How Al-Nassr vs Diriyah Match Shocked Fans",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-10-09T21:43:08.731432+00:00",
+          "title": "The quiet angle on Kaytron Allen",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-10-09T18:25:02.434562+00:00"
+  "updated_utc": "2026-10-09T21:43:08.731463+00:00"
 }
