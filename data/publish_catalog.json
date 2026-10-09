@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-08T22:07:12.941116+00:00",
+  "updated_utc": "2026-10-09T10:30:16.024276+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -1559,6 +1559,24 @@
       "source": "upload.success",
       "app_id": "ashton_jeanty_injury",
       "youtube_id": "vopqIXSCGJg"
+    },
+    {
+      "title": "How Navi Pillay Changed Global Human Rights Views",
+      "opener": "Why Navi Pillay shifted the human rights game",
+      "cta": "",
+      "trend": "Navi Pillay",
+      "utc": "2026-10-09T10:23:06.372320+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "How Navi Pillay Changed Global Human Rights Views",
+      "opener": "Why Navi Pillay shifted the human rights game",
+      "cta": "Thoughts on Navi Pillay? Drop a comment.",
+      "trend": "Navi Pillay",
+      "utc": "2026-10-09T10:30:16.023027+00:00",
+      "source": "upload.success",
+      "app_id": "navi_pillay",
+      "youtube_id": "QONnYBVzvKU"
     }
   ]
 }

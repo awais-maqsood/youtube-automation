@@ -658,7 +658,18 @@
           "source": "upload.success"
         }
       ]
+    },
+    "2026-10-09": {
+      "count": 1,
+      "events": [
+        {
+          "utc": "2026-10-09T10:30:16.026277+00:00",
+          "title": "How Navi Pillay Changed Global Human Rights Views",
+          "slot": "evening",
+          "source": "upload.success"
+        }
+      ]
     }
   },
-  "updated_utc": "2026-10-08T22:07:12.942536+00:00"
+  "updated_utc": "2026-10-09T10:30:16.026312+00:00"
 }
