@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-09T10:30:16.024276+00:00",
+  "updated_utc": "2026-10-09T18:25:02.432853+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -1577,6 +1577,24 @@
       "source": "upload.success",
       "app_id": "navi_pillay",
       "youtube_id": "QONnYBVzvKU"
+    },
+    {
+      "title": "How Al-Nassr vs Diriyah Match Shocked Fans",
+      "opener": "Big twists in Al-Nassr vs Diriyah!",
+      "cta": "",
+      "trend": "Al-Nassr vs Diriyah",
+      "utc": "2026-10-09T18:17:58.933419+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "How Al-Nassr vs Diriyah Match Shocked Fans",
+      "opener": "Big twists in Al-Nassr vs Diriyah!",
+      "cta": "Thoughts on Al-Nassr vs Diriyah? Drop a comment.",
+      "trend": "Al-Nassr vs Diriyah",
+      "utc": "2026-10-09T18:25:02.431555+00:00",
+      "source": "upload.success",
+      "app_id": "al_nassr_vs_diriyah",
+      "youtube_id": "om5Dbd8JLCw"
     }
   ]
 }

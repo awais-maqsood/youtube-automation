@@ -660,16 +660,22 @@
       ]
     },
     "2026-10-09": {
-      "count": 1,
+      "count": 2,
       "events": [
         {
           "utc": "2026-10-09T10:30:16.026277+00:00",
           "title": "How Navi Pillay Changed Global Human Rights Views",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-10-09T18:25:02.434530+00:00",
+          "title": "How Al-Nassr vs Diriyah Match Shocked Fans",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-10-09T10:30:16.026312+00:00"
+  "updated_utc": "2026-10-09T18:25:02.434562+00:00"
 }
