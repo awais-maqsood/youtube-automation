@@ -683,16 +683,22 @@
       ]
     },
     "2026-10-10": {
-      "count": 1,
+      "count": 2,
       "events": [
         {
           "utc": "2026-10-10T17:24:34.029496+00:00",
           "title": "How Does Gabriel Jesus Boost Productivity ROI?",
           "slot": "afternoon",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-10-10T20:39:36.640641+00:00",
+          "title": "What\u2019s New with Cam Coleman Today?",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-10-10T17:24:34.029532+00:00"
+  "updated_utc": "2026-10-10T20:39:36.640660+00:00"
 }

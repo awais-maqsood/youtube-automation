@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-10T17:24:34.027882+00:00",
+  "updated_utc": "2026-10-10T20:39:36.639298+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -1631,6 +1631,24 @@
       "source": "upload.success",
       "app_id": "gabriel_jesus",
       "youtube_id": "Q2GuG1GP2RU"
+    },
+    {
+      "title": "What’s New with Cam Coleman Today?",
+      "opener": "Cam Coleman just made waves!",
+      "cta": "",
+      "trend": "Cam Coleman",
+      "utc": "2026-10-10T20:33:09.047558+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "What’s New with Cam Coleman Today?",
+      "opener": "Cam Coleman just made waves!",
+      "cta": "What is your take on Cam Coleman? Comment below.",
+      "trend": "Cam Coleman",
+      "utc": "2026-10-10T20:39:36.638309+00:00",
+      "source": "upload.success",
+      "app_id": "cam_coleman",
+      "youtube_id": "AKQQ-zCqmOk"
     }
   ]
 }
