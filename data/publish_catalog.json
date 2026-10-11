@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-10T20:39:36.639298+00:00",
+  "updated_utc": "2026-10-11T00:57:00.911046+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -1649,6 +1649,24 @@
       "source": "upload.success",
       "app_id": "cam_coleman",
       "youtube_id": "AKQQ-zCqmOk"
+    },
+    {
+      "title": "Amanda Seyfried Isn’t Who You Think She Is",
+      "opener": "Amanda Seyfried’s image just shifted",
+      "cta": "",
+      "trend": "Amanda Seyfried",
+      "utc": "2026-10-11T00:50:13.401502+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Amanda Seyfried Isn’t Who You Think She Is",
+      "opener": "Amanda Seyfried’s image just shifted",
+      "cta": "Did Amanda Seyfried surprise you? Comment below.",
+      "trend": "Amanda Seyfried",
+      "utc": "2026-10-11T00:57:00.909919+00:00",
+      "source": "upload.success",
+      "app_id": "amanda_seyfried",
+      "youtube_id": "hClhac-96Mw"
     }
   ]
 }

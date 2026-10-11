@@ -698,7 +698,18 @@
           "source": "upload.success"
         }
       ]
+    },
+    "2026-10-11": {
+      "count": 1,
+      "events": [
+        {
+          "utc": "2026-10-11T00:57:00.912538+00:00",
+          "title": "Amanda Seyfried Isn\u2019t Who You Think She Is",
+          "slot": "evening",
+          "source": "upload.success"
+        }
+      ]
     }
   },
-  "updated_utc": "2026-10-10T20:39:36.640660+00:00"
+  "updated_utc": "2026-10-11T00:57:00.912562+00:00"
 }
