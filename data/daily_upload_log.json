@@ -700,7 +700,7 @@
       ]
     },
     "2026-10-11": {
-      "count": 2,
+      "count": 3,
       "events": [
         {
           "utc": "2026-10-11T00:57:00.912538+00:00",
@@ -713,9 +713,15 @@
           "title": "Why Did Netflix Squid Game Go Viral Worldwide?",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-10-11T17:46:40.031611+00:00",
+          "title": "What Are India vs West Indies Match Hidden Fees?",
+          "slot": "afternoon",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-10-11T10:01:13.784971+00:00"
+  "updated_utc": "2026-10-11T17:46:40.031660+00:00"
 }
