@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-11T00:57:00.911046+00:00",
+  "updated_utc": "2026-10-11T10:01:13.783456+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -1667,6 +1667,24 @@
       "source": "upload.success",
       "app_id": "amanda_seyfried",
       "youtube_id": "hClhac-96Mw"
+    },
+    {
+      "title": "Why Did Netflix Squid Game Go Viral Worldwide?",
+      "opener": "This Netflix show changed global TV forever",
+      "cta": "",
+      "trend": "Netflix Squid Game",
+      "utc": "2026-10-11T09:54:31.671444+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Why Did Netflix Squid Game Go Viral Worldwide?",
+      "opener": "This Netflix show changed global TV forever",
+      "cta": "What is your take on Netflix Squid Game? Comment below.",
+      "trend": "Netflix Squid Game",
+      "utc": "2026-10-11T10:01:13.782297+00:00",
+      "source": "upload.success",
+      "app_id": "netflix_squid_game",
+      "youtube_id": "HE00lHT5ClY"
     }
   ]
 }

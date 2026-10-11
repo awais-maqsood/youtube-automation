@@ -700,16 +700,22 @@
       ]
     },
     "2026-10-11": {
-      "count": 1,
+      "count": 2,
       "events": [
         {
           "utc": "2026-10-11T00:57:00.912538+00:00",
           "title": "Amanda Seyfried Isn\u2019t Who You Think She Is",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-10-11T10:01:13.784927+00:00",
+          "title": "Why Did Netflix Squid Game Go Viral Worldwide?",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-10-11T00:57:00.912562+00:00"
+  "updated_utc": "2026-10-11T10:01:13.784971+00:00"
 }
