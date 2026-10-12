@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-12T01:18:35.868370+00:00",
+  "updated_utc": "2026-10-12T21:20:23.515047+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -1721,6 +1721,24 @@
       "source": "upload.success",
       "app_id": "landman_season_3",
       "youtube_id": "txioZ9KatgY"
+    },
+    {
+      "title": "How GTA 6 Lucia Leak Changes Game Expectations",
+      "opener": "Big insights from GTA 6 leak revealed",
+      "cta": "",
+      "trend": "GTA 6 Lucia Leak",
+      "utc": "2026-10-12T21:13:08.333301+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "How GTA 6 Lucia Leak Changes Game Expectations",
+      "opener": "Big insights from GTA 6 leak revealed",
+      "cta": "What is your take on GTA 6 Lucia Leak? Comment below.",
+      "trend": "GTA 6 Lucia Leak",
+      "utc": "2026-10-12T21:20:23.513596+00:00",
+      "source": "upload.success",
+      "app_id": "gta_6_lucia_leak",
+      "youtube_id": "N9nPQG8euck"
     }
   ]
 }
