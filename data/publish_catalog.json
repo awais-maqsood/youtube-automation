@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-11T17:46:40.029599+00:00",
+  "updated_utc": "2026-10-12T01:18:35.868370+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -1703,6 +1703,24 @@
       "source": "upload.success",
       "app_id": "india_vs_west_indies",
       "youtube_id": "NhhbEq780tA"
+    },
+    {
+      "title": "Landman Season 3’s Bold Viral Moment Explained",
+      "opener": "This Landman scene just broke the internet!",
+      "cta": "",
+      "trend": "Landman Season 3",
+      "utc": "2026-10-12T01:11:44.006069+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Landman Season 3’s Bold Viral Moment Explained",
+      "opener": "This Landman scene just broke the internet!",
+      "cta": "Would you share this about Landman Season 3? Comment why.",
+      "trend": "Landman Season 3",
+      "utc": "2026-10-12T01:18:35.867181+00:00",
+      "source": "upload.success",
+      "app_id": "landman_season_3",
+      "youtube_id": "txioZ9KatgY"
     }
   ]
 }

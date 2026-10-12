@@ -721,7 +721,18 @@
           "source": "upload.success"
         }
       ]
+    },
+    "2026-10-12": {
+      "count": 1,
+      "events": [
+        {
+          "utc": "2026-10-12T01:18:35.869967+00:00",
+          "title": "Landman Season 3\u2019s Bold Viral Moment Explained",
+          "slot": "evening",
+          "source": "upload.success"
+        }
+      ]
     }
   },
-  "updated_utc": "2026-10-11T17:46:40.031660+00:00"
+  "updated_utc": "2026-10-12T01:18:35.870002+00:00"
 }
