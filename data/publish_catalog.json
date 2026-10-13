@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-13T03:04:52.196510+00:00",
+  "updated_utc": "2026-10-13T19:19:06.928081+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -1757,6 +1757,24 @@
       "source": "upload.success",
       "app_id": "tobey_maguire_ice_spice",
       "youtube_id": "3h64iayLqmk"
+    },
+    {
+      "title": "Cardi B Drops New Music Update Today",
+      "opener": "Cardi B just made a huge announcement",
+      "cta": "",
+      "trend": "Cardi B",
+      "utc": "2026-10-13T19:11:55.519887+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Cardi B Drops New Music Update Today",
+      "opener": "Cardi B just made a huge announcement",
+      "cta": "Did Cardi B surprise you? Comment below.",
+      "trend": "Cardi B",
+      "utc": "2026-10-13T19:19:06.926575+00:00",
+      "source": "upload.success",
+      "app_id": "cardi_b",
+      "youtube_id": "kpQzi2FY6Es"
     }
   ]
 }
