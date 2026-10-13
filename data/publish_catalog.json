@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-13T19:19:06.928081+00:00",
+  "updated_utc": "2026-10-13T21:55:38.927152+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -1775,6 +1775,24 @@
       "source": "upload.success",
       "app_id": "cardi_b",
       "youtube_id": "kpQzi2FY6Es"
+    },
+    {
+      "title": "Why Lioness Season 3 Surprises Everyone",
+      "opener": "Lioness Season 3 Just Flipped The Game",
+      "cta": "",
+      "trend": "Lioness Season 3",
+      "utc": "2026-10-13T21:48:36.338307+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Why Lioness Season 3 Surprises Everyone",
+      "opener": "Lioness Season 3 Just Flipped The Game",
+      "cta": "Agree on Lioness Season 3? Reply in comments.",
+      "trend": "Lioness Season 3",
+      "utc": "2026-10-13T21:55:38.925751+00:00",
+      "source": "upload.success",
+      "app_id": "lioness_season_3",
+      "youtube_id": "ciL8SQ0DWtc"
     }
   ]
 }
