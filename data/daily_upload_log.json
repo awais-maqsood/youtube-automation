@@ -763,16 +763,22 @@
       ]
     },
     "2026-10-14": {
-      "count": 1,
+      "count": 2,
       "events": [
         {
           "utc": "2026-10-14T08:44:43.643467+00:00",
           "title": "Kansas City Tornado Warning Sparks Viral Reactions",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-10-14T17:08:02.639208+00:00",
+          "title": "Don\u2019t Overlook These PlayStation Plus October Games (PlayStation...",
+          "slot": "afternoon",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-10-14T08:44:43.643503+00:00"
+  "updated_utc": "2026-10-14T17:08:02.639228+00:00"
 }
