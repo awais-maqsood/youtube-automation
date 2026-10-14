@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-13T21:55:38.927152+00:00",
+  "updated_utc": "2026-10-14T08:44:43.641545+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -1793,6 +1793,24 @@
       "source": "upload.success",
       "app_id": "lioness_season_3",
       "youtube_id": "ciL8SQ0DWtc"
+    },
+    {
+      "title": "Kansas City Tornado Warning Sparks Viral Reactions",
+      "opener": "Watch Kansas City brace for tornado chaos",
+      "cta": "",
+      "trend": "Kansas City Tornado Warning",
+      "utc": "2026-10-14T08:36:17.424248+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Kansas City Tornado Warning Sparks Viral Reactions",
+      "opener": "Watch Kansas City brace for tornado chaos",
+      "cta": "One-line read on Kansas City Tornado Warning — leave a comment.",
+      "trend": "Kansas City Tornado Warning",
+      "utc": "2026-10-14T08:44:43.640065+00:00",
+      "source": "upload.success",
+      "app_id": "kansas_city_tornado_warning",
+      "youtube_id": "cx9lD0NRfzk"
     }
   ]
 }

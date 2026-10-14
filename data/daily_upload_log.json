@@ -761,7 +761,18 @@
           "source": "upload.success"
         }
       ]
+    },
+    "2026-10-14": {
+      "count": 1,
+      "events": [
+        {
+          "utc": "2026-10-14T08:44:43.643467+00:00",
+          "title": "Kansas City Tornado Warning Sparks Viral Reactions",
+          "slot": "evening",
+          "source": "upload.success"
+        }
+      ]
     }
   },
-  "updated_utc": "2026-10-13T21:55:38.929144+00:00"
+  "updated_utc": "2026-10-14T08:44:43.643503+00:00"
 }
