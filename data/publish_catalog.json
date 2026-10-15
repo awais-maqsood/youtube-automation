@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-14T17:08:02.637916+00:00",
+  "updated_utc": "2026-10-15T00:32:30.257637+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -1829,6 +1829,24 @@
       "source": "upload.success",
       "app_id": "playstation_plus_october_game_catalog",
       "youtube_id": "wTHofjbVh_M"
+    },
+    {
+      "title": "Miami Heat's Viral Play Has Everyone Talking",
+      "opener": "This Miami Heat move blew up instantly",
+      "cta": "",
+      "trend": "Miami Heat",
+      "utc": "2026-10-15T00:26:09.074107+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Miami Heat's Viral Play Has Everyone Talking",
+      "opener": "This Miami Heat move blew up instantly",
+      "cta": "Thoughts on Miami Heat? Drop a comment.",
+      "trend": "Miami Heat",
+      "utc": "2026-10-15T00:32:30.256639+00:00",
+      "source": "upload.success",
+      "app_id": "miami_heat",
+      "youtube_id": "4lprRKB0df8"
     }
   ]
 }
