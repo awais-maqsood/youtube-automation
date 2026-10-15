@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-15T00:32:30.257637+00:00",
+  "updated_utc": "2026-10-15T16:56:45.686407+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -1847,6 +1847,24 @@
       "source": "upload.success",
       "app_id": "miami_heat",
       "youtube_id": "4lprRKB0df8"
+    },
+    {
+      "title": "Union Saint-Gilloise vs Real Sociedad: What Shifted?",
+      "opener": "How did the game dynamic completely shift?",
+      "cta": "",
+      "trend": "Union Saint-Gilloise vs Real Sociedad",
+      "utc": "2026-10-15T16:49:44.536157+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Union Saint-Gilloise vs Real Sociedad: What Shifted?",
+      "opener": "How did the game dynamic completely shift?",
+      "cta": "Did Union Saint-Gilloise vs Real Sociedad surprise you? Comment below.",
+      "trend": "Union Saint-Gilloise vs Real Sociedad",
+      "utc": "2026-10-15T16:56:45.685120+00:00",
+      "source": "upload.success",
+      "app_id": "union_saint_gilloise_vs_real_sociedad",
+      "youtube_id": "-AmDS5P2g3I"
     }
   ]
 }
