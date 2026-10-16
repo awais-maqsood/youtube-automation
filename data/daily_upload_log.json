@@ -795,7 +795,18 @@
           "source": "upload.success"
         }
       ]
+    },
+    "2026-10-16": {
+      "count": 1,
+      "events": [
+        {
+          "utc": "2026-10-16T08:12:04.223580+00:00",
+          "title": "How Morris Chestnut Became Hollywood's Top Star",
+          "slot": "evening",
+          "source": "upload.success"
+        }
+      ]
     }
   },
-  "updated_utc": "2026-10-15T16:56:45.688104+00:00"
+  "updated_utc": "2026-10-16T08:12:04.223612+00:00"
 }

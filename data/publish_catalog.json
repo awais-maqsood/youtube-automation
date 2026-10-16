@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-15T16:56:45.686407+00:00",
+  "updated_utc": "2026-10-16T08:12:04.221716+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -1865,6 +1865,24 @@
       "source": "upload.success",
       "app_id": "union_saint_gilloise_vs_real_sociedad",
       "youtube_id": "-AmDS5P2g3I"
+    },
+    {
+      "title": "How Morris Chestnut Became Hollywood's Top Star",
+      "opener": "Why is Morris Chestnut everywhere lately?",
+      "cta": "",
+      "trend": "Morris Chestnut",
+      "utc": "2026-10-16T08:04:53.207744+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "How Morris Chestnut Became Hollywood's Top Star",
+      "opener": "Why is Morris Chestnut everywhere lately?",
+      "cta": "Thoughts on Morris Chestnut? Drop a comment.",
+      "trend": "Morris Chestnut",
+      "utc": "2026-10-16T08:12:04.220150+00:00",
+      "source": "upload.success",
+      "app_id": "morris_chestnut",
+      "youtube_id": "JYI5-PbLgTI"
     }
   ]
 }
