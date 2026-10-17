@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-17T00:25:47.970644+00:00",
+  "updated_utc": "2026-10-17T07:48:59.232812+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -1901,6 +1901,24 @@
       "source": "upload.success",
       "app_id": "cleveland_ohio_weather",
       "youtube_id": "FeDt0S2ueGE"
+    },
+    {
+      "title": "Jennifer Connelly's Biggest Controversies Exposed",
+      "opener": "What sparked Jennifer Connelly's major controversies?",
+      "cta": "",
+      "trend": "Jennifer Connelly",
+      "utc": "2026-10-17T07:42:01.349633+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Jennifer Connelly's Biggest Controversies Exposed",
+      "opener": "What sparked Jennifer Connelly's major controversies?",
+      "cta": "Did Jennifer Connelly surprise you? Comment below.",
+      "trend": "Jennifer Connelly",
+      "utc": "2026-10-17T07:48:59.231247+00:00",
+      "source": "upload.success",
+      "app_id": "jennifer_connelly",
+      "youtube_id": "arI00gWb6Q4"
     }
   ]
 }
