@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-16T08:12:04.221716+00:00",
+  "updated_utc": "2026-10-17T00:25:47.970644+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -1883,6 +1883,24 @@
       "source": "upload.success",
       "app_id": "morris_chestnut",
       "youtube_id": "JYI5-PbLgTI"
+    },
+    {
+      "title": "Cleveland Ohio Weather Shifts Like Never Before",
+      "opener": "Big changes hit Cleveland skies fast",
+      "cta": "",
+      "trend": "Cleveland Ohio Weather",
+      "utc": "2026-10-17T00:18:37.310125+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Cleveland Ohio Weather Shifts Like Never Before",
+      "opener": "Big changes hit Cleveland skies fast",
+      "cta": "Did Cleveland Ohio Weather surprise you? Comment below.",
+      "trend": "Cleveland Ohio Weather",
+      "utc": "2026-10-17T00:25:47.969095+00:00",
+      "source": "upload.success",
+      "app_id": "cleveland_ohio_weather",
+      "youtube_id": "FeDt0S2ueGE"
     }
   ]
 }

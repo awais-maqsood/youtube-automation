@@ -806,7 +806,18 @@
           "source": "upload.success"
         }
       ]
+    },
+    "2026-10-17": {
+      "count": 1,
+      "events": [
+        {
+          "utc": "2026-10-17T00:25:47.972578+00:00",
+          "title": "Cleveland Ohio Weather Shifts Like Never Before",
+          "slot": "evening",
+          "source": "upload.success"
+        }
+      ]
     }
   },
-  "updated_utc": "2026-10-16T08:12:04.223612+00:00"
+  "updated_utc": "2026-10-17T00:25:47.972608+00:00"
 }
