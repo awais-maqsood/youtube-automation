@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-17T07:48:59.232812+00:00",
+  "updated_utc": "2026-10-17T15:32:30.994656+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -1919,6 +1919,24 @@
       "source": "upload.success",
       "app_id": "jennifer_connelly",
       "youtube_id": "arI00gWb6Q4"
+    },
+    {
+      "title": "Inside Virginia vs SMU, stripped down",
+      "opener": "How Did Virginia vs SMU Get So Heated?",
+      "cta": "",
+      "trend": "Virginia vs SMU",
+      "utc": "2026-10-17T15:25:30.881075+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Inside Virginia vs SMU, stripped down",
+      "opener": "How Did Virginia vs SMU Get So Heated?",
+      "cta": "What’s your take on the Virginia vs SMU spat?",
+      "trend": "Virginia vs SMU",
+      "utc": "2026-10-17T15:32:30.993095+00:00",
+      "source": "upload.success",
+      "app_id": "virginia_vs_smu",
+      "youtube_id": "7VdtIO068c4"
     }
   ]
 }
