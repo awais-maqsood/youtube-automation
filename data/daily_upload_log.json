@@ -831,7 +831,7 @@
       ]
     },
     "2026-10-18": {
-      "count": 2,
+      "count": 3,
       "events": [
         {
           "utc": "2026-10-18T00:03:09.150334+00:00",
@@ -844,9 +844,15 @@
           "title": "Nintendo Switch 2 Launch Won't Meet Expectations",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-10-18T19:30:50.805390+00:00",
+          "title": "Garrett Wilson Isn\u2019t Just a Rookie Surprise",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-10-18T15:52:09.488676+00:00"
+  "updated_utc": "2026-10-18T19:30:50.805423+00:00"
 }
