@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-18T00:03:09.148867+00:00",
+  "updated_utc": "2026-10-18T15:52:09.487286+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -1955,6 +1955,24 @@
       "source": "upload.success",
       "app_id": "ashton_daniels",
       "youtube_id": "CRDUksRrhOE"
+    },
+    {
+      "title": "Nintendo Switch 2 Launch Won't Meet Expectations",
+      "opener": "Why the next Switch might disappoint",
+      "cta": "",
+      "trend": "Nintendo Switch 2 launch",
+      "utc": "2026-10-18T15:45:53.301873+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Nintendo Switch 2 Launch Won't Meet Expectations",
+      "opener": "Why the next Switch might disappoint",
+      "cta": "Did Nintendo Switch 2 launch surprise you? Comment below.",
+      "trend": "Nintendo Switch 2 launch",
+      "utc": "2026-10-18T15:52:09.486212+00:00",
+      "source": "upload.success",
+      "app_id": "nintendo_switch_2_launch",
+      "youtube_id": "3L0pyNIbywo"
     }
   ]
 }
