@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-17T15:32:30.994656+00:00",
+  "updated_utc": "2026-10-18T00:03:09.148867+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -1937,6 +1937,24 @@
       "source": "upload.success",
       "app_id": "virginia_vs_smu",
       "youtube_id": "7VdtIO068c4"
+    },
+    {
+      "title": "What Really Changed with Ashton Daniels?",
+      "opener": "Ashton Daniels sees big changes now",
+      "cta": "",
+      "trend": "Ashton Daniels",
+      "utc": "2026-10-17T23:56:50.139785+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "What Really Changed with Ashton Daniels?",
+      "opener": "Ashton Daniels sees big changes now",
+      "cta": "Where do you stand on Ashton Daniels? Tell me in comments.",
+      "trend": "Ashton Daniels",
+      "utc": "2026-10-18T00:03:09.147723+00:00",
+      "source": "upload.success",
+      "app_id": "ashton_daniels",
+      "youtube_id": "CRDUksRrhOE"
     }
   ]
 }
