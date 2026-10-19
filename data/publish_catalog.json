@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-19T00:14:11.601055+00:00",
+  "updated_utc": "2026-10-19T18:47:32.698568+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -2009,6 +2009,24 @@
       "source": "upload.success",
       "app_id": "john_wick",
       "youtube_id": "5NZkMl0CNV8"
+    },
+    {
+      "title": "What Sparked Jason Sudeikis Controversy Timeline?",
+      "opener": "Jason Sudeikis controversy events unfold fast",
+      "cta": "",
+      "trend": "Jason Sudeikis",
+      "utc": "2026-10-19T18:40:37.992393+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "What Sparked Jason Sudeikis Controversy Timeline?",
+      "opener": "Jason Sudeikis controversy events unfold fast",
+      "cta": "Thoughts on Jason Sudeikis? Drop a comment.",
+      "trend": "Jason Sudeikis",
+      "utc": "2026-10-19T18:47:32.696978+00:00",
+      "source": "upload.success",
+      "app_id": "jason_sudeikis",
+      "youtube_id": "vIy0NvahwjY"
     }
   ]
 }
