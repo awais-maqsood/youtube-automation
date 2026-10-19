@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-18T19:30:50.802814+00:00",
+  "updated_utc": "2026-10-19T00:14:11.601055+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -1991,6 +1991,24 @@
       "source": "upload.success",
       "app_id": "garrett_wilson",
       "youtube_id": "QZUFmyS8y_Q"
+    },
+    {
+      "title": "Is John Wick Really That Unstoppable?",
+      "opener": "How lethal is John Wick, really?",
+      "cta": "",
+      "trend": "John Wick",
+      "utc": "2026-10-19T00:07:06.804744+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Is John Wick Really That Unstoppable?",
+      "opener": "How lethal is John Wick, really?",
+      "cta": "Agree on John Wick? Reply in comments.",
+      "trend": "John Wick",
+      "utc": "2026-10-19T00:14:11.599449+00:00",
+      "source": "upload.success",
+      "app_id": "john_wick",
+      "youtube_id": "5NZkMl0CNV8"
     }
   ]
 }
