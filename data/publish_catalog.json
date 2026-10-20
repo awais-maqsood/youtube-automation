@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-19T18:47:32.698568+00:00",
+  "updated_utc": "2026-10-20T16:54:59.672481+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -2027,6 +2027,24 @@
       "source": "upload.success",
       "app_id": "jason_sudeikis",
       "youtube_id": "vIy0NvahwjY"
+    },
+    {
+      "title": "Trump Iran Tensions Flare: What Happened?",
+      "opener": "How Trump’s moves shook Iran relations",
+      "cta": "",
+      "trend": "Trump Iran",
+      "utc": "2026-10-20T16:47:42.605362+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Trump Iran Tensions Flare: What Happened?",
+      "opener": "How Trump’s moves shook Iran relations",
+      "cta": "One-line read on Trump Iran — leave a comment.",
+      "trend": "Trump Iran",
+      "utc": "2026-10-20T16:54:59.670927+00:00",
+      "source": "upload.success",
+      "app_id": "trump_iran",
+      "youtube_id": "A2nt9PtZ4Vg"
     }
   ]
 }
