@@ -871,16 +871,22 @@
       ]
     },
     "2026-10-20": {
-      "count": 1,
+      "count": 2,
       "events": [
         {
           "utc": "2026-10-20T16:54:59.674534+00:00",
           "title": "Trump Iran Tensions Flare: What Happened?",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-10-20T20:35:27.076210+00:00",
+          "title": "GTA 6 Release Window Controversy Explained Fast",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-10-20T16:54:59.674568+00:00"
+  "updated_utc": "2026-10-20T20:35:27.076241+00:00"
 }

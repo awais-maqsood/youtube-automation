@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-20T16:54:59.672481+00:00",
+  "updated_utc": "2026-10-20T20:35:27.074207+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -2045,6 +2045,24 @@
       "source": "upload.success",
       "app_id": "trump_iran",
       "youtube_id": "A2nt9PtZ4Vg"
+    },
+    {
+      "title": "GTA 6 Release Window Controversy Explained Fast",
+      "opener": "When will GTA 6 really drop?",
+      "cta": "",
+      "trend": "GTA 6 release window",
+      "utc": "2026-10-20T20:28:28.812967+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "GTA 6 Release Window Controversy Explained Fast",
+      "opener": "When will GTA 6 really drop?",
+      "cta": "One-line read on GTA 6 release window — leave a comment.",
+      "trend": "GTA 6 release window",
+      "utc": "2026-10-20T20:35:27.072635+00:00",
+      "source": "upload.success",
+      "app_id": "gta_6_release_window",
+      "youtube_id": "gkLF7rGHhKE"
     }
   ]
 }
