@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-21T08:35:32.901729+00:00",
+  "updated_utc": "2026-10-21T17:10:45.549409+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -2099,6 +2099,24 @@
       "source": "upload.success",
       "app_id": "food_lion",
       "youtube_id": "YNo_L6_pUXk"
+    },
+    {
+      "title": "Watch This: Amazon FTC Settlement Refund Eligibility Guide",
+      "opener": "Check if you qualify for an Amazon refund now",
+      "cta": "",
+      "trend": "Amazon FTC settlement refund eligibility",
+      "utc": "2026-10-21T17:03:45.231367+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Watch This: Amazon FTC Settlement Refund Eligibility Guide",
+      "opener": "Check if you qualify for an Amazon refund now",
+      "cta": "Would you share this about Amazon FTC settlement refund eligibility? Comment why.",
+      "trend": "Amazon FTC settlement refund eligibility",
+      "utc": "2026-10-21T17:10:45.547792+00:00",
+      "source": "upload.success",
+      "app_id": "amazon_ftc_settlement_refund_eligibility",
+      "youtube_id": "ZZKhSUEa-Y4"
     }
   ]
 }

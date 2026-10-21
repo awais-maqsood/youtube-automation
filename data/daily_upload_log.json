@@ -888,7 +888,7 @@
       ]
     },
     "2026-10-21": {
-      "count": 2,
+      "count": 3,
       "events": [
         {
           "utc": "2026-10-21T00:38:16.154043+00:00",
@@ -901,9 +901,15 @@
           "title": "Food Lion Facts You Didn\u2019t Know Before",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-10-21T17:10:45.551410+00:00",
+          "title": "Watch This: Amazon FTC Settlement Refund Eligibility Guide",
+          "slot": "afternoon",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-10-21T08:35:32.903770+00:00"
+  "updated_utc": "2026-10-21T17:10:45.551439+00:00"
 }
