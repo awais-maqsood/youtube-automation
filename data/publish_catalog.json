@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-20T20:35:27.074207+00:00",
+  "updated_utc": "2026-10-21T00:38:16.152242+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -2063,6 +2063,24 @@
       "source": "upload.success",
       "app_id": "gta_6_release_window",
       "youtube_id": "gkLF7rGHhKE"
+    },
+    {
+      "title": "Why Ezra Frech Faces Recent Controversy Explained",
+      "opener": "Controversy surrounds Ezra Frech now",
+      "cta": "",
+      "trend": "Ezra Frech",
+      "utc": "2026-10-21T00:31:32.112397+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Why Ezra Frech Faces Recent Controversy Explained",
+      "opener": "Controversy surrounds Ezra Frech now",
+      "cta": "Agree on Ezra Frech? Reply in comments.",
+      "trend": "Ezra Frech",
+      "utc": "2026-10-21T00:38:16.150858+00:00",
+      "source": "upload.success",
+      "app_id": "ezra_frech",
+      "youtube_id": "VdnYgVX0QTA"
     }
   ]
 }

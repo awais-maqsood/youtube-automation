@@ -886,7 +886,18 @@
           "source": "upload.success"
         }
       ]
+    },
+    "2026-10-21": {
+      "count": 1,
+      "events": [
+        {
+          "utc": "2026-10-21T00:38:16.154043+00:00",
+          "title": "Why Ezra Frech Faces Recent Controversy Explained",
+          "slot": "evening",
+          "source": "upload.success"
+        }
+      ]
     }
   },
-  "updated_utc": "2026-10-20T20:35:27.076241+00:00"
+  "updated_utc": "2026-10-21T00:38:16.154073+00:00"
 }
