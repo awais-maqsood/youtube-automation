@@ -909,7 +909,18 @@
           "source": "upload.success"
         }
       ]
+    },
+    "2026-10-22": {
+      "count": 1,
+      "events": [
+        {
+          "utc": "2026-10-22T20:37:41.600381+00:00",
+          "title": "Paige Spiranac\u2019s Comeback Isn\u2019t What You Think",
+          "slot": "evening",
+          "source": "upload.success"
+        }
+      ]
     }
   },
-  "updated_utc": "2026-10-21T17:10:45.551439+00:00"
+  "updated_utc": "2026-10-22T20:37:41.600413+00:00"
 }

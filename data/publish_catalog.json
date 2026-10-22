@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-21T17:10:45.549409+00:00",
+  "updated_utc": "2026-10-22T20:37:41.598290+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -2117,6 +2117,24 @@
       "source": "upload.success",
       "app_id": "amazon_ftc_settlement_refund_eligibility",
       "youtube_id": "ZZKhSUEa-Y4"
+    },
+    {
+      "title": "Paige Spiranac’s Comeback Isn’t What You Think",
+      "opener": "Why Paige’s image just did a 180",
+      "cta": "",
+      "trend": "Paige Spiranac",
+      "utc": "2026-10-22T20:30:33.616449+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Paige Spiranac’s Comeback Isn’t What You Think",
+      "opener": "Why Paige’s image just did a 180",
+      "cta": "What is your take on Paige Spiranac? Comment below.",
+      "trend": "Paige Spiranac",
+      "utc": "2026-10-22T20:37:41.596658+00:00",
+      "source": "upload.success",
+      "app_id": "paige_spiranac",
+      "youtube_id": "MwTgiLwqDP0"
     }
   ]
 }
