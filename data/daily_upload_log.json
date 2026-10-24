@@ -920,7 +920,18 @@
           "source": "upload.success"
         }
       ]
+    },
+    "2026-10-24": {
+      "count": 1,
+      "events": [
+        {
+          "utc": "2026-10-24T15:54:44.137605+00:00",
+          "title": "Why William, Prince of Wales Is Not Who You Expect",
+          "slot": "evening",
+          "source": "upload.success"
+        }
+      ]
     }
   },
-  "updated_utc": "2026-10-22T20:37:41.600413+00:00"
+  "updated_utc": "2026-10-24T15:54:44.137626+00:00"
 }

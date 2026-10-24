@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-22T20:37:41.598290+00:00",
+  "updated_utc": "2026-10-24T15:54:44.136147+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -2135,6 +2135,24 @@
       "source": "upload.success",
       "app_id": "paige_spiranac",
       "youtube_id": "MwTgiLwqDP0"
+    },
+    {
+      "title": "Why William, Prince of Wales Is Not Who You Expect",
+      "opener": "William’s role just took a surprising turn",
+      "cta": "",
+      "trend": "William, Prince of Wales",
+      "utc": "2026-10-24T15:48:20.152004+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Why William, Prince of Wales Is Not Who You Expect",
+      "opener": "William’s role just took a surprising turn",
+      "cta": "Thoughts on William, Prince of Wales? Drop a comment.",
+      "trend": "William, Prince of Wales",
+      "utc": "2026-10-24T15:54:44.134982+00:00",
+      "source": "upload.success",
+      "app_id": "william_prince_of_wales",
+      "youtube_id": "e1P_yCoMrLY"
     }
   ]
 }
