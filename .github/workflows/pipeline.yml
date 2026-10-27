@@ -156,6 +156,22 @@ jobs:
         run: |
           python scripts/persist_distribution_state.py --branch "${GITHUB_REF_NAME}"
 
+      # Same Short → Rumble BlinkViralOfficial channel (official PRO Upload API).
+      - name: Upload to Rumble
+        if: steps.cap.outputs.should_run == 'true' && steps.youtube.outcome == 'success'
+        continue-on-error: true
+        env:
+          RUMBLE_ACCESS_TOKEN: ${{ secrets.RUMBLE_ACCESS_TOKEN }}
+          RUMBLE_CHANNEL_ID: ${{ vars.RUMBLE_CHANNEL_ID }}
+          RUMBLE_LICENSE_TYPE: ${{ vars.RUMBLE_LICENSE_TYPE }}
+          RUMBLE_ENABLED: ${{ vars.RUMBLE_ENABLED }}
+        run: |
+          if [ -z "$RUMBLE_ACCESS_TOKEN" ]; then
+            echo "::warning::Skipping Rumble — set RUMBLE_ACCESS_TOKEN secret (PRO Upload API from Rumble support)."
+            exit 0
+          fi
+          python scripts/upload_rumble.py --kit output/kit.json
+
       # Same Short → Postiz Public API (Instagram + Facebook).
       - name: Post to Instagram + Facebook (Postiz)
         if: steps.cap.outputs.should_run == 'true'
@@ -210,6 +226,7 @@ jobs:
             output/kit.json
             output/drive_upload.json
             output/postiz_upload.json
+            output/rumble_upload.json
             output/thumbnail.jpg
             data/daily_upload_log.json
             data/publish_catalog.json

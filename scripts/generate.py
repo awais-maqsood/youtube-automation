@@ -2343,6 +2343,52 @@ def generate(topic_id, slot, out_dir, *,
                     entity=cand_entity,
                     exclude_titles=self_titles,
                 )
+            # Salvage opener/title against catalog before hard-fail (video already rendered).
+            if sim_scores.get("reject") and (
+                sim_scores.get("opener", {}).get("reject")
+                or sim_scores.get("title", {}).get("reject")
+            ):
+                try:
+                    from content_gen import _anchor_hook, _fallback_title_from_topic
+
+                    for _ in range(16):
+                        if sim_scores.get("title", {}).get("reject"):
+                            cand_title = _fallback_title_from_topic(cand_entity or cand_title)
+                            topic["title"] = cand_title
+                        if sim_scores.get("opener", {}).get("reject"):
+                            cand_opener = _anchor_hook(cand_entity or cand_title)
+                            topic["hook"] = cand_opener
+                        sim_scores = score_candidate_against_catalog(
+                            title=cand_title,
+                            opener=cand_opener,
+                            cta=extract_cta_from_description(description),
+                            entity=cand_entity,
+                            exclude_titles=self_titles,
+                        )
+                        if not sim_scores.get("reject"):
+                            print("  [SIM] kit salvage cleared title/opener collision")
+                            break
+                    else:
+                        if sim_scores.get("opener", {}).get("reject") or sim_scores.get(
+                            "title", {}
+                        ).get("reject"):
+                            salt = random.randint(100, 999)
+                            focus = cand_entity or cand_title or "this update"
+                            if sim_scores.get("title", {}).get("reject"):
+                                cand_title = f"{focus}: pulse {salt} briefing"
+                                topic["title"] = cand_title
+                            if sim_scores.get("opener", {}).get("reject"):
+                                cand_opener = f"Pulse {salt} — quick cut on {focus}."
+                                topic["hook"] = cand_opener
+                            sim_scores = score_candidate_against_catalog(
+                                title=cand_title,
+                                opener=cand_opener,
+                                cta=extract_cta_from_description(description),
+                                entity=cand_entity,
+                                exclude_titles=self_titles,
+                            )
+                except Exception as salvage_exc:
+                    print(f"  [WARN] kit similarity salvage failed: {salvage_exc}")
             assert_below_similarity_threshold(
                 title=cand_title,
                 opener=cand_opener,

@@ -1,6 +1,6 @@
 # YouTube Automation
 
-Automation workflow for generating and uploading YouTube Shorts.
+Automation workflow for generating and uploading YouTube Shorts (then Rumble, Instagram, Facebook when configured).
 
 ## Auto Generate And Upload Schedule
 

@@ -55,7 +55,7 @@ TITLE_HISTORY_PATH = Path(__file__).resolve().parent.parent / "output" / "title_
 TITLE_HISTORY_MAX = 100
 TITLE_HISTORY_NEGATIVES = 20
 # Do not reuse the same title/opener structural family within this many recent videos.
-TITLE_FAMILY_COOLDOWN = 3
+TITLE_FAMILY_COOLDOWN = 6
 
 
 def env_value(name: str, default: str = "") -> str:
@@ -1066,57 +1066,134 @@ _TITLE_STRUCTURES: list[tuple[str, str]] = [
     ("question", "Who benefits from {t}?"),
     ("question", "What if {t} sticks?"),
     ("question", "Where does {t} go next?"),
+    ("question", "Can {t} hold this momentum?"),
+    ("question", "Should anyone still trust {t}?"),
+    ("question", "Was {t} the turning point?"),
+    ("question", "Are people overreacting to {t}?"),
+    ("question", "Could {t} flip the whole chat?"),
     # bold claim
     ("claim", "{t} just broke the usual script"),
     ("claim", "{t} is rewriting the feed"),
     ("claim", "{t} hit harder than expected"),
     ("claim", "{t} forced a new narrative"),
     ("claim", "{t} moved the goalposts"),
+    ("claim", "{t} just shook the timeline"),
+    ("claim", "{t} flipped the room overnight"),
+    ("claim", "{t} cracked the old consensus"),
+    ("claim", "{t} just stole the spotlight"),
+    ("claim", "{t} reset the conversation"),
     # contrarian
     ("contrarian", "Most takes on {t} miss this"),
     ("contrarian", "Ignore the loud take on {t}"),
     ("contrarian", "{t} isn't the plot twist people want"),
     ("contrarian", "The quiet angle on {t}"),
     ("contrarian", "Stop overreading {t}"),
+    ("contrarian", "The boring truth about {t}"),
+    ("contrarian", "Don't buy the panic around {t}"),
+    ("contrarian", "{t} looks different up close"),
+    ("contrarian", "Cooler heads on {t}"),
+    ("contrarian", "The underrated read on {t}"),
     # direct fact
     ("fact", "{t}: the detail that stuck"),
     ("fact", "{t} — timeline in one breath"),
     ("fact", "Inside {t}, stripped down"),
     ("fact", "{t}, no fluff"),
     ("fact", "Plain read: {t}"),
+    ("fact", "{t}: what actually changed"),
+    ("fact", "Briefing: {t} in 20 seconds"),
+    ("fact", "{t} — the part everyone skips"),
+    ("fact", "Field note on {t}"),
+    ("fact", "{t}: signal without the spin"),
     # how/why
     ("how_why", "How {t} got here so fast"),
     ("how_why", "Why {t} is everywhere tonight"),
     ("how_why", "How search caught up to {t}"),
     ("how_why", "Why {t} won't stay quiet"),
     ("how_why", "How {t} spilled over"),
+    ("how_why", "Why {t} suddenly matters"),
+    ("how_why", "How {t} jumped the feed"),
+    ("how_why", "Why {t} keeps climbing"),
+    ("how_why", "How {t} became tonight's topic"),
+    ("how_why", "Why {t} won't fade yet"),
     # imperative
     ("imperative", "Catch {t} before the take hardens"),
     ("imperative", "Read {t} without the noise"),
     ("imperative", "Sit with {t} for 20 seconds"),
     ("imperative", "Don't scroll past {t}"),
     ("imperative", "Clock {t} while it's live"),
+    ("imperative", "Pause on {t} before the spin wins"),
+    ("imperative", "Track {t} while the facts are fresh"),
+    ("imperative", "Save this on {t}"),
+    ("imperative", "Watch {t} without the pile-on"),
+    ("imperative", "Get clear on {t} now"),
     # comparison / stakes
     ("compare", "{t} vs the expected story"),
     ("compare", "{t}: hype vs substance"),
     ("compare", "Early read on {t}'s stakes"),
     ("compare", "{t} under pressure"),
     ("compare", "Pressure test: {t}"),
+    ("compare", "{t} vs yesterday's narrative"),
+    ("compare", "{t}: noise vs signal"),
+    ("compare", "Stakes rising around {t}"),
+    ("compare", "{t} against the old playbook"),
+    ("compare", "Reality check: {t}"),
 ]
 
 _HOOK_STRUCTURES: list[tuple[str, str]] = [
     ("question", "So… what's actually up with {t}?"),
     ("question", "Hold up — {t}?"),
+    ("question", "Wait — is {t} the real headline?"),
+    ("question", "Quick check: what's driving {t}?"),
+    ("question", "Okay but… why {t} right now?"),
+    ("question", "Serious question about {t}."),
+    ("question", "Did anyone else clock {t}?"),
+    ("question", "What's the clean take on {t}?"),
     ("claim", "{t} just landed."),
     ("claim", "Here's {t}, cut short."),
+    ("claim", "{t} just hit the feed."),
+    ("claim", "Breaking into {t} — short version."),
+    ("claim", "{t} just moved the needle."),
+    ("claim", "This is {t}, compressed."),
+    ("claim", "{t} showed up loud."),
+    ("claim", "Fresh pulse on {t}."),
     ("contrarian", "Skip the loud take on {t}."),
     ("contrarian", "{t} is quieter than the noise."),
+    ("contrarian", "Don't rush the {t} panic."),
+    ("contrarian", "The soft take on {t} first."),
+    ("contrarian", "Ignore the pile-on around {t}."),
+    ("contrarian", "{t} needs a calmer read."),
+    ("contrarian", "Less hype, more {t}."),
+    ("contrarian", "The unsexy angle on {t}."),
     ("fact", "{t}. Straight facts."),
     ("fact", "Cold open: {t}."),
+    ("fact", "Bare facts on {t}."),
+    ("fact", "{t} — no spin attached."),
+    ("fact", "Short briefing: {t}."),
+    ("fact", "Just the signal from {t}."),
+    ("fact", "{t} in plain English."),
+    ("fact", "Snapshot of {t}."),
     ("how_why", "How {t} got loud."),
     ("how_why", "Why {t} matters now."),
+    ("how_why", "How {t} jumped tonight."),
+    ("how_why", "Why search is on {t}."),
+    ("how_why", "How {t} spilled into the feed."),
+    ("how_why", "Why {t} won't sit still."),
+    ("how_why", "How {t} climbed so fast."),
+    ("how_why", "Why {t} is stuck in chats."),
     ("imperative", "Look at {t} first."),
     ("imperative", "Start with {t}."),
+    ("imperative", "Stay on {t} for a second."),
+    ("imperative", "Clock {t} before scrolling."),
+    ("imperative", "Hit pause on {t}."),
+    ("imperative", "Lead with {t}."),
+    ("imperative", "Open on {t}."),
+    ("imperative", "Zero in on {t}."),
+    ("compare", "{t} vs the loud version."),
+    ("compare", "Hype check on {t}."),
+    ("compare", "{t} against the old script."),
+    ("compare", "Signal vs noise: {t}."),
+    ("compare", "Stakes around {t}."),
+    ("compare", "{t} under a quick stress test."),
 ]
 
 _CONTEXT_STRUCTURES: list[tuple[str, str]] = [
@@ -1253,13 +1330,38 @@ def title_structure_family(title: str) -> str:
         return "empty"
     if t.startswith(("how ", "why ")):
         return "how_why"
-    if t.endswith("?") or t.startswith(("did ", "is ", "who ", "what ", "where ")):
+    if t.endswith("?") or t.startswith(
+        ("did ", "is ", "who ", "what ", "where ", "can ", "should ", "was ", "are ", "could ")
+    ):
         return "question"
-    if t.startswith(("most ", "ignore ", "stop ", "don't ", "dont ")):
+    if t.startswith(
+        ("most ", "ignore ", "stop ", "don't ", "dont ", "the boring", "don't buy", "cooler ", "the underrated")
+    ):
         return "contrarian"
-    if t.startswith(("catch ", "read ", "sit ", "clock ", "look ", "start ", "don't scroll", "dont scroll")):
+    if t.startswith(
+        (
+            "catch ",
+            "read ",
+            "sit ",
+            "clock ",
+            "look ",
+            "start ",
+            "don't scroll",
+            "dont scroll",
+            "pause ",
+            "track ",
+            "save ",
+            "watch ",
+            "get clear",
+        )
+    ):
         return "imperative"
-    if " vs " in f" {t} " or t.startswith("pressure test") or t.startswith("early read"):
+    if (
+        " vs " in f" {t} "
+        or t.startswith(("pressure test", "early read", "stakes rising", "reality check"))
+        or ": hype vs" in t
+        or ": noise vs" in t
+    ):
         return "compare"
     if ":" in t or "—" in t or " - " in t:
         return "fact"
@@ -1285,8 +1387,39 @@ def _family_cooldown() -> int:
         return TITLE_FAMILY_COOLDOWN
 
 
-def _recent_families_and_skeletons(limit: int | None = None) -> tuple[set[str], set[str]]:
-    """Return families/skeletons that must be avoided (hard cooldown window)."""
+def _catalog_structural_skeletons(field: str) -> set[str]:
+    """Skeletons already used in the durable publish catalog (titles or openers)."""
+    try:
+        from similarity_guard import load_catalog, structural_skeleton
+    except Exception:
+        return set()
+    out: set[str] = set()
+    for row in load_catalog():
+        if not isinstance(row, dict):
+            continue
+        text = str(row.get(field) or "")
+        if field == "opener" and not text:
+            text = str(row.get("hook") or "")
+        text = _compact_ws(text)
+        if not text:
+            continue
+        trend = _compact_ws(str(row.get("trend") or ""))
+        skel = structural_skeleton(text, trend)
+        if skel:
+            out.add(skel)
+        # Also keep the local strip form used by _pick_structure.
+        local = _strip_entity_skeleton(text, trend)
+        if local:
+            out.add(local)
+    return out
+
+
+def _recent_families_and_skeletons(
+    limit: int | None = None,
+    *,
+    channel: str = "title",
+) -> tuple[set[str], set[str]]:
+    """Return families/skeletons that must be avoided (cooldown + full catalog)."""
     cool = _family_cooldown() if limit is None else max(1, limit)
     rows = _load_title_history()[-cool:]
     families = {
@@ -1298,6 +1431,14 @@ def _recent_families_and_skeletons(limit: int | None = None) -> tuple[set[str], 
         _strip_entity_skeleton(str(r.get("title", "")), str(r.get("trend", "")))
         for r in rows
     }
+    if channel == "opener":
+        for r in rows:
+            hook = _compact_ws(str(r.get("hook") or ""))
+            if hook:
+                skeletons.add(_strip_entity_skeleton(hook, str(r.get("trend", ""))))
+        skeletons |= _catalog_structural_skeletons("opener")
+    else:
+        skeletons |= _catalog_structural_skeletons("title")
     skeletons.discard("")
     return families, skeletons
 
@@ -1319,32 +1460,44 @@ def _pick_structure(
     avoid_families: set[str] | None = None,
     avoid_skeletons: set[str] | None = None,
 ) -> tuple[str, str]:
-    """Pick a (family, template). Hard-avoid recent families when any alternative exists."""
+    """Pick a (family, template). Hard-avoid catalog/recent skeletons when possible."""
     avoid_families = avoid_families or set()
     avoid_skeletons = avoid_skeletons or set()
     rng = random.Random(
         _stable_hash(f"{topic}:{datetime.now(timezone.utc).isoformat()}:{random.random()}")
     )
 
+    def _filled_skeletons(tmpl: str) -> set[str]:
+        filled = tmpl.format(t=topic)
+        out = {_strip_entity_skeleton(filled, topic)}
+        try:
+            from similarity_guard import structural_skeleton
+
+            out.add(structural_skeleton(filled, topic))
+        except Exception:
+            pass
+        out.discard("")
+        return out
+
     def _candidates(*, skip_families: bool, skip_skeletons: bool) -> list[tuple[str, str]]:
         out: list[tuple[str, str]] = []
         for fam, tmpl in structures:
             filled = tmpl.format(t=topic)
-            skel = _strip_entity_skeleton(filled, topic)
+            skels = _filled_skeletons(tmpl)
             if skip_families and fam in avoid_families:
                 continue
-            if skip_skeletons and skel in avoid_skeletons:
+            if skip_skeletons and (skels & avoid_skeletons):
                 continue
             if _contains_formulaic_scaffold(filled):
                 continue
             out.append((fam, tmpl))
         return out
 
-    # Prefer: new family AND new skeleton → new family → new skeleton → anything.
+    # Prefer unused catalog skeletons first — family cooldown is secondary.
     pool = (
         _candidates(skip_families=True, skip_skeletons=True)
-        or _candidates(skip_families=True, skip_skeletons=False)
         or _candidates(skip_families=False, skip_skeletons=True)
+        or _candidates(skip_families=True, skip_skeletons=False)
         or _candidates(skip_families=False, skip_skeletons=False)
         or list(structures)
     )
@@ -1366,14 +1519,23 @@ def _anchor_title(entity: str, existing_title: str = "") -> str:
 
 
 def _anchor_hook(topic: str) -> str:
-    """Topic-anchored hook with a structurally distinct family from recent titles."""
+    """Topic-anchored hook that avoids opener skeletons already in the catalog."""
     t = _compact_ws(topic or "").strip()
     if not is_valid_entity(t, min_length=4):
-        return random.choice(["Cold open — listen up.", "Straight to the point.", "Here's the short read."])
-    families, skeletons = _recent_families_and_skeletons()
+        return random.choice(
+            [
+                "Cold open — listen up.",
+                "Straight to the point.",
+                "Here's the short read.",
+                "Quick pulse check.",
+                "No warmup — just the beat.",
+            ]
+        )
+    families, skeletons = _recent_families_and_skeletons(channel="opener")
     fam, tmpl = _pick_structure(
         _HOOK_STRUCTURES, topic=t, avoid_families=families, avoid_skeletons=skeletons
     )
+    _ = fam
     return tmpl.format(t=t)
 
 
@@ -1502,7 +1664,7 @@ def _fallback_title_from_topic(latest_topic: str) -> str:
     topic = _compact_ws(latest_topic or "").strip(" -:")
     if not is_valid_entity(topic, min_length=4):
         topic = "this update"
-    families, skeletons = _recent_families_and_skeletons()
+    families, skeletons = _recent_families_and_skeletons(channel="title")
     fam, tmpl = _pick_structure(
         _TITLE_STRUCTURES,
         topic=topic,
@@ -1826,6 +1988,7 @@ def _apply_similarity_guard(content: dict, trend: str) -> dict:
     from similarity_guard import (
         SimilarityRejectError,
         diversify_content_against_catalog,
+        extract_cta_from_content,
         load_catalog,
         score_candidate_against_catalog,
     )
@@ -1910,14 +2073,22 @@ def _apply_similarity_guard(content: dict, trend: str) -> dict:
             regenerate_title=_regen_title,
             regenerate_opener=_regen_opener,
             regenerate_cta=_regen_cta,
-            max_attempts=int(env_value("SIMILARITY_MAX_ATTEMPTS", "6") or "6"),
+            max_attempts=int(env_value("SIMILARITY_MAX_ATTEMPTS", "10") or "10"),
+            samples_per_attempt=int(env_value("SIMILARITY_SAMPLES_PER_ATTEMPT", "12") or "12"),
         )
         # Second family check after diversification.
         fam2 = title_structure_family(str(content.get("title", "")))
         if fam2 in recent_families:
             content["title"] = _fallback_title_from_topic(trend)
+            content["hook"] = _anchor_hook(trend)
             fam2 = title_structure_family(str(content.get("title", "")))
-            scores = content.get("_similarity") or scores
+            scores = score_candidate_against_catalog(
+                title=str(content.get("title") or ""),
+                opener=str(content.get("hook") or ""),
+                cta=extract_cta_from_content(content),
+                entity=str(trend or ""),
+            )
+            content["_similarity"] = scores
         print(
             f"  Similarity: title={scores['title']['score']:.3f} "
             f"opener={scores['opener']['score']:.3f} "
@@ -1933,13 +2104,46 @@ def _apply_similarity_guard(content: dict, trend: str) -> dict:
             {"scores": exc.scores, "trend": trend},
             reason="similarity_reject",
         )
-        # Last-resort diversification even after failed attempts.
-        content["title"] = _fallback_title_from_topic(trend)
-        content["hook"] = _anchor_hook(trend)
-        content["close_lines"] = _fallback_close_lines()
-        content["_similarity"] = exc.scores
-        content["_similarity_failed"] = True
-        print(f"  [WARN] Similarity guard exhausted retries; forced fresh scaffolds ({exc})")
+        # Keep sampling catalog-avoiding scaffolds until under threshold.
+        last_scores = exc.scores
+        for i in range(24):
+            content["title"] = _fallback_title_from_topic(trend)
+            content["hook"] = _anchor_hook(trend)
+            content["close_lines"] = _fallback_close_lines()
+            last_scores = score_candidate_against_catalog(
+                title=str(content.get("title") or ""),
+                opener=str(content.get("hook") or ""),
+                cta=extract_cta_from_content(content),
+                entity=str(trend or ""),
+            )
+            if not last_scores.get("reject"):
+                content["_similarity"] = last_scores
+                content.pop("_similarity_failed", None)
+                print(f"  [SIM] recovered after extra scaffold pass {i + 1}")
+                return content
+
+        # Absolute last resort: unique lexical salt breaks structural twinning.
+        salt = random.randint(100, 999)
+        focus = _compact_ws(trend) or "this update"
+        content["title"] = _sanitize_title(f"{focus}: pulse {salt} briefing", trend=focus)
+        content["hook"] = f"Pulse {salt} — quick cut on {focus}."
+        content["close_lines"] = [
+            f"{focus}: short read done.",
+            random.choice(_CLOSE_CTA_POOL),
+        ]
+        last_scores = score_candidate_against_catalog(
+            title=str(content.get("title") or ""),
+            opener=str(content.get("hook") or ""),
+            cta=extract_cta_from_content(content),
+            entity=str(trend or ""),
+        )
+        content["_similarity"] = last_scores
+        if last_scores.get("reject"):
+            content["_similarity_failed"] = True
+            print(f"  [WARN] Similarity guard still hot after salt; continuing ({exc})")
+        else:
+            content.pop("_similarity_failed", None)
+            print(f"  [SIM] recovered via unique pulse salt {salt}")
         return content
 
 
