@@ -933,7 +933,7 @@
       ]
     },
     "2026-10-27": {
-      "count": 2,
+      "count": 3,
       "events": [
         {
           "utc": "2026-10-27T08:59:58.644242+00:00",
@@ -946,9 +946,15 @@
           "title": "khalil mack: pulse 230 briefing",
           "slot": "afternoon",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-10-27T21:21:20.410377+00:00",
+          "title": "Garrett Wilson\u2019s Rise: What Actually Changed?",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-10-27T17:59:40.496136+00:00"
+  "updated_utc": "2026-10-27T21:21:20.410409+00:00"
 }

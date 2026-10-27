@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-27T17:59:40.494042+00:00",
+  "updated_utc": "2026-10-27T21:21:20.408115+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -2189,6 +2189,24 @@
       "source": "upload.success",
       "app_id": "khalil_mack",
       "youtube_id": "9Rrl1DIGe_U"
+    },
+    {
+      "title": "Garrett Wilson’s Rise: What Actually Changed?",
+      "opener": "Look what flipped for Garrett Wilson!",
+      "cta": "",
+      "trend": "Garrett Wilson",
+      "utc": "2026-10-27T21:14:00.647836+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Garrett Wilson’s Rise: What Actually Changed?",
+      "opener": "Look what flipped for Garrett Wilson!",
+      "cta": "Did Garrett Wilson surprise you? Comment below.",
+      "trend": "Garrett Wilson",
+      "utc": "2026-10-27T21:21:20.406386+00:00",
+      "source": "upload.success",
+      "app_id": "garrett_wilson",
+      "youtube_id": "QgZd04xES3M"
     }
   ]
 }
