@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-24T15:54:44.136147+00:00",
+  "updated_utc": "2026-10-27T08:59:58.641968+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -2153,6 +2153,24 @@
       "source": "upload.success",
       "app_id": "william_prince_of_wales",
       "youtube_id": "e1P_yCoMrLY"
+    },
+    {
+      "title": "Pakistan vs Sri Lanka: pulse 537 briefing",
+      "opener": "Pulse 537 — quick cut on Pakistan vs Sri Lanka.",
+      "cta": "",
+      "trend": "Pakistan vs Sri Lanka",
+      "utc": "2026-10-27T08:52:35.768505+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Pakistan vs Sri Lanka: pulse 537 briefing",
+      "opener": "Pulse 537 — quick cut on Pakistan vs Sri Lanka.",
+      "cta": "Did Pakistan vs Sri Lanka surprise you? Comment below.",
+      "trend": "Pakistan vs Sri Lanka",
+      "utc": "2026-10-27T08:59:58.640204+00:00",
+      "source": "upload.success",
+      "app_id": "pakistan_vs_sri_lanka",
+      "youtube_id": "JfWtQya5TbM"
     }
   ]
 }
