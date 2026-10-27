@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-27T08:59:58.641968+00:00",
+  "updated_utc": "2026-10-27T17:59:40.494042+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -2171,6 +2171,24 @@
       "source": "upload.success",
       "app_id": "pakistan_vs_sri_lanka",
       "youtube_id": "JfWtQya5TbM"
+    },
+    {
+      "title": "khalil mack: pulse 230 briefing",
+      "opener": "Pulse 230 — quick cut on khalil mack.",
+      "cta": "",
+      "trend": "khalil mack",
+      "utc": "2026-10-27T17:52:55.168742+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "khalil mack: pulse 230 briefing",
+      "opener": "Pulse 230 — quick cut on khalil mack.",
+      "cta": "Agree on khalil mack? Reply in comments.",
+      "trend": "khalil mack",
+      "utc": "2026-10-27T17:59:40.492644+00:00",
+      "source": "upload.success",
+      "app_id": "khalil_mack",
+      "youtube_id": "9Rrl1DIGe_U"
     }
   ]
 }
