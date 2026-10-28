@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-28T18:25:38.786076+00:00",
+  "updated_utc": "2026-10-28T21:43:49.018963+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -2261,6 +2261,24 @@
       "source": "upload.success",
       "app_id": "jacob_misiorowski_world_series_decision",
       "youtube_id": "BZFEzvh4IjI"
+    },
+    {
+      "title": "How the GTA 6 Release Window Shapes Gaming",
+      "opener": "GTA 6 launch timing decoded!",
+      "cta": "",
+      "trend": "GTA 6 release window",
+      "utc": "2026-10-28T21:37:27.651317+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "How the GTA 6 Release Window Shapes Gaming",
+      "opener": "GTA 6 launch timing decoded!",
+      "cta": "What’s your take on GTA 6 timing?",
+      "trend": "GTA 6 release window",
+      "utc": "2026-10-28T21:43:49.017728+00:00",
+      "source": "upload.success",
+      "app_id": "gta_6_release_window",
+      "youtube_id": "tdiaB3-HGCc"
     }
   ]
 }
