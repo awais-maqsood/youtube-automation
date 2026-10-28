@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-27T21:21:20.408115+00:00",
+  "updated_utc": "2026-10-28T01:16:14.686041+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -2207,6 +2207,24 @@
       "source": "upload.success",
       "app_id": "garrett_wilson",
       "youtube_id": "QgZd04xES3M"
+    },
+    {
+      "title": "How Duncan Robinson Is Changing NBA Shooting Forever",
+      "opener": "Duncan Robinson’s latest move shocks fans",
+      "cta": "",
+      "trend": "Duncan Robinson",
+      "utc": "2026-10-28T01:09:14.220409+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "How Duncan Robinson Is Changing NBA Shooting Forever",
+      "opener": "Duncan Robinson’s latest move shocks fans",
+      "cta": "Did Duncan Robinson surprise you? Comment below.",
+      "trend": "Duncan Robinson",
+      "utc": "2026-10-28T01:16:14.684366+00:00",
+      "source": "upload.success",
+      "app_id": "duncan_robinson",
+      "youtube_id": "r_JgC2Zr2II"
     }
   ]
 }
