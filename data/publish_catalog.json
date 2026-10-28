@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-28T09:39:25.736987+00:00",
+  "updated_utc": "2026-10-28T18:25:38.786076+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -2243,6 +2243,24 @@
       "source": "upload.success",
       "app_id": "taylor_swift_eras_tour",
       "youtube_id": "R8_yocQCAOg"
+    },
+    {
+      "title": "Jacob Misiorowski World Series Decision: pulse 826 briefing",
+      "opener": "Pulse 826 — quick cut on Jacob Misiorowski World Series Decision.",
+      "cta": "",
+      "trend": "Jacob Misiorowski World Series Decision",
+      "utc": "2026-10-28T18:18:29.705306+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Jacob Misiorowski World Series Decision: pulse 826 briefing",
+      "opener": "Pulse 826 — quick cut on Jacob Misiorowski World Series Decision.",
+      "cta": "Thoughts on Jacob Misiorowski World Series Decision? Drop a comment.",
+      "trend": "Jacob Misiorowski World Series Decision",
+      "utc": "2026-10-28T18:25:38.784345+00:00",
+      "source": "upload.success",
+      "app_id": "jacob_misiorowski_world_series_decision",
+      "youtube_id": "BZFEzvh4IjI"
     }
   ]
 }
