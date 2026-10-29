@@ -985,7 +985,7 @@
       ]
     },
     "2026-10-29": {
-      "count": 3,
+      "count": 4,
       "events": [
         {
           "utc": "2026-10-29T01:50:38.744351+00:00",
@@ -1004,9 +1004,15 @@
           "title": "Prince George Charlotte Louis Family Picture Shows Changes",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-10-29T21:52:15.904257+00:00",
+          "title": "Serena Williams: pulse 664 briefing",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-10-29T18:30:18.892702+00:00"
+  "updated_utc": "2026-10-29T21:52:15.904289+00:00"
 }

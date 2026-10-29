@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-29T18:30:18.890435+00:00",
+  "updated_utc": "2026-10-29T21:52:15.901664+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -2333,6 +2333,24 @@
       "source": "upload.success",
       "app_id": "prince_george_charlotte_louis_family_picture",
       "youtube_id": "be6qAu-87Yo"
+    },
+    {
+      "title": "Serena Williams: pulse 664 briefing",
+      "opener": "Pulse 664 — quick cut on Serena Williams.",
+      "cta": "",
+      "trend": "Serena Williams",
+      "utc": "2026-10-29T21:45:12.364609+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Serena Williams: pulse 664 briefing",
+      "opener": "Pulse 664 — quick cut on Serena Williams.",
+      "cta": "What is your take on Serena Williams? Comment below.",
+      "trend": "Serena Williams",
+      "utc": "2026-10-29T21:52:15.899546+00:00",
+      "source": "upload.success",
+      "app_id": "serena_williams",
+      "youtube_id": "hTU59ktSEMM"
     }
   ]
 }
