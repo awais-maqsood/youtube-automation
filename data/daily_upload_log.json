@@ -983,7 +983,18 @@
           "source": "upload.success"
         }
       ]
+    },
+    "2026-10-29": {
+      "count": 1,
+      "events": [
+        {
+          "utc": "2026-10-29T01:50:38.744351+00:00",
+          "title": "Trae Young: pulse 962 briefing",
+          "slot": "evening",
+          "source": "upload.success"
+        }
+      ]
     }
   },
-  "updated_utc": "2026-10-28T21:43:49.020539+00:00"
+  "updated_utc": "2026-10-29T01:50:38.744384+00:00"
 }

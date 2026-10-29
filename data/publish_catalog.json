@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-28T21:43:49.018963+00:00",
+  "updated_utc": "2026-10-29T01:50:38.742093+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -2279,6 +2279,24 @@
       "source": "upload.success",
       "app_id": "gta_6_release_window",
       "youtube_id": "tdiaB3-HGCc"
+    },
+    {
+      "title": "Trae Young: pulse 962 briefing",
+      "opener": "Pulse 962 — quick cut on Trae Young.",
+      "cta": "",
+      "trend": "Trae Young",
+      "utc": "2026-10-29T01:43:37.263684+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Trae Young: pulse 962 briefing",
+      "opener": "Pulse 962 — quick cut on Trae Young.",
+      "cta": "One-line read on Trae Young — leave a comment.",
+      "trend": "Trae Young",
+      "utc": "2026-10-29T01:50:38.740374+00:00",
+      "source": "upload.success",
+      "app_id": "trae_young",
+      "youtube_id": "Nsnm02j43Bk"
     }
   ]
 }
