@@ -985,7 +985,7 @@
       ]
     },
     "2026-10-29": {
-      "count": 2,
+      "count": 3,
       "events": [
         {
           "utc": "2026-10-29T01:50:38.744351+00:00",
@@ -998,9 +998,15 @@
           "title": "Cambodia: pulse 171 briefing",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-10-29T18:30:18.892672+00:00",
+          "title": "Prince George Charlotte Louis Family Picture Shows Changes",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-10-29T09:54:17.186786+00:00"
+  "updated_utc": "2026-10-29T18:30:18.892702+00:00"
 }
