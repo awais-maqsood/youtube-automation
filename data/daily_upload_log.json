@@ -1012,7 +1012,18 @@
           "source": "upload.success"
         }
       ]
+    },
+    "2026-10-30": {
+      "count": 1,
+      "events": [
+        {
+          "utc": "2026-10-30T01:58:00.539235+00:00",
+          "title": "Grizzlies vs Trail Blazers: pulse 232 briefing",
+          "slot": "evening",
+          "source": "upload.success"
+        }
+      ]
     }
   },
-  "updated_utc": "2026-10-29T21:52:15.904289+00:00"
+  "updated_utc": "2026-10-30T01:58:00.539267+00:00"
 }

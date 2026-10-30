@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-29T21:52:15.901664+00:00",
+  "updated_utc": "2026-10-30T01:58:00.536510+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -2351,6 +2351,24 @@
       "source": "upload.success",
       "app_id": "serena_williams",
       "youtube_id": "hTU59ktSEMM"
+    },
+    {
+      "title": "Grizzlies vs Trail Blazers: pulse 232 briefing",
+      "opener": "Pulse 232 — quick cut on Grizzlies vs Trail Blazers.",
+      "cta": "",
+      "trend": "Grizzlies vs Trail Blazers",
+      "utc": "2026-10-30T01:50:57.851993+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Grizzlies vs Trail Blazers: pulse 232 briefing",
+      "opener": "Pulse 232 — quick cut on Grizzlies vs Trail Blazers.",
+      "cta": "Where do you stand on Grizzlies vs Trail Blazers? Tell me in comments.",
+      "trend": "Grizzlies vs Trail Blazers",
+      "utc": "2026-10-30T01:58:00.534710+00:00",
+      "source": "upload.success",
+      "app_id": "grizzlies_vs_trail_blazers",
+      "youtube_id": "9u6tT1TIfao"
     }
   ]
 }
