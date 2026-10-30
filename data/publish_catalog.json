@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-30T09:59:12.392828+00:00",
+  "updated_utc": "2026-10-30T18:04:38.834571+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -2387,6 +2387,24 @@
       "source": "upload.success",
       "app_id": "alexandra_eala",
       "youtube_id": "t8J575Lo-hg"
+    },
+    {
+      "title": "Why Ochai Agbaji Won't Boost Your Team's Value",
+      "opener": "Ochai Agbaji isn’t a magic money fix",
+      "cta": "",
+      "trend": "Ochai Agbaji",
+      "utc": "2026-10-30T17:57:32.249986+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Why Ochai Agbaji Won't Boost Your Team's Value",
+      "opener": "Ochai Agbaji isn’t a magic money fix",
+      "cta": "Where do you stand on Ochai Agbaji? Tell me in comments.",
+      "trend": "Ochai Agbaji",
+      "utc": "2026-10-30T18:04:38.832731+00:00",
+      "source": "upload.success",
+      "app_id": "ochai_agbaji",
+      "youtube_id": "sn7oRsSMiUs"
     }
   ]
 }

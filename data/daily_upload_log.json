@@ -1014,7 +1014,7 @@
       ]
     },
     "2026-10-30": {
-      "count": 2,
+      "count": 3,
       "events": [
         {
           "utc": "2026-10-30T01:58:00.539235+00:00",
@@ -1027,9 +1027,15 @@
           "title": "What Sparked Alexandra Eala's Latest Controversy?",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-10-30T18:04:38.837237+00:00",
+          "title": "Why Ochai Agbaji Won't Boost Your Team's Value",
+          "slot": "afternoon",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-10-30T09:59:12.394474+00:00"
+  "updated_utc": "2026-10-30T18:04:38.837277+00:00"
 }
