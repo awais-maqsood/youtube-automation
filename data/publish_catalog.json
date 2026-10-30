@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-30T18:04:38.834571+00:00",
+  "updated_utc": "2026-10-30T21:33:27.978975+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -2405,6 +2405,24 @@
       "source": "upload.success",
       "app_id": "ochai_agbaji",
       "youtube_id": "sn7oRsSMiUs"
+    },
+    {
+      "title": "Why Reese Witherspoon Hello Sunshine Layoffs Sparked Debate",
+      "opener": "Inside the Reese Witherspoon layoffs drama",
+      "cta": "",
+      "trend": "Reese Witherspoon Hello Sunshine layoffs",
+      "utc": "2026-10-30T21:26:14.438778+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Why Reese Witherspoon Hello Sunshine Layoffs Sparked Debate",
+      "opener": "Inside the Reese Witherspoon layoffs drama",
+      "cta": "What is your take on Reese Witherspoon Hello Sunshine layoffs? Comment below.",
+      "trend": "Reese Witherspoon Hello Sunshine layoffs",
+      "utc": "2026-10-30T21:33:27.976784+00:00",
+      "source": "upload.success",
+      "app_id": "reese_witherspoon_hello_sunshine_layoffs",
+      "youtube_id": "YFGF94ty5FA"
     }
   ]
 }

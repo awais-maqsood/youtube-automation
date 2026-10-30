@@ -1014,7 +1014,7 @@
       ]
     },
     "2026-10-30": {
-      "count": 3,
+      "count": 4,
       "events": [
         {
           "utc": "2026-10-30T01:58:00.539235+00:00",
@@ -1033,9 +1033,15 @@
           "title": "Why Ochai Agbaji Won't Boost Your Team's Value",
           "slot": "afternoon",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-10-30T21:33:27.981442+00:00",
+          "title": "Why Reese Witherspoon Hello Sunshine Layoffs Sparked Debate",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-10-30T18:04:38.837277+00:00"
+  "updated_utc": "2026-10-30T21:33:27.981471+00:00"
 }
