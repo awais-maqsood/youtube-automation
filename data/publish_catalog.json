@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-30T01:58:00.536510+00:00",
+  "updated_utc": "2026-10-30T09:59:12.392828+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -2369,6 +2369,24 @@
       "source": "upload.success",
       "app_id": "grizzlies_vs_trail_blazers",
       "youtube_id": "9u6tT1TIfao"
+    },
+    {
+      "title": "What Sparked Alexandra Eala's Latest Controversy?",
+      "opener": "Here’s the Alexandra Eala controversy story",
+      "cta": "",
+      "trend": "Alexandra Eala",
+      "utc": "2026-10-30T09:52:49.944895+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "What Sparked Alexandra Eala's Latest Controversy?",
+      "opener": "Here’s the Alexandra Eala controversy story",
+      "cta": "Did Alexandra Eala surprise you? Comment below.",
+      "trend": "Alexandra Eala",
+      "utc": "2026-10-30T09:59:12.391526+00:00",
+      "source": "upload.success",
+      "app_id": "alexandra_eala",
+      "youtube_id": "t8J575Lo-hg"
     }
   ]
 }

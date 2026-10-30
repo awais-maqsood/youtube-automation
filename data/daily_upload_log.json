@@ -1014,16 +1014,22 @@
       ]
     },
     "2026-10-30": {
-      "count": 1,
+      "count": 2,
       "events": [
         {
           "utc": "2026-10-30T01:58:00.539235+00:00",
           "title": "Grizzlies vs Trail Blazers: pulse 232 briefing",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-10-30T09:59:12.394454+00:00",
+          "title": "What Sparked Alexandra Eala's Latest Controversy?",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-10-30T01:58:00.539267+00:00"
+  "updated_utc": "2026-10-30T09:59:12.394474+00:00"
 }
