@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-31T01:37:12.039674+00:00",
+  "updated_utc": "2026-10-31T09:36:50.955129+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -2441,6 +2441,24 @@
       "source": "upload.success",
       "app_id": "lakers_vs_warriors",
       "youtube_id": "raFNEuY5PXw"
+    },
+    {
+      "title": "Watch This Ohio High School Football Scores Drama",
+      "opener": "Explosive events rocked Ohio high school football",
+      "cta": "",
+      "trend": "ohio high school football scores",
+      "utc": "2026-10-31T09:30:20.968127+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Watch This Ohio High School Football Scores Drama",
+      "opener": "Explosive events rocked Ohio high school football",
+      "cta": "What is your take on ohio high school football scores? Comment below.",
+      "trend": "ohio high school football scores",
+      "utc": "2026-10-31T09:36:50.953811+00:00",
+      "source": "upload.success",
+      "app_id": "ohio_high_school_football_scores",
+      "youtube_id": "NoOik9tRI1o"
     }
   ]
 }

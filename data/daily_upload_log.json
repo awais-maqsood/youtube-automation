@@ -1043,16 +1043,22 @@
       ]
     },
     "2026-10-31": {
-      "count": 1,
+      "count": 2,
       "events": [
         {
           "utc": "2026-10-31T01:37:12.042228+00:00",
           "title": "Lakers vs Warriors: The Unexpected Shift Explained",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-10-31T09:36:50.956847+00:00",
+          "title": "Watch This Ohio High School Football Scores Drama",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-10-31T01:37:12.042261+00:00"
+  "updated_utc": "2026-10-31T09:36:50.956868+00:00"
 }
