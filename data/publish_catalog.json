@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-30T21:33:27.978975+00:00",
+  "updated_utc": "2026-10-31T01:37:12.039674+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -2423,6 +2423,24 @@
       "source": "upload.success",
       "app_id": "reese_witherspoon_hello_sunshine_layoffs",
       "youtube_id": "YFGF94ty5FA"
+    },
+    {
+      "title": "Lakers vs Warriors: The Unexpected Shift Explained",
+      "opener": "Why the game isn’t what you think",
+      "cta": "",
+      "trend": "Lakers vs Warriors",
+      "utc": "2026-10-31T01:30:01.045692+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Lakers vs Warriors: The Unexpected Shift Explained",
+      "opener": "Why the game isn’t what you think",
+      "cta": "Thoughts on Lakers vs Warriors? Drop a comment.",
+      "trend": "Lakers vs Warriors",
+      "utc": "2026-10-31T01:37:12.037812+00:00",
+      "source": "upload.success",
+      "app_id": "lakers_vs_warriors",
+      "youtube_id": "raFNEuY5PXw"
     }
   ]
 }

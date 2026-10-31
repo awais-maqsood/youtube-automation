@@ -1041,7 +1041,18 @@
           "source": "upload.success"
         }
       ]
+    },
+    "2026-10-31": {
+      "count": 1,
+      "events": [
+        {
+          "utc": "2026-10-31T01:37:12.042228+00:00",
+          "title": "Lakers vs Warriors: The Unexpected Shift Explained",
+          "slot": "evening",
+          "source": "upload.success"
+        }
+      ]
     }
   },
-  "updated_utc": "2026-10-30T21:33:27.981471+00:00"
+  "updated_utc": "2026-10-31T01:37:12.042261+00:00"
 }
