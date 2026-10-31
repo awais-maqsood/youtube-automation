@@ -1043,7 +1043,7 @@
       ]
     },
     "2026-10-31": {
-      "count": 2,
+      "count": 3,
       "events": [
         {
           "utc": "2026-10-31T01:37:12.042228+00:00",
@@ -1056,9 +1056,15 @@
           "title": "Watch This Ohio High School Football Scores Drama",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-10-31T17:17:45.121020+00:00",
+          "title": "Jon Gruden's ROI Impact on Productivity Explained",
+          "slot": "afternoon",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-10-31T09:36:50.956868+00:00"
+  "updated_utc": "2026-10-31T17:17:45.121060+00:00"
 }

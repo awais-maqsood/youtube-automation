@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-31T09:36:50.955129+00:00",
+  "updated_utc": "2026-10-31T17:17:45.117310+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -2459,6 +2459,24 @@
       "source": "upload.success",
       "app_id": "ohio_high_school_football_scores",
       "youtube_id": "NoOik9tRI1o"
+    },
+    {
+      "title": "Jon Gruden's ROI Impact on Productivity Explained",
+      "opener": "How Jon Gruden affected business efficiency",
+      "cta": "",
+      "trend": "Jon Gruden",
+      "utc": "2026-10-31T17:10:47.603515+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Jon Gruden's ROI Impact on Productivity Explained",
+      "opener": "How Jon Gruden affected business efficiency",
+      "cta": "What is your take on Jon Gruden? Comment below.",
+      "trend": "Jon Gruden",
+      "utc": "2026-10-31T17:17:45.114443+00:00",
+      "source": "upload.success",
+      "app_id": "jon_gruden",
+      "youtube_id": "Guljyxjo1DA"
     }
   ]
 }
