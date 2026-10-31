@@ -1043,7 +1043,7 @@
       ]
     },
     "2026-10-31": {
-      "count": 3,
+      "count": 4,
       "events": [
         {
           "utc": "2026-10-31T01:37:12.042228+00:00",
@@ -1062,9 +1062,15 @@
           "title": "Jon Gruden's ROI Impact on Productivity Explained",
           "slot": "afternoon",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-10-31T20:33:26.440238+00:00",
+          "title": "What if Ajax vs AZ sticks?",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-10-31T17:17:45.121060+00:00"
+  "updated_utc": "2026-10-31T20:33:26.440275+00:00"
 }
