@@ -1070,7 +1070,18 @@
           "source": "upload.success"
         }
       ]
+    },
+    "2026-11-01": {
+      "count": 1,
+      "events": [
+        {
+          "utc": "2026-11-01T01:04:41.344177+00:00",
+          "title": "Jabari Walker Latest Update: What Changed?",
+          "slot": "evening",
+          "source": "upload.success"
+        }
+      ]
     }
   },
-  "updated_utc": "2026-10-31T20:33:26.440275+00:00"
+  "updated_utc": "2026-11-01T01:04:41.344197+00:00"
 }

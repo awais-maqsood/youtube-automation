@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-31T20:33:26.437338+00:00",
+  "updated_utc": "2026-11-01T01:04:41.342497+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -2495,6 +2495,24 @@
       "source": "upload.success",
       "app_id": "ajax_vs_az",
       "youtube_id": "WmtLvNFgC_4"
+    },
+    {
+      "title": "Jabari Walker Latest Update: What Changed?",
+      "opener": "Big news around Jabari Walker just dropped",
+      "cta": "",
+      "trend": "Jabari Walker",
+      "utc": "2026-11-01T00:58:19.916775+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Jabari Walker Latest Update: What Changed?",
+      "opener": "Big news around Jabari Walker just dropped",
+      "cta": "Thoughts on Jabari Walker? Drop a comment.",
+      "trend": "Jabari Walker",
+      "utc": "2026-11-01T01:04:41.341160+00:00",
+      "source": "upload.success",
+      "app_id": "jabari_walker",
+      "youtube_id": "Gv4OoBlX7ds"
     }
   ]
 }
