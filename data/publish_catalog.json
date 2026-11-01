@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-11-01T17:59:35.987168+00:00",
+  "updated_utc": "2026-11-01T21:13:47.759455+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -2549,6 +2549,24 @@
       "source": "upload.success",
       "app_id": "savannah_guthrie",
       "youtube_id": "noPfHsaBb0Y"
+    },
+    {
+      "title": "Watch This: Latest Update on Damar Hamlin's Condition",
+      "opener": "Damar Hamlin’s health update just dropped",
+      "cta": "",
+      "trend": "Damar Hamlin",
+      "utc": "2026-11-01T21:06:39.911855+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Watch This: Latest Update on Damar Hamlin's Condition",
+      "opener": "Damar Hamlin’s health update just dropped",
+      "cta": "Agree on Damar Hamlin? Reply in comments.",
+      "trend": "Damar Hamlin",
+      "utc": "2026-11-01T21:13:47.757463+00:00",
+      "source": "upload.success",
+      "app_id": "damar_hamlin",
+      "youtube_id": "tY18iFt2vKk"
     }
   ]
 }
