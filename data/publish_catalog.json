@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-11-01T10:27:45.640824+00:00",
+  "updated_utc": "2026-11-01T17:59:35.987168+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -2531,6 +2531,24 @@
       "source": "upload.success",
       "app_id": "latest_news",
       "youtube_id": "v3eR5tJFQV0"
+    },
+    {
+      "title": "Savannah Guthrie's Career Shift Might Cost You Money",
+      "opener": "Why Savannah Guthrie’s move affects your wallet",
+      "cta": "",
+      "trend": "Savannah Guthrie",
+      "utc": "2026-11-01T17:52:25.123876+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Savannah Guthrie's Career Shift Might Cost You Money",
+      "opener": "Why Savannah Guthrie’s move affects your wallet",
+      "cta": "Where do you stand on Savannah Guthrie? Tell me in comments.",
+      "trend": "Savannah Guthrie",
+      "utc": "2026-11-01T17:59:35.985158+00:00",
+      "source": "upload.success",
+      "app_id": "savannah_guthrie",
+      "youtube_id": "noPfHsaBb0Y"
     }
   ]
 }
