@@ -1072,16 +1072,22 @@
       ]
     },
     "2026-11-01": {
-      "count": 1,
+      "count": 2,
       "events": [
         {
           "utc": "2026-11-01T01:04:41.344177+00:00",
           "title": "Jabari Walker Latest Update: What Changed?",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-11-01T10:27:45.643271+00:00",
+          "title": "latest news: pulse 457 briefing",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-11-01T01:04:41.344197+00:00"
+  "updated_utc": "2026-11-01T10:27:45.643301+00:00"
 }

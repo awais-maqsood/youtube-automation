@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-11-01T01:04:41.342497+00:00",
+  "updated_utc": "2026-11-01T10:27:45.640824+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -2513,6 +2513,24 @@
       "source": "upload.success",
       "app_id": "jabari_walker",
       "youtube_id": "Gv4OoBlX7ds"
+    },
+    {
+      "title": "latest news: pulse 457 briefing",
+      "opener": "Pulse 457 — quick cut on latest news.",
+      "cta": "",
+      "trend": "latest news",
+      "utc": "2026-11-01T10:20:52.150177+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "latest news: pulse 457 briefing",
+      "opener": "Pulse 457 — quick cut on latest news.",
+      "cta": "Where do you stand on latest news? Tell me in comments.",
+      "trend": "latest news",
+      "utc": "2026-11-01T10:27:45.638907+00:00",
+      "source": "upload.success",
+      "app_id": "latest_news",
+      "youtube_id": "v3eR5tJFQV0"
     }
   ]
 }
