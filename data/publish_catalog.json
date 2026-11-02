@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-11-02T01:32:59.070367+00:00",
+  "updated_utc": "2026-11-02T10:59:54.454212+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -2585,6 +2585,24 @@
       "source": "upload.success",
       "app_id": "travis_kelce",
       "youtube_id": "jbilB49G4uM"
+    },
+    {
+      "title": "Dancing with the Stars Disney Night: pulse 613 briefing",
+      "opener": "Pulse 613 — quick cut on Dancing with the Stars Disney Night.",
+      "cta": "",
+      "trend": "Dancing with the Stars Disney Night",
+      "utc": "2026-11-02T10:53:02.655234+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Dancing with the Stars Disney Night: pulse 613 briefing",
+      "opener": "Pulse 613 — quick cut on Dancing with the Stars Disney Night.",
+      "cta": "Did Dancing with the Stars Disney Night surprise you? Comment below.",
+      "trend": "Dancing with the Stars Disney Night",
+      "utc": "2026-11-02T10:59:54.452570+00:00",
+      "source": "upload.success",
+      "app_id": "dancing_with_the_stars_disney_night",
+      "youtube_id": "M5QUdO2G9fo"
     }
   ]
 }
