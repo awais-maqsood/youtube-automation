@@ -1101,7 +1101,7 @@
       ]
     },
     "2026-11-02": {
-      "count": 3,
+      "count": 4,
       "events": [
         {
           "utc": "2026-11-02T01:32:59.073041+00:00",
@@ -1120,9 +1120,15 @@
           "title": "What Really Changed for Gates McFadden?",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-11-02T23:58:48.606268+00:00",
+          "title": "Brice Turang: pulse 541 briefing",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-11-02T21:48:05.554838+00:00"
+  "updated_utc": "2026-11-02T23:58:48.606300+00:00"
 }

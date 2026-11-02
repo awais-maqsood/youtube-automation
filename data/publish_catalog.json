@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-11-02T21:48:05.552322+00:00",
+  "updated_utc": "2026-11-02T23:58:48.603798+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -2621,6 +2621,24 @@
       "source": "upload.success",
       "app_id": "gates_mcfadden",
       "youtube_id": "p7bKrac3rcY"
+    },
+    {
+      "title": "Brice Turang: pulse 541 briefing",
+      "opener": "Pulse 541 — quick cut on Brice Turang.",
+      "cta": "",
+      "trend": "Brice Turang",
+      "utc": "2026-11-02T23:51:50.494143+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Brice Turang: pulse 541 briefing",
+      "opener": "Pulse 541 — quick cut on Brice Turang.",
+      "cta": "Agree on Brice Turang? Reply in comments.",
+      "trend": "Brice Turang",
+      "utc": "2026-11-02T23:58:48.601762+00:00",
+      "source": "upload.success",
+      "app_id": "brice_turang",
+      "youtube_id": "-nyC4OedyfU"
     }
   ]
 }
