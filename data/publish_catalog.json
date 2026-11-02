@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-11-01T21:13:47.759455+00:00",
+  "updated_utc": "2026-11-02T01:32:59.070367+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -2567,6 +2567,24 @@
       "source": "upload.success",
       "app_id": "damar_hamlin",
       "youtube_id": "tY18iFt2vKk"
+    },
+    {
+      "title": "Travis Kelce’s Viral Catch Everyone’s Talking About",
+      "opener": "That Travis Kelce Moment Broke The Internet",
+      "cta": "",
+      "trend": "Travis Kelce",
+      "utc": "2026-11-02T01:26:29.329407+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Travis Kelce’s Viral Catch Everyone’s Talking About",
+      "opener": "That Travis Kelce Moment Broke The Internet",
+      "cta": "Hot take on Travis Kelce? Write it in the comments.",
+      "trend": "Travis Kelce",
+      "utc": "2026-11-02T01:32:59.068628+00:00",
+      "source": "upload.success",
+      "app_id": "travis_kelce",
+      "youtube_id": "jbilB49G4uM"
     }
   ]
 }
