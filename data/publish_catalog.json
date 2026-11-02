@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-11-02T10:59:54.454212+00:00",
+  "updated_utc": "2026-11-02T21:48:05.552322+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -2603,6 +2603,24 @@
       "source": "upload.success",
       "app_id": "dancing_with_the_stars_disney_night",
       "youtube_id": "M5QUdO2G9fo"
+    },
+    {
+      "title": "What Really Changed for Gates McFadden?",
+      "opener": "How Gates McFadden’s story shifted",
+      "cta": "",
+      "trend": "Gates McFadden",
+      "utc": "2026-11-02T21:40:53.964361+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "What Really Changed for Gates McFadden?",
+      "opener": "How Gates McFadden’s story shifted",
+      "cta": "Thoughts on Gates McFadden? Drop a comment.",
+      "trend": "Gates McFadden",
+      "utc": "2026-11-02T21:48:05.550312+00:00",
+      "source": "upload.success",
+      "app_id": "gates_mcfadden",
+      "youtube_id": "p7bKrac3rcY"
     }
   ]
 }
