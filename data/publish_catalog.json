@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-11-02T23:58:48.603798+00:00",
+  "updated_utc": "2026-11-03T03:33:11.784714+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -2639,6 +2639,24 @@
       "source": "upload.success",
       "app_id": "brice_turang",
       "youtube_id": "-nyC4OedyfU"
+    },
+    {
+      "title": "Savannah Chrisley Husband Update Shocks Fans Today",
+      "opener": "Big news about Savannah Chrisley's spouse!",
+      "cta": "",
+      "trend": "Savannah Chrisley husband",
+      "utc": "2026-11-03T03:26:18.982686+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Savannah Chrisley Husband Update Shocks Fans Today",
+      "opener": "Big news about Savannah Chrisley's spouse!",
+      "cta": "Would you share this about Savannah Chrisley husband? Comment why.",
+      "trend": "Savannah Chrisley husband",
+      "utc": "2026-11-03T03:33:11.782791+00:00",
+      "source": "upload.success",
+      "app_id": "savannah_chrisley_husband",
+      "youtube_id": "QNwsc2H_C-Y"
     }
   ]
 }
