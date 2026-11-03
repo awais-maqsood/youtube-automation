@@ -1,15 +1,6 @@
 {
-  "updated_utc": "2026-11-03T19:32:14.705586+00:00",
+  "updated_utc": "2026-11-03T22:23:23.151973+00:00",
   "entries": [
-    {
-      "title": "Movie Box - Is It Safe? The TRUTH",
-      "opener": "Movie Box — the real risk",
-      "cta": "Comment the app — I check it.",
-      "trend": "Movie Box",
-      "app_id": "movie_box",
-      "utc": "2026-08-11T22:51:29+00:00",
-      "source": "upload.success"
-    },
     {
       "title": "Vidmate - Is It Safe? The TRUTH",
       "opener": "Vidmate safe hai?",
@@ -2693,6 +2684,24 @@
       "source": "upload.success",
       "app_id": "man_utd_vs_roma",
       "youtube_id": "bHnJeTyva5k"
+    },
+    {
+      "title": "Virginia Election Results: pulse 954 briefing",
+      "opener": "Pulse 954 — quick cut on Virginia Election Results.",
+      "cta": "",
+      "trend": "Virginia Election Results",
+      "utc": "2026-11-03T22:16:22.260772+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Virginia Election Results: pulse 954 briefing",
+      "opener": "Pulse 954 — quick cut on Virginia Election Results.",
+      "cta": "What is your take on Virginia Election Results? Comment below.",
+      "trend": "Virginia Election Results",
+      "utc": "2026-11-03T22:23:23.149819+00:00",
+      "source": "upload.success",
+      "app_id": "virginia_election_results",
+      "youtube_id": "UXGwQzcAAHQ"
     }
   ]
 }
