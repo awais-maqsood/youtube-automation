@@ -1130,16 +1130,22 @@
       ]
     },
     "2026-11-03": {
-      "count": 1,
+      "count": 2,
       "events": [
         {
           "utc": "2026-11-03T03:33:11.787171+00:00",
           "title": "Savannah Chrisley Husband Update Shocks Fans Today",
           "slot": "night",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-11-03T10:50:16.408522+00:00",
+          "title": "Matt Damon CFDA Awards: pulse 895 briefing",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-11-03T03:33:11.787206+00:00"
+  "updated_utc": "2026-11-03T10:50:16.408552+00:00"
 }

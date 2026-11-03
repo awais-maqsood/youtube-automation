@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-11-03T03:33:11.784714+00:00",
+  "updated_utc": "2026-11-03T10:50:16.405991+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -2657,6 +2657,24 @@
       "source": "upload.success",
       "app_id": "savannah_chrisley_husband",
       "youtube_id": "QNwsc2H_C-Y"
+    },
+    {
+      "title": "Matt Damon CFDA Awards: pulse 895 briefing",
+      "opener": "Pulse 895 — quick cut on Matt Damon CFDA Awards.",
+      "cta": "",
+      "trend": "Matt Damon CFDA Awards",
+      "utc": "2026-11-03T10:43:21.441623+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Matt Damon CFDA Awards: pulse 895 briefing",
+      "opener": "Pulse 895 — quick cut on Matt Damon CFDA Awards.",
+      "cta": "What’s your take on Damon’s moment?",
+      "trend": "Matt Damon CFDA Awards",
+      "utc": "2026-11-03T10:50:16.403965+00:00",
+      "source": "upload.success",
+      "app_id": "matt_damon_cfda_awards",
+      "youtube_id": "5lsHmAZGPgE"
     }
   ]
 }
