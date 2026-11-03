@@ -1130,7 +1130,7 @@
       ]
     },
     "2026-11-03": {
-      "count": 2,
+      "count": 3,
       "events": [
         {
           "utc": "2026-11-03T03:33:11.787171+00:00",
@@ -1143,9 +1143,15 @@
           "title": "Matt Damon CFDA Awards: pulse 895 briefing",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-11-03T19:32:14.708344+00:00",
+          "title": "How Man Utd vs Roma Shifted Game Momentum",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-11-03T10:50:16.408552+00:00"
+  "updated_utc": "2026-11-03T19:32:14.708383+00:00"
 }

@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-11-03T10:50:16.405991+00:00",
+  "updated_utc": "2026-11-03T19:32:14.705586+00:00",
   "entries": [
     {
       "title": "Movie Box - Is It Safe? The TRUTH",
@@ -2675,6 +2675,24 @@
       "source": "upload.success",
       "app_id": "matt_damon_cfda_awards",
       "youtube_id": "5lsHmAZGPgE"
+    },
+    {
+      "title": "How Man Utd vs Roma Shifted Game Momentum",
+      "opener": "What flipped the Man Utd vs Roma play?",
+      "cta": "",
+      "trend": "Man Utd vs Roma",
+      "utc": "2026-11-03T19:25:06.827706+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "How Man Utd vs Roma Shifted Game Momentum",
+      "opener": "What flipped the Man Utd vs Roma play?",
+      "cta": "Thoughts on Man Utd vs Roma? Drop a comment.",
+      "trend": "Man Utd vs Roma",
+      "utc": "2026-11-03T19:32:14.703454+00:00",
+      "source": "upload.success",
+      "app_id": "man_utd_vs_roma",
+      "youtube_id": "bHnJeTyva5k"
     }
   ]
 }
