@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-04T19:47:50.547794+00:00",
+  "updated_utc": "2026-11-04T22:39:27.554984+00:00",
   "entries": [
-    {
-      "title": "Taylor Townsend Transfer Rumors: What's Next?",
-      "opener": "Why fans are buzzing now",
-      "cta": "",
-      "trend": "Taylor Townsend",
-      "utc": "2026-09-02T16:30:01.557947+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "Taylor Townsend Transfer Rumors: What's Next?",
-      "opener": "Why fans are buzzing now",
-      "cta": "Vote with a comment: buy-in or pass.",
-      "trend": "Taylor Townsend",
-      "utc": "2026-09-02T16:37:06.812903+00:00",
-      "source": "upload.success",
-      "app_id": "taylor_townsend",
-      "youtube_id": "oBXShSeSrKI"
-    },
     {
       "title": "Is Markiplier GoPro really the next big thing?",
       "opener": "He just unveiled a new camera",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "rb_leipzig_vs_man_city",
       "youtube_id": "2kkMo3CFQNY"
+    },
+    {
+      "title": "stick season 2: pulse 271 briefing",
+      "opener": "Pulse 271 — quick cut on stick season 2.",
+      "cta": "",
+      "trend": "stick season 2",
+      "utc": "2026-11-04T22:32:44.892538+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "stick season 2: pulse 271 briefing",
+      "opener": "Pulse 271 — quick cut on stick season 2.",
+      "cta": "What is your take on stick season 2? Comment below.",
+      "trend": "stick season 2",
+      "utc": "2026-11-04T22:39:27.552918+00:00",
+      "source": "upload.success",
+      "app_id": "stick_season_2",
+      "youtube_id": "adF7YSBuvlw"
     }
   ]
 }
