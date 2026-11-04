@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-03T22:23:23.151973+00:00",
+  "updated_utc": "2026-11-04T02:15:19.566167+00:00",
   "entries": [
-    {
-      "title": "Vidmate - Is It Safe? The TRUTH",
-      "opener": "Vidmate safe hai?",
-      "cta": "Follow for App TRUTH series.",
-      "trend": "Vidmate",
-      "app_id": "vidmate",
-      "utc": "2026-08-28T12:00:00+00:00",
-      "source": "upload.success"
-    },
-    {
-      "title": "Snaptube - Is It Safe? The TRUTH",
-      "opener": "Everyone downloading Snaptube",
-      "cta": "Next app name in comments.",
-      "trend": "Snaptube",
-      "app_id": "snaptube",
-      "utc": "2026-08-29T12:00:00+00:00",
-      "source": "upload.success"
-    },
     {
       "title": "Showbox - Is It Safe? The TRUTH",
       "opener": "Showbox safe hai?",
@@ -2702,6 +2684,24 @@
       "source": "upload.success",
       "app_id": "virginia_election_results",
       "youtube_id": "UXGwQzcAAHQ"
+    },
+    {
+      "title": "Ro Khanna: pulse 878 briefing",
+      "opener": "Pulse 878 — quick cut on Ro Khanna.",
+      "cta": "",
+      "trend": "Ro Khanna",
+      "utc": "2026-11-04T02:08:14.123888+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Ro Khanna: pulse 878 briefing",
+      "opener": "Pulse 878 — quick cut on Ro Khanna.",
+      "cta": "Where do you stand on Ro Khanna? Tell me in comments.",
+      "trend": "Ro Khanna",
+      "utc": "2026-11-04T02:15:19.563593+00:00",
+      "source": "upload.success",
+      "app_id": "ro_khanna",
+      "youtube_id": "9a-6aD8J48I"
     }
   ]
 }

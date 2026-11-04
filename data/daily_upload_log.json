@@ -1157,7 +1157,18 @@
           "source": "upload.success"
         }
       ]
+    },
+    "2026-11-04": {
+      "count": 1,
+      "events": [
+        {
+          "utc": "2026-11-04T02:15:19.569008+00:00",
+          "title": "Ro Khanna: pulse 878 briefing",
+          "slot": "evening",
+          "source": "upload.success"
+        }
+      ]
     }
   },
-  "updated_utc": "2026-11-03T22:23:23.154611+00:00"
+  "updated_utc": "2026-11-04T02:15:19.569044+00:00"
 }
