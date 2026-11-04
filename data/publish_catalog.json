@@ -1,26 +1,6 @@
 {
-  "updated_utc": "2026-11-04T02:15:19.566167+00:00",
+  "updated_utc": "2026-11-04T10:52:50.286078+00:00",
   "entries": [
-    {
-      "title": "Showbox - Is It Safe? The TRUTH",
-      "opener": "Showbox safe hai?",
-      "cta": "Comment the app — I check it.",
-      "trend": "Showbox",
-      "app_id": "showbox",
-      "utc": "2026-08-30T12:00:00+00:00",
-      "source": "upload.success"
-    },
-    {
-      "title": "Cinema HD - Is It Safe? The TRUTH",
-      "opener": "Cinema HD safe hai?",
-      "cta": "Comment the app — I check it.",
-      "trend": "Cinema HD",
-      "app_id": "cinema_hd",
-      "utc": "2026-09-01T01:20:00+00:00",
-      "source": "upload.success",
-      "retired": true,
-      "note": "User deleted all copies — permanently blocked from rotation"
-    },
     {
       "title": "Netflix Squid Game season update: What's next?",
       "opener": "Ready for the next round?",
@@ -2702,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "ro_khanna",
       "youtube_id": "9a-6aD8J48I"
+    },
+    {
+      "title": "michigan proposal results: pulse 738 briefing",
+      "opener": "Pulse 738 — quick cut on michigan proposal results.",
+      "cta": "",
+      "trend": "michigan proposal results",
+      "utc": "2026-11-04T10:46:37.397106+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "michigan proposal results: pulse 738 briefing",
+      "opener": "Pulse 738 — quick cut on michigan proposal results.",
+      "cta": "Buy the take or pass?",
+      "trend": "michigan proposal results",
+      "utc": "2026-11-04T10:52:50.284621+00:00",
+      "source": "upload.success",
+      "app_id": "michigan_proposal_results",
+      "youtube_id": "dI82dof5uuY"
     }
   ]
 }

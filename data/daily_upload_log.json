@@ -1159,16 +1159,22 @@
       ]
     },
     "2026-11-04": {
-      "count": 1,
+      "count": 2,
       "events": [
         {
           "utc": "2026-11-04T02:15:19.569008+00:00",
           "title": "Ro Khanna: pulse 878 briefing",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-11-04T10:52:50.287846+00:00",
+          "title": "michigan proposal results: pulse 738 briefing",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-11-04T02:15:19.569044+00:00"
+  "updated_utc": "2026-11-04T10:52:50.287867+00:00"
 }
