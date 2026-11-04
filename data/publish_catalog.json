@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-04T10:52:50.286078+00:00",
+  "updated_utc": "2026-11-04T19:47:50.547794+00:00",
   "entries": [
-    {
-      "title": "Netflix Squid Game season update: What's next?",
-      "opener": "Ready for the next round?",
-      "cta": "",
-      "trend": "Netflix Squid Game season",
-      "utc": "2026-09-02T07:52:12.503363+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "Netflix Squid Game season update: What's next?",
-      "opener": "Ready for the next round?",
-      "cta": "Follow for the next product/event breakdown.",
-      "trend": "Netflix Squid Game season",
-      "utc": "2026-09-02T07:59:01.443271+00:00",
-      "source": "upload.success",
-      "app_id": "netflix_squid_game_season",
-      "youtube_id": "v5vRoSh_kBc"
-    },
     {
       "title": "Taylor Townsend Transfer Rumors: What's Next?",
       "opener": "Why fans are buzzing now",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "michigan_proposal_results",
       "youtube_id": "dI82dof5uuY"
+    },
+    {
+      "title": "rb leipzig vs man city: pulse 960 briefing",
+      "opener": "Pulse 960 — quick cut on rb leipzig vs man city.",
+      "cta": "",
+      "trend": "rb leipzig vs man city",
+      "utc": "2026-11-04T19:40:51.113537+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "rb leipzig vs man city: pulse 960 briefing",
+      "opener": "Pulse 960 — quick cut on rb leipzig vs man city.",
+      "cta": "What is your take on rb leipzig vs man city? Comment below.",
+      "trend": "rb leipzig vs man city",
+      "utc": "2026-11-04T19:47:50.545663+00:00",
+      "source": "upload.success",
+      "app_id": "rb_leipzig_vs_man_city",
+      "youtube_id": "2kkMo3CFQNY"
     }
   ]
 }

@@ -1159,7 +1159,7 @@
       ]
     },
     "2026-11-04": {
-      "count": 2,
+      "count": 3,
       "events": [
         {
           "utc": "2026-11-04T02:15:19.569008+00:00",
@@ -1172,9 +1172,15 @@
           "title": "michigan proposal results: pulse 738 briefing",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-11-04T19:47:50.550524+00:00",
+          "title": "rb leipzig vs man city: pulse 960 briefing",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-11-04T10:52:50.287867+00:00"
+  "updated_utc": "2026-11-04T19:47:50.550558+00:00"
 }
