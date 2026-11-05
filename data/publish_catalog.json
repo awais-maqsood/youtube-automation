@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-05T10:50:00.449084+00:00",
+  "updated_utc": "2026-11-05T19:57:41.825110+00:00",
   "entries": [
-    {
-      "title": "Watch Donald Trump's Rally Moment",
-      "opener": "Explosive rally footage just dropped",
-      "cta": "",
-      "trend": "donald trump",
-      "utc": "2026-09-03T08:00:21.529107+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "Watch Donald Trump's Rally Moment",
-      "opener": "Explosive rally footage just dropped",
-      "cta": "One-line verdict in the comments.",
-      "trend": "donald trump",
-      "utc": "2026-09-03T08:07:33.861142+00:00",
-      "source": "upload.success",
-      "app_id": "donald_trump",
-      "youtube_id": "ydvNHBxDVmw"
-    },
     {
       "title": "Iga Świątek beats Gauff in French Open final",
       "opener": "Who actually ruled the clay court?",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "president_trump",
       "youtube_id": "-mBLDYLc56w"
+    },
+    {
+      "title": "Watch This: Aaron Judge Latest Breakthrough Update",
+      "opener": "Big news just dropped on Aaron Judge!",
+      "cta": "",
+      "trend": "Aaron Judge",
+      "utc": "2026-11-05T19:50:35.567351+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Watch This: Aaron Judge Latest Breakthrough Update",
+      "opener": "Big news just dropped on Aaron Judge!",
+      "cta": "Thoughts on Aaron Judge? Drop a comment.",
+      "trend": "Aaron Judge",
+      "utc": "2026-11-05T19:57:41.823011+00:00",
+      "source": "upload.success",
+      "app_id": "aaron_judge",
+      "youtube_id": "VOXhDzKuc34"
     }
   ]
 }
