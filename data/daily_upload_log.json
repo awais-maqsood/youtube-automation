@@ -1188,16 +1188,22 @@
       ]
     },
     "2026-11-05": {
-      "count": 1,
+      "count": 2,
       "events": [
         {
           "utc": "2026-11-05T02:20:54.776748+00:00",
           "title": "aldi november 2026 new products reset the conversation",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-11-05T10:50:00.451622+00:00",
+          "title": "president trump: pulse 620 briefing",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-11-05T02:20:54.776788+00:00"
+  "updated_utc": "2026-11-05T10:50:00.451654+00:00"
 }

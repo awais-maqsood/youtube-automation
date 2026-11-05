@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-05T02:20:54.773930+00:00",
+  "updated_utc": "2026-11-05T10:50:00.449084+00:00",
   "entries": [
-    {
-      "title": "Yahoo Fantasy Football Draft Explodes",
-      "opener": "Who’s pulling crazy late picks?",
-      "cta": "",
-      "trend": "Yahoo Fantasy Football",
-      "utc": "2026-09-03T00:03:44.716576+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "Yahoo Fantasy Football Draft Explodes",
-      "opener": "Who’s pulling crazy late picks?",
-      "cta": "Subscribe if you want the next clear read.",
-      "trend": "Yahoo Fantasy Football",
-      "utc": "2026-09-03T00:10:43.627547+00:00",
-      "source": "upload.success",
-      "app_id": "yahoo_fantasy_football",
-      "youtube_id": "EUtoFjMJ-iQ"
-    },
     {
       "title": "Watch Donald Trump's Rally Moment",
       "opener": "Explosive rally footage just dropped",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "aldi_november_2026_new_products",
       "youtube_id": "EQ1MsSVFb6g"
+    },
+    {
+      "title": "president trump: pulse 620 briefing",
+      "opener": "Pulse 620 — quick cut on president trump.",
+      "cta": "",
+      "trend": "president trump",
+      "utc": "2026-11-05T10:43:12.440900+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "president trump: pulse 620 briefing",
+      "opener": "Pulse 620 — quick cut on president trump.",
+      "cta": "Thoughts on president trump? Drop a comment.",
+      "trend": "president trump",
+      "utc": "2026-11-05T10:50:00.446955+00:00",
+      "source": "upload.success",
+      "app_id": "president_trump",
+      "youtube_id": "-mBLDYLc56w"
     }
   ]
 }
