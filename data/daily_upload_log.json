@@ -1186,7 +1186,18 @@
           "source": "upload.success"
         }
       ]
+    },
+    "2026-11-05": {
+      "count": 1,
+      "events": [
+        {
+          "utc": "2026-11-05T02:20:54.776748+00:00",
+          "title": "aldi november 2026 new products reset the conversation",
+          "slot": "evening",
+          "source": "upload.success"
+        }
+      ]
     }
   },
-  "updated_utc": "2026-11-04T22:39:27.557530+00:00"
+  "updated_utc": "2026-11-05T02:20:54.776788+00:00"
 }
