@@ -1188,7 +1188,7 @@
       ]
     },
     "2026-11-05": {
-      "count": 3,
+      "count": 4,
       "events": [
         {
           "utc": "2026-11-05T02:20:54.776748+00:00",
@@ -1207,9 +1207,15 @@
           "title": "Watch This: Aaron Judge Latest Breakthrough Update",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-11-05T22:45:59.875278+00:00",
+          "title": "Palmeiras vs Remo Drama Isn\u2019t What You Think",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-11-05T19:57:41.828100+00:00"
+  "updated_utc": "2026-11-05T22:45:59.875305+00:00"
 }

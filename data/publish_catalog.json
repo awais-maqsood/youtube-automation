@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-05T19:57:41.825110+00:00",
+  "updated_utc": "2026-11-05T22:45:59.873006+00:00",
   "entries": [
-    {
-      "title": "Iga Świątek beats Gauff in French Open final",
-      "opener": "Who actually ruled the clay court?",
-      "cta": "",
-      "trend": "Iga Świątek",
-      "utc": "2026-09-03T16:21:01.163676+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "Iga Świątek beats Gauff in French Open final",
-      "opener": "Who actually ruled the clay court?",
-      "cta": "Is the panic overdone? Argue below.",
-      "trend": "Iga Świątek",
-      "utc": "2026-09-03T16:27:44.011846+00:00",
-      "source": "upload.success",
-      "app_id": "iga_wi_tek",
-      "youtube_id": "1Z---7YxbNA"
-    },
     {
       "title": "Lindsay Clancy Career Is Over",
       "opener": "Did she really quit?",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "aaron_judge",
       "youtube_id": "VOXhDzKuc34"
+    },
+    {
+      "title": "Palmeiras vs Remo Drama Isn’t What You Think",
+      "opener": "This Palmeiras match surprise is wild",
+      "cta": "",
+      "trend": "Palmeiras vs Remo",
+      "utc": "2026-11-05T22:39:11.243064+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Palmeiras vs Remo Drama Isn’t What You Think",
+      "opener": "This Palmeiras match surprise is wild",
+      "cta": "One-line verdict in the comments.",
+      "trend": "Palmeiras vs Remo",
+      "utc": "2026-11-05T22:45:59.871328+00:00",
+      "source": "upload.success",
+      "app_id": "palmeiras_vs_remo",
+      "youtube_id": "nFIoHuL38EA"
     }
   ]
 }
