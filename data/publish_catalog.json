@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-06T19:22:36.211403+00:00",
+  "updated_utc": "2026-11-06T22:08:04.687607+00:00",
   "entries": [
-    {
-      "title": "Simon Cowell's New Look: What Changed?",
-      "opener": "He looks completely changed",
-      "cta": "",
-      "trend": "Simon Cowell",
-      "utc": "2026-09-04T19:27:48.525661+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "Simon Cowell's New Look: What Changed?",
-      "opener": "He looks completely changed",
-      "cta": "Would you bet on this outcome? Reply.",
-      "trend": "Simon Cowell",
-      "utc": "2026-09-04T19:34:31.000791+00:00",
-      "source": "upload.success",
-      "app_id": "simon_cowell",
-      "youtube_id": "FRFUIEL3W68"
-    },
     {
       "title": "Ryan Reynolds Facts That Shock Everyone",
       "opener": "Reynolds drops truth bombs fast",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "carlos_alcaraz",
       "youtube_id": "pqgo-PHKXJg"
+    },
+    {
+      "title": "Kristaps Porzingis Is Not Who You Think",
+      "opener": "Why Porzingis’s game surprised fans",
+      "cta": "",
+      "trend": "Kristaps Porzingis",
+      "utc": "2026-11-06T22:00:53.355700+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Kristaps Porzingis Is Not Who You Think",
+      "opener": "Why Porzingis’s game surprised fans",
+      "cta": "Curious what you'd do — tell me.",
+      "trend": "Kristaps Porzingis",
+      "utc": "2026-11-06T22:08:04.685421+00:00",
+      "source": "upload.success",
+      "app_id": "kristaps_porzingis",
+      "youtube_id": "eQhsI5fPS8g"
     }
   ]
 }
