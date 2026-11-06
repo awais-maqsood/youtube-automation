@@ -1217,16 +1217,22 @@
       ]
     },
     "2026-11-06": {
-      "count": 1,
+      "count": 2,
       "events": [
         {
           "utc": "2026-11-06T02:45:43.011483+00:00",
           "title": "Trey Hendrickson: pulse 269 briefing",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-11-06T10:49:16.056058+00:00",
+          "title": "Watch This Viral Moment at Hong Kong Open",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-11-06T02:45:43.011514+00:00"
+  "updated_utc": "2026-11-06T10:49:16.056092+00:00"
 }
