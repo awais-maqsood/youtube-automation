@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-05T22:45:59.873006+00:00",
+  "updated_utc": "2026-11-06T02:45:43.009237+00:00",
   "entries": [
-    {
-      "title": "Lindsay Clancy Career Is Over",
-      "opener": "Did she really quit?",
-      "cta": "",
-      "trend": "lindsay clancy",
-      "utc": "2026-09-03T19:48:16.540440+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "Lindsay Clancy Career Is Over",
-      "opener": "Did she really quit?",
-      "cta": "What do you make of it? Say so below.",
-      "trend": "lindsay clancy",
-      "utc": "2026-09-03T19:55:05.329748+00:00",
-      "source": "upload.success",
-      "app_id": "lindsay_clancy",
-      "youtube_id": "j3qIW6XA4F8"
-    },
     {
       "title": "Alix Earle just dropped a major update?",
       "opener": "Alix Earle shocked everyone again",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "palmeiras_vs_remo",
       "youtube_id": "nFIoHuL38EA"
+    },
+    {
+      "title": "Trey Hendrickson: pulse 269 briefing",
+      "opener": "Pulse 269 — quick cut on Trey Hendrickson.",
+      "cta": "",
+      "trend": "Trey Hendrickson",
+      "utc": "2026-11-06T02:38:52.440599+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Trey Hendrickson: pulse 269 briefing",
+      "opener": "Pulse 269 — quick cut on Trey Hendrickson.",
+      "cta": "Is the panic overdone? Argue below.",
+      "trend": "Trey Hendrickson",
+      "utc": "2026-11-06T02:45:43.007528+00:00",
+      "source": "upload.success",
+      "app_id": "trey_hendrickson",
+      "youtube_id": "kcw60TBsOsA"
     }
   ]
 }

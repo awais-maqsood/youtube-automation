@@ -1215,7 +1215,18 @@
           "source": "upload.success"
         }
       ]
+    },
+    "2026-11-06": {
+      "count": 1,
+      "events": [
+        {
+          "utc": "2026-11-06T02:45:43.011483+00:00",
+          "title": "Trey Hendrickson: pulse 269 briefing",
+          "slot": "evening",
+          "source": "upload.success"
+        }
+      ]
     }
   },
-  "updated_utc": "2026-11-05T22:45:59.875305+00:00"
+  "updated_utc": "2026-11-06T02:45:43.011514+00:00"
 }
