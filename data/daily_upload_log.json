@@ -1244,7 +1244,18 @@
           "source": "upload.success"
         }
       ]
+    },
+    "2026-11-07": {
+      "count": 1,
+      "events": [
+        {
+          "utc": "2026-11-07T01:53:55.811166+00:00",
+          "title": "Reality check: James Harden",
+          "slot": "evening",
+          "source": "upload.success"
+        }
+      ]
     }
   },
-  "updated_utc": "2026-11-06T22:08:04.690243+00:00"
+  "updated_utc": "2026-11-07T01:53:55.811195+00:00"
 }

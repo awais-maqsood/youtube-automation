@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-06T22:08:04.687607+00:00",
+  "updated_utc": "2026-11-07T01:53:55.808631+00:00",
   "entries": [
-    {
-      "title": "Ryan Reynolds Facts That Shock Everyone",
-      "opener": "Reynolds drops truth bombs fast",
-      "cta": "",
-      "trend": "Ryan Reynolds",
-      "utc": "2026-09-04T23:56:56.413173+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "Ryan Reynolds Facts That Shock Everyone",
-      "opener": "Reynolds drops truth bombs fast",
-      "cta": "Reply with the counter-argument.",
-      "trend": "Ryan Reynolds",
-      "utc": "2026-09-05T00:03:31.983201+00:00",
-      "source": "upload.success",
-      "app_id": "ryan_reynolds",
-      "youtube_id": "DezH-EeESXc"
-    },
     {
       "title": "WWE Releases: hype vs substance",
       "opener": "Start with WWE Releases.",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "kristaps_porzingis",
       "youtube_id": "eQhsI5fPS8g"
+    },
+    {
+      "title": "Reality check: James Harden",
+      "opener": "James Harden's drama you missed",
+      "cta": "",
+      "trend": "James Harden",
+      "utc": "2026-11-07T01:47:01.807369+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Reality check: James Harden",
+      "opener": "James Harden's drama you missed",
+      "cta": "Would you bet on this outcome? Reply.",
+      "trend": "James Harden",
+      "utc": "2026-11-07T01:53:55.806438+00:00",
+      "source": "upload.success",
+      "app_id": "james_harden",
+      "youtube_id": "5e506V6OceE"
     }
   ]
 }
