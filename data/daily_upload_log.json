@@ -1246,7 +1246,7 @@
       ]
     },
     "2026-11-07": {
-      "count": 2,
+      "count": 3,
       "events": [
         {
           "utc": "2026-11-07T01:53:55.811166+00:00",
@@ -1259,9 +1259,15 @@
           "title": "Is Richard Lloyd the Best Tool Choice Today?",
           "slot": "afternoon",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-11-07T20:55:22.041862+00:00",
+          "title": "Rutgers vs Wisconsin Latest Score Update",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-11-07T17:49:26.083098+00:00"
+  "updated_utc": "2026-11-07T20:55:22.041883+00:00"
 }
