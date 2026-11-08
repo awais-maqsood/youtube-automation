@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-08T10:16:11.740226+00:00",
+  "updated_utc": "2026-11-08T17:59:41.149138+00:00",
   "entries": [
-    {
-      "title": "Ben Shelton's Victory Is Undeniable!",
-      "opener": "He just smashed the competition!",
-      "cta": "",
-      "trend": "Ben Shelton",
-      "utc": "2026-09-06T23:46:45.735052+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "Ben Shelton's Victory Is Undeniable!",
-      "opener": "He just smashed the competition!",
-      "cta": "Honest read — leave yours in comments.",
-      "trend": "Ben Shelton",
-      "utc": "2026-09-06T23:53:49.419220+00:00",
-      "source": "upload.success",
-      "app_id": "ben_shelton",
-      "youtube_id": "YTnyzh5v89o"
-    },
     {
       "title": "Can You Really Get a Dunkin Free Pumpkin Spice Latte?",
       "opener": "Free Pumpkin Spice Latte craze explodes!",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "gta_6",
       "youtube_id": "Q2sEEkxoisI"
+    },
+    {
+      "title": "Shedeur Sanders: pulse 233 briefing",
+      "opener": "Pulse 233 — quick cut on Shedeur Sanders.",
+      "cta": "",
+      "trend": "Shedeur Sanders",
+      "utc": "2026-11-08T17:52:57.058510+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Shedeur Sanders: pulse 233 briefing",
+      "opener": "Pulse 233 — quick cut on Shedeur Sanders.",
+      "cta": "What is your take on Shedeur Sanders? Comment below.",
+      "trend": "Shedeur Sanders",
+      "utc": "2026-11-08T17:59:41.147416+00:00",
+      "source": "upload.success",
+      "app_id": "shedeur_sanders",
+      "youtube_id": "Q82gvc8YU4o"
     }
   ]
 }

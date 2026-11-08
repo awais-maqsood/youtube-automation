@@ -1269,7 +1269,7 @@
       ]
     },
     "2026-11-08": {
-      "count": 2,
+      "count": 3,
       "events": [
         {
           "utc": "2026-11-08T01:24:38.613537+00:00",
@@ -1282,9 +1282,15 @@
           "title": "GTA 6: pulse 944 briefing",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-11-08T17:59:41.151385+00:00",
+          "title": "Shedeur Sanders: pulse 233 briefing",
+          "slot": "afternoon",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-11-08T10:16:11.742812+00:00"
+  "updated_utc": "2026-11-08T17:59:41.151410+00:00"
 }
