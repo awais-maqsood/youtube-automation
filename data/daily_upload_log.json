@@ -1269,7 +1269,7 @@
       ]
     },
     "2026-11-08": {
-      "count": 3,
+      "count": 4,
       "events": [
         {
           "utc": "2026-11-08T01:24:38.613537+00:00",
@@ -1288,9 +1288,15 @@
           "title": "Shedeur Sanders: pulse 233 briefing",
           "slot": "afternoon",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-11-08T21:12:16.986043+00:00",
+          "title": "Why Kurt Russell Is Back in the Spotlight Now",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-11-08T17:59:41.151410+00:00"
+  "updated_utc": "2026-11-08T21:12:16.986075+00:00"
 }

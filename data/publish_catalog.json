@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-08T17:59:41.149138+00:00",
+  "updated_utc": "2026-11-08T21:12:16.983454+00:00",
   "entries": [
-    {
-      "title": "Can You Really Get a Dunkin Free Pumpkin Spice Latte?",
-      "opener": "Free Pumpkin Spice Latte craze explodes!",
-      "cta": "",
-      "trend": "Dunkin Free Pumpkin Spice Latte",
-      "utc": "2026-09-08T16:32:44.248220+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "Can You Really Get a Dunkin Free Pumpkin Spice Latte?",
-      "opener": "Free Pumpkin Spice Latte craze explodes!",
-      "cta": "More named-topic Shorts coming — follow if useful.",
-      "trend": "Dunkin Free Pumpkin Spice Latte",
-      "utc": "2026-09-08T16:39:28.421440+00:00",
-      "source": "upload.success",
-      "app_id": "dunkin_free_pumpkin_spice_latte",
-      "youtube_id": "HnnK4_G7mhg"
-    },
     {
       "title": "Watch This: Trump 9/11 Claims Fact-Checked Fast",
       "opener": "Sorting fact from fiction on Trump 9/11",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "shedeur_sanders",
       "youtube_id": "Q82gvc8YU4o"
+    },
+    {
+      "title": "Why Kurt Russell Is Back in the Spotlight Now",
+      "opener": "Kurt Russell’s latest news just dropped!",
+      "cta": "",
+      "trend": "Kurt Russell",
+      "utc": "2026-11-08T21:05:08.020560+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Why Kurt Russell Is Back in the Spotlight Now",
+      "opener": "Kurt Russell’s latest news just dropped!",
+      "cta": "What’s your take on Kurt Russell’s news?",
+      "trend": "Kurt Russell",
+      "utc": "2026-11-08T21:12:16.981367+00:00",
+      "source": "upload.success",
+      "app_id": "kurt_russell",
+      "youtube_id": "xmCQQWJwkSQ"
     }
   ]
 }
