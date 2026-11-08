@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-07T20:55:22.040116+00:00",
+  "updated_utc": "2026-11-08T01:24:38.610803+00:00",
   "entries": [
-    {
-      "title": "Ryan Garcia fight moment that shocked fans",
-      "opener": "Did Ryan Garcia surprise everyone?",
-      "cta": "",
-      "trend": "Ryan Garcia fight",
-      "utc": "2026-09-05T19:00:34.601148+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "Ryan Garcia fight moment that shocked fans",
-      "opener": "Did Ryan Garcia surprise everyone?",
-      "cta": "I post the next concrete update here.",
-      "trend": "Ryan Garcia fight",
-      "utc": "2026-09-05T19:07:15.519142+00:00",
-      "source": "upload.success",
-      "app_id": "ryan_garcia_fight",
-      "youtube_id": "gN-R1QJUuhE"
-    },
     {
       "title": "Internacional vs Santos: What Really Changed?",
       "opener": "Something flipped in this clash",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "rutgers_vs_wisconsin",
       "youtube_id": "IBexb8vyAg4"
+    },
+    {
+      "title": "Onyeka Okongwu: pulse 238 briefing",
+      "opener": "Pulse 238 — quick cut on Onyeka Okongwu.",
+      "cta": "",
+      "trend": "Onyeka Okongwu",
+      "utc": "2026-11-08T01:17:34.002208+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Onyeka Okongwu: pulse 238 briefing",
+      "opener": "Pulse 238 — quick cut on Onyeka Okongwu.",
+      "cta": "Does this change your plan? Comment.",
+      "trend": "Onyeka Okongwu",
+      "utc": "2026-11-08T01:24:38.608739+00:00",
+      "source": "upload.success",
+      "app_id": "onyeka_okongwu",
+      "youtube_id": "2blN_AWuTWg"
     }
   ]
 }
