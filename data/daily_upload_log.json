@@ -1269,16 +1269,22 @@
       ]
     },
     "2026-11-08": {
-      "count": 1,
+      "count": 2,
       "events": [
         {
           "utc": "2026-11-08T01:24:38.613537+00:00",
           "title": "Onyeka Okongwu: pulse 238 briefing",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-11-08T10:16:11.742784+00:00",
+          "title": "GTA 6: pulse 944 briefing",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-11-08T01:24:38.613573+00:00"
+  "updated_utc": "2026-11-08T10:16:11.742812+00:00"
 }

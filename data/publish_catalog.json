@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-08T01:24:38.610803+00:00",
+  "updated_utc": "2026-11-08T10:16:11.740226+00:00",
   "entries": [
-    {
-      "title": "Internacional vs Santos: What Really Changed?",
-      "opener": "Something flipped in this clash",
-      "cta": "",
-      "trend": "Internacional vs Santos",
-      "utc": "2026-09-06T19:04:16.922067+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "Internacional vs Santos: What Really Changed?",
-      "opener": "Something flipped in this clash",
-      "cta": "Next Short covers the follow-up — stay close.",
-      "trend": "Internacional vs Santos",
-      "utc": "2026-09-06T19:11:21.743663+00:00",
-      "source": "upload.success",
-      "app_id": "internacional_vs_santos",
-      "youtube_id": "qtqEXifxXb8"
-    },
     {
       "title": "Ben Shelton's Victory Is Undeniable!",
       "opener": "He just smashed the competition!",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "onyeka_okongwu",
       "youtube_id": "2blN_AWuTWg"
+    },
+    {
+      "title": "GTA 6: pulse 944 briefing",
+      "opener": "Pulse 944 — quick cut on GTA 6.",
+      "cta": "",
+      "trend": "GTA 6",
+      "utc": "2026-11-08T10:09:03.943897+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "GTA 6: pulse 944 briefing",
+      "opener": "Pulse 944 — quick cut on GTA 6.",
+      "cta": "Hot take on GTA 6? Write it in the comments.",
+      "trend": "GTA 6",
+      "utc": "2026-11-08T10:16:11.738197+00:00",
+      "source": "upload.success",
+      "app_id": "gta_6",
+      "youtube_id": "Q2sEEkxoisI"
     }
   ]
 }
