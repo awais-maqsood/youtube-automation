@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-09T11:24:37.363807+00:00",
+  "updated_utc": "2026-11-09T22:20:55.372942+00:00",
   "entries": [
-    {
-      "title": "Watch This: Iran War US Submarine Breakthrough",
-      "opener": "US subs dive into Iran conflict",
-      "cta": "",
-      "trend": "Iran war US submarine",
-      "utc": "2026-09-09T08:03:51.327630+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "Watch This: Iran War US Submarine Breakthrough",
-      "opener": "US subs dive into Iran conflict",
-      "cta": "Stay for the next named-topic Short.",
-      "trend": "Iran war US submarine",
-      "utc": "2026-09-09T08:10:50.175755+00:00",
-      "source": "upload.success",
-      "app_id": "iran_war_us_submarine",
-      "youtube_id": "67RRRJen2-c"
-    },
     {
       "title": "Elena Rybakina Isn’t Just a Wimbledon Star",
       "opener": "Why Rybakina is more than a tennis sensation",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "malik_nabers_fox_broadcast_criticism",
       "youtube_id": "k4TEYE8ctl4"
+    },
+    {
+      "title": "Jalen Carter’s Controversy: What Really Happened?",
+      "opener": "Breaking down Jalen Carter’s latest headlines",
+      "cta": "",
+      "trend": "Jalen Carter",
+      "utc": "2026-11-09T22:14:33.790159+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Jalen Carter’s Controversy: What Really Happened?",
+      "opener": "Breaking down Jalen Carter’s latest headlines",
+      "cta": "What’s your take on Jalen Carter now?",
+      "trend": "Jalen Carter",
+      "utc": "2026-11-09T22:20:55.371434+00:00",
+      "source": "upload.success",
+      "app_id": "jalen_carter",
+      "youtube_id": "cAT46_qRGrY"
     }
   ]
 }

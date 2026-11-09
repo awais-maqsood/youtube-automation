@@ -1298,7 +1298,7 @@
       ]
     },
     "2026-11-09": {
-      "count": 2,
+      "count": 3,
       "events": [
         {
           "utc": "2026-11-09T01:43:34.135690+00:00",
@@ -1311,9 +1311,15 @@
           "title": "Malik Nabers Fox Broadcast Criticism: Why Malik Nabers Faces Fox...",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-11-09T22:20:55.374785+00:00",
+          "title": "Jalen Carter\u2019s Controversy: What Really Happened?",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-11-09T11:24:37.365616+00:00"
+  "updated_utc": "2026-11-09T22:20:55.374808+00:00"
 }
