@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-09T01:43:34.133579+00:00",
+  "updated_utc": "2026-11-09T11:24:37.363807+00:00",
   "entries": [
-    {
-      "title": "Watch This Viral US Open 2024 Tennis Moment",
-      "opener": "You won't believe this US Open clip!",
-      "cta": "",
-      "trend": "US Open 2024",
-      "utc": "2026-09-09T00:02:48.978691+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "Watch This Viral US Open 2024 Tennis Moment",
-      "opener": "You won't believe this US Open clip!",
-      "cta": "More explainers land on this channel soon.",
-      "trend": "US Open 2024",
-      "utc": "2026-09-09T00:09:43.816881+00:00",
-      "source": "upload.success",
-      "app_id": "us_open_2024",
-      "youtube_id": "jrTLS-XZsLI"
-    },
     {
       "title": "Watch This: Iran War US Submarine Breakthrough",
       "opener": "US subs dive into Iran conflict",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "keira_knightley",
       "youtube_id": "9wl739CEJGQ"
+    },
+    {
+      "title": "Malik Nabers Fox Broadcast Criticism: Why Malik Nabers Faces Fox...",
+      "opener": "Serious question about Malik Nabers Fox Broadcast Criticism.",
+      "cta": "",
+      "trend": "Malik Nabers Fox Broadcast Criticism",
+      "utc": "2026-11-09T11:18:10.919443+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Malik Nabers Fox Broadcast Criticism: Why Malik Nabers Faces Fox...",
+      "opener": "Serious question about Malik Nabers Fox Broadcast Criticism.",
+      "cta": "What’s your take on Malik Nabers’ Fox criticism?",
+      "trend": "Malik Nabers Fox Broadcast Criticism",
+      "utc": "2026-11-09T11:24:37.362368+00:00",
+      "source": "upload.success",
+      "app_id": "malik_nabers_fox_broadcast_criticism",
+      "youtube_id": "k4TEYE8ctl4"
     }
   ]
 }

@@ -1298,16 +1298,22 @@
       ]
     },
     "2026-11-09": {
-      "count": 1,
+      "count": 2,
       "events": [
         {
           "utc": "2026-11-09T01:43:34.135690+00:00",
           "title": "Keira Knightley Facts You Probably Didn\u2019t Know",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-11-09T11:24:37.365594+00:00",
+          "title": "Malik Nabers Fox Broadcast Criticism: Why Malik Nabers Faces Fox...",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-11-09T01:43:34.135728+00:00"
+  "updated_utc": "2026-11-09T11:24:37.365616+00:00"
 }
