@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-10T11:06:31.059754+00:00",
+  "updated_utc": "2026-11-10T19:45:43.950884+00:00",
   "entries": [
-    {
-      "title": "What Sparked Kaia Gerber’s Viral Moment?",
-      "opener": "This Kaia clip just broke the internet!",
-      "cta": "",
-      "trend": "Kaia Gerber",
-      "utc": "2026-09-10T08:03:39.687720+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "What Sparked Kaia Gerber’s Viral Moment?",
-      "opener": "This Kaia clip just broke the internet!",
-      "cta": "What’s your take on Kaia’s viral buzz?",
-      "trend": "Kaia Gerber",
-      "utc": "2026-09-10T08:10:42.986275+00:00",
-      "source": "upload.success",
-      "app_id": "kaia_gerber",
-      "youtube_id": "daY2yA1DI9c"
-    },
     {
       "title": "What Sparked the Fenerbahçe - Roma Controversy?",
       "opener": "Inside the Fenerbahçe - Roma clash drama",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "cardi_b",
       "youtube_id": "ooIRsxenCQM"
+    },
+    {
+      "title": "How Bills Trade Shifted Buffalo's Game Plan",
+      "opener": "Buffalo's trade move just flipped everything",
+      "cta": "",
+      "trend": "Bills trade",
+      "utc": "2026-11-10T19:38:43.560268+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "How Bills Trade Shifted Buffalo's Game Plan",
+      "opener": "Buffalo's trade move just flipped everything",
+      "cta": "One-line read on Bills trade — leave a comment.",
+      "trend": "Bills trade",
+      "utc": "2026-11-10T19:45:43.948809+00:00",
+      "source": "upload.success",
+      "app_id": "bills_trade",
+      "youtube_id": "6iSrmRMxhN8"
     }
   ]
 }

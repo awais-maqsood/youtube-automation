@@ -1298,7 +1298,7 @@
       ]
     },
     "2026-11-10": {
-      "count": 3,
+      "count": 4,
       "events": [
         {
           "utc": "2026-11-10T00:46:01.675159+00:00",
@@ -1317,9 +1317,15 @@
           "title": "Cardi B Facts You Probably Got Wrong",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-11-10T19:45:43.953553+00:00",
+          "title": "How Bills Trade Shifted Buffalo's Game Plan",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-11-10T11:06:31.062414+00:00"
+  "updated_utc": "2026-11-10T19:45:43.953590+00:00"
 }
