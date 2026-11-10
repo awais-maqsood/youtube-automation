@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-09T22:20:55.372942+00:00",
+  "updated_utc": "2026-11-10T00:46:01.672564+00:00",
   "entries": [
-    {
-      "title": "Elena Rybakina Isn’t Just a Wimbledon Star",
-      "opener": "Why Rybakina is more than a tennis sensation",
-      "cta": "",
-      "trend": "Elena Rybakina",
-      "utc": "2026-09-09T16:30:04.231752+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "Elena Rybakina Isn’t Just a Wimbledon Star",
-      "opener": "Why Rybakina is more than a tennis sensation",
-      "cta": "Catch the next breakdown as it breaks.",
-      "trend": "Elena Rybakina",
-      "utc": "2026-09-09T16:37:09.888385+00:00",
-      "source": "upload.success",
-      "app_id": "elena_rybakina",
-      "youtube_id": "VKXGxsJYMwM"
-    },
     {
       "title": "Watch This: Coco Gauff’s Latest Breakthrough News",
       "opener": "Coco Gauff just changed the game again",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "jalen_carter",
       "youtube_id": "cAT46_qRGrY"
+    },
+    {
+      "title": "Track Grand Theft Auto 6 while the facts are fresh",
+      "opener": "The GTA 6 saga hits new drama points",
+      "cta": "",
+      "trend": "Grand Theft Auto 6",
+      "utc": "2026-11-10T00:38:58.189397+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Track Grand Theft Auto 6 while the facts are fresh",
+      "opener": "The GTA 6 saga hits new drama points",
+      "cta": "Hot take on Grand Theft Auto 6? Write it in the comments.",
+      "trend": "Grand Theft Auto 6",
+      "utc": "2026-11-10T00:46:01.670448+00:00",
+      "source": "upload.success",
+      "app_id": "grand_theft_auto_6",
+      "youtube_id": "31fbFKGK1vg"
     }
   ]
 }

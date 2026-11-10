@@ -1,28 +1,5 @@
 {
   "days": {
-    "2026-09-02": {
-      "count": 3,
-      "events": [
-        {
-          "utc": "2026-09-02T07:59:01.443762+00:00",
-          "title": "Netflix Squid Game season update: What's next?",
-          "slot": "evening",
-          "source": "upload.success"
-        },
-        {
-          "utc": "2026-09-02T16:37:06.813422+00:00",
-          "title": "Taylor Townsend Transfer Rumors: What's Next?",
-          "slot": "evening",
-          "source": "upload.success"
-        },
-        {
-          "utc": "2026-09-02T19:51:54.567982+00:00",
-          "title": "Is Markiplier GoPro really the next big thing?",
-          "slot": "evening",
-          "source": "upload.success"
-        }
-      ]
-    },
     "2026-09-03": {
       "count": 4,
       "events": [
@@ -1319,7 +1296,18 @@
           "source": "upload.success"
         }
       ]
+    },
+    "2026-11-10": {
+      "count": 1,
+      "events": [
+        {
+          "utc": "2026-11-10T00:46:01.675159+00:00",
+          "title": "Track Grand Theft Auto 6 while the facts are fresh",
+          "slot": "evening",
+          "source": "upload.success"
+        }
+      ]
     }
   },
-  "updated_utc": "2026-11-09T22:20:55.374808+00:00"
+  "updated_utc": "2026-11-10T00:46:01.675188+00:00"
 }
