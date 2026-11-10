@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-10T00:46:01.672564+00:00",
+  "updated_utc": "2026-11-10T04:09:08.555820+00:00",
   "entries": [
-    {
-      "title": "Watch This: Coco Gauff’s Latest Breakthrough News",
-      "opener": "Coco Gauff just changed the game again",
-      "cta": "",
-      "trend": "Coco Gauff",
-      "utc": "2026-09-09T19:42:49.772913+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "Watch This: Coco Gauff’s Latest Breakthrough News",
-      "opener": "Coco Gauff just changed the game again",
-      "cta": "Leave the take you won't say out loud.",
-      "trend": "Coco Gauff",
-      "utc": "2026-09-09T19:49:56.485677+00:00",
-      "source": "upload.success",
-      "app_id": "coco_gauff",
-      "youtube_id": "ziDMaLIIT0I"
-    },
     {
       "title": "Why Hasan Piker’s Viral Moment Divides Fans",
       "opener": "Hasan Piker sparks heated online debate",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "grand_theft_auto_6",
       "youtube_id": "31fbFKGK1vg"
+    },
+    {
+      "title": "Watch This! Zion Williamson Facts You Need",
+      "opener": "Zion Williamson myths busted fast",
+      "cta": "",
+      "trend": "Zion Williamson",
+      "utc": "2026-11-10T04:02:20.069836+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Watch This! Zion Williamson Facts You Need",
+      "opener": "Zion Williamson myths busted fast",
+      "cta": "One-line read on Zion Williamson — leave a comment.",
+      "trend": "Zion Williamson",
+      "utc": "2026-11-10T04:09:08.553792+00:00",
+      "source": "upload.success",
+      "app_id": "zion_williamson",
+      "youtube_id": "XoI5PPzfLm0"
     }
   ]
 }
