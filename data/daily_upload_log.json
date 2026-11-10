@@ -1298,7 +1298,7 @@
       ]
     },
     "2026-11-10": {
-      "count": 2,
+      "count": 3,
       "events": [
         {
           "utc": "2026-11-10T00:46:01.675159+00:00",
@@ -1311,9 +1311,15 @@
           "title": "Watch This! Zion Williamson Facts You Need",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-11-10T11:06:31.062381+00:00",
+          "title": "Cardi B Facts You Probably Got Wrong",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-11-10T04:09:08.558645+00:00"
+  "updated_utc": "2026-11-10T11:06:31.062414+00:00"
 }
