@@ -1298,7 +1298,7 @@
       ]
     },
     "2026-11-11": {
-      "count": 3,
+      "count": 4,
       "events": [
         {
           "utc": "2026-11-11T01:57:28.392415+00:00",
@@ -1317,9 +1317,15 @@
           "title": "Los Angeles Lakers Bronny James Not NBA Ready Yet",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-11-11T23:33:17.326577+00:00",
+          "title": "Cavaliers vs Knicks: pulse 570 briefing",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-11-11T19:37:32.965783+00:00"
+  "updated_utc": "2026-11-11T23:33:17.326609+00:00"
 }

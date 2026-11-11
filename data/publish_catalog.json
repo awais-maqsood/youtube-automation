@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-11T19:37:32.963424+00:00",
+  "updated_utc": "2026-11-11T23:33:17.323987+00:00",
   "entries": [
-    {
-      "title": "Watch This: Trinity Rodman Controversy Timeline",
-      "opener": "Controversy rocked Trinity Rodman’s rise",
-      "cta": "",
-      "trend": "Trinity Rodman",
-      "utc": "2026-09-12T00:07:31.790917+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "Watch This: Trinity Rodman Controversy Timeline",
-      "opener": "Controversy rocked Trinity Rodman’s rise",
-      "cta": "What’s your take on Rodman’s controversies?",
-      "trend": "Trinity Rodman",
-      "utc": "2026-09-12T00:14:39.114078+00:00",
-      "source": "upload.success",
-      "app_id": "trinity_rodman",
-      "youtube_id": "9hG1u2NaG4E"
-    },
     {
       "title": "Lazio vs Milan Update: Big Shift in Game!",
       "opener": "Game-changer moments unfolding now!",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "los_angeles_lakers_bronny_james",
       "youtube_id": "plLdQ83wEWQ"
+    },
+    {
+      "title": "Cavaliers vs Knicks: pulse 570 briefing",
+      "opener": "Pulse 570 — quick cut on Cavaliers vs Knicks.",
+      "cta": "",
+      "trend": "Cavaliers vs Knicks",
+      "utc": "2026-11-11T23:26:02.676762+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Cavaliers vs Knicks: pulse 570 briefing",
+      "opener": "Pulse 570 — quick cut on Cavaliers vs Knicks.",
+      "cta": "Did Cavaliers vs Knicks surprise you? Comment below.",
+      "trend": "Cavaliers vs Knicks",
+      "utc": "2026-11-11T23:33:17.321981+00:00",
+      "source": "upload.success",
+      "app_id": "cavaliers_vs_knicks",
+      "youtube_id": "nhTgZfHzmWA"
     }
   ]
 }
