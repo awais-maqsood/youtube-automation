@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-10T19:45:43.950884+00:00",
+  "updated_utc": "2026-11-11T01:57:28.389890+00:00",
   "entries": [
-    {
-      "title": "What Sparked the Fenerbahçe - Roma Controversy?",
-      "opener": "Inside the Fenerbahçe - Roma clash drama",
-      "cta": "",
-      "trend": "Fenerbahçe - Roma",
-      "utc": "2026-09-10T16:18:10.534487+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "What Sparked the Fenerbahçe - Roma Controversy?",
-      "opener": "Inside the Fenerbahçe - Roma clash drama",
-      "cta": "Pick a winner in the comments.",
-      "trend": "Fenerbahçe - Roma",
-      "utc": "2026-09-10T16:25:21.509341+00:00",
-      "source": "upload.success",
-      "app_id": "fenerbah_e_roma",
-      "youtube_id": "Ipp8BBE4GQY"
-    },
     {
       "title": "George Kittle’s Controversy Isn’t What You Think",
       "opener": "Behind George Kittle’s heated moments",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "bills_trade",
       "youtube_id": "6iSrmRMxhN8"
+    },
+    {
+      "title": "Paul George's Best Moment Wasn’t a Dunk",
+      "opener": "Not the dunk, but THIS moment shocked fans",
+      "cta": "",
+      "trend": "Paul George",
+      "utc": "2026-11-11T01:50:30.189863+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Paul George's Best Moment Wasn’t a Dunk",
+      "opener": "Not the dunk, but THIS moment shocked fans",
+      "cta": "Would you share this about Paul George? Comment why.",
+      "trend": "Paul George",
+      "utc": "2026-11-11T01:57:28.387741+00:00",
+      "source": "upload.success",
+      "app_id": "paul_george",
+      "youtube_id": "j3YTS15u_vw"
     }
   ]
 }

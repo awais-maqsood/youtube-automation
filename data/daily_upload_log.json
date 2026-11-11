@@ -1,34 +1,5 @@
 {
   "days": {
-    "2026-09-03": {
-      "count": 4,
-      "events": [
-        {
-          "utc": "2026-09-03T00:10:43.628116+00:00",
-          "title": "Yahoo Fantasy Football Draft Explodes",
-          "slot": "evening",
-          "source": "upload.success"
-        },
-        {
-          "utc": "2026-09-03T08:07:33.861794+00:00",
-          "title": "Watch Donald Trump's Rally Moment",
-          "slot": "evening",
-          "source": "upload.success"
-        },
-        {
-          "utc": "2026-09-03T16:27:44.012385+00:00",
-          "title": "Iga \u015awi\u0105tek beats Gauff in French Open final",
-          "slot": "evening",
-          "source": "upload.success"
-        },
-        {
-          "utc": "2026-09-03T19:55:05.330478+00:00",
-          "title": "Lindsay Clancy Career Is Over",
-          "slot": "evening",
-          "source": "upload.success"
-        }
-      ]
-    },
     "2026-09-04": {
       "count": 3,
       "events": [
@@ -1325,7 +1296,18 @@
           "source": "upload.success"
         }
       ]
+    },
+    "2026-11-11": {
+      "count": 1,
+      "events": [
+        {
+          "utc": "2026-11-11T01:57:28.392415+00:00",
+          "title": "Paul George's Best Moment Wasn\u2019t a Dunk",
+          "slot": "evening",
+          "source": "upload.success"
+        }
+      ]
     }
   },
-  "updated_utc": "2026-11-10T19:45:43.953590+00:00"
+  "updated_utc": "2026-11-11T01:57:28.392444+00:00"
 }
