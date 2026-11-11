@@ -1298,16 +1298,22 @@
       ]
     },
     "2026-11-11": {
-      "count": 1,
+      "count": 2,
       "events": [
         {
           "utc": "2026-11-11T01:57:28.392415+00:00",
           "title": "Paul George's Best Moment Wasn\u2019t a Dunk",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-11-11T10:48:07.125959+00:00",
+          "title": "What Changed with Davante Adams This Season?",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-11-11T01:57:28.392444+00:00"
+  "updated_utc": "2026-11-11T10:48:07.125987+00:00"
 }

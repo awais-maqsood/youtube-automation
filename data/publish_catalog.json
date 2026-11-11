@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-11T01:57:28.389890+00:00",
+  "updated_utc": "2026-11-11T10:48:07.123735+00:00",
   "entries": [
-    {
-      "title": "George Kittle’s Controversy Isn’t What You Think",
-      "opener": "Behind George Kittle’s heated moments",
-      "cta": "",
-      "trend": "George Kittle",
-      "utc": "2026-09-10T19:34:21.675553+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "George Kittle’s Controversy Isn’t What You Think",
-      "opener": "Behind George Kittle’s heated moments",
-      "cta": "Hot take welcome — keep it one line.",
-      "trend": "George Kittle",
-      "utc": "2026-09-10T19:41:30.258624+00:00",
-      "source": "upload.success",
-      "app_id": "george_kittle",
-      "youtube_id": "-aUczS768Oo"
-    },
     {
       "title": "Maria Bartiromo Fox News Departure Explained",
       "opener": "Why did Maria really leave Fox News?",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "paul_george",
       "youtube_id": "j3YTS15u_vw"
+    },
+    {
+      "title": "What Changed with Davante Adams This Season?",
+      "opener": "Davante Adams is playing differently now",
+      "cta": "",
+      "trend": "Davante Adams",
+      "utc": "2026-11-11T10:41:26.386763+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "What Changed with Davante Adams This Season?",
+      "opener": "Davante Adams is playing differently now",
+      "cta": "Pick a winner in the comments.",
+      "trend": "Davante Adams",
+      "utc": "2026-11-11T10:48:07.122056+00:00",
+      "source": "upload.success",
+      "app_id": "davante_adams",
+      "youtube_id": "lRZnwf7OZ_o"
     }
   ]
 }
