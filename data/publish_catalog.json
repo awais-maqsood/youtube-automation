@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-11T10:48:07.123735+00:00",
+  "updated_utc": "2026-11-11T19:37:32.963424+00:00",
   "entries": [
-    {
-      "title": "Maria Bartiromo Fox News Departure Explained",
-      "opener": "Why did Maria really leave Fox News?",
-      "cta": "",
-      "trend": "Maria Bartiromo Fox News Departure",
-      "utc": "2026-09-11T16:22:26.980506+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "Maria Bartiromo Fox News Departure Explained",
-      "opener": "Why did Maria really leave Fox News?",
-      "cta": "What’s your take on her exit?",
-      "trend": "Maria Bartiromo Fox News Departure",
-      "utc": "2026-09-11T16:29:16.363711+00:00",
-      "source": "upload.success",
-      "app_id": "maria_bartiromo_fox_news_departure",
-      "youtube_id": "htjh0J3Ox_w"
-    },
     {
       "title": "Watch This: Trinity Rodman Controversy Timeline",
       "opener": "Controversy rocked Trinity Rodman’s rise",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "davante_adams",
       "youtube_id": "lRZnwf7OZ_o"
+    },
+    {
+      "title": "Los Angeles Lakers Bronny James Not NBA Ready Yet",
+      "opener": "Is Bronny really ready for the Lakers?",
+      "cta": "",
+      "trend": "Los Angeles Lakers Bronny James",
+      "utc": "2026-11-11T19:30:35.823870+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Los Angeles Lakers Bronny James Not NBA Ready Yet",
+      "opener": "Is Bronny really ready for the Lakers?",
+      "cta": "Hot take welcome — keep it one line.",
+      "trend": "Los Angeles Lakers Bronny James",
+      "utc": "2026-11-11T19:37:32.961705+00:00",
+      "source": "upload.success",
+      "app_id": "los_angeles_lakers_bronny_james",
+      "youtube_id": "plLdQ83wEWQ"
     }
   ]
 }
