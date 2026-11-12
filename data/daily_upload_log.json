@@ -1304,16 +1304,22 @@
       ]
     },
     "2026-11-12": {
-      "count": 1,
+      "count": 2,
       "events": [
         {
           "utc": "2026-11-12T02:57:01.690829+00:00",
           "title": "Christina Applegate: pulse 560 briefing",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-11-12T11:07:06.312301+00:00",
+          "title": "PS5 Pro Isn\u2019t What You Expect",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-11-12T02:57:01.690867+00:00"
+  "updated_utc": "2026-11-12T11:07:06.312340+00:00"
 }

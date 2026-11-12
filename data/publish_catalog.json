@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-12T02:57:01.688124+00:00",
+  "updated_utc": "2026-11-12T11:07:06.309659+00:00",
   "entries": [
-    {
-      "title": "Why Tommy Gantt Isn't What You Think",
-      "opener": "Tommy Gantt’s story just changed fast",
-      "cta": "",
-      "trend": "Tommy Gantt",
-      "utc": "2026-09-12T19:12:18.226574+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "Why Tommy Gantt Isn't What You Think",
-      "opener": "Tommy Gantt’s story just changed fast",
-      "cta": "What’s your take on Tommy Gantt now?",
-      "trend": "Tommy Gantt",
-      "utc": "2026-09-12T19:19:15.937157+00:00",
-      "source": "upload.success",
-      "app_id": "tommy_gantt",
-      "youtube_id": "OdwJ3KfN5MQ"
-    },
     {
       "title": "What Sparked Laura Rutledge's Recent Controversy?",
       "opener": "Inside the Laura Rutledge dispute",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "christina_applegate",
       "youtube_id": "2lZIBrZPGiI"
+    },
+    {
+      "title": "PS5 Pro Isn’t What You Expect",
+      "opener": "Why the PS5 Pro surprises gamers",
+      "cta": "",
+      "trend": "PS5 Pro",
+      "utc": "2026-11-12T10:53:19.426633+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "PS5 Pro Isn’t What You Expect",
+      "opener": "Why the PS5 Pro surprises gamers",
+      "cta": "What is your take on PS5 Pro? Comment below.",
+      "trend": "PS5 Pro",
+      "utc": "2026-11-12T11:07:06.307609+00:00",
+      "source": "upload.success",
+      "app_id": "ps5_pro",
+      "youtube_id": "3HCrsr2eRy4"
     }
   ]
 }
