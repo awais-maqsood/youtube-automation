@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-12T20:02:16.114296+00:00",
+  "updated_utc": "2026-11-12T22:54:35.030184+00:00",
   "entries": [
-    {
-      "title": "Why Andrew Mountbatten-Windsor Is Making Headlines Now",
-      "opener": "Andrew Mountbatten-Windsor’s latest news breaks!",
-      "cta": "",
-      "trend": "Andrew Mountbatten-Windsor",
-      "utc": "2026-09-14T20:54:21.100363+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "Why Andrew Mountbatten-Windsor Is Making Headlines Now",
-      "opener": "Andrew Mountbatten-Windsor’s latest news breaks!",
-      "cta": "What’s your take on Andrew Mountbatten-Windsor?",
-      "trend": "Andrew Mountbatten-Windsor",
-      "utc": "2026-09-14T21:01:34.310505+00:00",
-      "source": "upload.success",
-      "app_id": "andrew_mountbatten_windsor",
-      "youtube_id": "jK975hbhkqc"
-    },
     {
       "title": "Jean Smart’s Career Shift Surprises Everyone",
       "opener": "You won't believe how Jean Smart changed!",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "inglaterra_croacia",
       "youtube_id": "Km_rhmtSewo"
+    },
+    {
+      "title": "Jessica Pegula’s Game Exactly How It Changed",
+      "opener": "Why Jessica Pegula now looks unstoppable",
+      "cta": "",
+      "trend": "Jessica Pegula",
+      "utc": "2026-11-12T22:41:23.532639+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Jessica Pegula’s Game Exactly How It Changed",
+      "opener": "Why Jessica Pegula now looks unstoppable",
+      "cta": "Your angle beats mine? Prove it below.",
+      "trend": "Jessica Pegula",
+      "utc": "2026-11-12T22:54:35.028625+00:00",
+      "source": "upload.success",
+      "app_id": "jessica_pegula",
+      "youtube_id": "bqITKVBCHyw"
     }
   ]
 }

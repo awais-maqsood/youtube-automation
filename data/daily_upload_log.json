@@ -1304,7 +1304,7 @@
       ]
     },
     "2026-11-12": {
-      "count": 3,
+      "count": 4,
       "events": [
         {
           "utc": "2026-11-12T02:57:01.690829+00:00",
@@ -1323,9 +1323,15 @@
           "title": "Why Inglaterra - Croacia keeps climbing",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-11-12T22:54:35.032190+00:00",
+          "title": "Jessica Pegula\u2019s Game Exactly How It Changed",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-11-12T20:02:16.116771+00:00"
+  "updated_utc": "2026-11-12T22:54:35.032220+00:00"
 }
