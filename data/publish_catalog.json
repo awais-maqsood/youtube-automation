@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-12T11:07:06.309659+00:00",
+  "updated_utc": "2026-11-12T20:02:16.114296+00:00",
   "entries": [
-    {
-      "title": "What Sparked Laura Rutledge's Recent Controversy?",
-      "opener": "Inside the Laura Rutledge dispute",
-      "cta": "",
-      "trend": "Laura Rutledge",
-      "utc": "2026-09-12T23:56:22.652746+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "What Sparked Laura Rutledge's Recent Controversy?",
-      "opener": "Inside the Laura Rutledge dispute",
-      "cta": "Your angle beats mine? Prove it below.",
-      "trend": "Laura Rutledge",
-      "utc": "2026-09-13T00:03:10.756132+00:00",
-      "source": "upload.success",
-      "app_id": "laura_rutledge",
-      "youtube_id": "BjhifKUd-74"
-    },
     {
       "title": "Why Andrew Mountbatten-Windsor Is Making Headlines Now",
       "opener": "Andrew Mountbatten-Windsor’s latest news breaks!",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "ps5_pro",
       "youtube_id": "3HCrsr2eRy4"
+    },
+    {
+      "title": "Inglaterra - Croacia: pulse 826 briefing",
+      "opener": "Pulse 826 — quick cut on Inglaterra - Croacia.",
+      "cta": "",
+      "trend": "Inglaterra - Croacia",
+      "utc": "2026-11-12T19:48:51.371281+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Why Inglaterra - Croacia keeps climbing",
+      "opener": "Why search is on Inglaterra - Croacia.",
+      "cta": "One-line read on Inglaterra - Croacia — leave a comment.",
+      "trend": "Inglaterra - Croacia",
+      "utc": "2026-11-12T20:02:16.111970+00:00",
+      "source": "upload.success",
+      "app_id": "inglaterra_croacia",
+      "youtube_id": "Km_rhmtSewo"
     }
   ]
 }
