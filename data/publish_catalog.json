@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-11T23:33:17.323987+00:00",
+  "updated_utc": "2026-11-12T02:57:01.688124+00:00",
   "entries": [
-    {
-      "title": "Lazio vs Milan Update: Big Shift in Game!",
-      "opener": "Game-changer moments unfolding now!",
-      "cta": "",
-      "trend": "Lazio vs Milan",
-      "utc": "2026-09-12T15:27:14.227128+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "Lazio vs Milan Update: Big Shift in Game!",
-      "opener": "Game-changer moments unfolding now!",
-      "cta": "What’s your take on today’s clash?",
-      "trend": "Lazio vs Milan",
-      "utc": "2026-09-12T15:33:36.800427+00:00",
-      "source": "upload.success",
-      "app_id": "lazio_vs_milan",
-      "youtube_id": "zxyy6_d99yE"
-    },
     {
       "title": "Why Tommy Gantt Isn't What You Think",
       "opener": "Tommy Gantt’s story just changed fast",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "cavaliers_vs_knicks",
       "youtube_id": "nhTgZfHzmWA"
+    },
+    {
+      "title": "Christina Applegate: pulse 560 briefing",
+      "opener": "Pulse 560 — quick cut on Christina Applegate.",
+      "cta": "",
+      "trend": "Christina Applegate",
+      "utc": "2026-11-12T02:50:02.482419+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Christina Applegate: pulse 560 briefing",
+      "opener": "Pulse 560 — quick cut on Christina Applegate.",
+      "cta": "What’s your take on Christina Applegate controversies?",
+      "trend": "Christina Applegate",
+      "utc": "2026-11-12T02:57:01.686046+00:00",
+      "source": "upload.success",
+      "app_id": "christina_applegate",
+      "youtube_id": "2lZIBrZPGiI"
     }
   ]
 }
