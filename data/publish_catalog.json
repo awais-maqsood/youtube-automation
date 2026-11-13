@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-12T22:54:35.030184+00:00",
+  "updated_utc": "2026-11-13T02:45:36.444953+00:00",
   "entries": [
-    {
-      "title": "Jean Smart’s Career Shift Surprises Everyone",
-      "opener": "You won't believe how Jean Smart changed!",
-      "cta": "",
-      "trend": "Jean Smart",
-      "utc": "2026-09-15T00:28:31.489000+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "Jean Smart’s Career Shift Surprises Everyone",
-      "opener": "You won't believe how Jean Smart changed!",
-      "cta": "What’s your take on Jean Smart’s shift?",
-      "trend": "Jean Smart",
-      "utc": "2026-09-15T00:35:17.891335+00:00",
-      "source": "upload.success",
-      "app_id": "jean_smart",
-      "youtube_id": "xTGtzm3jNA0"
-    },
     {
       "title": "How Rayo Vallecano vs Espanyol Clash Unfolds Now",
       "opener": "Live drama at Rayo vs Espanyol!",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "jessica_pegula",
       "youtube_id": "bqITKVBCHyw"
+    },
+    {
+      "title": "Daddy Yankee: pulse 154 briefing",
+      "opener": "Pulse 154 — quick cut on Daddy Yankee.",
+      "cta": "",
+      "trend": "Daddy Yankee",
+      "utc": "2026-11-13T02:31:48.813343+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Daddy Yankee: pulse 154 briefing",
+      "opener": "Pulse 154 — quick cut on Daddy Yankee.",
+      "cta": "One-line read on Daddy Yankee — leave a comment.",
+      "trend": "Daddy Yankee",
+      "utc": "2026-11-13T02:45:36.442881+00:00",
+      "source": "upload.success",
+      "app_id": "daddy_yankee",
+      "youtube_id": "-xR2oPfe2E0"
     }
   ]
 }

@@ -1,34 +1,5 @@
 {
   "days": {
-    "2026-09-05": {
-      "count": 4,
-      "events": [
-        {
-          "utc": "2026-09-05T00:03:31.983823+00:00",
-          "title": "Ryan Reynolds Facts That Shock Everyone",
-          "slot": "evening",
-          "source": "upload.success"
-        },
-        {
-          "utc": "2026-09-05T07:43:33.595074+00:00",
-          "title": "WWE Releases: hype vs substance",
-          "slot": "evening",
-          "source": "upload.success"
-        },
-        {
-          "utc": "2026-09-05T15:11:26.886705+00:00",
-          "title": "Enzo Fern\u00e1ndez breaks national record",
-          "slot": "evening",
-          "source": "upload.success"
-        },
-        {
-          "utc": "2026-09-05T19:07:15.519892+00:00",
-          "title": "Ryan Garcia fight moment that shocked fans",
-          "slot": "evening",
-          "source": "upload.success"
-        }
-      ]
-    },
     "2026-09-06": {
       "count": 2,
       "events": [
@@ -1331,7 +1302,18 @@
           "source": "upload.success"
         }
       ]
+    },
+    "2026-11-13": {
+      "count": 1,
+      "events": [
+        {
+          "utc": "2026-11-13T02:45:36.447593+00:00",
+          "title": "Daddy Yankee: pulse 154 briefing",
+          "slot": "evening",
+          "source": "upload.success"
+        }
+      ]
     }
   },
-  "updated_utc": "2026-11-12T22:54:35.032220+00:00"
+  "updated_utc": "2026-11-13T02:45:36.447655+00:00"
 }
