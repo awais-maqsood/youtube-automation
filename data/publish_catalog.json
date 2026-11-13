@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-13T02:45:36.444953+00:00",
+  "updated_utc": "2026-11-13T11:03:57.729370+00:00",
   "entries": [
-    {
-      "title": "How Rayo Vallecano vs Espanyol Clash Unfolds Now",
-      "opener": "Live drama at Rayo vs Espanyol!",
-      "cta": "",
-      "trend": "Rayo Vallecano vs Espanyol",
-      "utc": "2026-09-15T16:49:33.245408+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "How Rayo Vallecano vs Espanyol Clash Unfolds Now",
-      "opener": "Live drama at Rayo vs Espanyol!",
-      "cta": "Who’s winning your vote in Rayo vs Espanyol?",
-      "trend": "Rayo Vallecano vs Espanyol",
-      "utc": "2026-09-15T16:56:35.004438+00:00",
-      "source": "upload.success",
-      "app_id": "rayo_vallecano_vs_espanyol",
-      "youtube_id": "OuUoan2hPyU"
-    },
     {
       "title": "How Andrew Garfield Became Spider-Man Again",
       "opener": "What’s up with Andrew Garfield now?",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "daddy_yankee",
       "youtube_id": "-xR2oPfe2E0"
+    },
+    {
+      "title": "Sony Xperia 1 VIII: pulse 232 briefing",
+      "opener": "Pulse 232 — quick cut on Sony Xperia 1 VIII.",
+      "cta": "",
+      "trend": "Sony Xperia 1 VIII",
+      "utc": "2026-11-13T10:50:00.428186+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Catch Sony Xperia 1 VIII before the take hardens",
+      "opener": "Open on Sony Xperia 1 VIII.",
+      "cta": "Did Sony Xperia 1 VIII surprise you? Comment below.",
+      "trend": "Sony Xperia 1 VIII",
+      "utc": "2026-11-13T11:03:57.727320+00:00",
+      "source": "upload.success",
+      "app_id": "sony_xperia_1_viii",
+      "youtube_id": "T2YU_RYiaOk"
     }
   ]
 }
