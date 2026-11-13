@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-13T19:45:28.764255+00:00",
+  "updated_utc": "2026-11-13T22:44:20.942917+00:00",
   "entries": [
-    {
-      "title": "Trump Deferred Resignation Program Federal Workers: Trump’s...",
-      "opener": "Skip the loud take on Trump Deferred Resignation Program Federal Workers.",
-      "cta": "",
-      "trend": "Trump Deferred Resignation Program Federal Workers",
-      "utc": "2026-09-16T16:42:58.099356+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "Trump Deferred Resignation Program Federal Workers: Trump’s...",
-      "opener": "Skip the loud take on Trump Deferred Resignation Program Federal Workers.",
-      "cta": "Skip the loud take on Trump Deferred Resignation Program Federal Workers.",
-      "trend": "Trump Deferred Resignation Program Federal Workers",
-      "utc": "2026-09-16T16:49:46.390196+00:00",
-      "source": "upload.success",
-      "app_id": "trump_deferred_resignation_program_federal_workers",
-      "youtube_id": "4zFT-NpbKII"
-    },
     {
       "title": "Is DoorDash Facing Its Biggest Controversy Yet?",
       "opener": "DoorDash controversy through the years",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "cam_skattebo_jameis_winston_sneak",
       "youtube_id": "9MMtdQiEp1A"
+    },
+    {
+      "title": "Markwayne Mullin Latest Update You Need To Know",
+      "opener": "Big news about Markwayne Mullin just dropped",
+      "cta": "",
+      "trend": "Markwayne Mullin",
+      "utc": "2026-11-13T22:30:39.834820+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Markwayne Mullin Latest Update You Need To Know",
+      "opener": "Big news about Markwayne Mullin just dropped",
+      "cta": "Agree on Markwayne Mullin? Reply in comments.",
+      "trend": "Markwayne Mullin",
+      "utc": "2026-11-13T22:44:20.940898+00:00",
+      "source": "upload.success",
+      "app_id": "markwayne_mullin",
+      "youtube_id": "2O5P2eeNvw8"
     }
   ]
 }

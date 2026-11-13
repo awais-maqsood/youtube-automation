@@ -1304,7 +1304,7 @@
       ]
     },
     "2026-11-13": {
-      "count": 3,
+      "count": 4,
       "events": [
         {
           "utc": "2026-11-13T02:45:36.447593+00:00",
@@ -1323,9 +1323,15 @@
           "title": "cam skattebo jameis winston sneak \u2014 Did Cam Skattebo Expose Jameis...",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-11-13T22:44:20.945481+00:00",
+          "title": "Markwayne Mullin Latest Update You Need To Know",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-11-13T19:45:28.766486+00:00"
+  "updated_utc": "2026-11-13T22:44:20.945512+00:00"
 }
