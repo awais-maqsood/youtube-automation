@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-13T22:44:20.942917+00:00",
+  "updated_utc": "2026-11-14T02:26:23.714370+00:00",
   "entries": [
-    {
-      "title": "Is DoorDash Facing Its Biggest Controversy Yet?",
-      "opener": "DoorDash controversy through the years",
-      "cta": "",
-      "trend": "DoorDash",
-      "utc": "2026-09-22T08:28:24.203021+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "Is DoorDash Facing Its Biggest Controversy Yet?",
-      "opener": "DoorDash controversy through the years",
-      "cta": "What’s your take on DoorDash scandals?",
-      "trend": "DoorDash",
-      "utc": "2026-09-22T08:35:27.426997+00:00",
-      "source": "upload.success",
-      "app_id": "doordash",
-      "youtube_id": "7S9PTAEotiE"
-    },
     {
       "title": "What Sparked Harvey Weinstein's Controversy Timeline?",
       "opener": "Harvey Weinstein’s downfall in quick flashes",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "markwayne_mullin",
       "youtube_id": "2O5P2eeNvw8"
+    },
+    {
+      "title": "Anne Hathaway: pulse 210 briefing",
+      "opener": "Pulse 210 — quick cut on Anne Hathaway.",
+      "cta": "",
+      "trend": "Anne Hathaway",
+      "utc": "2026-11-14T02:13:40.092758+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Anne Hathaway: pulse 210 briefing",
+      "opener": "Pulse 210 — quick cut on Anne Hathaway.",
+      "cta": "Hot take on Anne Hathaway? Write it in the comments.",
+      "trend": "Anne Hathaway",
+      "utc": "2026-11-14T02:26:23.713073+00:00",
+      "source": "upload.success",
+      "app_id": "anne_hathaway",
+      "youtube_id": "tFTUNavJEJs"
     }
   ]
 }

@@ -1,22 +1,5 @@
 {
   "days": {
-    "2026-09-06": {
-      "count": 2,
-      "events": [
-        {
-          "utc": "2026-09-06T19:11:21.744608+00:00",
-          "title": "Internacional vs Santos: What Really Changed?",
-          "slot": "evening",
-          "source": "upload.success"
-        },
-        {
-          "utc": "2026-09-06T23:53:49.420182+00:00",
-          "title": "Ben Shelton's Victory Is Undeniable!",
-          "slot": "evening",
-          "source": "upload.success"
-        }
-      ]
-    },
     "2026-09-08": {
       "count": 2,
       "events": [
@@ -1331,7 +1314,18 @@
           "source": "upload.success"
         }
       ]
+    },
+    "2026-11-14": {
+      "count": 1,
+      "events": [
+        {
+          "utc": "2026-11-14T02:26:23.716004+00:00",
+          "title": "Anne Hathaway: pulse 210 briefing",
+          "slot": "evening",
+          "source": "upload.success"
+        }
+      ]
     }
   },
-  "updated_utc": "2026-11-13T22:44:20.945512+00:00"
+  "updated_utc": "2026-11-14T02:26:23.716025+00:00"
 }
