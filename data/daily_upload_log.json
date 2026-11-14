@@ -1316,16 +1316,22 @@
       ]
     },
     "2026-11-14": {
-      "count": 1,
+      "count": 2,
       "events": [
         {
           "utc": "2026-11-14T02:26:23.716004+00:00",
           "title": "Anne Hathaway: pulse 210 briefing",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-11-14T10:19:09.477960+00:00",
+          "title": "Angelina Jolie Latest Update: What You Must Know",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-11-14T02:26:23.716025+00:00"
+  "updated_utc": "2026-11-14T10:19:09.477985+00:00"
 }

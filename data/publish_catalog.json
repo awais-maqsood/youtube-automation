@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-14T02:26:23.714370+00:00",
+  "updated_utc": "2026-11-14T10:19:09.475728+00:00",
   "entries": [
-    {
-      "title": "What Sparked Harvey Weinstein's Controversy Timeline?",
-      "opener": "Harvey Weinstein’s downfall in quick flashes",
-      "cta": "",
-      "trend": "Harvey Weinstein",
-      "utc": "2026-09-23T18:11:29.338391+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "What Sparked Harvey Weinstein's Controversy Timeline?",
-      "opener": "Harvey Weinstein’s downfall in quick flashes",
-      "cta": "What moment shocked you most in Weinstein’s saga?",
-      "trend": "Harvey Weinstein",
-      "utc": "2026-09-23T18:18:42.789202+00:00",
-      "source": "upload.success",
-      "app_id": "harvey_weinstein",
-      "youtube_id": "pw2qCEPmO4U"
-    },
     {
       "title": "Watch This: Antonio Brown Fact Check Breakdown",
       "opener": "Antonio Brown's story isn't what you think",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "anne_hathaway",
       "youtube_id": "tFTUNavJEJs"
+    },
+    {
+      "title": "Angelina Jolie Latest Update: What You Must Know",
+      "opener": "Don't rush the Angelina Jolie panic.",
+      "cta": "",
+      "trend": "Angelina Jolie",
+      "utc": "2026-11-14T10:05:27.535462+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Angelina Jolie Latest Update: What You Must Know",
+      "opener": "Don't rush the Angelina Jolie panic.",
+      "cta": "Hot take on Angelina Jolie? Write it in the comments.",
+      "trend": "Angelina Jolie",
+      "utc": "2026-11-14T10:19:09.474038+00:00",
+      "source": "upload.success",
+      "app_id": "angelina_jolie",
+      "youtube_id": "_fZ9DBT40oo"
     }
   ]
 }
