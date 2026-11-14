@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-14T10:19:09.475728+00:00",
+  "updated_utc": "2026-11-14T18:08:39.368621+00:00",
   "entries": [
-    {
-      "title": "Watch This: Antonio Brown Fact Check Breakdown",
-      "opener": "Antonio Brown's story isn't what you think",
-      "cta": "",
-      "trend": "Antonio Brown",
-      "utc": "2026-09-23T20:13:03.688206+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "Watch This: Antonio Brown Fact Check Breakdown",
-      "opener": "Antonio Brown's story isn't what you think",
-      "cta": "What’s your take on Antonio Brown now?",
-      "trend": "Antonio Brown",
-      "utc": "2026-09-23T20:20:18.693270+00:00",
-      "source": "upload.success",
-      "app_id": "antonio_brown",
-      "youtube_id": "lqbWTyqqKF0"
-    },
     {
       "title": "What Really Changed for Matt Damon Recently?",
       "opener": "Matt Damon's new phase uncovered",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "angelina_jolie",
       "youtube_id": "_fZ9DBT40oo"
+    },
+    {
+      "title": "Kraken vs Hurricanes: Biggest Beginner Trading Mistake",
+      "opener": "Avoid this costly Kraken vs Hurricanes slip-up!",
+      "cta": "",
+      "trend": "kraken vs hurricanes",
+      "utc": "2026-11-14T17:55:20.471424+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Kraken vs Hurricanes: Biggest Beginner Trading Mistake",
+      "opener": "Avoid this costly Kraken vs Hurricanes slip-up!",
+      "cta": "Did kraken vs hurricanes surprise you? Comment below.",
+      "trend": "kraken vs hurricanes",
+      "utc": "2026-11-14T18:08:39.366991+00:00",
+      "source": "upload.success",
+      "app_id": "kraken_vs_hurricanes",
+      "youtube_id": "aNKfptvr154"
     }
   ]
 }
