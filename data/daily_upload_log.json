@@ -1328,16 +1328,22 @@
       ]
     },
     "2026-11-15": {
-      "count": 1,
+      "count": 2,
       "events": [
         {
           "utc": "2026-11-15T01:58:14.463321+00:00",
           "title": "Dwayne Johnson Facts You Didn't Know",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-11-15T10:54:12.263399+00:00",
+          "title": "dp world tour championship: pulse 484 briefing",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-11-15T01:58:14.463350+00:00"
+  "updated_utc": "2026-11-15T10:54:12.263430+00:00"
 }

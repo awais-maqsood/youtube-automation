@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-15T01:58:14.461374+00:00",
+  "updated_utc": "2026-11-15T10:54:12.260868+00:00",
   "entries": [
-    {
-      "title": "Watch This Before Buying GTA 6 Collector's Edition",
-      "opener": "Costs you don’t expect in GTA 6 bundles",
-      "cta": "",
-      "trend": "GTA 6 Collector's Edition",
-      "utc": "2026-09-24T17:01:49.697286+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "Watch This Before Buying GTA 6 Collector's Edition",
-      "opener": "Costs you don’t expect in GTA 6 bundles",
-      "cta": "If you disagree, write why under this.",
-      "trend": "GTA 6 Collector's Edition",
-      "utc": "2026-09-24T17:08:29.692251+00:00",
-      "source": "upload.success",
-      "app_id": "gta_6_collector_s_edition",
-      "youtube_id": "sGdCbyZBwuQ"
-    },
     {
       "title": "Portugal World Cup: How Portugal’s World Cup Journey Just Changed",
       "opener": "Portugal World Cup is quieter than the noise.",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "dwayne_johnson",
       "youtube_id": "JI0aDVcDqmk"
+    },
+    {
+      "title": "dp world tour championship: pulse 484 briefing",
+      "opener": "Pulse 484 — quick cut on dp world tour championship.",
+      "cta": "",
+      "trend": "dp world tour championship",
+      "utc": "2026-11-15T10:40:36.579065+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "dp world tour championship: pulse 484 briefing",
+      "opener": "Pulse 484 — quick cut on dp world tour championship.",
+      "cta": "Follow along for the next high-signal clip.",
+      "trend": "dp world tour championship",
+      "utc": "2026-11-15T10:54:12.258824+00:00",
+      "source": "upload.success",
+      "app_id": "dp_world_tour_championship",
+      "youtube_id": "UeWQn6WnbHM"
     }
   ]
 }
