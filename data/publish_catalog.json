@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-15T18:51:42.356326+00:00",
+  "updated_utc": "2026-11-15T21:47:13.169526+00:00",
   "entries": [
-    {
-      "title": "What Really Changed for Jordan Love's Role?",
-      "opener": "Jordan Love’s future just got reshaped",
-      "cta": "",
-      "trend": "Jordan Love",
-      "utc": "2026-09-25T00:27:19.554882+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "What Really Changed for Jordan Love's Role?",
-      "opener": "Jordan Love’s future just got reshaped",
-      "cta": "Did the clip change your mind? Say how.",
-      "trend": "Jordan Love",
-      "utc": "2026-09-25T00:34:35.234020+00:00",
-      "source": "upload.success",
-      "app_id": "jordan_love",
-      "youtube_id": "d6l_GYen8Jc"
-    },
     {
       "title": "Tatiana Prozorova Controversy Timeline Breakdown",
       "opener": "The full Tatiana drama from start to now",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "travis_kelce",
       "youtube_id": "p4qYRofvfNI"
+    },
+    {
+      "title": "Watch This: Erin Andrews Controversy Timeline",
+      "opener": "Here’s how Erin Andrews’ drama unfolded",
+      "cta": "",
+      "trend": "Erin Andrews",
+      "utc": "2026-11-15T21:40:48.965785+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Watch This: Erin Andrews Controversy Timeline",
+      "opener": "Here’s how Erin Andrews’ drama unfolded",
+      "cta": "Catch the next breakdown as it breaks.",
+      "trend": "Erin Andrews",
+      "utc": "2026-11-15T21:47:13.168169+00:00",
+      "source": "upload.success",
+      "app_id": "erin_andrews",
+      "youtube_id": "vsyQqnhQiSw"
     }
   ]
 }
