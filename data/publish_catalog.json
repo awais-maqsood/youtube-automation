@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-14T21:35:55.300461+00:00",
+  "updated_utc": "2026-11-15T01:58:14.461374+00:00",
   "entries": [
-    {
-      "title": "Watch This Viral Wendy's Moment Unfold Now",
-      "opener": "You won't believe Wendy's latest buzz!",
-      "cta": "",
-      "trend": "Wendy's",
-      "utc": "2026-09-24T08:22:32.279221+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "Watch This Viral Wendy's Moment Unfold Now",
-      "opener": "You won't believe Wendy's latest buzz!",
-      "cta": "Name the risk everyone is ignoring.",
-      "trend": "Wendy's",
-      "utc": "2026-09-24T08:29:45.509743+00:00",
-      "source": "upload.success",
-      "app_id": "wendy_s",
-      "youtube_id": "GSbtiNDf1NU"
-    },
     {
       "title": "Watch This Before Buying GTA 6 Collector's Edition",
       "opener": "Costs you don’t expect in GTA 6 bundles",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "mavericks_surfing",
       "youtube_id": "EEbjm2ZiyDI"
+    },
+    {
+      "title": "Dwayne Johnson Facts You Didn't Know",
+      "opener": "Five Dwayne Johnson facts busted!",
+      "cta": "",
+      "trend": "Dwayne Johnson",
+      "utc": "2026-11-15T01:44:56.812095+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Dwayne Johnson Facts You Didn't Know",
+      "opener": "Five Dwayne Johnson facts busted!",
+      "cta": "I post the next concrete update here.",
+      "trend": "Dwayne Johnson",
+      "utc": "2026-11-15T01:58:14.459672+00:00",
+      "source": "upload.success",
+      "app_id": "dwayne_johnson",
+      "youtube_id": "JI0aDVcDqmk"
     }
   ]
 }

@@ -1,22 +1,5 @@
 {
   "days": {
-    "2026-09-08": {
-      "count": 2,
-      "events": [
-        {
-          "utc": "2026-09-08T16:39:28.422244+00:00",
-          "title": "Can You Really Get a Dunkin Free Pumpkin Spice Latte?",
-          "slot": "evening",
-          "source": "upload.success"
-        },
-        {
-          "utc": "2026-09-08T19:58:57.249535+00:00",
-          "title": "Watch This: Trump 9/11 Claims Fact-Checked Fast",
-          "slot": "evening",
-          "source": "upload.success"
-        }
-      ]
-    },
     "2026-09-09": {
       "count": 4,
       "events": [
@@ -1343,7 +1326,18 @@
           "source": "upload.success"
         }
       ]
+    },
+    "2026-11-15": {
+      "count": 1,
+      "events": [
+        {
+          "utc": "2026-11-15T01:58:14.463321+00:00",
+          "title": "Dwayne Johnson Facts You Didn't Know",
+          "slot": "evening",
+          "source": "upload.success"
+        }
+      ]
     }
   },
-  "updated_utc": "2026-11-14T21:35:55.303092+00:00"
+  "updated_utc": "2026-11-15T01:58:14.463350+00:00"
 }
