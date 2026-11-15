@@ -1328,7 +1328,7 @@
       ]
     },
     "2026-11-15": {
-      "count": 2,
+      "count": 3,
       "events": [
         {
           "utc": "2026-11-15T01:58:14.463321+00:00",
@@ -1341,9 +1341,15 @@
           "title": "dp world tour championship: pulse 484 briefing",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-11-15T18:51:42.358615+00:00",
+          "title": "Watch This On Travis Kelce\u2019s Latest Update",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-11-15T10:54:12.263430+00:00"
+  "updated_utc": "2026-11-15T18:51:42.358642+00:00"
 }

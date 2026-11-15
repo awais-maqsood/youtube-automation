@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-15T10:54:12.260868+00:00",
+  "updated_utc": "2026-11-15T18:51:42.356326+00:00",
   "entries": [
-    {
-      "title": "Portugal World Cup: How Portugal’s World Cup Journey Just Changed",
-      "opener": "Portugal World Cup is quieter than the noise.",
-      "cta": "",
-      "trend": "Portugal World Cup",
-      "utc": "2026-09-24T20:23:33.312373+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "Portugal World Cup: How Portugal’s World Cup Journey Just Changed",
-      "opener": "Portugal World Cup is quieter than the noise.",
-      "cta": "What’s your take on Portugal’s World Cup move?",
-      "trend": "Portugal World Cup",
-      "utc": "2026-09-24T20:30:41.101951+00:00",
-      "source": "upload.success",
-      "app_id": "portugal_world_cup",
-      "youtube_id": "gAyHSrZ7JSM"
-    },
     {
       "title": "What Really Changed for Jordan Love's Role?",
       "opener": "Jordan Love’s future just got reshaped",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "dp_world_tour_championship",
       "youtube_id": "UeWQn6WnbHM"
+    },
+    {
+      "title": "Watch This On Travis Kelce’s Latest Update",
+      "opener": "Travis Kelce just moved the needle.",
+      "cta": "",
+      "trend": "Travis Kelce",
+      "utc": "2026-11-15T18:44:59.251378+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Watch This On Travis Kelce’s Latest Update",
+      "opener": "Travis Kelce just moved the needle.",
+      "cta": "Next Short covers the follow-up — stay close.",
+      "trend": "Travis Kelce",
+      "utc": "2026-11-15T18:51:42.354620+00:00",
+      "source": "upload.success",
+      "app_id": "travis_kelce",
+      "youtube_id": "p4qYRofvfNI"
     }
   ]
 }
