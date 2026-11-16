@@ -1328,7 +1328,7 @@
       ]
     },
     "2026-11-16": {
-      "count": 2,
+      "count": 3,
       "events": [
         {
           "utc": "2026-11-16T01:57:23.009626+00:00",
@@ -1341,9 +1341,15 @@
           "title": "Rockstar Games GTA VI Updates: What\u2019s Different?",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-11-16T22:02:27.827831+00:00",
+          "title": "Clarence Thomas' First Amendment Warning Sparks Debate (Clarence...",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-11-16T11:03:47.041778+00:00"
+  "updated_utc": "2026-11-16T22:02:27.827861+00:00"
 }

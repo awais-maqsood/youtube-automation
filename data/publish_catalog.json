@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-16T11:03:47.040143+00:00",
+  "updated_utc": "2026-11-16T22:02:27.825775+00:00",
   "entries": [
-    {
-      "title": "Why Elizabeth Holmes Documentary Sparks Debate",
-      "opener": "The Elizabeth Holmes story timeline revealed",
-      "cta": "",
-      "trend": "Elizabeth Holmes documentary",
-      "utc": "2026-09-25T20:23:47.395624+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "Why Elizabeth Holmes Documentary Sparks Debate",
-      "opener": "The Elizabeth Holmes story timeline revealed",
-      "cta": "What shocks you most from Holmes' story?",
-      "trend": "Elizabeth Holmes documentary",
-      "utc": "2026-09-25T20:30:09.863313+00:00",
-      "source": "upload.success",
-      "app_id": "elizabeth_holmes_documentary",
-      "youtube_id": "mxmgoCJaq70"
-    },
     {
       "title": "Ryan Seacrest Controversy Timeline Revealed",
       "opener": "Unfolding the Ryan Seacrest story",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "rockstar_games_gta_vi",
       "youtube_id": "W1Lb81-ZlKY"
+    },
+    {
+      "title": "Clarence Thomas' First Amendment Warning Sparks Debate (Clarence...",
+      "opener": "Clarence Thomas First Amendment Warning — no spin attached.",
+      "cta": "",
+      "trend": "Clarence Thomas First Amendment Warning",
+      "utc": "2026-11-16T21:55:48.687807+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Clarence Thomas' First Amendment Warning Sparks Debate (Clarence...",
+      "opener": "Clarence Thomas First Amendment Warning — no spin attached.",
+      "cta": "Hit follow for more searchable explainers.",
+      "trend": "Clarence Thomas First Amendment Warning",
+      "utc": "2026-11-16T22:02:27.824047+00:00",
+      "source": "upload.success",
+      "app_id": "clarence_thomas_first_amendment_warning",
+      "youtube_id": "TNboFqDUFDY"
     }
   ]
 }
