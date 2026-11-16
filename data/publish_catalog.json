@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-16T01:57:23.006892+00:00",
+  "updated_utc": "2026-11-16T11:03:47.040143+00:00",
   "entries": [
-    {
-      "title": "Supreme Court Limits Can Boost Business ROI",
-      "opener": "Why fewer court limits mean more profits",
-      "cta": "",
-      "trend": "Supreme Court",
-      "utc": "2026-09-25T17:03:31.503014+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "Supreme Court Limits Can Boost Business ROI",
-      "opener": "Why fewer court limits mean more profits",
-      "cta": "Drop the version of this you'd trust.",
-      "trend": "Supreme Court",
-      "utc": "2026-09-25T17:15:35.327415+00:00",
-      "source": "upload.success",
-      "app_id": "supreme_court",
-      "youtube_id": "RiGx1ysQDNE"
-    },
     {
       "title": "Why Elizabeth Holmes Documentary Sparks Debate",
       "opener": "The Elizabeth Holmes story timeline revealed",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "jj_watt",
       "youtube_id": "rOxKXpiKqOk"
+    },
+    {
+      "title": "Rockstar Games GTA VI Updates: What’s Different?",
+      "opener": "Big shifts in GTA VI gameplay revealed",
+      "cta": "",
+      "trend": "Rockstar Games GTA VI",
+      "utc": "2026-11-16T10:57:25.795344+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Rockstar Games GTA VI Updates: What’s Different?",
+      "opener": "Big shifts in GTA VI gameplay revealed",
+      "cta": "More named-topic Shorts coming — follow if useful.",
+      "trend": "Rockstar Games GTA VI",
+      "utc": "2026-11-16T11:03:47.038762+00:00",
+      "source": "upload.success",
+      "app_id": "rockstar_games_gta_vi",
+      "youtube_id": "W1Lb81-ZlKY"
     }
   ]
 }
