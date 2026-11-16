@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-15T21:47:13.169526+00:00",
+  "updated_utc": "2026-11-16T01:57:23.006892+00:00",
   "entries": [
-    {
-      "title": "Tatiana Prozorova Controversy Timeline Breakdown",
-      "opener": "The full Tatiana drama from start to now",
-      "cta": "",
-      "trend": "Tatiana Prozorova",
-      "utc": "2026-09-25T08:44:18.078508+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "Tatiana Prozorova Controversy Timeline Breakdown",
-      "opener": "The full Tatiana drama from start to now",
-      "cta": "What should people watch next on this?",
-      "trend": "Tatiana Prozorova",
-      "utc": "2026-09-25T08:51:24.527200+00:00",
-      "source": "upload.success",
-      "app_id": "tatiana_prozorova",
-      "youtube_id": "LxONXxZMKf4"
-    },
     {
       "title": "Supreme Court Limits Can Boost Business ROI",
       "opener": "Why fewer court limits mean more profits",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "erin_andrews",
       "youtube_id": "vsyQqnhQiSw"
+    },
+    {
+      "title": "What Sparked JJ Watt's Biggest Controversies?",
+      "opener": "JJ Watt’s toughest moments revealed!",
+      "cta": "",
+      "trend": "JJ Watt",
+      "utc": "2026-11-16T01:50:17.732501+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "What Sparked JJ Watt's Biggest Controversies?",
+      "opener": "JJ Watt’s toughest moments revealed!",
+      "cta": "Follow for the next product/event breakdown.",
+      "trend": "JJ Watt",
+      "utc": "2026-11-16T01:57:23.004881+00:00",
+      "source": "upload.success",
+      "app_id": "jj_watt",
+      "youtube_id": "rOxKXpiKqOk"
     }
   ]
 }
