@@ -1322,16 +1322,22 @@
       ]
     },
     "2026-11-17": {
-      "count": 1,
+      "count": 2,
       "events": [
         {
           "utc": "2026-11-17T00:51:34.324260+00:00",
           "title": "Warriors vs Pelicans: Controversy Nobody Expected",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-11-17T04:31:52.337087+00:00",
+          "title": "Pak vs SL: hype vs substance",
+          "slot": "evening",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-11-17T00:51:34.324301+00:00"
+  "updated_utc": "2026-11-17T04:31:52.337107+00:00"
 }
