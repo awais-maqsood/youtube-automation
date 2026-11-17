@@ -1,34 +1,5 @@
 {
   "days": {
-    "2026-09-10": {
-      "count": 4,
-      "events": [
-        {
-          "utc": "2026-09-10T00:11:25.829287+00:00",
-          "title": "Why Hasan Piker\u2019s Viral Moment Divides Fans",
-          "slot": "evening",
-          "source": "upload.success"
-        },
-        {
-          "utc": "2026-09-10T08:10:42.987448+00:00",
-          "title": "What Sparked Kaia Gerber\u2019s Viral Moment?",
-          "slot": "evening",
-          "source": "upload.success"
-        },
-        {
-          "utc": "2026-09-10T16:25:21.510611+00:00",
-          "title": "What Sparked the Fenerbah\u00e7e - Roma Controversy?",
-          "slot": "evening",
-          "source": "upload.success"
-        },
-        {
-          "utc": "2026-09-10T19:41:30.259915+00:00",
-          "title": "George Kittle\u2019s Controversy Isn\u2019t What You Think",
-          "slot": "evening",
-          "source": "upload.success"
-        }
-      ]
-    },
     "2026-09-11": {
       "count": 1,
       "events": [
@@ -1349,7 +1320,18 @@
           "source": "upload.success"
         }
       ]
+    },
+    "2026-11-17": {
+      "count": 1,
+      "events": [
+        {
+          "utc": "2026-11-17T00:51:34.324260+00:00",
+          "title": "Warriors vs Pelicans: Controversy Nobody Expected",
+          "slot": "evening",
+          "source": "upload.success"
+        }
+      ]
     }
   },
-  "updated_utc": "2026-11-16T22:02:27.827861+00:00"
+  "updated_utc": "2026-11-17T00:51:34.324301+00:00"
 }
