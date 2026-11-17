@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-17T11:47:52.459355+00:00",
+  "updated_utc": "2026-11-17T20:53:14.972617+00:00",
   "entries": [
-    {
-      "title": "Spain vs Argentina Delivered Unbelievable Viral Moments",
-      "opener": "How Spain vs Argentina got loud.",
-      "cta": "",
-      "trend": "Spain vs Argentina",
-      "utc": "2026-09-26T19:43:50.488055+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "Spain vs Argentina Delivered Unbelievable Viral Moments",
-      "opener": "How Spain vs Argentina got loud.",
-      "cta": "Type the detail everyone is skipping.",
-      "trend": "Spain vs Argentina",
-      "utc": "2026-09-26T19:50:56.934105+00:00",
-      "source": "upload.success",
-      "app_id": "spain_vs_argentina",
-      "youtube_id": "yY-Mxgs13KM"
-    },
     {
       "title": "UFC Fight Night Update That Changes Everything",
       "opener": "Not your usual UFC headlines!",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "elon_musk_spacex_starship",
       "youtube_id": "4cojChn6HB8"
+    },
+    {
+      "title": "Is Alexander Zverev Really Breaking Barriers?",
+      "opener": "Zverev’s rise—fact or hype?",
+      "cta": "",
+      "trend": "Alexander Zverev",
+      "utc": "2026-11-17T20:46:10.038155+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Is Alexander Zverev Really Breaking Barriers?",
+      "opener": "Zverev’s rise—fact or hype?",
+      "cta": "New named stories drop here first — follow.",
+      "trend": "Alexander Zverev",
+      "utc": "2026-11-17T20:53:14.970528+00:00",
+      "source": "upload.success",
+      "app_id": "alexander_zverev",
+      "youtube_id": "IlyVxJ1zdGc"
     }
   ]
 }
