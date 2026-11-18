@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-18T10:37:35.146274+00:00",
+  "updated_utc": "2026-11-18T20:31:07.530315+00:00",
   "entries": [
-    {
-      "title": "Rob Gronkowski’s New Role: What Changed?",
-      "opener": "Gronk’s game just took a sharp turn",
-      "cta": "",
-      "trend": "Rob Gronkowski",
-      "utc": "2026-09-27T16:52:55.164976+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "Rob Gronkowski’s New Role: What Changed?",
-      "opener": "Gronk’s game just took a sharp turn",
-      "cta": "Agree on Rob Gronkowski? Reply in comments.",
-      "trend": "Rob Gronkowski",
-      "utc": "2026-09-27T17:00:05.616448+00:00",
-      "source": "upload.success",
-      "app_id": "rob_gronkowski",
-      "youtube_id": "0pf4iFvl3lw"
-    },
     {
       "title": "Is Sterling Shepard Injured or Playing This Week?",
       "opener": "Sterling Shepard status: cleared or sidelined?",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "amazon_prime",
       "youtube_id": "dffLRbYPqQ8"
+    },
+    {
+      "title": "Tesla FSD subscription cost beats buying full software",
+      "opener": "Pay monthly for Tesla FSD instead of full upfront",
+      "cta": "",
+      "trend": "Tesla FSD subscription cost",
+      "utc": "2026-11-18T20:22:30.002096+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Tesla FSD subscription cost beats buying full software",
+      "opener": "Pay monthly for Tesla FSD instead of full upfront",
+      "cta": "Is a monthly FSD subscription smarter for your budget?",
+      "trend": "Tesla FSD subscription cost",
+      "utc": "2026-11-18T20:31:07.528608+00:00",
+      "source": "upload.success",
+      "app_id": "tesla_fsd_subscription_cost",
+      "youtube_id": "wi09_HAlaSA"
     }
   ]
 }

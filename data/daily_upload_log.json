@@ -1340,7 +1340,7 @@
       ]
     },
     "2026-11-18": {
-      "count": 2,
+      "count": 3,
       "events": [
         {
           "utc": "2026-11-18T03:43:27.733161+00:00",
@@ -1353,9 +1353,15 @@
           "title": "Amazon Prime Costs Many Overlook This Key Fee",
           "slot": "morning",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-11-18T20:31:07.532554+00:00",
+          "title": "Tesla FSD subscription cost beats buying full software",
+          "slot": "morning",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-11-18T10:37:35.148877+00:00"
+  "updated_utc": "2026-11-18T20:31:07.532583+00:00"
 }
