@@ -4,12 +4,17 @@ Automation workflow for generating and uploading YouTube Shorts (then Rumble, In
 
 ## Auto Generate And Upload Schedule
 
-The GitHub Actions workflow `.github/workflows/pipeline.yml` runs automatically **4 times per day** (UTC):
+The GitHub Actions workflow `.github/workflows/pipeline.yml` runs automatically **2 times per day** (UTC):
 
-- `03:05` UTC -> `night` (viral trends)
-- `12:05` UTC -> `morning` (**high-CPM**: AI tools / finance / SaaS)
-- `17:05` UTC -> `afternoon` (**high-CPM**: AI tools / finance / SaaS)
-- `22:05` UTC -> `evening` (viral trends)
+- `12:05` UTC -> `morning`
+- `22:05` UTC -> `evening`
+
+Every slot produces an English **tech / AI / finance** explainer (25-45s), grounded in
+real news headlines for the chosen topic. Set the repo variable `CHANNEL_NICHE=viral`
+to go back to mixed trending topics.
+
+GitHub often starts scheduled runs late; the slot is taken from the cron entry that
+fired, not from the clock.
 
 Manual runs are also supported with `workflow_dispatch`, where you can choose a `slot` value.
 

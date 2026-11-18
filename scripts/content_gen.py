@@ -10,7 +10,7 @@ LLM preference:
 Topic seed selection also uses OpenAI when available.
 """
 
-import os, json, random, time, re, hashlib, urllib.request, urllib.error, xml.etree.ElementTree as ET
+import os, json, random, time, re, hashlib, html, urllib.request, urllib.error, urllib.parse, xml.etree.ElementTree as ET
 from pathlib import Path
 from datetime import datetime, timezone
 
@@ -172,6 +172,20 @@ HIGH_CPM_FALLBACKS = [
     "Federal Reserve interest rate",
     "Shopify Plus merchant fees",
     "OpenAI GPT-5 release rumors",
+    # Broad named entities: the angle comes from that day's news headlines.
+    "OpenAI ChatGPT",
+    "Anthropic Claude",
+    "Google Gemini AI",
+    "Microsoft Copilot",
+    "Meta AI",
+    "NVIDIA stock",
+    "Apple iPhone",
+    "Apple Intelligence",
+    "Tesla stock",
+    "Amazon Prime",
+    "Samsung Galaxy AI",
+    "Windows 11 update",
+    "Netflix price increase",
 ]
 
 # Backward-compatible aliases used by older helpers.
@@ -246,6 +260,8 @@ Base everything on the supplied trending topic and avoid unverifiable fabricated
 
 CRITICAL — SEARCH & TRUST RULES:
 - Do NOT fabricate facts, quotes, numbers, timelines, or outcomes.
+- Use ONLY the NEWS CONTEXT headlines in the user message as the source of what happened.
+- Never imply a controversy, scandal, secret, or comeback about a real person unless a headline states it.
 - Title MUST include the exact trending topic phrase or a recognizable keyword from it.
 - Title max 55 characters (mobile feed truncates longer titles).
 - Write titles people actually search: names, products, companies, events, or public keywords from the trend.
@@ -307,19 +323,28 @@ CRITICAL — ANTI-TEMPLATE (YouTube suppresses formulaic clusters):
   "explained in 30 sec".
 - If recent titles are provided as negative examples, do NOT copy their structure or phrasing.
 
-The video has 5 acts:
-1. HOOK — money/tool impact headline (2-second grab)
-2. CONTEXT — 3 short lines explaining the update/tool/rule
-3. WHY — 3 short lines on cost, risk, or opportunity
-4. QUESTION — open-loop question + 6 to 8 rapid captions
-5. CLOSE — wrap-up; LAST line must ask viewers to comment (vary CTA wording)
+The viewer must LEARN something specific. A video that only says "this is trending"
+or "people are talking" is a failure. Every line carries information.
+
+The video has 5 acts (the lines are read aloud as one continuous script, so they must
+flow as natural spoken sentences, 70-100 words in total):
+1. HOOK — the single most surprising or useful fact, stated plainly (2-second grab)
+2. CONTEXT — 3 lines: what exactly happened or changed, who it affects, when
+3. WHY — 3 lines: what it means for the viewer's money, work, or tools
+4. QUESTION — one specific question about a real decision the viewer faces + 6 to 8 captions
+5. CLOSE — line 1: the practical takeaway (what to do, check, or watch next);
+   line 2: the specific next thing to watch for on THIS topic (a date, decision, or release).
+   Do NOT beg for comments, likes, or follows, and do not use a generic sign-off.
 
 Style rules:
 - Clear, practical, beginner-friendly explainer tone.
-- Light Hinglish/Urdu is fine where natural.
+- LANGUAGE: plain American English ONLY. No Hindi, Urdu, Hinglish, or slang fillers.
 - Focus on costs, benefits, mistakes, comparisons, and next steps — not drama.
-- Hook: 4-8 words, different wording AND structure from title.
-- Context/why lines: max 8 words each.
+- No clickbait or curiosity-gap titles ("isn't what you think", "you won't believe").
+  The title states the actual news or the actual benefit.
+- Use concrete details (names, figures, dates) ONLY when they appear in the NEWS CONTEXT.
+- Hook: 5-10 words, different wording AND structure from title.
+- Context/why lines: full sentences, 8-12 words each.
 - Captions: 6-8 unique items, max 5 words, include a topic keyword.
 - BANNED caption fillers: "FULL TIME?", "MATCH ALERT", "TRENDING NOW", "GOAL ALERT".
 - youtube_tags: include niche tags like "AI tools", "personal finance", "investing", "SaaS", "business tips" plus topic keywords.
@@ -337,6 +362,7 @@ def make_prompt(
     epilogue_extra: str | None = None,
     niche: str = "viral",
     recent_titles: list[str] | None = None,
+    news_headlines: list[str] | None = None,
 ) -> str:
     angles = HIGH_CPM_ANGLES if niche == "high_cpm" else VIRAL_ANGLES
     angle = random.choice(angles)
@@ -353,8 +379,12 @@ def make_prompt(
     if niche == "high_cpm":
         package_line = "Create a HIGH-CPM (AI tools / finance / SaaS / business) YouTube Short package."
         framing = (
-            "Frame this as a practical money/tool explainer when possible "
-            "(cost, risk, productivity, beginner mistake, comparison)."
+            "Frame this as a practical money/tool explainer "
+            "(cost, risk, productivity, beginner mistake, comparison).\n"
+            "For THIS niche the JSON length hints below are overridden: context_lines and "
+            "why_lines are full sentences of 8-12 words, each stating one concrete fact or "
+            "consequence. close_lines = [practical takeaway, the specific next thing to watch "
+            "for on this topic] — no request for comments, no generic sign-off. Write in plain American English only."
         )
         tags_hint = '["AI tools", "personal finance", "... 8-12 niche + trend tags"]'
         search_hint = "specific stock-image search phrase for office finance AI productivity"
@@ -395,6 +425,22 @@ Return this exact JSON:
   "search_query": "{search_hint}",
   "youtube_tags": {tags_hint}
 }}"""
+    headlines = [str(h).strip() for h in (news_headlines or []) if str(h).strip()]
+    if headlines:
+        listed_news = "\n".join(f"- {h}" for h in headlines[:NEWS_HEADLINES_MAX])
+        base += (
+            "\n\nNEWS CONTEXT — real headlines explaining why this topic is trending right now:\n"
+            f"{listed_news}\n"
+            "Ground the title, hook, context and why lines ONLY in what these headlines say. "
+            "Do not add events, controversies, scandals, quotes, numbers or outcomes that are "
+            "not in them. If the headlines disagree, stick to what they have in common."
+        )
+    else:
+        base += (
+            "\n\nNO NEWS CONTEXT is available for this topic. Do NOT claim or imply any "
+            "specific recent event, controversy, scandal, comeback, feud, lawsuit or secret. "
+            "Write a neutral explainer using only widely known, stable background about it."
+        )
     negatives = [t for t in (recent_titles or []) if str(t).strip()][-TITLE_HISTORY_NEGATIVES:]
     if negatives:
         listed = "\n".join(f"- {t}" for t in negatives)
@@ -427,6 +473,72 @@ def demand_score(traffic: int, news_count: int = 0) -> float:
     traffic_component = min(1.0, math.log10(traffic + 1) / 6.0)  # ~1M+ ≈ 1.0
     news_component = min(1.0, news_count / 5.0) * 0.15           # up to +0.15
     return round(min(1.0, traffic_component + news_component), 4)
+
+
+# Real news headlines per trend (from the Trends RSS), keyed by lowercased topic.
+# Scripts are grounded in these so the LLM does not invent a story for a bare name.
+NEWS_HEADLINES_MAX = 5
+_TREND_NEWS: dict[str, list[str]] = {}
+
+
+def news_headlines_for(topic: str) -> list[str]:
+    """Headlines captured from the Trends feed for this topic (empty if none)."""
+    key = (topic or "").strip().lower()
+    if not key:
+        return []
+    if key in _TREND_NEWS:
+        return list(_TREND_NEWS[key])
+    # The OpenAI selector may lightly rephrase the topic — accept a containment match.
+    for k, v in _TREND_NEWS.items():
+        if v and (k in key or key in k):
+            return list(v)
+    return []
+
+
+GOOGLE_NEWS_SEARCH_RSS = (
+    "https://news.google.com/rss/search?q={q}&hl=en-US&gl=US&ceid=US:en"
+)
+
+
+def fetch_news_headlines(topic: str, max_items: int = NEWS_HEADLINES_MAX) -> list[str]:
+    """Recent English headlines for a topic from Google News RSS (last 7 days).
+
+    Used when the Trends feed gave no headlines (e.g. curated seed topics), so the
+    script still has real, current facts to stand on. Returns [] on any failure.
+    """
+    q = _compact_ws(topic or "")
+    if not q:
+        return []
+    url = GOOGLE_NEWS_SEARCH_RSS.format(q=urllib.parse.quote_plus(f"{q} when:7d"))
+    try:
+        req = urllib.request.Request(
+            url,
+            headers={
+                "User-Agent": "Mozilla/5.0 (compatible; shorts-pipeline/1.0)",
+                "Accept": "application/rss+xml, application/xml;q=0.9, */*;q=0.8",
+            },
+        )
+        with urllib.request.urlopen(req, timeout=15) as r:
+            root = ET.fromstring(r.read())
+    except Exception as e:
+        print(f"  News lookup failed for '{q}': {e}")
+        return []
+    out: list[str] = []
+    seen: set[str] = set()
+    for item in root.findall(".//item"):
+        title = _compact_ws(html.unescape(item.findtext("title") or ""))
+        src = _compact_ws(html.unescape(item.findtext("source") or ""))
+        # Google News titles end with " - Source"; show it as "(Source)" instead.
+        if src and title.endswith(f" - {src}"):
+            title = title[: -len(src) - 3].strip()
+        key = title.lower()
+        if not title or key in seen:
+            continue
+        seen.add(key)
+        out.append(f"{title} ({src})" if src else title)
+        if len(out) >= max_items:
+            break
+    return out
 
 
 def fetch_trending_entries(max_items: int = 20) -> list[dict]:
@@ -463,13 +575,27 @@ def fetch_trending_entries(max_items: int = 20) -> list[dict]:
         traffic = _parse_approx_traffic(
             item.findtext(f"{{{GOOGLE_TRENDS_HT_NS}}}approx_traffic") or ""
         )
-        news_count = len(item.findall(f"{{{GOOGLE_TRENDS_HT_NS}}}news_item"))
+        news_items = item.findall(f"{{{GOOGLE_TRENDS_HT_NS}}}news_item")
+        news_count = len(news_items)
+        headlines: list[str] = []
+        for ni in news_items:
+            h = _compact_ws(
+                html.unescape(ni.findtext(f"{{{GOOGLE_TRENDS_HT_NS}}}news_item_title") or "")
+            )
+            src = _compact_ws(
+                html.unescape(ni.findtext(f"{{{GOOGLE_TRENDS_HT_NS}}}news_item_source") or "")
+            )
+            if h:
+                headlines.append(f"{h} ({src})" if src else h)
+        headlines = headlines[:NEWS_HEADLINES_MAX]
+        _TREND_NEWS[t.lower()] = headlines
         entries.append(
             {
                 "topic": t,
                 "traffic": traffic,
                 "news_count": news_count,
                 "demand": demand_score(traffic, news_count),
+                "headlines": headlines,
             }
         )
         if len(entries) >= max_items:
@@ -590,6 +716,18 @@ def pick_rotated_channel_fit_fallback(niche: str = "viral") -> str:
             if isinstance(data, dict):
                 recent = [str(x) for x in data.get("recent_seeds", []) if str(x).strip()]
         avoid = set(s.lower() for s in recent[-4:])
+        # The seed history above lives in output/ and is lost between CI runs;
+        # the publish catalog is committed, so also skip recently published seeds.
+        try:
+            from similarity_guard import load_catalog
+
+            avoid |= {
+                str(row.get("trend") or "").strip().lower()
+                for row in load_catalog()[-40:]
+            }
+            avoid.discard("")
+        except Exception as e:
+            print(f"  [WARN] Catalog seed check unavailable: {e}")
         # Hard gate: never emit a generic category seed.
         pool = [
             s for s in pool_src
@@ -659,6 +797,15 @@ def pick_latest_topic(niche: str = "viral") -> tuple[str, str | None]:
                 )
             else:
                 topics = [e["topic"] for e in named_entries]
+                if niche == "high_cpm":
+                    # Single-niche channel: never fall back to off-niche trends
+                    # (sports, celebrities). No fit today → curated tech/finance seed.
+                    topics = [t for t in topics if _is_channel_fit_topic(t, niche)]
+                    if not topics:
+                        print(
+                            f"  No tech/AI/finance topic among {len(named_entries)} "
+                            f"trending entries; using {label} seed."
+                        )
                 preview = ", ".join(
                     f'{e["topic"]} ({e["demand"]})' for e in named_entries[:5]
                 )
@@ -940,7 +1087,7 @@ def validate(content: dict, trend: str = "") -> dict:
     content["why_lines"] = why_lines[:3]
 
     if not content.get("question"):
-        content["question"] = "Aapka take kya hai?"
+        content["question"] = "What would you do here?"
 
     caps = content.get("captions", [])
     fixed = []
@@ -975,7 +1122,9 @@ def validate(content: dict, trend: str = "") -> dict:
     close_lines = [str(x) for x in content.get("close_lines", []) if str(x).strip()]
     while len(close_lines) < 2:
         close_lines.append("Context is still moving — verify before sharing.")
-    if not any("comment" in line.lower() or "reply" in line.lower() or "below" in line.lower() for line in close_lines):
+    # Tech/finance explainers end on the takeaway — no forced "comment below" line.
+    wants_cta = content.get("_niche") != "high_cpm"
+    if wants_cta and not any("comment" in line.lower() or "reply" in line.lower() or "below" in line.lower() for line in close_lines):
         close_lines.append(random.choice(_CLOSE_CTA_POOL))
     # Replace formulaic CTAs if the LLM slipped.
     close_lines = [
@@ -1820,10 +1969,10 @@ def generate_topic(epilogue_extra: str | None = None, slot: str | None = None) -
     openai_key = env_value("OPENAI_API_KEY", "").strip()
     or_key = env_value("OPENROUTER_API_KEY", "").strip()
     print(
-        f"  OPENAI_API_KEY: {'SET (' + openai_key[:8] + '...)' if openai_key else 'NOT SET'}"
+        f"  OPENAI_API_KEY: {'SET' if openai_key else 'NOT SET'}"
     )
     print(
-        f"  OPENROUTER_API_KEY: {'SET (' + or_key[:8] + '...)' if or_key else 'NOT SET'}"
+        f"  OPENROUTER_API_KEY: {'SET' if or_key else 'NOT SET'}"
     )
     print(f"  Niche mode: {niche} (slot={slot or 'n/a'})")
 
@@ -1873,11 +2022,17 @@ def generate_topic(epilogue_extra: str | None = None, slot: str | None = None) -
             source="generate_topic.recovered_fallback",
             raw_upstream={"niche": niche, "slot": slot},
         )
+    news_headlines = news_headlines_for(latest_topic) or fetch_news_headlines(latest_topic)
+    if news_headlines:
+        print(f"  News grounding: {len(news_headlines)} headline(s) for '{latest_topic}'")
+    else:
+        print(f"  News grounding: none for '{latest_topic}' — neutral explainer mode")
     prompt = make_prompt(
         latest_topic,
         epilogue_extra,
         niche=niche,
         recent_titles=recent_title_strings(TITLE_HISTORY_NEGATIVES),
+        news_headlines=news_headlines,
     )
     candidates = _llm_candidates()
     if not candidates:

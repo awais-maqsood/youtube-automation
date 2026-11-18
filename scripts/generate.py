@@ -1369,7 +1369,8 @@ def _openai_tts_to_wav(text: str, wav_out: str, niche: str = "viral") -> bool:
     speed = float(env_value("OPENAI_TTS_SPEED", "1.05") or "1.05")
     default_instr = (
         "Speak like a clear, trusted YouTube Shorts money and AI-tools explainer. "
-        "Practical and confident, never hype salesy. Match any Hinglish wording naturally."
+        "Practical and confident, never hype salesy. Natural American English, "
+        "with a brief pause between sentences."
         if (niche or "").lower() == "high_cpm"
         else
         "Speak like an energetic YouTube Shorts explainer narrator. "
