@@ -288,12 +288,15 @@ def fit_font_wrapped(path, text, max_w, start_size, min_size=44, *, max_lines=3)
             f = ImageFont.load_default()
             lines = wrap_words_to_lines(text, f, max_w, max_lines)
             return f, min_size, lines
-        lines = wrap_words_to_lines(text, f, max_w, max_lines)
-        if not lines:
+        # Wrap without a line cap first: wrap_words_to_lines() truncates to
+        # max_lines with "...", which hid overflow and stopped the font shrinking.
+        full = wrap_words_to_lines(text, f, max_w, 99)
+        if not full:
             return f, size, []
-        if len(lines) > max_lines:
+        if len(full) > max_lines:
             size -= 4
             continue
+        lines = full
         if any(f.getlength(line) > max_w for line in lines):
             size -= 4
             continue
@@ -362,6 +365,29 @@ def build_youtube_description(topic: dict) -> str:
     q = _kit_one_line(topic.get("question") or "")
     niche = (topic.get("niche") or "viral").lower()
     key = f"{trend}|{hook}|{topic.get('topic_id') or 'x'}"
+
+    if niche == "high_cpm":
+        # Tech/finance explainers: the description is the script itself (useful,
+        # searchable, unique per video) — no pooled comment-bait or follow lines.
+        def _lines(field: str) -> list[str]:
+            return [_kit_one_line(x) for x in (topic.get(field) or []) if _kit_one_line(x)]
+
+        body = _lines("context_lines") + _lines("why_lines")
+        close = _lines("close_lines")
+        blocks = [hook] if hook else []
+        if body:
+            blocks += ["", " ".join(b.rstrip(".") + "." for b in body)]
+        if close:
+            blocks += ["", " ".join(c.rstrip(".") + "." for c in close)]
+        if q:
+            blocks += ["", q]
+        tags = ["#Shorts"]
+        topic_tag = _topic_hashtag(trend)
+        if topic_tag:
+            tags.append(topic_tag)
+        tags += ["#TechNews", "#PersonalFinance"]
+        blocks += ["", " ".join(tags)]
+        return "\n".join(blocks)
 
     # Avoid CTAs/follows already stored in the publish catalog (exact reuse = gate fail).
     used_ctas = {
@@ -1855,7 +1881,7 @@ def act_question(topic):
         img, _ = draw_caption_stack(
             img,
             q,
-            1320,
+            max(1320, y + 24),
             FONT_S,
             color,
             start_size=100,
@@ -1950,7 +1976,7 @@ def act_epilogue(topic):
 
     for i in range(n):
         img = act_base_image(i, n, (max(12, p1[0] // 8), max(12, p1[1] // 8), max(12, p1[2] // 8)), (max(12, p0[0] // 8), max(12, p0[1] // 8), max(12, p0[2] // 8)))
-        cy = H // 2 - len(parts) * 90
+        cy = H // 2 - len(parts) * 130
         y_cursor = cy
         for j, part in enumerate(parts):
             if i >= appear[j]:
@@ -1970,7 +1996,7 @@ def act_epilogue(topic):
                     col,
                     start_size=86,
                     min_size=40,
-                    max_lines=2,
+                    max_lines=4,
                     pad_x=28,
                     pad_y=12,
                     panel_alpha=panel_alpha,
@@ -1984,7 +2010,11 @@ def act_epilogue(topic):
                 (W // 2 - 20, cy + len(parts) * 150 + 30), "█", font=f_cur, fill=ecolor
             )
         if i >= appear[-1] + max(6, n // 12):
-            cta = "COMMENT YOUR PICK"
+            cta = (
+                "TECH + MONEY, EVERY DAY"
+                if (topic.get("niche") or "") == "high_cpm"
+                else "COMMENT YOUR PICK"
+            )
             cta_font, _, cta_lines, _ = layout_caption(
                 cta, FONT_M, start_size=44, min_size=32, max_lines=1
             )
