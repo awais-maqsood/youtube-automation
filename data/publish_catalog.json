@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-17T20:53:14.972617+00:00",
+  "updated_utc": "2026-11-18T03:43:27.730966+00:00",
   "entries": [
-    {
-      "title": "UFC Fight Night Update That Changes Everything",
-      "opener": "Not your usual UFC headlines!",
-      "cta": "",
-      "trend": "UFC Fight Night",
-      "utc": "2026-09-27T00:26:29.054234+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "UFC Fight Night Update That Changes Everything",
-      "opener": "Not your usual UFC headlines!",
-      "cta": "Where do you land after this clip?",
-      "trend": "UFC Fight Night",
-      "utc": "2026-09-27T00:33:47.558285+00:00",
-      "source": "upload.success",
-      "app_id": "ufc_fight_night",
-      "youtube_id": "yzpBF5jjj84"
-    },
     {
       "title": "India vs West Indies Cricket Match: What Really Shifted?",
       "opener": "Big momentum switch in India-WI clash!",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "alexander_zverev",
       "youtube_id": "IlyVxJ1zdGc"
+    },
+    {
+      "title": "Hornets vs Lakers: Wild Play Shakes Up Game!",
+      "opener": "Epic moment stole the show instantly",
+      "cta": "",
+      "trend": "Hornets vs Lakers",
+      "utc": "2026-11-18T03:36:36.422911+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Hornets vs Lakers: Wild Play Shakes Up Game!",
+      "opener": "Epic moment stole the show instantly",
+      "cta": "Subscribe if you want the next clear read.",
+      "trend": "Hornets vs Lakers",
+      "utc": "2026-11-18T03:43:27.729306+00:00",
+      "source": "upload.success",
+      "app_id": "hornets_vs_lakers",
+      "youtube_id": "LrT30YTOE5c"
     }
   ]
 }

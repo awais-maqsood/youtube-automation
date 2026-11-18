@@ -1,16 +1,5 @@
 {
   "days": {
-    "2026-09-11": {
-      "count": 1,
-      "events": [
-        {
-          "utc": "2026-09-11T16:29:16.364857+00:00",
-          "title": "Maria Bartiromo Fox News Departure Explained",
-          "slot": "evening",
-          "source": "upload.success"
-        }
-      ]
-    },
     "2026-09-12": {
       "count": 3,
       "events": [
@@ -1349,7 +1338,18 @@
           "source": "upload.success"
         }
       ]
+    },
+    "2026-11-18": {
+      "count": 1,
+      "events": [
+        {
+          "utc": "2026-11-18T03:43:27.733161+00:00",
+          "title": "Hornets vs Lakers: Wild Play Shakes Up Game!",
+          "slot": "night",
+          "source": "upload.success"
+        }
+      ]
     }
   },
-  "updated_utc": "2026-11-17T20:53:14.975359+00:00"
+  "updated_utc": "2026-11-18T03:43:27.733190+00:00"
 }
