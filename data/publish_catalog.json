@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-18T20:31:07.530315+00:00",
+  "updated_utc": "2026-11-19T03:18:08.986487+00:00",
   "entries": [
-    {
-      "title": "Is Sterling Shepard Injured or Playing This Week?",
-      "opener": "Sterling Shepard status: cleared or sidelined?",
-      "cta": "",
-      "trend": "Sterling Shepard",
-      "utc": "2026-09-27T20:03:55.494058+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "Is Sterling Shepard Injured or Playing This Week?",
-      "opener": "Sterling Shepard status: cleared or sidelined?",
-      "cta": "Did Sterling Shepard surprise you? Comment below.",
-      "trend": "Sterling Shepard",
-      "utc": "2026-09-27T20:11:02.122726+00:00",
-      "source": "upload.success",
-      "app_id": "sterling_shepard",
-      "youtube_id": "P9r86M8EIq8"
-    },
     {
       "title": "Early read on Teyana Taylor's stakes",
       "opener": "Here's Teyana Taylor, cut short.",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "tesla_fsd_subscription_cost",
       "youtube_id": "wi09_HAlaSA"
+    },
+    {
+      "title": "Microsoft Copilot Office pricing changes work forever",
+      "opener": "Office apps now run inside Copilot’s AI OS",
+      "cta": "",
+      "trend": "Microsoft Copilot Office pricing",
+      "utc": "2026-11-19T03:10:01.929080+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Microsoft Copilot Office pricing changes work forever",
+      "opener": "Office apps now run inside Copilot’s AI OS",
+      "cta": "How will Microsoft Copilot's pricing affect your budget?",
+      "trend": "Microsoft Copilot Office pricing",
+      "utc": "2026-11-19T03:18:08.985060+00:00",
+      "source": "upload.success",
+      "app_id": "microsoft_copilot_office_pricing",
+      "youtube_id": "T30lhwtO9wI"
     }
   ]
 }
