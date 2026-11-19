@@ -1340,16 +1340,22 @@
       ]
     },
     "2026-11-19": {
-      "count": 1,
+      "count": 2,
       "events": [
         {
           "utc": "2026-11-19T03:18:08.988322+00:00",
           "title": "Microsoft Copilot Office pricing changes work forever",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-11-19T20:34:47.561192+00:00",
+          "title": "Netflix Price Increase Hits Streaming Budgets",
+          "slot": "morning",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-11-19T03:18:08.988347+00:00"
+  "updated_utc": "2026-11-19T20:34:47.561216+00:00"
 }

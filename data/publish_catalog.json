@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-19T03:18:08.986487+00:00",
+  "updated_utc": "2026-11-19T20:34:47.558988+00:00",
   "entries": [
-    {
-      "title": "Early read on Teyana Taylor's stakes",
-      "opener": "Here's Teyana Taylor, cut short.",
-      "cta": "",
-      "trend": "Teyana Taylor",
-      "utc": "2026-09-28T00:32:08.879371+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "Early read on Teyana Taylor's stakes",
-      "opener": "Here's Teyana Taylor, cut short.",
-      "cta": "What is your take on Teyana Taylor? Comment below.",
-      "trend": "Teyana Taylor",
-      "utc": "2026-09-28T00:39:02.285314+00:00",
-      "source": "upload.success",
-      "app_id": "teyana_taylor",
-      "youtube_id": "ThhpS1jgkOc"
-    },
     {
       "title": "Read Trump China without the noise",
       "opener": "Hold up — Trump China?",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "microsoft_copilot_office_pricing",
       "youtube_id": "T30lhwtO9wI"
+    },
+    {
+      "title": "Netflix Price Increase Hits Streaming Budgets",
+      "opener": "Prices keep rising for streaming platforms",
+      "cta": "",
+      "trend": "Netflix price increase",
+      "utc": "2026-11-19T20:26:26.838811+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Netflix Price Increase Hits Streaming Budgets",
+      "opener": "Prices keep rising for streaming platforms",
+      "cta": "Should you keep Netflix or switch services?",
+      "trend": "Netflix price increase",
+      "utc": "2026-11-19T20:34:47.557307+00:00",
+      "source": "upload.success",
+      "app_id": "netflix_price_increase",
+      "youtube_id": "hX49MeOkzK8"
     }
   ]
 }
