@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-19T20:34:47.558988+00:00",
+  "updated_utc": "2026-11-20T03:09:38.833824+00:00",
   "entries": [
-    {
-      "title": "Read Trump China without the noise",
-      "opener": "Hold up — Trump China?",
-      "cta": "",
-      "trend": "Trump China",
-      "utc": "2026-09-28T09:13:08.535392+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "Read Trump China without the noise",
-      "opener": "Hold up — Trump China?",
-      "cta": "Would you share this about Trump China? Comment why.",
-      "trend": "Trump China",
-      "utc": "2026-09-28T09:20:09.773827+00:00",
-      "source": "upload.success",
-      "app_id": "trump_china",
-      "youtube_id": "oeOz2-I9FD4"
-    },
     {
       "title": "Trump China Ties Shifted Dramatically — Here’s Why",
       "opener": "Trump’s China policy isn’t what you think",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "netflix_price_increase",
       "youtube_id": "hX49MeOkzK8"
+    },
+    {
+      "title": "How Does Stripe SaaS Billing Update Affect Costs?",
+      "opener": "Billing changes that could impact your SaaS expenses",
+      "cta": "",
+      "trend": "Stripe SaaS billing update",
+      "utc": "2026-11-20T03:01:58.699264+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "How Does Stripe SaaS Billing Update Affect Costs?",
+      "opener": "Billing changes that could impact your SaaS expenses",
+      "cta": "Will you switch to Stripe's updated SaaS billing?",
+      "trend": "Stripe SaaS billing update",
+      "utc": "2026-11-20T03:09:38.832459+00:00",
+      "source": "upload.success",
+      "app_id": "stripe_saas_billing_update",
+      "youtube_id": "qYZVR9m4-hk"
     }
   ]
 }
