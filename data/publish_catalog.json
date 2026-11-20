@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-20T03:09:38.833824+00:00",
+  "updated_utc": "2026-11-20T20:22:44.031447+00:00",
   "entries": [
-    {
-      "title": "Trump China Ties Shifted Dramatically — Here’s Why",
-      "opener": "Trump’s China policy isn’t what you think",
-      "cta": "",
-      "trend": "Trump China",
-      "utc": "2026-09-28T09:39:28.120712+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "Trump China Ties Shifted Dramatically — Here’s Why",
-      "opener": "Trump’s China policy isn’t what you think",
-      "cta": "Thoughts on Trump China? Drop a comment.",
-      "trend": "Trump China",
-      "utc": "2026-09-28T09:46:42.561354+00:00",
-      "source": "upload.success",
-      "app_id": "trump_china",
-      "youtube_id": "2PdljXDxXUw"
-    },
     {
       "title": "Stop overreading Matthew Knies",
       "opener": "Matthew Knies' breakthrough moment revealed",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "stripe_saas_billing_update",
       "youtube_id": "qYZVR9m4-hk"
+    },
+    {
+      "title": "Why Tesla Stock's Recent Drop Could Signal ROI Gains",
+      "opener": "Tesla's stock dip might boost your investment returns",
+      "cta": "",
+      "trend": "Tesla stock",
+      "utc": "2026-11-20T20:15:16.001519+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Why Tesla Stock's Recent Drop Could Signal ROI Gains",
+      "opener": "Tesla's stock dip might boost your investment returns",
+      "cta": "Should you buy Tesla stock during this slump?",
+      "trend": "Tesla stock",
+      "utc": "2026-11-20T20:22:44.030115+00:00",
+      "source": "upload.success",
+      "app_id": "tesla_stock",
+      "youtube_id": "AXsPWB_pjRs"
     }
   ]
 }
