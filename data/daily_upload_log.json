@@ -1352,16 +1352,22 @@
       ]
     },
     "2026-11-21": {
-      "count": 1,
+      "count": 2,
       "events": [
         {
           "utc": "2026-11-21T03:13:26.705905+00:00",
           "title": "Apple Intelligence May Increase Your Siri Costs Soon",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-11-21T19:12:42.681631+00:00",
+          "title": "Amazon AWS Price Change Impacts AI Costs",
+          "slot": "morning",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-11-21T03:13:26.705925+00:00"
+  "updated_utc": "2026-11-21T19:12:42.681672+00:00"
 }

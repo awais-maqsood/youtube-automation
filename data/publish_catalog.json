@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-21T03:13:26.704241+00:00",
+  "updated_utc": "2026-11-21T19:12:42.678734+00:00",
   "entries": [
-    {
-      "title": "Australia vs Brazil: Why Brazil Might Struggle Today",
-      "opener": "Brazil’s favorite status is under threat",
-      "cta": "",
-      "trend": "Australia vs Brazil",
-      "utc": "2026-09-29T09:43:20.538090+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "Australia vs Brazil: Why Brazil Might Struggle Today",
-      "opener": "Brazil’s favorite status is under threat",
-      "cta": "Where do you stand on Australia vs Brazil? Tell me in comments.",
-      "trend": "Australia vs Brazil",
-      "utc": "2026-09-29T09:51:39.641322+00:00",
-      "source": "upload.success",
-      "app_id": "australia_vs_brazil",
-      "youtube_id": "ffOv-8VLaGs"
-    },
     {
       "title": "How Odell Beckham Jr's Latest Move Shakes NFL",
       "opener": "Odell Beckham Jr just switched teams!",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "apple_intelligence",
       "youtube_id": "Rj1Al0-6VCA"
+    },
+    {
+      "title": "Amazon AWS Price Change Impacts AI Costs",
+      "opener": "AWS cost shifts affect AI efficiency now",
+      "cta": "",
+      "trend": "Amazon AWS price change",
+      "utc": "2026-11-21T19:03:27.545500+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Amazon AWS Price Change Impacts AI Costs",
+      "opener": "AWS cost shifts affect AI efficiency now",
+      "cta": "How will AWS price changes affect your AI budget?",
+      "trend": "Amazon AWS price change",
+      "utc": "2026-11-21T19:12:42.676658+00:00",
+      "source": "upload.success",
+      "app_id": "amazon_aws_price_change",
+      "youtube_id": "2-g7qR-bB9g"
     }
   ]
 }
