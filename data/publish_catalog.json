@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-20T20:22:44.031447+00:00",
+  "updated_utc": "2026-11-21T03:13:26.704241+00:00",
   "entries": [
-    {
-      "title": "Stop overreading Matthew Knies",
-      "opener": "Matthew Knies' breakthrough moment revealed",
-      "cta": "",
-      "trend": "Matthew Knies",
-      "utc": "2026-09-28T19:35:20.951767+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "Stop overreading Matthew Knies",
-      "opener": "Matthew Knies' breakthrough moment revealed",
-      "cta": "One-line read on Matthew Knies — leave a comment.",
-      "trend": "Matthew Knies",
-      "utc": "2026-09-28T19:42:16.273384+00:00",
-      "source": "upload.success",
-      "app_id": "matthew_knies",
-      "youtube_id": "WV0GK_D2Cwg"
-    },
     {
       "title": "Australia vs Brazil: Why Brazil Might Struggle Today",
       "opener": "Brazil’s favorite status is under threat",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "tesla_stock",
       "youtube_id": "AXsPWB_pjRs"
+    },
+    {
+      "title": "Apple Intelligence May Increase Your Siri Costs Soon",
+      "opener": "Apple's Siri AI will soon have usage limits.",
+      "cta": "",
+      "trend": "Apple Intelligence",
+      "utc": "2026-11-21T03:05:45.694014+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Apple Intelligence May Increase Your Siri Costs Soon",
+      "opener": "Apple's Siri AI will soon have usage limits.",
+      "cta": "Will you change how you use Siri AI?",
+      "trend": "Apple Intelligence",
+      "utc": "2026-11-21T03:13:26.702906+00:00",
+      "source": "upload.success",
+      "app_id": "apple_intelligence",
+      "youtube_id": "Rj1Al0-6VCA"
     }
   ]
 }
