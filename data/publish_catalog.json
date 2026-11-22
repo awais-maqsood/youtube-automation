@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-21T19:12:42.678734+00:00",
+  "updated_utc": "2026-11-22T02:12:53.867598+00:00",
   "entries": [
-    {
-      "title": "How Odell Beckham Jr's Latest Move Shakes NFL",
-      "opener": "Odell Beckham Jr just switched teams!",
-      "cta": "",
-      "trend": "Odell Beckham Jr",
-      "utc": "2026-09-29T18:02:19.559487+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "How Odell Beckham Jr's Latest Move Shakes NFL",
-      "opener": "Odell Beckham Jr just switched teams!",
-      "cta": "Thoughts on Odell Beckham Jr? Drop a comment.",
-      "trend": "Odell Beckham Jr",
-      "utc": "2026-09-29T18:09:09.154100+00:00",
-      "source": "upload.success",
-      "app_id": "odell_beckham_jr",
-      "youtube_id": "B5GyY2q8148"
-    },
     {
       "title": "Jerry Colangelo: the detail that stuck",
       "opener": "Why Jerry Colangelo matters now.",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "amazon_aws_price_change",
       "youtube_id": "2-g7qR-bB9g"
+    },
+    {
+      "title": "Watch This: Federal Reserve Interest Rate Mistakes",
+      "opener": "Avoid costly errors with Fed rate changes",
+      "cta": "",
+      "trend": "Federal Reserve interest rate",
+      "utc": "2026-11-22T02:04:03.645081+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Watch This: Federal Reserve Interest Rate Mistakes",
+      "opener": "Avoid costly errors with Fed rate changes",
+      "cta": "How will rising Fed rates impact your money?",
+      "trend": "Federal Reserve interest rate",
+      "utc": "2026-11-22T02:12:53.865579+00:00",
+      "source": "upload.success",
+      "app_id": "federal_reserve_interest_rate",
+      "youtube_id": "rrsrGyljAlE"
     }
   ]
 }
