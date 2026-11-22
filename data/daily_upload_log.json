@@ -1352,16 +1352,22 @@
       ]
     },
     "2026-11-22": {
-      "count": 1,
+      "count": 2,
       "events": [
         {
           "utc": "2026-11-22T02:12:53.870327+00:00",
           "title": "Watch This: Federal Reserve Interest Rate Mistakes",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-11-22T19:35:37.774667+00:00",
+          "title": "Watch This: OpenAI ChatGPT Hidden Fees Explained",
+          "slot": "morning",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-11-22T02:12:53.870363+00:00"
+  "updated_utc": "2026-11-22T19:35:37.774698+00:00"
 }

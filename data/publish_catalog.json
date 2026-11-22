@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-22T02:12:53.867598+00:00",
+  "updated_utc": "2026-11-22T19:35:37.772340+00:00",
   "entries": [
-    {
-      "title": "Jerry Colangelo: the detail that stuck",
-      "opener": "Why Jerry Colangelo matters now.",
-      "cta": "",
-      "trend": "Jerry Colangelo",
-      "utc": "2026-09-29T21:21:57.898651+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "Jerry Colangelo: the detail that stuck",
-      "opener": "Why Jerry Colangelo matters now.",
-      "cta": "Thoughts on Jerry Colangelo? Drop a comment.",
-      "trend": "Jerry Colangelo",
-      "utc": "2026-09-29T21:29:04.641954+00:00",
-      "source": "upload.success",
-      "app_id": "jerry_colangelo",
-      "youtube_id": "lu8rt-7QoyE"
-    },
     {
       "title": "Did Maura Higgins Just Drop Major News?",
       "opener": "Maura Higgins stuns fans again!",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "federal_reserve_interest_rate",
       "youtube_id": "rrsrGyljAlE"
+    },
+    {
+      "title": "Watch This: OpenAI ChatGPT Hidden Fees Explained",
+      "opener": "Don’t overlook ChatGPT’s unseen costs",
+      "cta": "",
+      "trend": "OpenAI ChatGPT",
+      "utc": "2026-11-22T19:26:49.636194+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Watch This: OpenAI ChatGPT Hidden Fees Explained",
+      "opener": "Don’t overlook ChatGPT’s unseen costs",
+      "cta": "Are you ready to manage ChatGPT costs?",
+      "trend": "OpenAI ChatGPT",
+      "utc": "2026-11-22T19:35:37.770562+00:00",
+      "source": "upload.success",
+      "app_id": "openai_chatgpt",
+      "youtube_id": "6H1zz6uH5Jk"
     }
   ]
 }
