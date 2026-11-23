@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-22T19:35:37.772340+00:00",
+  "updated_utc": "2026-11-23T02:38:46.966047+00:00",
   "entries": [
-    {
-      "title": "Did Maura Higgins Just Drop Major News?",
-      "opener": "Maura Higgins stuns fans again!",
-      "cta": "",
-      "trend": "Maura Higgins",
-      "utc": "2026-09-30T01:13:18.460609+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "Did Maura Higgins Just Drop Major News?",
-      "opener": "Maura Higgins stuns fans again!",
-      "cta": "One-line read on Maura Higgins — leave a comment.",
-      "trend": "Maura Higgins",
-      "utc": "2026-09-30T01:20:18.907527+00:00",
-      "source": "upload.success",
-      "app_id": "maura_higgins",
-      "youtube_id": "XzxXi4F40o0"
-    },
     {
       "title": "Dunkin Halloween Menu Isn't What You Expect",
       "opener": "Not your usual spooky treats!",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "openai_chatgpt",
       "youtube_id": "6H1zz6uH5Jk"
+    },
+    {
+      "title": "Watch This: Apple iPhone Deals and Security Tips",
+      "opener": "Saving smart on your next iPhone purchase matters",
+      "cta": "",
+      "trend": "Apple iPhone",
+      "utc": "2026-11-23T02:29:17.115465+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Watch This: Apple iPhone Deals and Security Tips",
+      "opener": "Saving smart on your next iPhone purchase matters",
+      "cta": "How will you handle iPhone buying and security decisions?",
+      "trend": "Apple iPhone",
+      "utc": "2026-11-23T02:38:46.963671+00:00",
+      "source": "upload.success",
+      "app_id": "apple_iphone",
+      "youtube_id": "F9LfSLAU5R0"
     }
   ]
 }
