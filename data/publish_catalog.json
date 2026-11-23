@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-23T02:38:46.966047+00:00",
+  "updated_utc": "2026-11-23T23:54:40.563426+00:00",
   "entries": [
-    {
-      "title": "Dunkin Halloween Menu Isn't What You Expect",
-      "opener": "Not your usual spooky treats!",
-      "cta": "",
-      "trend": "Dunkin Halloween Menu",
-      "utc": "2026-09-30T21:29:11.219200+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "Dunkin Halloween Menu Isn't What You Expect",
-      "opener": "Not your usual spooky treats!",
-      "cta": "Agree on Dunkin Halloween Menu? Reply in comments.",
-      "trend": "Dunkin Halloween Menu",
-      "utc": "2026-09-30T21:36:10.844372+00:00",
-      "source": "upload.success",
-      "app_id": "dunkin_halloween_menu",
-      "youtube_id": "oGOnTxph1Rg"
-    },
     {
       "title": "What Made Adley Rutschman’s Moment So Viral?",
       "opener": "Catch this insane Adley Rutschman clip!",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "apple_iphone",
       "youtube_id": "F9LfSLAU5R0"
+    },
+    {
+      "title": "Google Gemini Android Features Have Hidden Costs",
+      "opener": "Not all Gemini Android perks are free",
+      "cta": "",
+      "trend": "Google Gemini Android features",
+      "utc": "2026-11-23T23:45:58.107406+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Google Gemini Android Features Have Hidden Costs",
+      "opener": "Not all Gemini Android perks are free",
+      "cta": "How will Gemini’s fees affect your app plans?",
+      "trend": "Google Gemini Android features",
+      "utc": "2026-11-23T23:54:40.561740+00:00",
+      "source": "upload.success",
+      "app_id": "google_gemini_android_features",
+      "youtube_id": "QdqagHag3No"
     }
   ]
 }
