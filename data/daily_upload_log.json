@@ -1358,16 +1358,22 @@
       ]
     },
     "2026-11-24": {
-      "count": 1,
+      "count": 2,
       "events": [
         {
           "utc": "2026-11-24T06:02:43.694690+00:00",
           "title": "Claude AI Anthropic Pricing Shapes Your AI Costs",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-11-24T22:27:20.402163+00:00",
+          "title": "Windows 11 Update Isn\u2019t As Free As You Think",
+          "slot": "morning",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-11-24T06:02:43.694724+00:00"
+  "updated_utc": "2026-11-24T22:27:20.402200+00:00"
 }

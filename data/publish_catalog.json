@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-24T06:02:43.692023+00:00",
+  "updated_utc": "2026-11-24T22:27:20.399533+00:00",
   "entries": [
-    {
-      "title": "Clock Charles Kelley while it's live",
-      "opener": "Charles Kelley. Straight facts.",
-      "cta": "",
-      "trend": "Charles Kelley",
-      "utc": "2026-10-01T10:01:32.270160+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "Clock Charles Kelley while it's live",
-      "opener": "Charles Kelley. Straight facts.",
-      "cta": "Hot take on Charles Kelley? Write it in the comments.",
-      "trend": "Charles Kelley",
-      "utc": "2026-10-01T10:08:25.923489+00:00",
-      "source": "upload.success",
-      "app_id": "charles_kelley",
-      "youtube_id": "t4-UqU8NShU"
-    },
     {
       "title": "What Are Jim Farley Ford Skilled Trades AI Costs?",
       "opener": "Breaking down hidden AI fees at Ford",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "claude_ai_anthropic_pricing",
       "youtube_id": "Qy945t9atog"
+    },
+    {
+      "title": "Windows 11 Update Isn’t As Free As You Think",
+      "opener": "Think Windows 11 updates cost nothing? Think again.",
+      "cta": "",
+      "trend": "Windows 11 update",
+      "utc": "2026-11-24T22:17:51.468638+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Windows 11 Update Isn’t As Free As You Think",
+      "opener": "Think Windows 11 updates cost nothing? Think again.",
+      "cta": "How will Windows 11 update affect your device costs?",
+      "trend": "Windows 11 update",
+      "utc": "2026-11-24T22:27:20.397484+00:00",
+      "source": "upload.success",
+      "app_id": "windows_11_update",
+      "youtube_id": "uDgvJ9P3pNQ"
     }
   ]
 }
