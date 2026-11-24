@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-23T23:54:40.563426+00:00",
+  "updated_utc": "2026-11-24T06:02:43.692023+00:00",
   "entries": [
-    {
-      "title": "What Made Adley Rutschman’s Moment So Viral?",
-      "opener": "Catch this insane Adley Rutschman clip!",
-      "cta": "",
-      "trend": "Adley Rutschman",
-      "utc": "2026-10-01T01:13:00.538636+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "What Made Adley Rutschman’s Moment So Viral?",
-      "opener": "Catch this insane Adley Rutschman clip!",
-      "cta": "Would you share this about Adley Rutschman? Comment why.",
-      "trend": "Adley Rutschman",
-      "utc": "2026-10-01T01:19:53.134778+00:00",
-      "source": "upload.success",
-      "app_id": "adley_rutschman",
-      "youtube_id": "eY-fJfnLHEg"
-    },
     {
       "title": "Clock Charles Kelley while it's live",
       "opener": "Charles Kelley. Straight facts.",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "google_gemini_android_features",
       "youtube_id": "QdqagHag3No"
+    },
+    {
+      "title": "Claude AI Anthropic Pricing Shapes Your AI Costs",
+      "opener": "Anthropic's new IPO price affects AI budgets",
+      "cta": "",
+      "trend": "Claude AI Anthropic pricing",
+      "utc": "2026-11-24T05:53:28.233719+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Claude AI Anthropic Pricing Shapes Your AI Costs",
+      "opener": "Anthropic's new IPO price affects AI budgets",
+      "cta": "How will Claude AI pricing impact your AI spending?",
+      "trend": "Claude AI Anthropic pricing",
+      "utc": "2026-11-24T06:02:43.689960+00:00",
+      "source": "upload.success",
+      "app_id": "claude_ai_anthropic_pricing",
+      "youtube_id": "Qy945t9atog"
     }
   ]
 }
