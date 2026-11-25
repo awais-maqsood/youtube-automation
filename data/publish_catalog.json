@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-25T05:00:55.423423+00:00",
+  "updated_utc": "2026-11-25T21:42:54.890968+00:00",
   "entries": [
-    {
-      "title": "Why East of Eden Netflix cast is everywhere tonight",
-      "opener": "East of Eden Netflix cast just landed.",
-      "cta": "",
-      "trend": "East of Eden Netflix cast",
-      "utc": "2026-10-03T01:03:36.615300+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "Why East of Eden Netflix cast is everywhere tonight",
-      "opener": "East of Eden Netflix cast just landed.",
-      "cta": "One-line read on East of Eden Netflix cast — leave a comment.",
-      "trend": "East of Eden Netflix cast",
-      "utc": "2026-10-03T01:10:43.595087+00:00",
-      "source": "upload.success",
-      "app_id": "east_of_eden_netflix_cast",
-      "youtube_id": "P0jbw_GZ_lY"
-    },
     {
       "title": "India vs West Indies Cricket Match: Latest Update",
       "opener": "Who’s leading right now in India-West Indies?",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "apple_vision_pro_apps",
       "youtube_id": "SPdIJvSvaIs"
+    },
+    {
+      "title": "How Do Shopify Plus Merchant Fees Affect Your Costs?",
+      "opener": "Understanding Shopify Plus fees can save money",
+      "cta": "",
+      "trend": "Shopify Plus merchant fees",
+      "utc": "2026-11-25T21:34:11.311177+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "How Do Shopify Plus Merchant Fees Affect Your Costs?",
+      "opener": "Understanding Shopify Plus fees can save money",
+      "cta": "Are you confident in your Shopify Plus fee plan?",
+      "trend": "Shopify Plus merchant fees",
+      "utc": "2026-11-25T21:42:54.889294+00:00",
+      "source": "upload.success",
+      "app_id": "shopify_plus_merchant_fees",
+      "youtube_id": "MYQTe4e9BYc"
     }
   ]
 }

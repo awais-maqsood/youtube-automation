@@ -1358,16 +1358,22 @@
       ]
     },
     "2026-11-25": {
-      "count": 1,
+      "count": 2,
       "events": [
         {
           "utc": "2026-11-25T05:00:55.426092+00:00",
           "title": "Who benefits from Apple Vision Pro apps?",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-11-25T21:42:54.893273+00:00",
+          "title": "How Do Shopify Plus Merchant Fees Affect Your Costs?",
+          "slot": "morning",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-11-25T05:00:55.426128+00:00"
+  "updated_utc": "2026-11-25T21:42:54.893297+00:00"
 }
