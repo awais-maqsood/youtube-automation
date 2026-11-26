@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-26T04:11:35.010087+00:00",
+  "updated_utc": "2026-11-26T21:30:59.962865+00:00",
   "entries": [
-    {
-      "title": "Odell Beckham’s Game Has Surprisingly Shifted",
-      "opener": "Odell Beckham isn’t the same player anymore",
-      "cta": "",
-      "trend": "Odell Beckham",
-      "utc": "2026-10-03T16:08:19.486457+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "Odell Beckham’s Game Has Surprisingly Shifted",
-      "opener": "Odell Beckham isn’t the same player anymore",
-      "cta": "One-line read on Odell Beckham — leave a comment.",
-      "trend": "Odell Beckham",
-      "utc": "2026-10-03T16:15:28.340463+00:00",
-      "source": "upload.success",
-      "app_id": "odell_beckham",
-      "youtube_id": "tdzLdbvPR_U"
-    },
     {
       "title": "How War HBO's Viral Scene Changed TV Drama",
       "opener": "This War HBO clip blew up online",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "nvidia_stock",
       "youtube_id": "eu1odu4b9p4"
+    },
+    {
+      "title": "Watch This: Avoid Anthropic Claude Coding Pitfalls",
+      "opener": "Don’t let Anthropic Claude code errors slow you down",
+      "cta": "",
+      "trend": "Anthropic Claude",
+      "utc": "2026-11-26T21:21:56.649006+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Watch This: Avoid Anthropic Claude Coding Pitfalls",
+      "opener": "Don’t let Anthropic Claude code errors slow you down",
+      "cta": "Anthropic’s Messages API moved to Rust for performance. Claude Ship helps developers review and fix code faster. Warnings say outages may worsen with Anthropic Claude’s code. Code review delays could increase project costs and time. Beginner mistakes with Claude tools can reduce productivity. Stable coding workflow saves money and speeds deployments.",
+      "trend": "Anthropic Claude",
+      "utc": "2026-11-26T21:30:59.960768+00:00",
+      "source": "upload.success",
+      "app_id": "anthropic_claude",
+      "youtube_id": "9aLjtJjBJsU"
     }
   ]
 }
