@@ -1,34 +1,5 @@
 {
   "days": {
-    "2026-09-24": {
-      "count": 4,
-      "events": [
-        {
-          "utc": "2026-09-24T00:31:46.375464+00:00",
-          "title": "What Really Changed for Matt Damon Recently?",
-          "slot": "evening",
-          "source": "upload.success"
-        },
-        {
-          "utc": "2026-09-24T08:29:45.511747+00:00",
-          "title": "Watch This Viral Wendy's Moment Unfold Now",
-          "slot": "evening",
-          "source": "upload.success"
-        },
-        {
-          "utc": "2026-09-24T17:08:29.694094+00:00",
-          "title": "Watch This Before Buying GTA 6 Collector's Edition",
-          "slot": "afternoon",
-          "source": "upload.success"
-        },
-        {
-          "utc": "2026-09-24T20:30:41.103876+00:00",
-          "title": "Portugal World Cup: How Portugal\u2019s World Cup Journey Just Changed",
-          "slot": "evening",
-          "source": "upload.success"
-        }
-      ]
-    },
     "2026-09-25": {
       "count": 4,
       "events": [
@@ -1373,7 +1344,18 @@
           "source": "upload.success"
         }
       ]
+    },
+    "2026-11-26": {
+      "count": 1,
+      "events": [
+        {
+          "utc": "2026-11-26T04:11:35.011770+00:00",
+          "title": "NVIDIA Stock Drops 14% Amid Market Shakeup",
+          "slot": "evening",
+          "source": "upload.success"
+        }
+      ]
     }
   },
-  "updated_utc": "2026-11-25T21:42:54.893297+00:00"
+  "updated_utc": "2026-11-26T04:11:35.011790+00:00"
 }

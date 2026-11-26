@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-25T21:42:54.890968+00:00",
+  "updated_utc": "2026-11-26T04:11:35.010087+00:00",
   "entries": [
-    {
-      "title": "India vs West Indies Cricket Match: Latest Update",
-      "opener": "Who’s leading right now in India-West Indies?",
-      "cta": "",
-      "trend": "India vs West Indies cricket match",
-      "utc": "2026-10-03T09:03:39.436218+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "India vs West Indies Cricket Match: Latest Update",
-      "opener": "Who’s leading right now in India-West Indies?",
-      "cta": "What is your take on India vs West Indies cricket match? Comment below.",
-      "trend": "India vs West Indies cricket match",
-      "utc": "2026-10-03T09:10:44.612594+00:00",
-      "source": "upload.success",
-      "app_id": "india_vs_west_indies_cricket_match",
-      "youtube_id": "paOpcQr0a_U"
-    },
     {
       "title": "Odell Beckham’s Game Has Surprisingly Shifted",
       "opener": "Odell Beckham isn’t the same player anymore",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "shopify_plus_merchant_fees",
       "youtube_id": "MYQTe4e9BYc"
+    },
+    {
+      "title": "NVIDIA Stock Drops 14% Amid Market Shakeup",
+      "opener": "NVIDIA shares sank over recent week",
+      "cta": "",
+      "trend": "NVIDIA stock",
+      "utc": "2026-11-26T04:04:11.465695+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "NVIDIA Stock Drops 14% Amid Market Shakeup",
+      "opener": "NVIDIA shares sank over recent week",
+      "cta": "Should you buy or avoid NVIDIA stock now?",
+      "trend": "NVIDIA stock",
+      "utc": "2026-11-26T04:11:35.008777+00:00",
+      "source": "upload.success",
+      "app_id": "nvidia_stock",
+      "youtube_id": "eu1odu4b9p4"
     }
   ]
 }
