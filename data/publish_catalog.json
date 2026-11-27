@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-26T21:30:59.962865+00:00",
+  "updated_utc": "2026-11-27T04:13:49.086238+00:00",
   "entries": [
-    {
-      "title": "How War HBO's Viral Scene Changed TV Drama",
-      "opener": "This War HBO clip blew up online",
-      "cta": "",
-      "trend": "War HBO",
-      "utc": "2026-10-04T00:29:22.121406+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "How War HBO's Viral Scene Changed TV Drama",
-      "opener": "This War HBO clip blew up online",
-      "cta": "What is your take on War HBO? Comment below.",
-      "trend": "War HBO",
-      "utc": "2026-10-04T00:36:29.548477+00:00",
-      "source": "upload.success",
-      "app_id": "war_hbo",
-      "youtube_id": "MXhwwfGW3qo"
-    },
     {
       "title": "Why Jason Kelce’s Game Has Transformed",
       "opener": "Jason Kelce’s biggest shift revealed",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "anthropic_claude",
       "youtube_id": "9aLjtJjBJsU"
+    },
+    {
+      "title": "Microsoft Copilot Beginner Mistake Could Cost You",
+      "opener": "Avoid this common error with Microsoft Copilot",
+      "cta": "",
+      "trend": "Microsoft Copilot",
+      "utc": "2026-11-27T04:04:03.955856+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Microsoft Copilot Beginner Mistake Could Cost You",
+      "opener": "Avoid this common error with Microsoft Copilot",
+      "cta": "How do you plan to manage Microsoft Copilot?",
+      "trend": "Microsoft Copilot",
+      "utc": "2026-11-27T04:13:49.084108+00:00",
+      "source": "upload.success",
+      "app_id": "microsoft_copilot",
+      "youtube_id": "Jm8bqhQCgss"
     }
   ]
 }

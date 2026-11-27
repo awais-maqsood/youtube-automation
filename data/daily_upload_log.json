@@ -1,34 +1,5 @@
 {
   "days": {
-    "2026-09-25": {
-      "count": 4,
-      "events": [
-        {
-          "utc": "2026-09-25T00:34:35.236073+00:00",
-          "title": "What Really Changed for Jordan Love's Role?",
-          "slot": "evening",
-          "source": "upload.success"
-        },
-        {
-          "utc": "2026-09-25T08:51:24.529187+00:00",
-          "title": "Tatiana Prozorova Controversy Timeline Breakdown",
-          "slot": "evening",
-          "source": "upload.success"
-        },
-        {
-          "utc": "2026-09-25T17:15:35.329408+00:00",
-          "title": "Supreme Court Limits Can Boost Business ROI",
-          "slot": "afternoon",
-          "source": "upload.success"
-        },
-        {
-          "utc": "2026-09-25T20:30:09.864671+00:00",
-          "title": "Why Elizabeth Holmes Documentary Sparks Debate",
-          "slot": "evening",
-          "source": "upload.success"
-        }
-      ]
-    },
     "2026-09-26": {
       "count": 4,
       "events": [
@@ -1361,7 +1332,18 @@
           "source": "upload.success"
         }
       ]
+    },
+    "2026-11-27": {
+      "count": 1,
+      "events": [
+        {
+          "utc": "2026-11-27T04:13:49.089002+00:00",
+          "title": "Microsoft Copilot Beginner Mistake Could Cost You",
+          "slot": "evening",
+          "source": "upload.success"
+        }
+      ]
     }
   },
-  "updated_utc": "2026-11-26T21:30:59.965565+00:00"
+  "updated_utc": "2026-11-27T04:13:49.089034+00:00"
 }
