@@ -1334,16 +1334,22 @@
       ]
     },
     "2026-11-27": {
-      "count": 1,
+      "count": 2,
       "events": [
         {
           "utc": "2026-11-27T04:13:49.089002+00:00",
           "title": "Microsoft Copilot Beginner Mistake Could Cost You",
           "slot": "evening",
           "source": "upload.success"
+        },
+        {
+          "utc": "2026-11-27T21:10:44.097808+00:00",
+          "title": "Samsung Galaxy AI Drives Real Productivity Gains",
+          "slot": "morning",
+          "source": "upload.success"
         }
       ]
     }
   },
-  "updated_utc": "2026-11-27T04:13:49.089034+00:00"
+  "updated_utc": "2026-11-27T21:10:44.097844+00:00"
 }

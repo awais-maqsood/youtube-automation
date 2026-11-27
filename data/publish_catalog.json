@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-27T04:13:49.086238+00:00",
+  "updated_utc": "2026-11-27T21:10:44.095710+00:00",
   "entries": [
-    {
-      "title": "Why Jason Kelce’s Game Has Transformed",
-      "opener": "Jason Kelce’s biggest shift revealed",
-      "cta": "",
-      "trend": "Jason Kelce",
-      "utc": "2026-10-04T16:47:28.373971+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "Why Jason Kelce’s Game Has Transformed",
-      "opener": "Jason Kelce’s biggest shift revealed",
-      "cta": "Did Jason Kelce surprise you? Comment below.",
-      "trend": "Jason Kelce",
-      "utc": "2026-10-04T16:54:38.243230+00:00",
-      "source": "upload.success",
-      "app_id": "jason_kelce",
-      "youtube_id": "Nyzep3etips"
-    },
     {
       "title": "Tee Higgins Injury Update Shakes Bengals Lineup",
       "opener": "Bengals lose Tee Higgins unexpectedly",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "microsoft_copilot",
       "youtube_id": "Jm8bqhQCgss"
+    },
+    {
+      "title": "Samsung Galaxy AI Drives Real Productivity Gains",
+      "opener": "Unlock better work output with Galaxy AI tools",
+      "cta": "",
+      "trend": "Samsung Galaxy AI",
+      "utc": "2026-11-27T21:02:34.616280+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Samsung Galaxy AI Drives Real Productivity Gains",
+      "opener": "Unlock better work output with Galaxy AI tools",
+      "cta": "How will Galaxy AI impact your productivity?",
+      "trend": "Samsung Galaxy AI",
+      "utc": "2026-11-27T21:10:44.093881+00:00",
+      "source": "upload.success",
+      "app_id": "samsung_galaxy_ai",
+      "youtube_id": "-9D_t-9NxGA"
     }
   ]
 }
