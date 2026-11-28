@@ -1,24 +1,6 @@
 {
-  "updated_utc": "2026-11-27T21:10:44.095710+00:00",
+  "updated_utc": "2026-11-28T03:57:04.675654+00:00",
   "entries": [
-    {
-      "title": "Tee Higgins Injury Update Shakes Bengals Lineup",
-      "opener": "Bengals lose Tee Higgins unexpectedly",
-      "cta": "",
-      "trend": "Tee Higgins",
-      "utc": "2026-10-04T20:05:16.054862+00:00",
-      "source": "title_history"
-    },
-    {
-      "title": "Tee Higgins Injury Update Shakes Bengals Lineup",
-      "opener": "Bengals lose Tee Higgins unexpectedly",
-      "cta": "Thoughts on Tee Higgins? Drop a comment.",
-      "trend": "Tee Higgins",
-      "utc": "2026-10-04T20:12:28.178834+00:00",
-      "source": "upload.success",
-      "app_id": "tee_higgins",
-      "youtube_id": "hE2UcAJWyoI"
-    },
     {
       "title": "Charlotte Flair's Fiercest Facts You Didn't Know",
       "opener": "Charlotte Flair: Fact or Fiction?",
@@ -2700,6 +2682,24 @@
       "source": "upload.success",
       "app_id": "samsung_galaxy_ai",
       "youtube_id": "-9D_t-9NxGA"
+    },
+    {
+      "title": "Why ChatGPT Plus Pricing Update Matters to Users",
+      "opener": "ChatGPT Plus subscription costs just changed",
+      "cta": "",
+      "trend": "ChatGPT Plus pricing update",
+      "utc": "2026-11-28T03:49:28.289663+00:00",
+      "source": "title_history"
+    },
+    {
+      "title": "Why ChatGPT Plus Pricing Update Matters to Users",
+      "opener": "ChatGPT Plus subscription costs just changed",
+      "cta": "Should you upgrade or seek alternatives now?",
+      "trend": "ChatGPT Plus pricing update",
+      "utc": "2026-11-28T03:57:04.674304+00:00",
+      "source": "upload.success",
+      "app_id": "chatgpt_plus_pricing_update",
+      "youtube_id": "BqS0OcaqEtA"
     }
   ]
 }
